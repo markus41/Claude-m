@@ -104,6 +104,51 @@
       "category": "devops",
       "tags": ["microsoft", "power-platform", "alm", "cicd", "pcf", "solutions", "devops"],
       "strict": true
+    },
+    {
+      "name": "Microsoft OneDrive",
+      "source": "https://github.com/markus41/Claude-m",
+      "path": "onedrive",
+      "description": "OneDrive file management via Microsoft Graph — upload, download, share, search, and delta sync for personal and business drives.",
+      "category": "productivity",
+      "tags": ["microsoft", "onedrive", "files", "sharing", "storage", "graph-api"],
+      "strict": true
+    },
+    {
+      "name": "Microsoft Planner & To Do",
+      "source": "https://github.com/markus41/Claude-m",
+      "path": "planner-todo",
+      "description": "Task and project management via Microsoft Graph — Planner plans, buckets, tasks, assignments, and To Do lists with steps and recurrence.",
+      "category": "productivity",
+      "tags": ["microsoft", "planner", "to-do", "tasks", "project-management", "graph-api"],
+      "strict": true
+    },
+    {
+      "name": "Azure DevOps",
+      "source": "https://github.com/markus41/Claude-m",
+      "path": "azure-devops",
+      "description": "Azure DevOps project management — Git repos, YAML pipelines, work items, pull requests, WIQL queries, and artifact feeds via REST API.",
+      "category": "devops",
+      "tags": ["microsoft", "azure-devops", "pipelines", "repos", "work-items", "cicd"],
+      "strict": true
+    },
+    {
+      "name": "Entra ID Security & Identity",
+      "source": "https://github.com/markus41/Claude-m",
+      "path": "entra-id-security",
+      "description": "Microsoft Entra ID identity governance — app registrations, service principals, conditional access policies, sign-in log analysis, and risk detection.",
+      "category": "security",
+      "tags": ["microsoft", "entra-id", "identity", "security", "conditional-access", "sign-in-logs"],
+      "strict": true
+    },
+    {
+      "name": "Microsoft Power Apps",
+      "source": "https://github.com/markus41/Claude-m",
+      "path": "powerapps",
+      "description": "Power Apps development — canvas app Power Fx formulas, model-driven app configuration, custom connectors, component libraries, and solution checker.",
+      "category": "productivity",
+      "tags": ["microsoft", "power-apps", "canvas", "model-driven", "power-fx", "connectors"],
+      "strict": true
     }
   ]
 }
