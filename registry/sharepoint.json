@@ -1,0 +1,18 @@
+{
+  "id": "sharepoint",
+  "name": "Microsoft SharePoint",
+  "description": "Browse SharePoint sites, manage document libraries, and upload or download files via the Microsoft Graph API.",
+  "version": "1.0.0",
+  "product": "sharepoint",
+  "requiredScopes": [
+    "Sites.ReadWrite.All",
+    "Files.ReadWrite.All"
+  ],
+  "tools": [
+    "sharepoint_list_sites",
+    "sharepoint_list_files",
+    "sharepoint_upload_file",
+    "sharepoint_download_file"
+  ],
+  "author": "Claude-m"
+}

@@ -1,0 +1,30 @@
+{
+  "name": "Microsoft Excel MCP",
+  "version": "1.0.0",
+  "description": "Read and write Excel workbooks, manage worksheets, and work with tables via the Microsoft Graph API",
+  "author": "Claude-m",
+  "mcpServer": {
+    "command": "node",
+    "args": ["${PLUGIN_DIR}/../../dist/index.js"],
+    "env": {
+      "MICROSOFT_CLIENT_ID": "${MICROSOFT_CLIENT_ID}",
+      "MICROSOFT_CLIENT_SECRET": "${MICROSOFT_CLIENT_SECRET}",
+      "MICROSOFT_TENANT_ID": "${MICROSOFT_TENANT_ID}",
+      "MICROSOFT_ACCESS_TOKEN": "${MICROSOFT_ACCESS_TOKEN}"
+    }
+  },
+  "capabilities": {
+    "tools": [
+      "excel_list_worksheets",
+      "excel_read_range",
+      "excel_write_range",
+      "excel_create_table"
+    ]
+  },
+  "requiredScopes": [
+    "Files.ReadWrite",
+    "Sites.ReadWrite.All"
+  ],
+  "category": "productivity",
+  "tags": ["microsoft", "excel", "spreadsheet", "data"]
+}

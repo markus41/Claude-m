@@ -1,0 +1,18 @@
+{
+  "id": "excel",
+  "name": "Microsoft Excel",
+  "description": "Read and write Excel workbooks, manage worksheets, and work with tables via the Microsoft Graph API.",
+  "version": "1.0.0",
+  "product": "excel",
+  "requiredScopes": [
+    "Files.ReadWrite",
+    "Sites.ReadWrite.All"
+  ],
+  "tools": [
+    "excel_read_range",
+    "excel_write_range",
+    "excel_list_worksheets",
+    "excel_create_table"
+  ],
+  "author": "Claude-m"
+}

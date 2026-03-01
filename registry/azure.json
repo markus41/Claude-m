@@ -1,0 +1,17 @@
+{
+  "id": "azure",
+  "name": "Microsoft Azure",
+  "description": "List and manage Azure resources, resource groups, and subscriptions via the Azure Resource Manager REST API.",
+  "version": "1.0.0",
+  "product": "azure",
+  "requiredScopes": [
+    "https://management.azure.com/user_impersonation"
+  ],
+  "tools": [
+    "azure_list_subscriptions",
+    "azure_list_resource_groups",
+    "azure_list_resources",
+    "azure_get_resource"
+  ],
+  "author": "Claude-m"
+}
