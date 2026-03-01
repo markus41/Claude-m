@@ -22,7 +22,20 @@ const schema = {
         additionalProperties: true,
         properties: {
           name: { type: 'string', minLength: 1 },
-          source: { type: 'string', minLength: 1 },
+          source: {
+            oneOf: [
+              { type: 'string', minLength: 1 },
+              {
+                type: 'object',
+                required: ['source', 'repo'],
+                additionalProperties: true,
+                properties: {
+                  source: { type: 'string', minLength: 1 },
+                  repo: { type: 'string', minLength: 1 }
+                }
+              }
+            ]
+          },
           description: { type: 'string', minLength: 1 },
           tags: {
             type: 'array',
