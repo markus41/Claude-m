@@ -1,54 +1,46 @@
 {
   "name": "Claude-m Microsoft Marketplace",
-  "description": "A Claude Code plugin marketplace for Microsoft 365, Teams, Excel, Outlook, Azure, and SharePoint integrations via MCP",
-  "version": "1.0.0",
-  "author": "Claude-m",
-  "homepage": "https://github.com/markus41/Claude-m",
+  "description": "Focused Claude marketplace for Microsoft workflow plugins maintained in this repository.",
   "plugins": [
     {
       "name": "Microsoft Teams MCP",
       "source": "https://github.com/markus41/Claude-m",
+      "description": "Send messages, create meetings, and manage Teams channels via MCP.",
       "category": "productivity",
-      "tags": ["microsoft", "teams", "collaboration", "meetings", "mcp"],
-      "description": "Send messages, create meetings, and manage Microsoft Teams channels via MCP server",
-      "version": "1.0.0",
-      "strict": false
+      "tags": ["microsoft", "teams", "collaboration"],
+      "strict": true
     },
     {
       "name": "Microsoft Excel MCP",
       "source": "https://github.com/markus41/Claude-m",
+      "description": "Read and update workbooks, worksheets, ranges, and tables via MCP.",
       "category": "productivity",
-      "tags": ["microsoft", "excel", "spreadsheet", "data", "mcp"],
-      "description": "Read and write Excel workbooks, manage worksheets, and work with tables via MCP server",
-      "version": "1.0.0",
-      "strict": false
+      "tags": ["microsoft", "excel", "data"],
+      "strict": true
     },
     {
       "name": "Microsoft Outlook MCP",
       "source": "https://github.com/markus41/Claude-m",
+      "description": "Send email and manage inbox/calendar tasks via MCP.",
       "category": "productivity",
-      "tags": ["microsoft", "outlook", "email", "calendar", "mcp"],
-      "description": "Send emails, list inbox messages, and manage calendar events via MCP server",
-      "version": "1.0.0",
-      "strict": false
+      "tags": ["microsoft", "outlook", "email"],
+      "strict": true
     },
     {
       "name": "Microsoft Azure MCP",
       "source": "https://github.com/markus41/Claude-m",
+      "description": "Inspect subscriptions, resource groups, and resources via MCP.",
       "category": "cloud",
-      "tags": ["microsoft", "azure", "cloud", "infrastructure", "mcp"],
-      "description": "Manage Azure resources, subscriptions, and resource groups via MCP server",
-      "version": "1.0.0",
-      "strict": false
+      "tags": ["microsoft", "azure", "infrastructure"],
+      "strict": true
     },
     {
       "name": "Microsoft SharePoint MCP",
       "source": "https://github.com/markus41/Claude-m",
+      "description": "Browse and transfer SharePoint files through MCP tools.",
       "category": "productivity",
-      "tags": ["microsoft", "sharepoint", "files", "documents", "mcp"],
-      "description": "List, upload, and download files from SharePoint sites via MCP server",
-      "version": "1.0.0",
-      "strict": false
+      "tags": ["microsoft", "sharepoint", "documents"],
+      "strict": true
     }
   ]
 }
