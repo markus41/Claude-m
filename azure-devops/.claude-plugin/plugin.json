@@ -1,8 +1,10 @@
 {
   "name": "azure-devops",
   "version": "1.0.0",
-  "description": "Azure DevOps project management — repos, pipelines, work items, pull requests, and build/release automation",
-  "author": "Markus Ahling",
+  "description": "Azure DevOps project management \u2014 repos, pipelines, work items, pull requests, and build/release automation",
+  "author": {
+    "name": "Markus Ahling"
+  },
   "keywords": [
     "microsoft",
     "azure-devops",
@@ -12,15 +14,19 @@
     "pull-requests",
     "cicd"
   ],
-  "skills": ["skills/azure-devops/SKILL.md"],
-  "agents": ["agents/devops-reviewer.md"],
+  "skills": [
+    "./skills/azure-devops/SKILL.md"
+  ],
+  "agents": [
+    "./agents/devops-reviewer.md"
+  ],
   "commands": [
-    "commands/ado-repo-create.md",
-    "commands/ado-pipeline-create.md",
-    "commands/ado-workitem-create.md",
-    "commands/ado-pr-create.md",
-    "commands/ado-build-status.md",
-    "commands/ado-query-workitems.md",
-    "commands/setup.md"
+    "./commands/ado-repo-create.md",
+    "./commands/ado-pipeline-create.md",
+    "./commands/ado-workitem-create.md",
+    "./commands/ado-pr-create.md",
+    "./commands/ado-build-status.md",
+    "./commands/ado-query-workitems.md",
+    "./commands/setup.md"
   ]
 }

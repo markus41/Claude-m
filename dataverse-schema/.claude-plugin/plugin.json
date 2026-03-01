@@ -1,20 +1,33 @@
 {
   "name": "dataverse-schema",
   "version": "1.0.0",
-  "description": "Dataverse table, column, and relationship management via Web API — schema design, data seeding, and solution lifecycle",
-  "author": "Markus Ahling",
-  "keywords": ["dataverse", "power-platform", "schema", "metadata", "solutions", "fetchxml"],
-  "skills": ["skills/dataverse-schema/SKILL.md"],
-  "agents": ["agents/schema-reviewer.md"],
+  "description": "Dataverse table, column, and relationship management via Web API \u2014 schema design, data seeding, and solution lifecycle",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "dataverse",
+    "power-platform",
+    "schema",
+    "metadata",
+    "solutions",
+    "fetchxml"
+  ],
+  "skills": [
+    "./skills/dataverse-schema/SKILL.md"
+  ],
+  "agents": [
+    "./agents/schema-reviewer.md"
+  ],
   "commands": [
-    "commands/setup.md",
-    "commands/dataverse-table-create.md",
-    "commands/dataverse-column-add.md",
-    "commands/dataverse-relationship-create.md",
-    "commands/dataverse-optionset-create.md",
-    "commands/dataverse-seed.md",
-    "commands/dataverse-query.md",
-    "commands/dataverse-solution-export.md",
-    "commands/dataverse-solution-import.md"
+    "./commands/setup.md",
+    "./commands/dataverse-table-create.md",
+    "./commands/dataverse-column-add.md",
+    "./commands/dataverse-relationship-create.md",
+    "./commands/dataverse-optionset-create.md",
+    "./commands/dataverse-seed.md",
+    "./commands/dataverse-query.md",
+    "./commands/dataverse-solution-export.md",
+    "./commands/dataverse-solution-import.md"
   ]
 }
