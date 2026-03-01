@@ -1,8 +1,10 @@
 {
   "name": "planner-todo",
   "version": "1.0.0",
-  "description": "Microsoft Planner and To Do task management via Graph API — plans, buckets, tasks, assignments, and checklists",
-  "author": "Markus Ahling",
+  "description": "Microsoft Planner and To Do task management via Graph API \u2014 plans, buckets, tasks, assignments, and checklists",
+  "author": {
+    "name": "Markus Ahling"
+  },
   "keywords": [
     "microsoft",
     "planner",
@@ -11,15 +13,19 @@
     "project-management",
     "graph-api"
   ],
-  "skills": ["skills/planner-todo/SKILL.md"],
-  "agents": ["agents/planner-reviewer.md"],
+  "skills": [
+    "./skills/planner-todo/SKILL.md"
+  ],
+  "agents": [
+    "./agents/planner-reviewer.md"
+  ],
   "commands": [
-    "commands/planner-plan-create.md",
-    "commands/planner-task-create.md",
-    "commands/planner-task-assign.md",
-    "commands/planner-bucket-create.md",
-    "commands/todo-list-create.md",
-    "commands/todo-task-create.md",
-    "commands/setup.md"
+    "./commands/planner-plan-create.md",
+    "./commands/planner-task-create.md",
+    "./commands/planner-task-assign.md",
+    "./commands/planner-bucket-create.md",
+    "./commands/todo-list-create.md",
+    "./commands/todo-task-create.md",
+    "./commands/setup.md"
   ]
 }
