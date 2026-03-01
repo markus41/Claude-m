@@ -1,0 +1,25 @@
+{
+  "name": "excel-automation",
+  "version": "1.0.0",
+  "description": "Excel data cleaning with pandas, Office Script generation, and Power Automate flow creation",
+  "author": "Markus Ahling",
+  "keywords": ["excel", "pandas", "office-scripts", "data-cleaning", "power-automate", "typescript", "vba"],
+  "skills": [
+    "skills/pandas-cleaning/SKILL.md",
+    "skills/office-scripts/SKILL.md",
+    "skills/power-automate-flows/SKILL.md"
+  ],
+  "agents": [
+    "agents/excel-reviewer.md",
+    "agents/flow-definition-reviewer.md"
+  ],
+  "commands": [
+    "commands/excel-clean.md",
+    "commands/excel-script.md",
+    "commands/excel-template.md",
+    "commands/excel-vba.md",
+    "commands/create-script.md",
+    "commands/validate-script.md",
+    "commands/create-flow.md"
+  ]
+}

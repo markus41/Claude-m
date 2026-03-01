@@ -1,0 +1,17 @@
+{
+  "name": "powerbi-fabric",
+  "version": "1.0.0",
+  "description": "DAX measures, Power Query M code, Power BI workspace management, PBIP scaffolding, and Fabric integration",
+  "author": "Markus Ahling",
+  "keywords": ["power-bi", "dax", "power-query", "fabric", "pbip", "analytics", "lakehouse"],
+  "skills": ["skills/powerbi-analytics/SKILL.md"],
+  "agents": ["agents/dax-reviewer.md"],
+  "commands": [
+    "commands/pbi-measure.md",
+    "commands/pbi-query.md",
+    "commands/pbi-workspace-create.md",
+    "commands/pbi-dataset-refresh.md",
+    "commands/pbi-scaffold.md",
+    "commands/pbi-fabric-notebook.md"
+  ]
+}

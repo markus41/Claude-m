@@ -1,0 +1,20 @@
+{
+  "name": "powerplatform-alm",
+  "version": "1.0.0",
+  "description": "Power Platform ALM — environments, solution transport, CI/CD pipelines, PCF controls, and deployment automation",
+  "author": "Markus Ahling",
+  "keywords": ["power-platform", "alm", "solutions", "cicd", "pcf", "pac-cli", "devops"],
+  "skills": ["skills/alm-lifecycle/SKILL.md"],
+  "agents": ["agents/alm-reviewer.md"],
+  "commands": [
+    "commands/alm-env-create.md",
+    "commands/alm-env-list.md",
+    "commands/alm-solution-export.md",
+    "commands/alm-solution-import.md",
+    "commands/alm-solution-diff.md",
+    "commands/alm-pipeline-generate.md",
+    "commands/alm-pcf-init.md",
+    "commands/alm-pcf-build.md",
+    "commands/alm-envvar-set.md"
+  ]
+}

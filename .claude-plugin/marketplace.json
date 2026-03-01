@@ -59,6 +59,51 @@
       "category": "cloud",
       "tags": ["microsoft", "dataverse", "graph", "azure", "typescript"],
       "strict": true
+    },
+    {
+      "name": "Excel Automation & Data Cleaning",
+      "source": "https://github.com/markus41/Claude-m",
+      "path": "excel-automation",
+      "description": "Clean messy data with pandas, generate Office Scripts and Power Automate flows, and create Excel templates — with Dataverse-aware mode and VBA fallback.",
+      "category": "productivity",
+      "tags": ["microsoft", "excel", "pandas", "office-scripts", "data-cleaning", "power-automate"],
+      "strict": true
+    },
+    {
+      "name": "Microsoft 365 Admin",
+      "source": "https://github.com/markus41/Claude-m",
+      "path": "m365-admin",
+      "description": "M365 tenant admin via Microsoft Graph — users, groups, licenses, Exchange Online, SharePoint, and CSV-driven bulk operations.",
+      "category": "cloud",
+      "tags": ["microsoft", "graph-api", "entra-id", "exchange", "sharepoint", "admin"],
+      "strict": true
+    },
+    {
+      "name": "Dataverse Schema & Data",
+      "source": "https://github.com/markus41/Claude-m",
+      "path": "dataverse-schema",
+      "description": "Create and manage Dataverse tables, columns, relationships, and solutions via Web API — with FetchXML generation and data seeding.",
+      "category": "cloud",
+      "tags": ["microsoft", "dataverse", "power-platform", "schema", "solutions", "fetchxml"],
+      "strict": true
+    },
+    {
+      "name": "Power BI / Fabric Analytics",
+      "source": "https://github.com/markus41/Claude-m",
+      "path": "powerbi-fabric",
+      "description": "Generate DAX measures, Power Query M code, manage workspaces via REST API, scaffold PBIP projects, and integrate with Microsoft Fabric.",
+      "category": "analytics",
+      "tags": ["microsoft", "power-bi", "dax", "power-query", "fabric", "pbip", "analytics"],
+      "strict": true
+    },
+    {
+      "name": "Power Platform ALM",
+      "source": "https://github.com/markus41/Claude-m",
+      "path": "powerplatform-alm",
+      "description": "Application lifecycle management — environment provisioning, solution transport, CI/CD pipeline generation, and PCF control scaffolding.",
+      "category": "devops",
+      "tags": ["microsoft", "power-platform", "alm", "cicd", "pcf", "solutions", "devops"],
+      "strict": true
     }
   ]
 }

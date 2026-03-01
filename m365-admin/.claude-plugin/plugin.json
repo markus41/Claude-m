@@ -1,0 +1,26 @@
+{
+  "name": "m365-admin",
+  "version": "1.0.0",
+  "description": "M365 tenant admin via Microsoft Graph — users, groups, licenses, Exchange, SharePoint, and bulk operations",
+  "author": "Markus Ahling",
+  "keywords": [
+    "microsoft-365",
+    "graph-api",
+    "entra-id",
+    "exchange",
+    "sharepoint",
+    "admin",
+    "bulk-operations"
+  ],
+  "skills": ["skills/m365-admin/SKILL.md"],
+  "agents": ["agents/m365-admin-reviewer.md"],
+  "commands": [
+    "commands/m365-user-create.md",
+    "commands/m365-user-offboard.md",
+    "commands/m365-license-assign.md",
+    "commands/m365-group-create.md",
+    "commands/m365-exchange-mailbox.md",
+    "commands/m365-sharepoint-site.md",
+    "commands/m365-audit.md"
+  ]
+}
