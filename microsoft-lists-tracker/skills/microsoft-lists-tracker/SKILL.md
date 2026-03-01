@@ -21,6 +21,9 @@ triggers:
   - inventory list
   - list items
   - list columns
+  - coverage audit
+  - feature gap
+  - documentation coverage
 ---
 
 # Microsoft Lists Tracker
@@ -32,6 +35,12 @@ Microsoft Lists is a structured data tracking app built on SharePoint Lists. It 
 Under the hood, every Microsoft List is a SharePoint List. The Graph API endpoints are the same SharePoint Sites/Lists endpoints. Lists created in the Microsoft Lists app appear in the parent SharePoint site, and vice versa.
 
 **Best fit**: Small teams (20 people or fewer) that need lightweight process tracking without a full database or project management tool.
+
+## Documentation Coverage Audit
+
+Use `/lists-coverage-audit <site-id> <list-id>` to validate feature coverage against Microsoft Graph and SharePoint REST documentation.
+
+Coverage reports must separate Graph-supported operations from SharePoint REST/UI-only functionality, especially for advanced list view management.
 
 ## Base URL
 

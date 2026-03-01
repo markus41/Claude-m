@@ -1,15 +1,29 @@
 {
   "name": "microsoft-bookings",
   "version": "1.0.0",
-  "description": "Microsoft Bookings — manage appointment calendars, services, staff availability, and customer bookings via Graph API",
-  "author": { "name": "Markus Ahling" },
-  "keywords": ["microsoft", "bookings", "appointments", "scheduling", "graph-api", "calendar"],
-  "skills": ["./skills/microsoft-bookings/SKILL.md"],
-  "agents": ["./agents/bookings-reviewer.md"],
+  "description": "Microsoft Bookings \u2014 manage appointment calendars, services, staff availability, and customer bookings via Graph API",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "bookings",
+    "appointments",
+    "scheduling",
+    "graph-api",
+    "calendar"
+  ],
+  "skills": [
+    "./skills/microsoft-bookings/SKILL.md"
+  ],
+  "agents": [
+    "./agents/bookings-reviewer.md"
+  ],
   "commands": [
     "./commands/bookings-create-service.md",
     "./commands/bookings-availability.md",
     "./commands/bookings-upcoming.md",
+    "./commands/bookings-coverage-audit.md",
     "./commands/setup.md"
   ]
 }

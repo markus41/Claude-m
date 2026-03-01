@@ -30,6 +30,7 @@ Run `/setup` to configure authentication and verify SharePoint Lists access:
 | `/lists-create` | Create a new Microsoft List with custom columns and optional templates |
 | `/lists-add-item` | Add an item to a Microsoft List with field mapping |
 | `/lists-view-filter` | View and filter list items with OData queries |
+| `/lists-coverage-audit` | Compare plugin coverage against Microsoft Lists and SharePoint REST docs |
 | `/setup` | Configure Azure auth and verify SharePoint access |
 
 ## Agent
@@ -45,3 +46,14 @@ The skill activates automatically when conversations mention: `lists`, `microsof
 ## Author
 
 Markus Ahling
+
+
+## Coverage against Microsoft documentation
+
+| Feature domain | Coverage status | Evidence source |
+|---|---|---|
+| List lifecycle, columns, and items | Covered | SKILL endpoint tables + command set |
+| OData filtering and tracker workflows | Covered | `/lists-view-filter` examples and deterministic checks |
+| Advanced view management | Partial | Graph limitation documented; SharePoint REST fallback required |
+
+Run `/lists-coverage-audit <site-id> <list-id>` to identify gaps before creating new list automation patterns.
