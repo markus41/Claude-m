@@ -16,3 +16,12 @@ Azure cost governance workflows for Claude Code teams.
 
 ## Skill
 - `skills/azure-cost-governance/SKILL.md`
+
+## Plugin structure
+- `.claude-plugin/plugin.json`
+- `skills/azure-cost-governance/SKILL.md`
+- `commands/setup.md`
+- `commands/azure-cost-query.md`
+- `commands/azure-budget-check.md`
+- `commands/azure-idle-resources.md`
+- `agents/azure-cost-governance-reviewer.md`
