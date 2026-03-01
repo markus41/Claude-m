@@ -16,3 +16,13 @@ Azure policy and security posture review workflows.
 
 ## Skill
 - `skills/azure-policy-security/SKILL.md`
+
+## Plugin structure
+- `.claude-plugin/plugin.json`
+- `skills/azure-policy-security/SKILL.md`
+- `commands/setup.md`
+- `commands/policy-coverage.md`
+- `commands/drift-analysis.md`
+- `commands/remediation-plan.md`
+- `agents/azure-policy-security-reviewer.md`
+

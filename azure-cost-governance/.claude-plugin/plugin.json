@@ -1,0 +1,28 @@
+{
+  "name": "azure-cost-governance",
+  "version": "1.0.0",
+  "description": "Azure FinOps and governance workflows — query costs, monitor budgets, detect anomalies, and identify idle resources for optimization",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "azure",
+    "finops",
+    "cost-management",
+    "budgets",
+    "governance"
+  ],
+  "skills": [
+    "./skills/azure-cost-governance/SKILL.md"
+  ],
+  "agents": [
+    "./agents/azure-cost-governance-reviewer.md"
+  ],
+  "commands": [
+    "./commands/setup.md",
+    "./commands/azure-cost-query.md",
+    "./commands/azure-budget-check.md",
+    "./commands/azure-idle-resources.md"
+  ]
+}

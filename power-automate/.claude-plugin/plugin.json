@@ -1,0 +1,28 @@
+{
+  "name": "power-automate",
+  "version": "1.0.0",
+  "description": "Design and troubleshoot Power Automate cloud flows — trigger/action patterns, run diagnostics, retries, and deployment-safe flow definitions",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "power-automate",
+    "flows",
+    "automation",
+    "dataverse",
+    "power-platform"
+  ],
+  "skills": [
+    "./skills/power-automate/SKILL.md"
+  ],
+  "agents": [
+    "./agents/power-automate-reviewer.md"
+  ],
+  "commands": [
+    "./commands/setup.md",
+    "./commands/flow-design.md",
+    "./commands/flow-debug.md",
+    "./commands/flow-deploy-check.md"
+  ]
+}

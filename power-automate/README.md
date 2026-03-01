@@ -16,3 +16,12 @@ Power Automate cloud flow design and troubleshooting guidance.
 
 ## Skill
 - `skills/power-automate/SKILL.md`
+
+## Plugin structure
+- `.claude-plugin/plugin.json`
+- `skills/power-automate/SKILL.md`
+- `commands/setup.md`
+- `commands/flow-design.md`
+- `commands/flow-debug.md`
+- `commands/flow-deploy-check.md`
+- `agents/power-automate-reviewer.md`

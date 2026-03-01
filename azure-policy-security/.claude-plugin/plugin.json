@@ -1,0 +1,28 @@
+{
+  "name": "azure-policy-security",
+  "version": "1.0.0",
+  "description": "Evaluate Azure policy compliance and security posture — policy assignments, drift analysis, remediation planning, and guardrail recommendations",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "azure",
+    "policy",
+    "security",
+    "governance",
+    "compliance"
+  ],
+  "skills": [
+    "./skills/azure-policy-security/SKILL.md"
+  ],
+  "agents": [
+    "./agents/azure-policy-security-reviewer.md"
+  ],
+  "commands": [
+    "./commands/setup.md",
+    "./commands/policy-coverage.md",
+    "./commands/drift-analysis.md",
+    "./commands/remediation-plan.md"
+  ]
+}
