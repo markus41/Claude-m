@@ -13,8 +13,9 @@
     "test:coverage": "jest --coverage",
     "lint": "tsc --noEmit",
     "validate:marketplace": "node scripts/validate-marketplace.mjs",
-    "validate:all": "npm run validate:marketplace && npm run validate:plugins",
-    "validate:plugins": "node scripts/validate-plugins.mjs"
+    "validate:all": "npm run validate:marketplace && npm run validate:plugins && npm run validate:command-frontmatter",
+    "validate:plugins": "node scripts/validate-plugins.mjs",
+    "validate:command-frontmatter": "node scripts/validate-command-frontmatter.mjs"
   },
   "repository": {
     "type": "git",
