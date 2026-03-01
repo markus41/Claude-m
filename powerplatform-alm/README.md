@@ -2,6 +2,17 @@
 
 A Claude Code knowledge plugin for Power Platform Application Lifecycle Management. Provides deep expertise in environment provisioning, solution transport, CI/CD pipeline automation, connection reference management, environment variables, and PCF control development.
 
+## Setup
+
+Run `/setup` to install the PAC CLI, configure environments, and authenticate:
+
+```
+/setup                    # Full guided setup
+/setup --minimal          # PAC CLI install + auth only
+/setup --with-cicd        # Include CI/CD pipeline setup (Azure DevOps or GitHub)
+/setup --with-pcf         # Include PCF control development environment
+```
+
 ## What This Plugin Provides
 
 This is a **knowledge plugin** — it gives Claude expertise to generate correct code, scripts, pipeline YAML, and advice for Power Platform ALM. It does not contain runtime code, MCP servers, or executable scripts.
@@ -23,6 +34,7 @@ Core knowledge covering the full Power Platform ALM cycle:
 
 | Command | Description |
 |---------|-------------|
+| `setup` | Install PAC CLI, configure environments, authenticate, and optionally set up CI/CD and PCF |
 | `alm-env-create` | Create and configure a Power Platform environment |
 | `alm-env-list` | List environments with status and capacity |
 | `alm-solution-export` | Export solution as managed or unmanaged zip |

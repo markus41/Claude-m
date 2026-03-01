@@ -12,6 +12,7 @@
     "commands/pbi-workspace-create.md",
     "commands/pbi-dataset-refresh.md",
     "commands/pbi-scaffold.md",
-    "commands/pbi-fabric-notebook.md"
+    "commands/pbi-fabric-notebook.md",
+    "commands/setup.md"
   ]
 }

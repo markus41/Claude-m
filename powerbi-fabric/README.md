@@ -6,6 +6,17 @@ A Claude Code knowledge plugin for Power BI development, DAX authoring, Power Qu
 
 This is a **knowledge plugin** -- it gives Claude deep expertise in the Power BI and Fabric ecosystem so it can generate correct code, scripts, and architectural advice. It does not contain runtime code, MCP servers, or executable scripts.
 
+## Setup
+
+Run `/setup` to configure authentication and verify Power BI access:
+
+```
+/setup                        # Full guided setup
+/setup --minimal              # Node.js dependencies only
+/setup --with-fabric          # Include Fabric/Lakehouse configuration
+/setup --with-desktop-check   # Verify Power BI Desktop installation
+```
+
 ## Capabilities
 
 | Area | What Claude Can Do |
@@ -36,6 +47,7 @@ This is a **knowledge plugin** -- it gives Claude deep expertise in the Power BI
 | `/pbi-dataset-refresh` | Generate code to trigger and monitor a dataset refresh |
 | `/pbi-scaffold` | Generate a complete PBIP project structure |
 | `/pbi-fabric-notebook` | Generate a Fabric PySpark notebook for data pipelines |
+| `/setup` | Set up Azure auth, verify workspace access, and optionally configure Fabric |
 
 ## Agent
 
@@ -69,7 +81,8 @@ powerbi-fabric/
 │   ├── pbi-workspace-create.md
 │   ├── pbi-dataset-refresh.md
 │   ├── pbi-scaffold.md
-│   └── pbi-fabric-notebook.md
+│   ├── pbi-fabric-notebook.md
+│   └── setup.md
 ├── agents/
 │   └── dax-reviewer.md
 └── README.md

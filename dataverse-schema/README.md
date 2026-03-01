@@ -2,6 +2,16 @@
 
 A Claude Code knowledge plugin for creating and managing Microsoft Dataverse tables, columns, relationships, option sets, and solutions via the Dataverse Web API (v9.2).
 
+## Setup
+
+Run `/setup` to configure your Dataverse environment and credentials:
+
+```
+/setup                    # Full guided setup
+/setup --minimal          # Dependencies only, configure auth manually
+/setup --with-pac-cli     # Also install PAC CLI for solution management
+```
+
 ## What This Plugin Does
 
 This plugin gives Claude deep expertise in Dataverse schema management so it can:
@@ -22,6 +32,9 @@ This plugin gives Claude deep expertise in Dataverse schema management so it can
 - Default: work within a solution context
 
 ## Commands
+
+### `/setup [--minimal] [--with-pac-cli]`
+Set up the Dataverse Schema plugin — configure environment URL, auth credentials, publisher prefix, and verify Web API connectivity.
 
 ### `/dataverse-table-create <table-name> [description]`
 Create a new custom table with a primary name column and optional additional columns. Generates the complete `EntityDefinitions` POST payload and TypeScript code.

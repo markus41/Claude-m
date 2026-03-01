@@ -15,6 +15,7 @@
     "commands/alm-pipeline-generate.md",
     "commands/alm-pcf-init.md",
     "commands/alm-pcf-build.md",
-    "commands/alm-envvar-set.md"
+    "commands/alm-envvar-set.md",
+    "commands/setup.md"
   ]
 }

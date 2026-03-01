@@ -27,6 +27,17 @@ Dataverse export     ──┘     │ ├─ Coerce types   │         │ ├
                              └─ Data quality report
 ```
 
+## Setup
+
+Run `/setup` to install dependencies and configure the plugin:
+
+```
+/setup                        # Full guided setup
+/setup --minimal              # Python dependencies only
+/setup --with-dataverse       # Include Dataverse-aware mode config
+/setup --with-power-automate  # Include Power Automate flow config
+```
+
 ## Commands
 
 ### `/excel-clean` — Clean messy data
@@ -76,6 +87,15 @@ Checks an Office Script against all TypeScript 4.0.3 restrictions and best pract
 /create-flow Run SalesReport script every weekday at 8 AM and email the team
 ```
 Generates complete Power Automate flow definition JSON for the Dataverse Web API.
+
+### `/setup` — Set up the plugin
+```bash
+/setup                        # Full guided setup
+/setup --minimal              # Python dependencies only
+/setup --with-dataverse       # Include Dataverse-aware mode config
+/setup --with-power-automate  # Include Power Automate flow config
+```
+Walks through Python environment setup, dependency installation, optional Dataverse and Power Automate configuration, `.env` file creation, and verification.
 
 ## Skills
 

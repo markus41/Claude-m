@@ -20,6 +20,7 @@
     "commands/excel-vba.md",
     "commands/create-script.md",
     "commands/validate-script.md",
-    "commands/create-flow.md"
+    "commands/create-flow.md",
+    "commands/setup.md"
   ]
 }

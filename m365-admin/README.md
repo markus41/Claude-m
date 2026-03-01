@@ -16,6 +16,17 @@ This plugin provides Claude with deep expertise in M365 admin operations so it c
 | SharePoint Online | Graph + REST + PnP | Site creation, permissions, storage, sharing policies, hub sites, document libraries |
 | Bulk Operations | Graph $batch | CSV-driven batch processing with validation, dry-run, rate limiting, and reporting |
 
+## Setup
+
+Run `/setup` to configure authentication and install dependencies:
+
+```
+/setup                          # Full guided setup
+/setup --minimal                # Node.js dependencies only
+/setup --with-exchange          # Include Exchange Online PowerShell module
+/setup --with-sharepoint-pnp    # Include PnP PowerShell module
+```
+
 ## Authentication
 
 All operations use delegated authentication with interactive browser login (MSAL). Scopes are requested dynamically based on the operation following the principle of least privilege.
@@ -24,6 +35,7 @@ All operations use delegated authentication with interactive browser login (MSAL
 
 | Command | Description |
 |---------|-------------|
+| `/setup` | Set up the plugin — Azure app registration, dependencies, connectivity |
 | `/m365-user-create` | Create user(s) with license and group assignment |
 | `/m365-user-offboard` | Full offboarding: disable, revoke, remove, convert |
 | `/m365-license-assign` | Assign, change, or revoke licenses |
@@ -64,7 +76,8 @@ m365-admin/
 │   ├── m365-group-create.md
 │   ├── m365-exchange-mailbox.md
 │   ├── m365-sharepoint-site.md
-│   └── m365-audit.md
+│   ├── m365-audit.md
+│   └── setup.md
 ├── agents/
 │   └── m365-admin-reviewer.md
 └── README.md
