@@ -1,20 +1,19 @@
 # Claude-m
 
-A focused Claude plugin marketplace for Microsoft workflows (Azure, Teams, Outlook, Excel, SharePoint) backed by one MCP server.
+A Claude plugin marketplace for Microsoft cloud, productivity, security, analytics, and DevOps workflows.
 
 ## Why this marketplace exists
-Claude-m is optimized for high-value Microsoft tasks:
-- **Review Azure IaC and live resources** for risk/cost hot spots.
-- **Triage DevOps and collaboration workflows** through Teams/Outlook context.
-- **Analyze spreadsheets and operational data** from Excel/SharePoint quickly.
-
-This repo intentionally keeps the marketplace small, strict, and maintainable.
+Claude-m packages a broad Microsoft operations catalog into one install source so teams can combine plugins into repeatable runbooks:
+- **Cloud and governance**: Azure inventory, policy drift, cost controls, and tenant administration.
+- **Productivity and collaboration**: Teams, Outlook, SharePoint, OneDrive, Planner/To Do, Power Apps, and Power Automate workflows.
+- **Security and compliance**: Entra ID security checks, Purview coverage, sharing audits, and multi-tenant health scoring.
+- **Analytics and ALM**: Power BI/Fabric authoring support, Dataverse schema work, and Power Platform solution lifecycle automation.
 
 ## Quick start
 
 ```bash
 /plugin marketplace add markus41/Claude-m
-/plugin install "Microsoft Azure MCP@Claude-m Microsoft Marketplace"
+/plugin install <plugin-name>@claude-m-microsoft-marketplace
 ```
 
 ## Copy-paste sessions
@@ -27,23 +26,47 @@ This repo intentionally keeps the marketplace small, strict, and maintainable.
 
 ### 2) Install a Microsoft plugin from this marketplace
 ```bash
-/plugin install "Microsoft Teams MCP@Claude-m Microsoft Marketplace"
+/plugin install <plugin-name>@claude-m-microsoft-marketplace
+```
+
+Examples:
+
+```bash
+/plugin install microsoft-azure-mcp@claude-m-microsoft-marketplace
+/plugin install powerbi-fabric@claude-m-microsoft-marketplace
+/plugin install teams-lifecycle@claude-m-microsoft-marketplace
 ```
 
 ### 3) Run a realistic task prompt
 ```text
-Use Microsoft Azure MCP to list all resource groups in subscription <subscription-id>,
+Use microsoft-azure-mcp to list all resource groups in subscription <subscription-id>,
 identify resources with no recent activity, and suggest cleanup candidates.
 ```
+
+## Plugin coverage summary
+
+Current catalog in `CLAUDE.md` includes these install slugs:
+
+- **Cloud**: `microsoft-azure-mcp`, `m365-platform-clients`, `m365-admin`, `dataverse-schema`, `azure-cost-governance`, `license-optimizer`
+- **Productivity**: `microsoft-teams-mcp`, `microsoft-outlook-mcp`, `microsoft-sharepoint-mcp`, `microsoft-excel-mcp`, `excel-office-scripts`, `excel-automation`, `onedrive`, `planner-todo`, `powerapps`, `power-automate`, `exchange-mailflow`, `teams-lifecycle`, `servicedesk-runbooks`
+- **Security**: `entra-id-security`, `purview-compliance`, `azure-policy-security`, `lighthouse-health`, `sharing-auditor`
+- **DevOps**: `azure-devops`, `powerplatform-alm`
+- **Analytics**: `powerbi-fabric`
 
 ## Opinionated flows
 
 1. **Set up Microsoft collaboration stack**
-   - Install Teams + Outlook + SharePoint plugins.
+   - Install `microsoft-teams-mcp` + `microsoft-outlook-mcp` + `microsoft-sharepoint-mcp`.
    - Prompt: “Audit communication and file handoff risks for this week and produce actions.”
 2. **Azure governance review**
-   - Install Azure plugin.
+   - Install `microsoft-azure-mcp` + `azure-cost-governance` + `azure-policy-security`.
    - Prompt: “List subscriptions/resource groups/resources, then flag policy drift and likely cost waste.”
+3. **Entra + compliance sweep**
+   - Install `entra-id-security` + `purview-compliance` + `sharing-auditor`.
+   - Prompt: “Review conditional access gaps, overshared files, and DLP policy coverage.”
+4. **MSP tenant health and runbooks**
+   - Install `lighthouse-health` + `license-optimizer` + `servicedesk-runbooks`.
+   - Prompt: “Score all tenants for security posture and generate a monthly customer-ready report.”
 
 ## Marketplace structure guidance
 - `.claude-plugin/marketplace.json` is intentionally minimal (short name, clear description, only maintained plugins).
@@ -81,6 +104,6 @@ npm test
 ```
 
 ## Roadmap
-- SharePoint automation expansions (bulk operations and metadata workflows)
-- Power BI plugin for dataset/report inspection
-- Teams automation helpers for channel lifecycle and meeting operations
+- Expand cross-plugin runbooks with deterministic command sequences and validation steps.
+- Add scenario packs for regulated environments (least privilege, audit evidence, and change-control outputs).
+- Improve catalog quality gates and release automation for metadata consistency across plugins.
