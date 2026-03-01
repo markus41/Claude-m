@@ -1,0 +1,20 @@
+{
+  "id": "outlook",
+  "name": "Microsoft Outlook",
+  "description": "Read and send emails, manage calendar events, and handle contacts via the Microsoft Graph API.",
+  "version": "1.0.0",
+  "product": "outlook",
+  "requiredScopes": [
+    "Mail.ReadWrite",
+    "Mail.Send",
+    "Calendars.ReadWrite",
+    "Contacts.ReadWrite"
+  ],
+  "tools": [
+    "outlook_send_email",
+    "outlook_list_emails",
+    "outlook_create_event",
+    "outlook_list_events"
+  ],
+  "author": "Claude-m"
+}

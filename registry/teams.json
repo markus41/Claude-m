@@ -1,0 +1,20 @@
+{
+  "id": "teams",
+  "name": "Microsoft Teams",
+  "description": "Send messages, create meetings, and manage Teams channels via the Microsoft Graph API.",
+  "version": "1.0.0",
+  "product": "teams",
+  "requiredScopes": [
+    "ChannelMessage.Send",
+    "Chat.ReadWrite",
+    "OnlineMeetings.ReadWrite",
+    "Team.ReadBasic.All"
+  ],
+  "tools": [
+    "teams_send_message",
+    "teams_create_meeting",
+    "teams_list_channels",
+    "teams_list_teams"
+  ],
+  "author": "Claude-m"
+}
