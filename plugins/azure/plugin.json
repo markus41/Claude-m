@@ -1,0 +1,29 @@
+{
+  "name": "Microsoft Azure MCP",
+  "version": "1.0.0",
+  "description": "List and manage Azure resources, resource groups, and subscriptions via the Azure Resource Manager REST API",
+  "author": "Claude-m",
+  "mcpServer": {
+    "command": "node",
+    "args": ["${PLUGIN_DIR}/../../dist/index.js"],
+    "env": {
+      "MICROSOFT_CLIENT_ID": "${MICROSOFT_CLIENT_ID}",
+      "MICROSOFT_CLIENT_SECRET": "${MICROSOFT_CLIENT_SECRET}",
+      "MICROSOFT_TENANT_ID": "${MICROSOFT_TENANT_ID}",
+      "MICROSOFT_ACCESS_TOKEN": "${MICROSOFT_ACCESS_TOKEN}"
+    }
+  },
+  "capabilities": {
+    "tools": [
+      "azure_list_subscriptions",
+      "azure_list_resource_groups",
+      "azure_list_resources",
+      "azure_get_resource"
+    ]
+  },
+  "requiredScopes": [
+    "https://management.azure.com/user_impersonation"
+  ],
+  "category": "cloud",
+  "tags": ["microsoft", "azure", "cloud", "infrastructure"]
+}

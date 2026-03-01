@@ -1,0 +1,32 @@
+{
+  "name": "Microsoft Outlook MCP",
+  "version": "1.0.0",
+  "description": "Send emails, list inbox messages, and manage calendar events via the Microsoft Graph API",
+  "author": "Claude-m",
+  "mcpServer": {
+    "command": "node",
+    "args": ["${PLUGIN_DIR}/../../dist/index.js"],
+    "env": {
+      "MICROSOFT_CLIENT_ID": "${MICROSOFT_CLIENT_ID}",
+      "MICROSOFT_CLIENT_SECRET": "${MICROSOFT_CLIENT_SECRET}",
+      "MICROSOFT_TENANT_ID": "${MICROSOFT_TENANT_ID}",
+      "MICROSOFT_ACCESS_TOKEN": "${MICROSOFT_ACCESS_TOKEN}"
+    }
+  },
+  "capabilities": {
+    "tools": [
+      "outlook_send_email",
+      "outlook_list_emails",
+      "outlook_create_event",
+      "outlook_list_events"
+    ]
+  },
+  "requiredScopes": [
+    "Mail.ReadWrite",
+    "Mail.Send",
+    "Calendars.ReadWrite",
+    "Contacts.ReadWrite"
+  ],
+  "category": "productivity",
+  "tags": ["microsoft", "outlook", "email", "calendar"]
+}

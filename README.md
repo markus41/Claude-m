@@ -76,13 +76,33 @@ Set the following environment variables before starting the server:
 
 ## Usage
 
-### Run the MCP server
+### Option 1: Install from Claude Code Plugin Marketplace (Recommended)
+
+The easiest way to use Claude-m is through the Claude Code plugin marketplace:
+
+```bash
+# Add the marketplace
+/plugin marketplace add markus41/Claude-m
+
+# Install specific plugins
+/plugin install "Microsoft Teams MCP"
+/plugin install "Microsoft Excel MCP"
+/plugin install "Microsoft Outlook MCP"
+/plugin install "Microsoft Azure MCP"
+/plugin install "Microsoft SharePoint MCP"
+```
+
+This will automatically configure the MCP server with the appropriate tools for each plugin.
+
+### Option 2: Manual MCP Server Configuration
+
+#### Run the MCP server
 
 ```bash
 MICROSOFT_ACCESS_TOKEN=<token> npm start
 ```
 
-### Configure in Claude Desktop
+#### Configure in Claude Desktop
 
 Add the following entry to your `claude_desktop_config.json`:
 
@@ -103,7 +123,7 @@ Add the following entry to your `claude_desktop_config.json`:
 }
 ```
 
-### Configure in Claude Code
+#### Configure in Claude Code
 
 Claude Code can automatically discover MCP servers configured in your `claude_desktop_config.json`. Alternatively, you can configure it directly in your project's `.claude/config.json`:
 
@@ -177,24 +197,42 @@ npm run test:coverage
 
 ```
 Claude-m/
+├── .claude-plugin/          # Claude Code marketplace metadata
+│   └── marketplace.json     # Marketplace configuration
+├── plugins/                 # Claude Code plugin definitions
+│   ├── teams/
+│   │   ├── plugin.json     # Teams plugin manifest
+│   │   └── README.md       # Teams plugin documentation
+│   ├── excel/
+│   │   ├── plugin.json     # Excel plugin manifest
+│   │   └── README.md       # Excel plugin documentation
+│   ├── outlook/
+│   │   ├── plugin.json     # Outlook plugin manifest
+│   │   └── README.md       # Outlook plugin documentation
+│   ├── azure/
+│   │   ├── plugin.json     # Azure plugin manifest
+│   │   └── README.md       # Azure plugin documentation
+│   └── sharepoint/
+│       ├── plugin.json     # SharePoint plugin manifest
+│       └── README.md       # SharePoint plugin documentation
 ├── src/
-│   ├── index.ts          # MCP server entry point
-│   ├── registry.ts       # Loads plugin manifests from registry/
-│   ├── types.ts          # Shared TypeScript types
+│   ├── index.ts            # MCP server entry point
+│   ├── registry.ts         # Loads plugin manifests from registry/
+│   ├── types.ts            # Shared TypeScript types
 │   └── plugins/
-│       ├── base.ts       # Abstract BasePlugin class
-│       ├── teams.ts      # Microsoft Teams plugin
-│       ├── excel.ts      # Microsoft Excel plugin
-│       ├── outlook.ts    # Microsoft Outlook plugin
-│       ├── azure.ts      # Microsoft Azure plugin
-│       └── sharepoint.ts # Microsoft SharePoint plugin
-├── registry/             # JSON plugin manifests
+│       ├── base.ts         # Abstract BasePlugin class
+│       ├── teams.ts        # Microsoft Teams plugin
+│       ├── excel.ts        # Microsoft Excel plugin
+│       ├── outlook.ts      # Microsoft Outlook plugin
+│       ├── azure.ts        # Microsoft Azure plugin
+│       └── sharepoint.ts   # Microsoft SharePoint plugin
+├── registry/               # Internal JSON plugin manifests
 │   ├── teams.json
 │   ├── excel.json
 │   ├── outlook.json
 │   ├── azure.json
 │   └── sharepoint.json
-└── tests/                # Jest test suites
+└── tests/                  # Jest test suites
     ├── registry.test.ts
     └── plugins.test.ts
 ```
