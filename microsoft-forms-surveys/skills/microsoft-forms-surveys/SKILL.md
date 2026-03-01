@@ -20,6 +20,9 @@ triggers:
   - microsoft forms
   - form responses
   - quiz
+  - coverage audit
+  - feature gap
+  - documentation coverage
 ---
 
 # Microsoft Forms Surveys
@@ -29,6 +32,12 @@ triggers:
 Microsoft Forms is a lightweight survey and quiz tool included in Microsoft 365. It supports choice questions, text input, rating scales, date pickers, and Likert matrices. The Graph API for Forms is available only on the **beta** endpoint — it is not yet in v1.0. This means endpoint paths, request bodies, and response shapes may change without notice.
 
 Forms are well suited for small-team scenarios (up to 20 people): quick polls, event RSVPs, onboarding checklists, customer feedback, retrospective surveys, and internal quizzes.
+
+## Documentation Coverage Audit
+
+Use `/forms-coverage-audit <form-id>` when users ask for full feature coverage validation. This workflow compares SKILL guidance to Microsoft Forms Graph beta documentation and live endpoint responses.
+
+Always label beta-dependent capabilities explicitly and include mitigation steps when endpoint schemas may change.
 
 ## Base URL
 

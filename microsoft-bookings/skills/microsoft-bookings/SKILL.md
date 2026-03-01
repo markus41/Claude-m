@@ -19,11 +19,20 @@ triggers:
   - booking calendar
   - book appointment
   - service booking
+  - coverage audit
+  - feature gap
+  - documentation coverage
 ---
 
 # Microsoft Bookings via Graph API
 
 Microsoft Bookings is a scheduling tool in Microsoft 365 that lets organizations manage appointment-based services. Customers can self-schedule through a public booking page, and staff receive calendar integrations with Teams meeting links. This skill covers the full Graph API surface for Bookings.
+
+## Documentation Coverage Audit
+
+Use `/bookings-coverage-audit <business-id>` when users ask whether the plugin covers all Bookings features. The command produces a feature matrix tied to Microsoft Learn sources and live Graph checks so responses stay factual.
+
+Treat these domains as mandatory in coverage reviews: business policy, services, staff availability, appointments, customers/reminders, and booking page settings. Mark unsupported areas as `partial` with a safe fallback instead of claiming full support.
 
 ## Base URL
 

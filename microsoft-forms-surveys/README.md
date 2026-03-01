@@ -31,6 +31,7 @@ Run `/setup` to configure authentication and verify Graph API access:
 | `/forms-create` | Create a new Microsoft Form with title and description |
 | `/forms-add-questions` | Add questions to a form (choice, text, rating, date, Likert) |
 | `/forms-results-summary` | Summarize responses with aggregated stats |
+| `/forms-coverage-audit` | Compare plugin coverage against Forms beta documentation and endpoints |
 | `/setup` | Configure Azure auth and verify Graph API access |
 
 ## Agent
@@ -46,3 +47,14 @@ The skill activates automatically when conversations mention: `forms`, `surveys`
 ## Author
 
 Markus Ahling
+
+
+## Coverage against Microsoft documentation
+
+| Feature domain | Coverage status | Evidence source |
+|---|---|---|
+| Form lifecycle and question authoring | Covered | SKILL question model reference + command set |
+| Response retrieval and aggregation | Covered | `/forms-results-summary` + pagination guidance |
+| Group-owned forms and beta change handling | Partial | Documented in SKILL, explicit gap review via `/forms-coverage-audit` |
+
+Run `/forms-coverage-audit <form-id>` before implementing new survey scenarios so generated workflows stay aligned with current Graph beta behavior.

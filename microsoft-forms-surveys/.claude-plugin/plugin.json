@@ -1,7 +1,7 @@
 {
   "name": "microsoft-forms-surveys",
   "version": "1.0.0",
-  "description": "Microsoft Forms — create surveys, add questions, collect responses, and summarize results via Graph API",
+  "description": "Microsoft Forms \u2014 create surveys, add questions, collect responses, and summarize results via Graph API",
   "author": {
     "name": "Markus Ahling"
   },
@@ -24,6 +24,7 @@
     "./commands/forms-create.md",
     "./commands/forms-add-questions.md",
     "./commands/forms-results-summary.md",
+    "./commands/forms-coverage-audit.md",
     "./commands/setup.md"
   ]
 }
