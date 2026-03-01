@@ -1,8 +1,34 @@
 # Claude-m
 
-> **A Claude plugin marketplace that extends Claude's ability to work with Microsoft products.**
+> **A Claude plugin marketplace that extends Claude's ability to work with Microsoft products via MCP.**
 
-Claude-m is an [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) server that gives Claude native access to Microsoft 365, Microsoft Teams, Microsoft Azure, and SharePoint — all through a unified plugin marketplace.
+Claude-m is an [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) server that gives Claude native access to Microsoft 365, Microsoft Teams, Microsoft Azure, and SharePoint — all through a unified plugin marketplace. Built following the official [MCP SDK](https://github.com/modelcontextprotocol/typescript-sdk) best practices using the high-level `McpServer` API.
+
+---
+
+## Features
+
+✨ **Plugin Marketplace** — Discover and explore Microsoft product integrations
+🔍 **Smart Search** — Find plugins by keyword or capability
+🛠️ **25+ Tools** — Comprehensive Microsoft product APIs
+📦 **Modular Design** — Each plugin is independently loadable
+✅ **Production Ready** — Built with TypeScript, Zod validation, and comprehensive tests
+🎯 **MCP Native** — Uses official `@modelcontextprotocol/sdk` v1.27.1+
+
+---
+
+## Architecture
+
+This MCP server uses the modern `McpServer` high-level API (not the deprecated low-level `Server` class) for optimal compatibility with Claude Desktop and Claude Code.
+
+### Key Components
+
+- **`src/types.ts`** — Shared types: `PluginManifest`, `PluginAuth`, `PluginResult`
+- **`src/plugins/base.ts`** — Abstract `BasePlugin` with bearer-token fetch helpers (`graphGet`, `graphPost`)
+- **`src/registry.ts`** — Loads `registry/*.json` manifests at runtime; works in both ESM and CJS
+- **`src/index.ts`** — MCP server using `McpServer`: dynamic tool registration with Zod schemas
+
+Each plugin validates arguments via Zod and maps tool names to Microsoft Graph/ARM REST calls.
 
 ---
 
@@ -77,16 +103,57 @@ Add the following entry to your `claude_desktop_config.json`:
 }
 ```
 
+### Configure in Claude Code
+
+Claude Code can automatically discover MCP servers configured in your `claude_desktop_config.json`. Alternatively, you can configure it directly in your project's `.claude/config.json`:
+
+```json
+{
+  "mcpServers": {
+    "claude-m": {
+      "command": "node",
+      "args": ["/absolute/path/to/Claude-m/dist/index.js"],
+      "env": {
+        "MICROSOFT_ACCESS_TOKEN": "your-token-here"
+      }
+    }
+  }
+}
+```
+
+**Note**: Always use absolute paths in MCP server configuration.
+
 ---
 
-## Marketplace tools
+## Marketplace Tools
 
-Two tools are always available regardless of configuration:
+The marketplace provides powerful discovery tools that are always available:
 
 | Tool | Description |
 |------|-------------|
-| `marketplace_list_plugins` | Return all plugins registered in the marketplace |
-| `marketplace_get_plugin` | Return the manifest for a specific plugin by ID |
+| `marketplace_list_plugins` | List all available Microsoft plugins with descriptions, versions, and required scopes |
+| `marketplace_get_plugin` | Get detailed information about a specific plugin by its ID |
+| `marketplace_search_plugins` | Search plugins by keyword in name, description, or tool names |
+| `marketplace_list_tools` | List all available tools across all plugins (optionally filter by plugin ID) |
+
+### Example Usage
+
+```typescript
+// Discover all plugins
+await callTool("marketplace_list_plugins", {});
+
+// Find plugins related to email
+await callTool("marketplace_search_plugins", { keyword: "email" });
+
+// Get details about the Teams plugin
+await callTool("marketplace_get_plugin", { pluginId: "teams" });
+
+// List all tools
+await callTool("marketplace_list_tools", {});
+
+// List only Outlook tools
+await callTool("marketplace_list_tools", { pluginId: "outlook" });
+```
 
 ---
 
