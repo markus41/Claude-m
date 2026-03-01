@@ -41,6 +41,24 @@
       "category": "productivity",
       "tags": ["microsoft", "sharepoint", "documents"],
       "strict": true
+    },
+    {
+      "name": "Excel Office Scripts",
+      "source": "https://github.com/markus41/Claude-m",
+      "path": "excel-office-scripts",
+      "description": "Deep knowledge of Excel Office Scripts (TypeScript 4.0.3, ExcelScript API) and Power Automate cloud flow creation via Dataverse Web API.",
+      "category": "productivity",
+      "tags": ["microsoft", "excel", "office-scripts", "power-automate", "typescript"],
+      "strict": true
+    },
+    {
+      "name": "M365 Platform Clients",
+      "source": "https://github.com/markus41/Claude-m",
+      "path": "m365-platform-clients",
+      "description": "TypeScript patterns for Dataverse Web API and Microsoft Graph with shared Azure Identity auth, typed clients, and combined provisioning workflows.",
+      "category": "cloud",
+      "tags": ["microsoft", "dataverse", "graph", "azure", "typescript"],
+      "strict": true
     }
   ]
 }
