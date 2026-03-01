@@ -24,6 +24,11 @@ triggers:
   - oauth consent
   - managed identity
   - certificate credential
+  - conditional access wizard
+  - plain language policy
+  - ca what-if
+  - mfa policy
+  - block legacy auth
 ---
 
 # Entra ID Security & Identity

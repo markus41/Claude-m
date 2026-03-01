@@ -17,6 +17,8 @@
   "commands": [
     "commands/m365-user-create.md",
     "commands/m365-user-offboard.md",
+    "commands/m365-onboard-wizard.md",
+    "commands/m365-offboard-wizard.md",
     "commands/m365-license-assign.md",
     "commands/m365-group-create.md",
     "commands/m365-exchange-mailbox.md",

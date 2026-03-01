@@ -18,6 +18,7 @@
     "commands/entra-app-register.md",
     "commands/entra-sp-create.md",
     "commands/entra-ca-policy-create.md",
+    "commands/entra-ca-wizard.md",
     "commands/entra-signin-logs.md",
     "commands/entra-risky-users.md",
     "commands/entra-permissions-audit.md",

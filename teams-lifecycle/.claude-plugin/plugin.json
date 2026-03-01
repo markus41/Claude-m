@@ -1,0 +1,23 @@
+{
+  "name": "teams-lifecycle",
+  "version": "1.0.0",
+  "description": "Teams lifecycle management — create and archive teams with templates, enforce naming and ownership, apply sensitivity labels, and run expiration reviews using non-technical 'project start/end' language",
+  "author": "Markus Ahling",
+  "keywords": [
+    "microsoft",
+    "teams",
+    "lifecycle",
+    "templates",
+    "governance",
+    "archival",
+    "naming-policy"
+  ],
+  "skills": ["skills/teams-lifecycle/SKILL.md"],
+  "agents": ["agents/teams-lifecycle-reviewer.md"],
+  "commands": [
+    "commands/setup.md",
+    "commands/teams-project-start.md",
+    "commands/teams-project-end.md",
+    "commands/teams-review.md"
+  ]
+}

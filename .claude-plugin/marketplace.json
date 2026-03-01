@@ -317,6 +317,101 @@
         "compliance"
       ],
       "strict": true
+    },
+    {
+      "name": "Lighthouse Tenant Health Scorecard",
+      "source": "https://github.com/markus41/Claude-m",
+      "path": "lighthouse-health",
+      "description": "Multi-tenant health dashboard for MSPs/CSPs — green/yellow/red scoring for security posture, MFA coverage, stale accounts, and licensing anomalies with one-click remediation plans.",
+      "category": "security",
+      "tags": [
+        "microsoft",
+        "lighthouse",
+        "msp",
+        "tenant-health",
+        "multi-tenant"
+      ],
+      "strict": true
+    },
+    {
+      "name": "M365 License Optimizer",
+      "source": "https://github.com/markus41/Claude-m",
+      "path": "license-optimizer",
+      "description": "Identify inactive and underused M365 licenses, map downgrade/upgrade candidates, estimate monthly savings, and generate multi-tenant Lighthouse reports for customer review meetings.",
+      "category": "cloud",
+      "tags": [
+        "microsoft",
+        "licensing",
+        "msp",
+        "csp",
+        "cost-optimization",
+        "lighthouse"
+      ],
+      "strict": true
+    },
+    {
+      "name": "Exchange Mail Flow & Deliverability",
+      "source": "https://github.com/markus41/Claude-m",
+      "path": "exchange-mailflow",
+      "description": "Guided 'email not received' diagnostics — message trace, transport rules, quarantine, connectors, and SPF/DKIM/DMARC checks with client-safe explanations.",
+      "category": "productivity",
+      "tags": [
+        "microsoft",
+        "exchange",
+        "mail-flow",
+        "deliverability",
+        "spf",
+        "dkim",
+        "dmarc"
+      ],
+      "strict": true
+    },
+    {
+      "name": "SharePoint/OneDrive Sharing Auditor",
+      "source": "https://github.com/markus41/Claude-m",
+      "path": "sharing-auditor",
+      "description": "Audit external sharing across SharePoint and OneDrive — find overshared links, anonymous access, and stale guest users with approval-based revocation tasks.",
+      "category": "security",
+      "tags": [
+        "microsoft",
+        "sharepoint",
+        "onedrive",
+        "sharing",
+        "external-access",
+        "guest-users"
+      ],
+      "strict": true
+    },
+    {
+      "name": "Teams Lifecycle Manager",
+      "source": "https://github.com/markus41/Claude-m",
+      "path": "teams-lifecycle",
+      "description": "Create and archive teams with templates, enforce naming and ownership, apply sensitivity labels, and run expiration reviews — using non-technical 'project start/end' language.",
+      "category": "productivity",
+      "tags": [
+        "microsoft",
+        "teams",
+        "lifecycle",
+        "templates",
+        "governance",
+        "archival"
+      ],
+      "strict": true
+    },
+    {
+      "name": "M365 Service Desk Runbooks",
+      "source": "https://github.com/markus41/Claude-m",
+      "path": "servicedesk-runbooks",
+      "description": "Guided workflows for common IT tickets — shared mailbox access, MFA reset, file recovery, and password reset with pre-checks, approval gates, and end-user verification.",
+      "category": "productivity",
+      "tags": [
+        "microsoft",
+        "service-desk",
+        "runbooks",
+        "helpdesk",
+        "automation"
+      ],
+      "strict": true
     }
   ]
 }
