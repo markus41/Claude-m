@@ -1,0 +1,29 @@
+{
+  "name": "copilot-studio-bots",
+  "version": "1.0.0",
+  "description": "Copilot Studio — design bot topics, author trigger phrases, configure generative AI orchestration, and publish chatbots",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "copilot-studio",
+    "power-virtual-agents",
+    "chatbot",
+    "bot",
+    "topics",
+    "conversation-ai"
+  ],
+  "skills": [
+    "./skills/copilot-studio-bots/SKILL.md"
+  ],
+  "agents": [
+    "./agents/copilot-studio-reviewer.md"
+  ],
+  "commands": [
+    "./commands/bot-topic-create.md",
+    "./commands/bot-test-conversation.md",
+    "./commands/bot-publish.md",
+    "./commands/setup.md"
+  ]
+}

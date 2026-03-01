@@ -1,0 +1,15 @@
+{
+  "name": "onenote-knowledge-base",
+  "version": "1.0.0",
+  "description": "OneNote Knowledge Base — read, create, and search notebooks, sections, and pages via Graph API for team documentation",
+  "author": { "name": "Markus Ahling" },
+  "keywords": ["microsoft", "onenote", "notebooks", "knowledge-base", "wiki", "meeting-notes", "graph-api"],
+  "skills": ["./skills/onenote-knowledge-base/SKILL.md"],
+  "agents": ["./agents/onenote-reviewer.md"],
+  "commands": [
+    "./commands/onenote-search.md",
+    "./commands/onenote-create-page.md",
+    "./commands/onenote-meeting-notes.md",
+    "./commands/setup.md"
+  ]
+}

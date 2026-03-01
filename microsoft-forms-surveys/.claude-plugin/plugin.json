@@ -1,0 +1,29 @@
+{
+  "name": "microsoft-forms-surveys",
+  "version": "1.0.0",
+  "description": "Microsoft Forms — create surveys, add questions, collect responses, and summarize results via Graph API",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "forms",
+    "surveys",
+    "polls",
+    "feedback",
+    "graph-api",
+    "questionnaire"
+  ],
+  "skills": [
+    "./skills/microsoft-forms-surveys/SKILL.md"
+  ],
+  "agents": [
+    "./agents/forms-reviewer.md"
+  ],
+  "commands": [
+    "./commands/forms-create.md",
+    "./commands/forms-add-questions.md",
+    "./commands/forms-results-summary.md",
+    "./commands/setup.md"
+  ]
+}

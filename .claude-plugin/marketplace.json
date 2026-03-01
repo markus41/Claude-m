@@ -408,6 +408,76 @@
         "automation"
       ],
       "strict": true
+    },
+    {
+      "name": "microsoft-bookings",
+      "source": "./microsoft-bookings",
+      "description": "Microsoft Bookings — manage appointment calendars, services, staff availability, and customer bookings via Graph API.",
+      "category": "productivity",
+      "tags": [
+        "microsoft",
+        "bookings",
+        "appointments",
+        "scheduling",
+        "calendar"
+      ],
+      "strict": true
+    },
+    {
+      "name": "microsoft-forms-surveys",
+      "source": "./microsoft-forms-surveys",
+      "description": "Microsoft Forms — create surveys, add questions, collect responses, and summarize results via Graph API.",
+      "category": "productivity",
+      "tags": [
+        "microsoft",
+        "forms",
+        "surveys",
+        "polls",
+        "feedback"
+      ],
+      "strict": true
+    },
+    {
+      "name": "microsoft-lists-tracker",
+      "source": "./microsoft-lists-tracker",
+      "description": "Microsoft Lists — create and manage lists for process tracking, issue logs, and project trackers via Graph API.",
+      "category": "productivity",
+      "tags": [
+        "microsoft",
+        "lists",
+        "sharepoint",
+        "tracker",
+        "structured-data"
+      ],
+      "strict": true
+    },
+    {
+      "name": "copilot-studio-bots",
+      "source": "./copilot-studio-bots",
+      "description": "Copilot Studio — design bot topics, author trigger phrases, configure generative AI orchestration, and publish chatbots.",
+      "category": "productivity",
+      "tags": [
+        "microsoft",
+        "copilot-studio",
+        "chatbot",
+        "power-virtual-agents",
+        "conversation-ai"
+      ],
+      "strict": true
+    },
+    {
+      "name": "onenote-knowledge-base",
+      "source": "./onenote-knowledge-base",
+      "description": "OneNote Knowledge Base — read, create, and search notebooks, sections, and pages via Graph API for team documentation.",
+      "category": "productivity",
+      "tags": [
+        "microsoft",
+        "onenote",
+        "knowledge-base",
+        "wiki",
+        "meeting-notes"
+      ],
+      "strict": true
     }
   ]
 }

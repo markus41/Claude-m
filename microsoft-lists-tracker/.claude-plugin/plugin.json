@@ -1,0 +1,15 @@
+{
+  "name": "microsoft-lists-tracker",
+  "version": "1.0.0",
+  "description": "Microsoft Lists — create and manage lists for process tracking, issue logs, and project trackers via Graph API",
+  "author": { "name": "Markus Ahling" },
+  "keywords": ["microsoft", "lists", "sharepoint", "tracker", "process", "graph-api", "structured-data"],
+  "skills": ["./skills/microsoft-lists-tracker/SKILL.md"],
+  "agents": ["./agents/lists-reviewer.md"],
+  "commands": [
+    "./commands/lists-create.md",
+    "./commands/lists-add-item.md",
+    "./commands/lists-view-filter.md",
+    "./commands/setup.md"
+  ]
+}

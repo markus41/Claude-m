@@ -52,6 +52,11 @@ Then re-run `/plugin marketplace add markus41/Claude-m`.
 | `sharing-auditor` | security | Overshared links and stale guest user audits |
 | `teams-lifecycle` | productivity | Team templates, naming governance, expiration reviews |
 | `servicedesk-runbooks` | productivity | Guided IT ticket workflows with approval gates |
+| `microsoft-bookings` | productivity | Appointment calendars, services, staff availability |
+| `microsoft-forms-surveys` | productivity | Create surveys, collect responses, summarize results |
+| `microsoft-lists-tracker` | productivity | Lists for process tracking, issue logs, project trackers |
+| `copilot-studio-bots` | productivity | Bot topics, trigger phrases, generative AI orchestration |
+| `onenote-knowledge-base` | productivity | Notebooks, sections, pages — team wiki and meeting notes |
 
 Install any plugin with:
 ```bash
