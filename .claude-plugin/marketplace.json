@@ -7,7 +7,11 @@
       "source": "https://github.com/markus41/Claude-m",
       "description": "Send messages, create meetings, and manage Teams channels via MCP.",
       "category": "productivity",
-      "tags": ["microsoft", "teams", "collaboration"],
+      "tags": [
+        "microsoft",
+        "teams",
+        "collaboration"
+      ],
       "strict": true
     },
     {
@@ -15,7 +19,11 @@
       "source": "https://github.com/markus41/Claude-m",
       "description": "Read and update workbooks, worksheets, ranges, and tables via MCP.",
       "category": "productivity",
-      "tags": ["microsoft", "excel", "data"],
+      "tags": [
+        "microsoft",
+        "excel",
+        "data"
+      ],
       "strict": true
     },
     {
@@ -23,7 +31,11 @@
       "source": "https://github.com/markus41/Claude-m",
       "description": "Send email and manage inbox/calendar tasks via MCP.",
       "category": "productivity",
-      "tags": ["microsoft", "outlook", "email"],
+      "tags": [
+        "microsoft",
+        "outlook",
+        "email"
+      ],
       "strict": true
     },
     {
@@ -31,7 +43,11 @@
       "source": "https://github.com/markus41/Claude-m",
       "description": "Inspect subscriptions, resource groups, and resources via MCP.",
       "category": "cloud",
-      "tags": ["microsoft", "azure", "infrastructure"],
+      "tags": [
+        "microsoft",
+        "azure",
+        "infrastructure"
+      ],
       "strict": true
     },
     {
@@ -39,7 +55,11 @@
       "source": "https://github.com/markus41/Claude-m",
       "description": "Browse and transfer SharePoint files through MCP tools.",
       "category": "productivity",
-      "tags": ["microsoft", "sharepoint", "documents"],
+      "tags": [
+        "microsoft",
+        "sharepoint",
+        "documents"
+      ],
       "strict": true
     },
     {
@@ -48,7 +68,13 @@
       "path": "excel-office-scripts",
       "description": "Deep knowledge of Excel Office Scripts (TypeScript 4.0.3, ExcelScript API) and Power Automate cloud flow creation via Dataverse Web API.",
       "category": "productivity",
-      "tags": ["microsoft", "excel", "office-scripts", "power-automate", "typescript"],
+      "tags": [
+        "microsoft",
+        "excel",
+        "office-scripts",
+        "power-automate",
+        "typescript"
+      ],
       "strict": true
     },
     {
@@ -57,34 +83,61 @@
       "path": "m365-platform-clients",
       "description": "TypeScript patterns for Dataverse Web API and Microsoft Graph with shared Azure Identity auth, typed clients, and combined provisioning workflows.",
       "category": "cloud",
-      "tags": ["microsoft", "dataverse", "graph", "azure", "typescript"],
+      "tags": [
+        "microsoft",
+        "dataverse",
+        "graph",
+        "azure",
+        "typescript"
+      ],
       "strict": true
     },
     {
       "name": "Excel Automation & Data Cleaning",
       "source": "https://github.com/markus41/Claude-m",
       "path": "excel-automation",
-      "description": "Clean messy data with pandas, generate Office Scripts and Power Automate flows, and create Excel templates — with Dataverse-aware mode and VBA fallback.",
+      "description": "Clean messy data with pandas, generate Office Scripts and Power Automate flows, and create Excel templates \u2014 with Dataverse-aware mode and VBA fallback.",
       "category": "productivity",
-      "tags": ["microsoft", "excel", "pandas", "office-scripts", "data-cleaning", "power-automate"],
+      "tags": [
+        "microsoft",
+        "excel",
+        "pandas",
+        "office-scripts",
+        "data-cleaning",
+        "power-automate"
+      ],
       "strict": true
     },
     {
       "name": "Microsoft 365 Admin",
       "source": "https://github.com/markus41/Claude-m",
       "path": "m365-admin",
-      "description": "M365 tenant admin via Microsoft Graph — users, groups, licenses, Exchange Online, SharePoint, and CSV-driven bulk operations.",
+      "description": "M365 tenant admin via Microsoft Graph \u2014 users, groups, licenses, Exchange Online, SharePoint, and CSV-driven bulk operations.",
       "category": "cloud",
-      "tags": ["microsoft", "graph-api", "entra-id", "exchange", "sharepoint", "admin"],
+      "tags": [
+        "microsoft",
+        "graph-api",
+        "entra-id",
+        "exchange",
+        "sharepoint",
+        "admin"
+      ],
       "strict": true
     },
     {
       "name": "Dataverse Schema & Data",
       "source": "https://github.com/markus41/Claude-m",
       "path": "dataverse-schema",
-      "description": "Create and manage Dataverse tables, columns, relationships, and solutions via Web API — with FetchXML generation and data seeding.",
+      "description": "Create and manage Dataverse tables, columns, relationships, and solutions via Web API \u2014 with FetchXML generation and data seeding.",
       "category": "cloud",
-      "tags": ["microsoft", "dataverse", "power-platform", "schema", "solutions", "fetchxml"],
+      "tags": [
+        "microsoft",
+        "dataverse",
+        "power-platform",
+        "schema",
+        "solutions",
+        "fetchxml"
+      ],
       "strict": true
     },
     {
@@ -93,61 +146,176 @@
       "path": "powerbi-fabric",
       "description": "Generate DAX measures, Power Query M code, manage workspaces via REST API, scaffold PBIP projects, and integrate with Microsoft Fabric.",
       "category": "analytics",
-      "tags": ["microsoft", "power-bi", "dax", "power-query", "fabric", "pbip", "analytics"],
+      "tags": [
+        "microsoft",
+        "power-bi",
+        "dax",
+        "power-query",
+        "fabric",
+        "pbip",
+        "analytics"
+      ],
       "strict": true
     },
     {
       "name": "Power Platform ALM",
       "source": "https://github.com/markus41/Claude-m",
       "path": "powerplatform-alm",
-      "description": "Application lifecycle management — environment provisioning, solution transport, CI/CD pipeline generation, and PCF control scaffolding.",
+      "description": "Application lifecycle management \u2014 environment provisioning, solution transport, CI/CD pipeline generation, and PCF control scaffolding.",
       "category": "devops",
-      "tags": ["microsoft", "power-platform", "alm", "cicd", "pcf", "solutions", "devops"],
+      "tags": [
+        "microsoft",
+        "power-platform",
+        "alm",
+        "cicd",
+        "pcf",
+        "solutions",
+        "devops"
+      ],
       "strict": true
     },
     {
       "name": "Microsoft OneDrive",
       "source": "https://github.com/markus41/Claude-m",
       "path": "onedrive",
-      "description": "OneDrive file management via Microsoft Graph — upload, download, share, search, and delta sync for personal and business drives.",
+      "description": "OneDrive file management via Microsoft Graph \u2014 upload, download, share, search, and delta sync for personal and business drives.",
       "category": "productivity",
-      "tags": ["microsoft", "onedrive", "files", "sharing", "storage", "graph-api"],
+      "tags": [
+        "microsoft",
+        "onedrive",
+        "files",
+        "sharing",
+        "storage",
+        "graph-api"
+      ],
       "strict": true
     },
     {
       "name": "Microsoft Planner & To Do",
       "source": "https://github.com/markus41/Claude-m",
       "path": "planner-todo",
-      "description": "Task and project management via Microsoft Graph — Planner plans, buckets, tasks, assignments, and To Do lists with steps and recurrence.",
+      "description": "Task and project management via Microsoft Graph \u2014 Planner plans, buckets, tasks, assignments, and To Do lists with steps and recurrence.",
       "category": "productivity",
-      "tags": ["microsoft", "planner", "to-do", "tasks", "project-management", "graph-api"],
+      "tags": [
+        "microsoft",
+        "planner",
+        "to-do",
+        "tasks",
+        "project-management",
+        "graph-api"
+      ],
       "strict": true
     },
     {
       "name": "Azure DevOps",
       "source": "https://github.com/markus41/Claude-m",
       "path": "azure-devops",
-      "description": "Azure DevOps project management — Git repos, YAML pipelines, work items, pull requests, WIQL queries, and artifact feeds via REST API.",
+      "description": "Azure DevOps project management \u2014 Git repos, YAML pipelines, work items, pull requests, WIQL queries, and artifact feeds via REST API.",
       "category": "devops",
-      "tags": ["microsoft", "azure-devops", "pipelines", "repos", "work-items", "cicd"],
+      "tags": [
+        "microsoft",
+        "azure-devops",
+        "pipelines",
+        "repos",
+        "work-items",
+        "cicd"
+      ],
       "strict": true
     },
     {
       "name": "Entra ID Security & Identity",
       "source": "https://github.com/markus41/Claude-m",
       "path": "entra-id-security",
-      "description": "Microsoft Entra ID identity governance — app registrations, service principals, conditional access policies, sign-in log analysis, and risk detection.",
+      "description": "Microsoft Entra ID identity governance \u2014 app registrations, service principals, conditional access policies, sign-in log analysis, and risk detection.",
       "category": "security",
-      "tags": ["microsoft", "entra-id", "identity", "security", "conditional-access", "sign-in-logs"],
+      "tags": [
+        "microsoft",
+        "entra-id",
+        "identity",
+        "security",
+        "conditional-access",
+        "sign-in-logs"
+      ],
       "strict": true
     },
     {
       "name": "Microsoft Power Apps",
       "source": "https://github.com/markus41/Claude-m",
       "path": "powerapps",
-      "description": "Power Apps development — canvas app Power Fx formulas, model-driven app configuration, custom connectors, component libraries, and solution checker.",
+      "description": "Power Apps development \u2014 canvas app Power Fx formulas, model-driven app configuration, custom connectors, component libraries, and solution checker.",
       "category": "productivity",
-      "tags": ["microsoft", "power-apps", "canvas", "model-driven", "power-fx", "connectors"],
+      "tags": [
+        "microsoft",
+        "power-apps",
+        "canvas",
+        "model-driven",
+        "power-fx",
+        "connectors"
+      ],
+      "strict": true
+    },
+    {
+      "name": "Azure Cost Governance",
+      "source": "https://github.com/markus41/Claude-m",
+      "path": "azure-cost-governance",
+      "description": "Azure FinOps and governance workflows \u2014 query costs, monitor budgets, detect anomalies, and identify idle resources for optimization.",
+      "category": "cloud",
+      "tags": [
+        "microsoft",
+        "azure",
+        "finops",
+        "cost-management",
+        "budgets",
+        "governance"
+      ],
+      "strict": true
+    },
+    {
+      "name": "Microsoft Power Automate",
+      "source": "https://github.com/markus41/Claude-m",
+      "path": "power-automate",
+      "description": "Design and troubleshoot Power Automate cloud flows \u2014 trigger/action patterns, run diagnostics, retries, and deployment-safe flow definitions.",
+      "category": "productivity",
+      "tags": [
+        "microsoft",
+        "power-automate",
+        "flows",
+        "automation",
+        "dataverse",
+        "power-platform"
+      ],
+      "strict": true
+    },
+    {
+      "name": "Microsoft Purview Compliance",
+      "source": "https://github.com/markus41/Claude-m",
+      "path": "purview-compliance",
+      "description": "Compliance and information protection guidance for Microsoft Purview \u2014 DLP, retention, sensitivity labels, and eDiscovery workflows.",
+      "category": "security",
+      "tags": [
+        "microsoft",
+        "purview",
+        "compliance",
+        "dlp",
+        "retention",
+        "ediscovery"
+      ],
+      "strict": true
+    },
+    {
+      "name": "Azure Policy & Security Posture",
+      "source": "https://github.com/markus41/Claude-m",
+      "path": "azure-policy-security",
+      "description": "Evaluate Azure policy compliance and security posture \u2014 policy assignments, drift analysis, remediation planning, and guardrail recommendations.",
+      "category": "security",
+      "tags": [
+        "microsoft",
+        "azure",
+        "policy",
+        "security",
+        "governance",
+        "compliance"
+      ],
       "strict": true
     }
   ]

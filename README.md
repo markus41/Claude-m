@@ -67,6 +67,10 @@ npm run validate:all
 ## Org allow-listing (`strictKnownMarketplaces`)
 For org rollouts, admins can allow-list this marketplace URL/repo with `strictKnownMarketplaces` in their Claude policy so installs resolve only from approved sources.
 
+## Prioritization backlog
+
+See `docs-plugin-prioritization.md` for a scored plugin backlog (impact × complexity × scope friction) and the recommended next 3 plugins to implement.
+
 ## Development
 
 ```bash
