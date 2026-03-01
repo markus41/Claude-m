@@ -1,0 +1,26 @@
+{
+  "name": "entra-id-security",
+  "version": "1.0.0",
+  "description": "Microsoft Entra ID identity governance and security — app registrations, service principals, conditional access, sign-in logs, and risk detection",
+  "author": "Markus Ahling",
+  "keywords": [
+    "microsoft",
+    "entra-id",
+    "azure-ad",
+    "identity",
+    "security",
+    "conditional-access",
+    "app-registrations"
+  ],
+  "skills": ["skills/entra-security/SKILL.md"],
+  "agents": ["agents/entra-security-reviewer.md"],
+  "commands": [
+    "commands/entra-app-register.md",
+    "commands/entra-sp-create.md",
+    "commands/entra-ca-policy-create.md",
+    "commands/entra-signin-logs.md",
+    "commands/entra-risky-users.md",
+    "commands/entra-permissions-audit.md",
+    "commands/setup.md"
+  ]
+}

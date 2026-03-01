@@ -1,0 +1,24 @@
+{
+  "name": "onedrive",
+  "version": "1.0.0",
+  "description": "OneDrive file management via Microsoft Graph — upload, download, share, search, and manage files and folders",
+  "author": "Markus Ahling",
+  "keywords": [
+    "microsoft",
+    "onedrive",
+    "files",
+    "sharing",
+    "storage",
+    "graph-api"
+  ],
+  "skills": ["skills/onedrive-files/SKILL.md"],
+  "agents": ["agents/onedrive-reviewer.md"],
+  "commands": [
+    "commands/onedrive-upload.md",
+    "commands/onedrive-download.md",
+    "commands/onedrive-share.md",
+    "commands/onedrive-search.md",
+    "commands/onedrive-sync-status.md",
+    "commands/setup.md"
+  ]
+}
