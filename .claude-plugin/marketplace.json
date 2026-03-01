@@ -1,10 +1,16 @@
 {
-  "name": "Claude-m Microsoft Marketplace",
+  "name": "claude-m-microsoft-marketplace",
   "description": "Focused Claude marketplace for Microsoft workflow plugins maintained in this repository.",
+  "owner": {
+    "name": "Markus Ahling"
+  },
   "plugins": [
     {
-      "name": "Microsoft Teams MCP",
-      "source": "https://github.com/markus41/Claude-m",
+      "name": "microsoft-teams-mcp",
+      "source": {
+        "source": "github",
+        "repo": "markus41/Claude-m"
+      },
       "description": "Send messages, create meetings, and manage Teams channels via MCP.",
       "category": "productivity",
       "tags": [
@@ -15,8 +21,11 @@
       "strict": true
     },
     {
-      "name": "Microsoft Excel MCP",
-      "source": "https://github.com/markus41/Claude-m",
+      "name": "microsoft-excel-mcp",
+      "source": {
+        "source": "github",
+        "repo": "markus41/Claude-m"
+      },
       "description": "Read and update workbooks, worksheets, ranges, and tables via MCP.",
       "category": "productivity",
       "tags": [
@@ -27,8 +36,11 @@
       "strict": true
     },
     {
-      "name": "Microsoft Outlook MCP",
-      "source": "https://github.com/markus41/Claude-m",
+      "name": "microsoft-outlook-mcp",
+      "source": {
+        "source": "github",
+        "repo": "markus41/Claude-m"
+      },
       "description": "Send email and manage inbox/calendar tasks via MCP.",
       "category": "productivity",
       "tags": [
@@ -39,8 +51,11 @@
       "strict": true
     },
     {
-      "name": "Microsoft Azure MCP",
-      "source": "https://github.com/markus41/Claude-m",
+      "name": "microsoft-azure-mcp",
+      "source": {
+        "source": "github",
+        "repo": "markus41/Claude-m"
+      },
       "description": "Inspect subscriptions, resource groups, and resources via MCP.",
       "category": "cloud",
       "tags": [
@@ -51,8 +66,11 @@
       "strict": true
     },
     {
-      "name": "Microsoft SharePoint MCP",
-      "source": "https://github.com/markus41/Claude-m",
+      "name": "microsoft-sharepoint-mcp",
+      "source": {
+        "source": "github",
+        "repo": "markus41/Claude-m"
+      },
       "description": "Browse and transfer SharePoint files through MCP tools.",
       "category": "productivity",
       "tags": [
@@ -63,9 +81,8 @@
       "strict": true
     },
     {
-      "name": "Excel Office Scripts",
-      "source": "https://github.com/markus41/Claude-m",
-      "path": "excel-office-scripts",
+      "name": "excel-office-scripts",
+      "source": "./excel-office-scripts",
       "description": "Deep knowledge of Excel Office Scripts (TypeScript 4.0.3, ExcelScript API) and Power Automate cloud flow creation via Dataverse Web API.",
       "category": "productivity",
       "tags": [
@@ -78,9 +95,8 @@
       "strict": true
     },
     {
-      "name": "M365 Platform Clients",
-      "source": "https://github.com/markus41/Claude-m",
-      "path": "m365-platform-clients",
+      "name": "m365-platform-clients",
+      "source": "./m365-platform-clients",
       "description": "TypeScript patterns for Dataverse Web API and Microsoft Graph with shared Azure Identity auth, typed clients, and combined provisioning workflows.",
       "category": "cloud",
       "tags": [
@@ -93,10 +109,9 @@
       "strict": true
     },
     {
-      "name": "Excel Automation & Data Cleaning",
-      "source": "https://github.com/markus41/Claude-m",
-      "path": "excel-automation",
-      "description": "Clean messy data with pandas, generate Office Scripts and Power Automate flows, and create Excel templates \u2014 with Dataverse-aware mode and VBA fallback.",
+      "name": "excel-automation",
+      "source": "./excel-automation",
+      "description": "Clean messy data with pandas, generate Office Scripts and Power Automate flows, and create Excel templates — with Dataverse-aware mode and VBA fallback.",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -109,10 +124,9 @@
       "strict": true
     },
     {
-      "name": "Microsoft 365 Admin",
-      "source": "https://github.com/markus41/Claude-m",
-      "path": "m365-admin",
-      "description": "M365 tenant admin via Microsoft Graph \u2014 users, groups, licenses, Exchange Online, SharePoint, and CSV-driven bulk operations.",
+      "name": "m365-admin",
+      "source": "./m365-admin",
+      "description": "M365 tenant admin via Microsoft Graph — users, groups, licenses, Exchange Online, SharePoint, and CSV-driven bulk operations.",
       "category": "cloud",
       "tags": [
         "microsoft",
@@ -125,10 +139,9 @@
       "strict": true
     },
     {
-      "name": "Dataverse Schema & Data",
-      "source": "https://github.com/markus41/Claude-m",
-      "path": "dataverse-schema",
-      "description": "Create and manage Dataverse tables, columns, relationships, and solutions via Web API \u2014 with FetchXML generation and data seeding.",
+      "name": "dataverse-schema",
+      "source": "./dataverse-schema",
+      "description": "Create and manage Dataverse tables, columns, relationships, and solutions via Web API — with FetchXML generation and data seeding.",
       "category": "cloud",
       "tags": [
         "microsoft",
@@ -141,9 +154,8 @@
       "strict": true
     },
     {
-      "name": "Power BI / Fabric Analytics",
-      "source": "https://github.com/markus41/Claude-m",
-      "path": "powerbi-fabric",
+      "name": "powerbi-fabric",
+      "source": "./powerbi-fabric",
       "description": "Generate DAX measures, Power Query M code, manage workspaces via REST API, scaffold PBIP projects, and integrate with Microsoft Fabric.",
       "category": "analytics",
       "tags": [
@@ -158,10 +170,9 @@
       "strict": true
     },
     {
-      "name": "Power Platform ALM",
-      "source": "https://github.com/markus41/Claude-m",
-      "path": "powerplatform-alm",
-      "description": "Application lifecycle management \u2014 environment provisioning, solution transport, CI/CD pipeline generation, and PCF control scaffolding.",
+      "name": "powerplatform-alm",
+      "source": "./powerplatform-alm",
+      "description": "Application lifecycle management — environment provisioning, solution transport, CI/CD pipeline generation, and PCF control scaffolding.",
       "category": "devops",
       "tags": [
         "microsoft",
@@ -175,10 +186,9 @@
       "strict": true
     },
     {
-      "name": "Microsoft OneDrive",
-      "source": "https://github.com/markus41/Claude-m",
-      "path": "onedrive",
-      "description": "OneDrive file management via Microsoft Graph \u2014 upload, download, share, search, and delta sync for personal and business drives.",
+      "name": "onedrive",
+      "source": "./onedrive",
+      "description": "OneDrive file management via Microsoft Graph — upload, download, share, search, and delta sync for personal and business drives.",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -191,10 +201,9 @@
       "strict": true
     },
     {
-      "name": "Microsoft Planner & To Do",
-      "source": "https://github.com/markus41/Claude-m",
-      "path": "planner-todo",
-      "description": "Task and project management via Microsoft Graph \u2014 Planner plans, buckets, tasks, assignments, and To Do lists with steps and recurrence.",
+      "name": "planner-todo",
+      "source": "./planner-todo",
+      "description": "Task and project management via Microsoft Graph — Planner plans, buckets, tasks, assignments, and To Do lists with steps and recurrence.",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -207,10 +216,9 @@
       "strict": true
     },
     {
-      "name": "Azure DevOps",
-      "source": "https://github.com/markus41/Claude-m",
-      "path": "azure-devops",
-      "description": "Azure DevOps project management \u2014 Git repos, YAML pipelines, work items, pull requests, WIQL queries, and artifact feeds via REST API.",
+      "name": "azure-devops",
+      "source": "./azure-devops",
+      "description": "Azure DevOps project management — Git repos, YAML pipelines, work items, pull requests, WIQL queries, and artifact feeds via REST API.",
       "category": "devops",
       "tags": [
         "microsoft",
@@ -223,10 +231,9 @@
       "strict": true
     },
     {
-      "name": "Entra ID Security & Identity",
-      "source": "https://github.com/markus41/Claude-m",
-      "path": "entra-id-security",
-      "description": "Microsoft Entra ID identity governance \u2014 app registrations, service principals, conditional access policies, sign-in log analysis, and risk detection.",
+      "name": "entra-id-security",
+      "source": "./entra-id-security",
+      "description": "Microsoft Entra ID identity governance — app registrations, service principals, conditional access policies, sign-in log analysis, and risk detection.",
       "category": "security",
       "tags": [
         "microsoft",
@@ -239,10 +246,9 @@
       "strict": true
     },
     {
-      "name": "Microsoft Power Apps",
-      "source": "https://github.com/markus41/Claude-m",
-      "path": "powerapps",
-      "description": "Power Apps development \u2014 canvas app Power Fx formulas, model-driven app configuration, custom connectors, component libraries, and solution checker.",
+      "name": "powerapps",
+      "source": "./powerapps",
+      "description": "Power Apps development — canvas app Power Fx formulas, model-driven app configuration, custom connectors, component libraries, and solution checker.",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -255,10 +261,9 @@
       "strict": true
     },
     {
-      "name": "Azure Cost Governance",
-      "source": "https://github.com/markus41/Claude-m",
-      "path": "azure-cost-governance",
-      "description": "Azure FinOps and governance workflows \u2014 query costs, monitor budgets, detect anomalies, and identify idle resources for optimization.",
+      "name": "azure-cost-governance",
+      "source": "./azure-cost-governance",
+      "description": "Azure FinOps and governance workflows — query costs, monitor budgets, detect anomalies, and identify idle resources for optimization.",
       "category": "cloud",
       "tags": [
         "microsoft",
@@ -271,10 +276,9 @@
       "strict": true
     },
     {
-      "name": "Microsoft Power Automate",
-      "source": "https://github.com/markus41/Claude-m",
-      "path": "power-automate",
-      "description": "Design and troubleshoot Power Automate cloud flows \u2014 trigger/action patterns, run diagnostics, retries, and deployment-safe flow definitions.",
+      "name": "power-automate",
+      "source": "./power-automate",
+      "description": "Design and troubleshoot Power Automate cloud flows — trigger/action patterns, run diagnostics, retries, and deployment-safe flow definitions.",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -287,10 +291,9 @@
       "strict": true
     },
     {
-      "name": "Microsoft Purview Compliance",
-      "source": "https://github.com/markus41/Claude-m",
-      "path": "purview-compliance",
-      "description": "Compliance and information protection guidance for Microsoft Purview \u2014 DLP, retention, sensitivity labels, and eDiscovery workflows.",
+      "name": "purview-compliance",
+      "source": "./purview-compliance",
+      "description": "Compliance and information protection guidance for Microsoft Purview — DLP, retention, sensitivity labels, and eDiscovery workflows.",
       "category": "security",
       "tags": [
         "microsoft",
@@ -303,10 +306,9 @@
       "strict": true
     },
     {
-      "name": "Azure Policy & Security Posture",
-      "source": "https://github.com/markus41/Claude-m",
-      "path": "azure-policy-security",
-      "description": "Evaluate Azure policy compliance and security posture \u2014 policy assignments, drift analysis, remediation planning, and guardrail recommendations.",
+      "name": "azure-policy-security",
+      "source": "./azure-policy-security",
+      "description": "Evaluate Azure policy compliance and security posture — policy assignments, drift analysis, remediation planning, and guardrail recommendations.",
       "category": "security",
       "tags": [
         "microsoft",
@@ -319,9 +321,8 @@
       "strict": true
     },
     {
-      "name": "Lighthouse Tenant Health Scorecard",
-      "source": "https://github.com/markus41/Claude-m",
-      "path": "lighthouse-health",
+      "name": "lighthouse-health",
+      "source": "./lighthouse-health",
       "description": "Multi-tenant health dashboard for MSPs/CSPs — green/yellow/red scoring for security posture, MFA coverage, stale accounts, and licensing anomalies with one-click remediation plans.",
       "category": "security",
       "tags": [
@@ -334,9 +335,8 @@
       "strict": true
     },
     {
-      "name": "M365 License Optimizer",
-      "source": "https://github.com/markus41/Claude-m",
-      "path": "license-optimizer",
+      "name": "license-optimizer",
+      "source": "./license-optimizer",
       "description": "Identify inactive and underused M365 licenses, map downgrade/upgrade candidates, estimate monthly savings, and generate multi-tenant Lighthouse reports for customer review meetings.",
       "category": "cloud",
       "tags": [
@@ -350,9 +350,8 @@
       "strict": true
     },
     {
-      "name": "Exchange Mail Flow & Deliverability",
-      "source": "https://github.com/markus41/Claude-m",
-      "path": "exchange-mailflow",
+      "name": "exchange-mailflow",
+      "source": "./exchange-mailflow",
       "description": "Guided 'email not received' diagnostics — message trace, transport rules, quarantine, connectors, and SPF/DKIM/DMARC checks with client-safe explanations.",
       "category": "productivity",
       "tags": [
@@ -367,9 +366,8 @@
       "strict": true
     },
     {
-      "name": "SharePoint/OneDrive Sharing Auditor",
-      "source": "https://github.com/markus41/Claude-m",
-      "path": "sharing-auditor",
+      "name": "sharing-auditor",
+      "source": "./sharing-auditor",
       "description": "Audit external sharing across SharePoint and OneDrive — find overshared links, anonymous access, and stale guest users with approval-based revocation tasks.",
       "category": "security",
       "tags": [
@@ -383,9 +381,8 @@
       "strict": true
     },
     {
-      "name": "Teams Lifecycle Manager",
-      "source": "https://github.com/markus41/Claude-m",
-      "path": "teams-lifecycle",
+      "name": "teams-lifecycle",
+      "source": "./teams-lifecycle",
       "description": "Create and archive teams with templates, enforce naming and ownership, apply sensitivity labels, and run expiration reviews — using non-technical 'project start/end' language.",
       "category": "productivity",
       "tags": [
@@ -399,9 +396,8 @@
       "strict": true
     },
     {
-      "name": "M365 Service Desk Runbooks",
-      "source": "https://github.com/markus41/Claude-m",
-      "path": "servicedesk-runbooks",
+      "name": "servicedesk-runbooks",
+      "source": "./servicedesk-runbooks",
       "description": "Guided workflows for common IT tickets — shared mailbox access, MFA reset, file recovery, and password reset with pre-checks, approval gates, and end-user verification.",
       "category": "productivity",
       "tags": [

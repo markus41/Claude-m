@@ -3,7 +3,7 @@
 ## Usage
 - Add this marketplace: `/plugin marketplace add markus41/Claude-m`
 - Validate locally: `claude plugin validate .` (CLI) or `/plugin validate .` (inside Claude)
-- Install from this marketplace: `/plugin install "Microsoft Azure MCP@Claude-m Microsoft Marketplace"`
+- Install from this marketplace: `/plugin install microsoft-azure-mcp@claude-m-microsoft-marketplace`
 
 ## Prompt examples
 - "Use Microsoft Azure MCP to list my resource groups in subscription `<id>` and flag idle resources."
