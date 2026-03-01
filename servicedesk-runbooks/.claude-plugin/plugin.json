@@ -1,0 +1,24 @@
+{
+  "name": "servicedesk-runbooks",
+  "version": "1.0.0",
+  "description": "M365 service desk auto-runbooks — guided workflows for common tickets like shared mailbox access, MFA reset, file recovery, and password reset with pre-checks, approval gates, and end-user verification",
+  "author": "Markus Ahling",
+  "keywords": [
+    "microsoft",
+    "service-desk",
+    "runbooks",
+    "helpdesk",
+    "automation",
+    "tickets",
+    "self-service"
+  ],
+  "skills": ["skills/servicedesk-runbooks/SKILL.md"],
+  "agents": ["agents/servicedesk-runbooks-reviewer.md"],
+  "commands": [
+    "commands/setup.md",
+    "commands/runbook-shared-mailbox.md",
+    "commands/runbook-reset-mfa.md",
+    "commands/runbook-recover-file.md",
+    "commands/runbook-password-reset.md"
+  ]
+}

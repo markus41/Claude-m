@@ -1,0 +1,22 @@
+{
+  "name": "license-optimizer",
+  "version": "1.0.0",
+  "description": "M365 license optimization for MSPs/CSPs — identify inactive licenses, map downgrades and upgrades, estimate savings, and generate multi-tenant Lighthouse reports for customer review meetings",
+  "author": "Markus Ahling",
+  "keywords": [
+    "microsoft",
+    "licensing",
+    "cost-optimization",
+    "msp",
+    "csp",
+    "lighthouse",
+    "sku-management"
+  ],
+  "skills": ["skills/license-optimizer/SKILL.md"],
+  "agents": ["agents/license-optimizer-reviewer.md"],
+  "commands": [
+    "commands/setup.md",
+    "commands/license-scan.md",
+    "commands/license-report.md"
+  ]
+}

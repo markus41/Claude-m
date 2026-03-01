@@ -22,6 +22,12 @@ triggers:
   - security group
   - sign-in logs
   - audit log
+  - onboarding concierge
+  - new employee wizard
+  - lighthouse onboarding
+  - offboarding wizard
+  - access cleanup
+  - lighthouse offboarding
 ---
 
 # Microsoft 365 Administration via Microsoft Graph API

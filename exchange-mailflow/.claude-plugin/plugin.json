@@ -1,0 +1,23 @@
+{
+  "name": "exchange-mailflow",
+  "version": "1.0.0",
+  "description": "Exchange Online mail flow diagnostics and deliverability — guided 'email not received' troubleshooting, transport rules, quarantine, connectors, and SPF/DKIM/DMARC checks with client-safe explanations",
+  "author": "Markus Ahling",
+  "keywords": [
+    "microsoft",
+    "exchange",
+    "mail-flow",
+    "deliverability",
+    "spf",
+    "dkim",
+    "dmarc",
+    "transport-rules"
+  ],
+  "skills": ["skills/exchange-mailflow/SKILL.md"],
+  "agents": ["agents/mailflow-reviewer.md"],
+  "commands": [
+    "commands/setup.md",
+    "commands/mailflow-diagnose.md",
+    "commands/mailflow-explain.md"
+  ]
+}
