@@ -1,0 +1,24 @@
+{
+  "name": "m365-platform-clients",
+  "version": "1.0.0",
+  "description": "TypeScript patterns for Dataverse Web API and Microsoft Graph — auth, clients, and combined provisioning workflows",
+  "author": "Markus Ahling",
+  "keywords": [
+    "dataverse",
+    "microsoft-graph",
+    "azure-identity",
+    "managed-identity",
+    "power-platform",
+    "typescript",
+    "m365"
+  ],
+  "skills": [
+    "skills/m365-clients/SKILL.md"
+  ],
+  "agents": [
+    "agents/m365-client-reviewer.md"
+  ],
+  "commands": [
+    "commands/create-m365-client.md"
+  ]
+}
