@@ -1,0 +1,32 @@
+{
+  "name": "fabric-data-engineering",
+  "version": "1.0.0",
+  "description": "Microsoft Fabric Data Engineering — lakehouses, Spark notebooks, data pipelines, Delta Lake tables, and lakehouse SQL endpoints",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "fabric",
+    "lakehouse",
+    "spark",
+    "delta-lake",
+    "notebooks",
+    "data-engineering",
+    "pyspark"
+  ],
+  "skills": [
+    "./skills/fabric-data-engineering/SKILL.md"
+  ],
+  "agents": [
+    "./agents/data-engineering-reviewer.md"
+  ],
+  "commands": [
+    "./commands/setup.md",
+    "./commands/lakehouse-create.md",
+    "./commands/notebook-create.md",
+    "./commands/pipeline-create.md",
+    "./commands/delta-table-manage.md",
+    "./commands/lakehouse-load-data.md"
+  ]
+}

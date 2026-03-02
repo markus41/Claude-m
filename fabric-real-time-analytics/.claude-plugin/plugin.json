@@ -1,0 +1,32 @@
+{
+  "name": "fabric-real-time-analytics",
+  "version": "1.0.0",
+  "description": "Microsoft Fabric Real-Time Analytics — Eventhouse, KQL databases, eventstreams, Real-Time Dashboards, and streaming ingestion",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "fabric",
+    "real-time",
+    "kql",
+    "kusto",
+    "eventhouse",
+    "eventstream",
+    "streaming"
+  ],
+  "skills": [
+    "./skills/fabric-real-time-analytics/SKILL.md"
+  ],
+  "agents": [
+    "./agents/realtime-reviewer.md"
+  ],
+  "commands": [
+    "./commands/setup.md",
+    "./commands/eventhouse-create.md",
+    "./commands/kql-query.md",
+    "./commands/eventstream-create.md",
+    "./commands/rt-dashboard-create.md",
+    "./commands/data-activator-trigger.md"
+  ]
+}

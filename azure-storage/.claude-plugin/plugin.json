@@ -1,0 +1,32 @@
+{
+  "name": "azure-storage",
+  "version": "1.0.0",
+  "description": "Azure Storage — Blob, Queue, Table, and Files services with lifecycle policies, SAS tokens, and managed identity access",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "azure",
+    "storage",
+    "blob",
+    "queue",
+    "table",
+    "files",
+    "data-lake"
+  ],
+  "skills": [
+    "./skills/azure-storage/SKILL.md"
+  ],
+  "agents": [
+    "./agents/storage-reviewer.md"
+  ],
+  "commands": [
+    "./commands/setup.md",
+    "./commands/blob-manage.md",
+    "./commands/queue-manage.md",
+    "./commands/storage-security.md",
+    "./commands/storage-lifecycle.md",
+    "./commands/storage-static-website.md"
+  ]
+}

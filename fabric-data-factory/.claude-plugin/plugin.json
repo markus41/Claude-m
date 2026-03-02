@@ -1,0 +1,32 @@
+{
+  "name": "fabric-data-factory",
+  "version": "1.0.0",
+  "description": "Microsoft Fabric Data Factory — data pipelines, Dataflow Gen2, Copy activity, orchestration patterns, and scheduling",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "fabric",
+    "data-factory",
+    "pipelines",
+    "dataflow",
+    "etl",
+    "copy-activity",
+    "orchestration"
+  ],
+  "skills": [
+    "./skills/fabric-data-factory/SKILL.md"
+  ],
+  "agents": [
+    "./agents/data-factory-reviewer.md"
+  ],
+  "commands": [
+    "./commands/setup.md",
+    "./commands/pipeline-create.md",
+    "./commands/dataflow-create.md",
+    "./commands/copy-activity-config.md",
+    "./commands/pipeline-schedule.md",
+    "./commands/pipeline-monitor.md"
+  ]
+}

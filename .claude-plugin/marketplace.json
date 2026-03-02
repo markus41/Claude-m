@@ -554,6 +554,243 @@
         "typescript"
       ],
       "strict": true
+    },
+    {
+      "name": "azure-storage",
+      "source": "./azure-storage",
+      "description": "Azure Storage — Blob, Queue, Table, and Files services with lifecycle policies, SAS tokens, and managed identity access",
+      "category": "cloud",
+      "tags": [
+        "microsoft",
+        "azure",
+        "storage",
+        "blob",
+        "queue",
+        "table",
+        "files",
+        "data-lake"
+      ],
+      "strict": true
+    },
+    {
+      "name": "azure-functions",
+      "source": "./azure-functions",
+      "description": "Azure Functions — triggers, bindings, Durable Functions, deployment, and local development with Azure Functions Core Tools",
+      "category": "cloud",
+      "tags": [
+        "microsoft",
+        "azure",
+        "functions",
+        "serverless",
+        "durable-functions",
+        "triggers",
+        "bindings"
+      ],
+      "strict": true
+    },
+    {
+      "name": "azure-containers",
+      "source": "./azure-containers",
+      "description": "Azure Container Apps, Container Instances, and Container Registry — build, push, deploy, and scale containerized workloads",
+      "category": "cloud",
+      "tags": [
+        "microsoft",
+        "azure",
+        "containers",
+        "container-apps",
+        "aci",
+        "acr",
+        "docker",
+        "dapr"
+      ],
+      "strict": true
+    },
+    {
+      "name": "azure-sql-database",
+      "source": "./azure-sql-database",
+      "description": "Azure SQL Database and Cosmos DB — provisioning, schema management, query optimization, security hardening, and backup/restore",
+      "category": "cloud",
+      "tags": [
+        "microsoft",
+        "azure",
+        "sql",
+        "cosmos-db",
+        "database",
+        "t-sql",
+        "nosql",
+        "elastic-pool"
+      ],
+      "strict": true
+    },
+    {
+      "name": "azure-key-vault",
+      "source": "./azure-key-vault",
+      "description": "Azure Key Vault — secrets, keys, and certificates management with RBAC, rotation policies, and managed identity integration",
+      "category": "security",
+      "tags": [
+        "microsoft",
+        "azure",
+        "key-vault",
+        "secrets",
+        "certificates",
+        "encryption",
+        "managed-identity"
+      ],
+      "strict": true
+    },
+    {
+      "name": "azure-monitor",
+      "source": "./azure-monitor",
+      "description": "Azure Monitor, Application Insights, and Log Analytics — metrics, alerts, KQL queries, dashboards, and diagnostic settings",
+      "category": "cloud",
+      "tags": [
+        "microsoft",
+        "azure",
+        "monitor",
+        "application-insights",
+        "log-analytics",
+        "kql",
+        "alerts",
+        "metrics"
+      ],
+      "strict": true
+    },
+    {
+      "name": "azure-networking",
+      "source": "./azure-networking",
+      "description": "Azure Networking — VNets, subnets, NSGs, Load Balancers, Front Door, DNS zones, VPN gateways, and Private Link",
+      "category": "cloud",
+      "tags": [
+        "microsoft",
+        "azure",
+        "networking",
+        "vnet",
+        "nsg",
+        "load-balancer",
+        "front-door",
+        "dns",
+        "vpn"
+      ],
+      "strict": true
+    },
+    {
+      "name": "fabric-data-engineering",
+      "source": "./fabric-data-engineering",
+      "description": "Microsoft Fabric Data Engineering — lakehouses, Spark notebooks, data pipelines, Delta Lake tables, and lakehouse SQL endpoints",
+      "category": "analytics",
+      "tags": [
+        "microsoft",
+        "fabric",
+        "lakehouse",
+        "spark",
+        "delta-lake",
+        "notebooks",
+        "data-engineering",
+        "pyspark"
+      ],
+      "strict": true
+    },
+    {
+      "name": "fabric-data-warehouse",
+      "source": "./fabric-data-warehouse",
+      "description": "Microsoft Fabric Data Warehouse — Synapse warehouses, T-SQL DDL/DML, cross-database queries, stored procedures, and data modeling",
+      "category": "analytics",
+      "tags": [
+        "microsoft",
+        "fabric",
+        "data-warehouse",
+        "synapse",
+        "t-sql",
+        "warehouse",
+        "star-schema",
+        "dimensional"
+      ],
+      "strict": true
+    },
+    {
+      "name": "fabric-real-time-analytics",
+      "source": "./fabric-real-time-analytics",
+      "description": "Microsoft Fabric Real-Time Analytics — Eventhouse, KQL databases, eventstreams, Real-Time Dashboards, and streaming ingestion",
+      "category": "analytics",
+      "tags": [
+        "microsoft",
+        "fabric",
+        "real-time",
+        "kql",
+        "kusto",
+        "eventhouse",
+        "eventstream",
+        "streaming"
+      ],
+      "strict": true
+    },
+    {
+      "name": "fabric-data-factory",
+      "source": "./fabric-data-factory",
+      "description": "Microsoft Fabric Data Factory — data pipelines, Dataflow Gen2, Copy activity, orchestration patterns, and scheduling",
+      "category": "analytics",
+      "tags": [
+        "microsoft",
+        "fabric",
+        "data-factory",
+        "pipelines",
+        "dataflow",
+        "etl",
+        "copy-activity",
+        "orchestration"
+      ],
+      "strict": true
+    },
+    {
+      "name": "fabric-data-science",
+      "source": "./fabric-data-science",
+      "description": "Microsoft Fabric Data Science — ML experiments, model training, MLflow tracking, PREDICT function, and semantic link integration",
+      "category": "analytics",
+      "tags": [
+        "microsoft",
+        "fabric",
+        "data-science",
+        "mlflow",
+        "machine-learning",
+        "experiments",
+        "predict",
+        "semantic-link"
+      ],
+      "strict": true
+    },
+    {
+      "name": "fabric-data-activator",
+      "source": "./fabric-data-activator",
+      "description": "Microsoft Fabric Data Activator — Reflex triggers, condition-based alerts, real-time actions, and event-driven automation on Fabric data",
+      "category": "analytics",
+      "tags": [
+        "microsoft",
+        "fabric",
+        "data-activator",
+        "reflex",
+        "triggers",
+        "alerts",
+        "real-time",
+        "automation"
+      ],
+      "strict": true
+    },
+    {
+      "name": "fabric-onelake",
+      "source": "./fabric-onelake",
+      "description": "Microsoft Fabric OneLake — unified data lake, shortcuts, file explorer, ADLS Gen2 APIs, and cross-workspace data access",
+      "category": "analytics",
+      "tags": [
+        "microsoft",
+        "fabric",
+        "onelake",
+        "data-lake",
+        "shortcuts",
+        "adls",
+        "delta-lake",
+        "lakehouse-files"
+      ],
+      "strict": true
     }
   ]
 }

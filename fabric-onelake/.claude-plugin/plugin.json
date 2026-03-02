@@ -1,0 +1,32 @@
+{
+  "name": "fabric-onelake",
+  "version": "1.0.0",
+  "description": "Microsoft Fabric OneLake — unified data lake, shortcuts, file explorer, ADLS Gen2 APIs, and cross-workspace data access",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "fabric",
+    "onelake",
+    "data-lake",
+    "shortcuts",
+    "adls",
+    "delta-lake",
+    "lakehouse-files"
+  ],
+  "skills": [
+    "./skills/fabric-onelake/SKILL.md"
+  ],
+  "agents": [
+    "./agents/onelake-reviewer.md"
+  ],
+  "commands": [
+    "./commands/setup.md",
+    "./commands/onelake-browse.md",
+    "./commands/shortcut-create.md",
+    "./commands/onelake-upload.md",
+    "./commands/onelake-access-audit.md",
+    "./commands/onelake-file-api.md"
+  ]
+}

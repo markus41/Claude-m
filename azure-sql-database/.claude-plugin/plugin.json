@@ -1,0 +1,32 @@
+{
+  "name": "azure-sql-database",
+  "version": "1.0.0",
+  "description": "Azure SQL Database and Cosmos DB — provisioning, schema management, query optimization, security hardening, and backup/restore",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "azure",
+    "sql",
+    "cosmos-db",
+    "database",
+    "t-sql",
+    "nosql",
+    "elastic-pool"
+  ],
+  "skills": [
+    "./skills/azure-sql-database/SKILL.md"
+  ],
+  "agents": [
+    "./agents/database-reviewer.md"
+  ],
+  "commands": [
+    "./commands/setup.md",
+    "./commands/sql-create.md",
+    "./commands/sql-query.md",
+    "./commands/cosmos-create.md",
+    "./commands/cosmos-query.md",
+    "./commands/db-security-audit.md"
+  ]
+}

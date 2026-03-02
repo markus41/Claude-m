@@ -1,0 +1,32 @@
+{
+  "name": "fabric-data-warehouse",
+  "version": "1.0.0",
+  "description": "Microsoft Fabric Data Warehouse — Synapse warehouses, T-SQL DDL/DML, cross-database queries, stored procedures, and data modeling",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "fabric",
+    "data-warehouse",
+    "synapse",
+    "t-sql",
+    "warehouse",
+    "star-schema",
+    "dimensional"
+  ],
+  "skills": [
+    "./skills/fabric-data-warehouse/SKILL.md"
+  ],
+  "agents": [
+    "./agents/warehouse-reviewer.md"
+  ],
+  "commands": [
+    "./commands/setup.md",
+    "./commands/warehouse-create.md",
+    "./commands/warehouse-table-create.md",
+    "./commands/warehouse-query.md",
+    "./commands/warehouse-load.md",
+    "./commands/warehouse-monitor.md"
+  ]
+}

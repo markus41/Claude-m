@@ -1,0 +1,32 @@
+{
+  "name": "azure-monitor",
+  "version": "1.0.0",
+  "description": "Azure Monitor, Application Insights, and Log Analytics — metrics, alerts, KQL queries, dashboards, and diagnostic settings",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "azure",
+    "monitor",
+    "application-insights",
+    "log-analytics",
+    "kql",
+    "alerts",
+    "metrics"
+  ],
+  "skills": [
+    "./skills/azure-monitor/SKILL.md"
+  ],
+  "agents": [
+    "./agents/monitor-reviewer.md"
+  ],
+  "commands": [
+    "./commands/setup.md",
+    "./commands/kql-query.md",
+    "./commands/alert-create.md",
+    "./commands/appinsights-setup.md",
+    "./commands/dashboard-create.md",
+    "./commands/diagnostic-settings.md"
+  ]
+}

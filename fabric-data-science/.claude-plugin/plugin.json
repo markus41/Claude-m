@@ -1,0 +1,32 @@
+{
+  "name": "fabric-data-science",
+  "version": "1.0.0",
+  "description": "Microsoft Fabric Data Science — ML experiments, model training, MLflow tracking, PREDICT function, and semantic link integration",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "fabric",
+    "data-science",
+    "mlflow",
+    "machine-learning",
+    "experiments",
+    "predict",
+    "semantic-link"
+  ],
+  "skills": [
+    "./skills/fabric-data-science/SKILL.md"
+  ],
+  "agents": [
+    "./agents/data-science-reviewer.md"
+  ],
+  "commands": [
+    "./commands/setup.md",
+    "./commands/experiment-create.md",
+    "./commands/model-train.md",
+    "./commands/model-register.md",
+    "./commands/model-predict.md",
+    "./commands/semantic-link-query.md"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "azure-containers",
+  "version": "1.0.0",
+  "description": "Azure Container Apps, Container Instances, and Container Registry — build, push, deploy, and scale containerized workloads",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "azure",
+    "containers",
+    "container-apps",
+    "aci",
+    "acr",
+    "docker",
+    "dapr"
+  ],
+  "skills": [
+    "./skills/azure-containers/SKILL.md"
+  ],
+  "agents": [
+    "./agents/container-reviewer.md"
+  ],
+  "commands": [
+    "./commands/setup.md",
+    "./commands/acr-build-push.md",
+    "./commands/container-app-create.md",
+    "./commands/container-app-deploy.md",
+    "./commands/container-app-scale.md",
+    "./commands/aci-run.md"
+  ]
+}

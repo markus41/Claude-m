@@ -1,0 +1,31 @@
+{
+  "name": "azure-functions",
+  "version": "1.0.0",
+  "description": "Azure Functions — triggers, bindings, Durable Functions, deployment, and local development with Azure Functions Core Tools",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "azure",
+    "functions",
+    "serverless",
+    "durable-functions",
+    "triggers",
+    "bindings"
+  ],
+  "skills": [
+    "./skills/azure-functions/SKILL.md"
+  ],
+  "agents": [
+    "./agents/functions-reviewer.md"
+  ],
+  "commands": [
+    "./commands/setup.md",
+    "./commands/func-create.md",
+    "./commands/func-trigger-add.md",
+    "./commands/func-deploy.md",
+    "./commands/func-durable.md",
+    "./commands/func-binding-config.md"
+  ]
+}

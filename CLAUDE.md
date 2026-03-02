@@ -61,6 +61,20 @@ Then re-run `/plugin marketplace add markus41/Claude-m`.
 | `azure-web-apps` | cloud | App Service web apps, deployment slots, custom domains, CI/CD |
 | `azure-static-web-apps` | cloud | JAMstack/SPA hosting, built-in auth, PR preview environments |
 | `teams-app-dev` | devops | Custom Teams app development — Adaptive Cards, message extensions, bot handlers, tab apps, manifest authoring, and Teams Toolkit CLI workflows |
+| `azure-storage` | cloud | Azure Storage — Blob, Queue, Table, and Files services with lifecycle policies, SAS tokens, and managed identity access |
+| `azure-functions` | cloud | Azure Functions — triggers, bindings, Durable Functions, deployment, and local development with Azure Functions Core Tools |
+| `azure-containers` | cloud | Azure Container Apps, Container Instances, and Container Registry — build, push, deploy, and scale containerized workloads |
+| `azure-sql-database` | cloud | Azure SQL Database and Cosmos DB — provisioning, schema management, query optimization, security hardening, and backup/restore |
+| `azure-key-vault` | security | Azure Key Vault — secrets, keys, and certificates management with RBAC, rotation policies, and managed identity integration |
+| `azure-monitor` | cloud | Azure Monitor, Application Insights, and Log Analytics — metrics, alerts, KQL queries, dashboards, and diagnostic settings |
+| `azure-networking` | cloud | Azure Networking — VNets, subnets, NSGs, Load Balancers, Front Door, DNS zones, VPN gateways, and Private Link |
+| `fabric-data-engineering` | analytics | Microsoft Fabric Data Engineering — lakehouses, Spark notebooks, data pipelines, Delta Lake tables, and lakehouse SQL endpoints |
+| `fabric-data-warehouse` | analytics | Microsoft Fabric Data Warehouse — Synapse warehouses, T-SQL DDL/DML, cross-database queries, stored procedures, and data modeling |
+| `fabric-real-time-analytics` | analytics | Microsoft Fabric Real-Time Analytics — Eventhouse, KQL databases, eventstreams, Real-Time Dashboards, and streaming ingestion |
+| `fabric-data-factory` | analytics | Microsoft Fabric Data Factory — data pipelines, Dataflow Gen2, Copy activity, orchestration patterns, and scheduling |
+| `fabric-data-science` | analytics | Microsoft Fabric Data Science — ML experiments, model training, MLflow tracking, PREDICT function, and semantic link integration |
+| `fabric-data-activator` | analytics | Microsoft Fabric Data Activator — Reflex triggers, condition-based alerts, real-time actions, and event-driven automation on Fabric data |
+| `fabric-onelake` | analytics | Microsoft Fabric OneLake — unified data lake, shortcuts, file explorer, ADLS Gen2 APIs, and cross-workspace data access |
 | `marketplace-dev-tools` | devops | Research APIs, scaffold plugins, audit coverage |
 
 Install any plugin with:

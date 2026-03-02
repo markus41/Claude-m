@@ -1,0 +1,31 @@
+{
+  "name": "azure-key-vault",
+  "version": "1.0.0",
+  "description": "Azure Key Vault — secrets, keys, and certificates management with RBAC, rotation policies, and managed identity integration",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "azure",
+    "key-vault",
+    "secrets",
+    "certificates",
+    "encryption",
+    "managed-identity"
+  ],
+  "skills": [
+    "./skills/azure-key-vault/SKILL.md"
+  ],
+  "agents": [
+    "./agents/keyvault-reviewer.md"
+  ],
+  "commands": [
+    "./commands/setup.md",
+    "./commands/kv-secret-manage.md",
+    "./commands/kv-certificate-manage.md",
+    "./commands/kv-access-audit.md",
+    "./commands/kv-rotation-policy.md",
+    "./commands/kv-app-integration.md"
+  ]
+}

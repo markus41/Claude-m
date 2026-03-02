@@ -1,0 +1,33 @@
+{
+  "name": "azure-networking",
+  "version": "1.0.0",
+  "description": "Azure Networking — VNets, subnets, NSGs, Load Balancers, Front Door, DNS zones, VPN gateways, and Private Link",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "azure",
+    "networking",
+    "vnet",
+    "nsg",
+    "load-balancer",
+    "front-door",
+    "dns",
+    "vpn"
+  ],
+  "skills": [
+    "./skills/azure-networking/SKILL.md"
+  ],
+  "agents": [
+    "./agents/networking-reviewer.md"
+  ],
+  "commands": [
+    "./commands/setup.md",
+    "./commands/vnet-create.md",
+    "./commands/nsg-configure.md",
+    "./commands/lb-create.md",
+    "./commands/dns-manage.md",
+    "./commands/private-endpoint-create.md"
+  ]
+}

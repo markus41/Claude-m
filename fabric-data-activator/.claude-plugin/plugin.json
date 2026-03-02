@@ -1,0 +1,32 @@
+{
+  "name": "fabric-data-activator",
+  "version": "1.0.0",
+  "description": "Microsoft Fabric Data Activator \u2014 Reflex triggers, condition-based alerts, real-time actions, and event-driven automation on Fabric data",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "fabric",
+    "data-activator",
+    "reflex",
+    "triggers",
+    "alerts",
+    "real-time",
+    "automation"
+  ],
+  "skills": [
+    "./skills/fabric-data-activator/SKILL.md"
+  ],
+  "agents": [
+    "./agents/activator-reviewer.md"
+  ],
+  "commands": [
+    "./commands/setup.md",
+    "./commands/reflex-create.md",
+    "./commands/trigger-define.md",
+    "./commands/action-configure.md",
+    "./commands/reflex-from-report.md",
+    "./commands/reflex-monitor.md"
+  ]
+}
