@@ -1,6 +1,9 @@
 ---
 name: power-automate-flows
-description: "Expert knowledge of creating and managing Power Automate cloud flows programmatically via the Dataverse Web API, including flow definition authoring, connection references, trigger/action schemas, and CI/CD provisioning"
+description: >
+  Expert knowledge of creating and managing Power Automate cloud flows programmatically
+  via the Dataverse Web API — flow definition authoring, connection references, trigger/action
+  schemas, expression language, error handling, CI/CD provisioning, and Office Script integration.
 allowed-tools:
   - Read
   - Write
@@ -57,13 +60,24 @@ Cloud flows are stored as rows in the Dataverse `workflow` table. Creating a flo
 
 After creation, the flow must be **enabled** via a separate PATCH call.
 
-## Dataverse Web API — Quick Reference
+## Dataverse Web API — Complete Reference
 
 **Base URL**: `https://{org}.crm.dynamics.com/api/data/v9.2/workflows`
 
+### API Endpoints
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| POST | `/api/data/v9.2/workflows` | Create flow |
+| PATCH | `/api/data/v9.2/workflows({workflowid})` | Update flow (enable/disable/modify) |
+| DELETE | `/api/data/v9.2/workflows({workflowid})` | Delete flow |
+| GET | `/api/data/v9.2/workflows?$filter=category eq 5` | List cloud flows |
+| GET | `/api/data/v9.2/workflows({workflowid})` | Get flow details |
+| GET | `/api/data/v9.2/workflows({workflowid})?$select=clientdata` | Get flow definition |
+
 ### Create a Flow
 
-```http
+```json
 POST /api/data/v9.2/workflows
 Content-Type: application/json
 Authorization: Bearer {access_token}
@@ -72,42 +86,48 @@ Authorization: Bearer {access_token}
   "category": 5,
   "type": 1,
   "primaryentity": "none",
-  "name": "My Flow",
-  "description": "Created via API",
+  "name": "Daily Excel Report Generator",
+  "description": "Runs Office Script daily to generate sales report",
   "clientdata": "{...escaped JSON string...}"
 }
 ```
 
 ### Enable a Flow
 
-```http
+```json
 PATCH /api/data/v9.2/workflows({workflowid})
-Content-Type: application/json
-
 {
   "statecode": 1,
   "statuscode": 2
 }
 ```
 
-### Disable / Delete
+### Disable a Flow
 
-```http
-# Disable
+```json
 PATCH /api/data/v9.2/workflows({workflowid})
-{ "statecode": 0, "statuscode": 1 }
-
-# Delete
-DELETE /api/data/v9.2/workflows({workflowid})
+{
+  "statecode": 0,
+  "statuscode": 1
+}
 ```
 
-### List Flows
+### OData Query Reference
 
-```http
-GET /api/data/v9.2/workflows?$filter=category eq 5&$select=name,statecode,createdon
 ```
+# List active cloud flows
+$filter=category eq 5 and statecode eq 1
+&$select=name,statecode,workflowid,modifiedon,createdon
+&$orderby=modifiedon desc
+&$top=50
 
-See `references/dataverse-web-api.md` for auth setup, TypeScript helpers, and full CRUD examples.
+# List flows by owner
+$filter=category eq 5 and _ownerid_value eq '{userId}'
+&$expand=ownerid($select=fullname)
+
+# Search flows by name
+$filter=category eq 5 and contains(name, 'Excel')
+```
 
 ## The `clientdata` Structure
 
@@ -123,8 +143,8 @@ The `clientdata` field contains a JSON string with the complete flow definition:
         "$connections": { "defaultValue": {}, "type": "Object" },
         "$authentication": { "defaultValue": {}, "type": "SecureObject" }
       },
-      "triggers": { "...trigger definition..." },
-      "actions": { "...action definitions..." },
+      "triggers": { },
+      "actions": { },
       "outputs": {}
     },
     "connectionReferences": {
@@ -153,7 +173,7 @@ The `clientdata` field contains a JSON string with the complete flow definition:
 
 See `references/flow-definition-schema.md` for the complete trigger/action/connection schema.
 
-## Common Trigger Types
+## Trigger Types
 
 | Trigger | `type` | `kind` | Use Case |
 |---------|--------|--------|----------|
@@ -162,7 +182,71 @@ See `references/flow-definition-schema.md` for the complete trigger/action/conne
 | Recurrence | `Recurrence` | — | Scheduled (e.g., daily at 8 AM) |
 | Connector | `OpenApiConnectionWebhook` | — | Event from SharePoint, Outlook, Forms, etc. |
 
-## Common Action Types
+### Recurrence Trigger Definition
+
+```json
+{
+  "Recurrence": {
+    "type": "Recurrence",
+    "recurrence": {
+      "frequency": "Day",
+      "interval": 1,
+      "startTime": "2026-03-01T08:00:00Z",
+      "timeZone": "Central Standard Time",
+      "schedule": {
+        "hours": ["8"],
+        "minutes": ["0"]
+      }
+    }
+  }
+}
+```
+
+### HTTP Trigger Definition
+
+```json
+{
+  "manual": {
+    "type": "Request",
+    "kind": "Http",
+    "inputs": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "fileName": { "type": "string" },
+          "sheetName": { "type": "string" }
+        },
+        "required": ["fileName"]
+      },
+      "method": "POST"
+    }
+  }
+}
+```
+
+### SharePoint Trigger Definition
+
+```json
+{
+  "When_an_item_is_created": {
+    "type": "OpenApiConnectionWebhook",
+    "inputs": {
+      "host": {
+        "connectionName": "shared_sharepointonline",
+        "operationId": "SubscribeWebhookTrigger_V2",
+        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+      },
+      "parameters": {
+        "dataset": "https://contoso.sharepoint.com/sites/project",
+        "table": "{listId}"
+      },
+      "authentication": "@parameters('$authentication')"
+    }
+  }
+}
+```
+
+## Action Types
 
 | Action | `type` | Use Case |
 |--------|--------|----------|
@@ -173,40 +257,12 @@ See `references/flow-definition-schema.md` for the complete trigger/action/conne
 | Apply to each | `Foreach` | Loop over arrays |
 | Send email | `OpenApiConnection` (Office 365 Outlook) | Notifications |
 | Create item | `OpenApiConnection` (SharePoint/Dataverse) | Write to lists/tables |
+| Initialize variable | `InitializeVariable` | Declare flow variable |
+| Set variable | `SetVariable` | Update flow variable |
+| Scope | `Scope` | Group actions (try/catch pattern) |
+| Terminate | `Terminate` | End flow with status |
 
-## Authentication
-
-All Dataverse API calls require an Azure AD OAuth 2.0 token:
-
-1. **Register an app** in Azure AD with Dataverse permissions (`user_impersonation` or application permissions)
-2. **Get a token** via client credentials or authorization code flow
-3. **Use the token** in the `Authorization: Bearer {token}` header
-
-```typescript
-// TypeScript with @azure/identity
-import { ClientSecretCredential } from "@azure/identity";
-
-const credential = new ClientSecretCredential(tenantId, clientId, clientSecret);
-const token = await credential.getToken("https://{org}.crm.dynamics.com/.default");
-```
-
-See `references/dataverse-web-api.md` for full auth patterns.
-
-## Power Automate Management Connector
-
-For creating flows from **within** Power Automate or Power Apps:
-
-- Connector: `flowmanagement`
-- Action: **Create Flow** — accepts environment name + flow payload
-- Useful for template-based provisioning from a "meta" flow
-
-See `references/management-connector.md` for connector patterns and HTTP trigger exposure.
-
-## Tying It Together: Office Script + Flow
-
-A very common pattern: create a flow that runs an Office Script on a schedule or trigger.
-
-The action definition for "Run script" looks like:
+### Run Office Script Action Definition
 
 ```json
 {
@@ -223,15 +279,253 @@ The action definition for "Run script" looks like:
         "drive": "{driveId}",
         "file": "{fileId}",
         "scriptId": "{scriptId}",
-        "ScriptParameters/param1": "value1"
+        "ScriptParameters/sheetName": "Sheet1",
+        "ScriptParameters/startRow": 2
       },
       "authentication": "@parameters('$authentication')"
+    },
+    "runAfter": {}
+  }
+}
+```
+
+### HTTP Action Definition
+
+```json
+{
+  "Call_External_API": {
+    "type": "Http",
+    "inputs": {
+      "method": "GET",
+      "uri": "https://api.example.com/data",
+      "headers": {
+        "Authorization": "Bearer @{variables('apiToken')}",
+        "Accept": "application/json"
+      },
+      "retryPolicy": {
+        "type": "exponential",
+        "count": 3,
+        "interval": "PT10S",
+        "minimumInterval": "PT5S",
+        "maximumInterval": "PT1H"
+      }
+    },
+    "runAfter": {}
+  }
+}
+```
+
+### Condition (If) Action Definition
+
+```json
+{
+  "Check_result": {
+    "type": "If",
+    "expression": {
+      "and": [
+        {
+          "greater": [
+            "@outputs('Run_script')?['body/result/rowCount']",
+            0
+          ]
+        }
+      ]
+    },
+    "actions": {
+      "Send_success_email": { }
+    },
+    "else": {
+      "actions": {
+        "Send_no_data_email": { }
+      }
+    },
+    "runAfter": {
+      "Run_script": ["Succeeded"]
     }
   }
 }
 ```
 
-See `examples/office-script-flows.md` for complete payloads.
+## Connection Reference Catalog
+
+| Connector | Reference Key | API ID |
+|-----------|--------------|--------|
+| Excel Online (Business) | `shared_excelonlinebusiness` | `/providers/Microsoft.PowerApps/apis/shared_excelonlinebusiness` |
+| SharePoint | `shared_sharepointonline` | `/providers/Microsoft.PowerApps/apis/shared_sharepointonline` |
+| Office 365 Outlook | `shared_office365` | `/providers/Microsoft.PowerApps/apis/shared_office365` |
+| Microsoft Teams | `shared_teams` | `/providers/Microsoft.PowerApps/apis/shared_teams` |
+| Dataverse | `shared_commondataserviceforapps` | `/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps` |
+| OneDrive for Business | `shared_onedriveforbusiness` | `/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness` |
+| HTTP | (none — native) | N/A |
+| Approvals | `shared_approvals` | `/providers/Microsoft.PowerApps/apis/shared_approvals` |
+
+### Connection Reference Template
+
+```json
+{
+  "shared_excelonlinebusiness": {
+    "connectionName": "shared-excelonlinebusi-{guid}",
+    "source": "Invoker",
+    "id": "/providers/Microsoft.PowerApps/apis/shared_excelonlinebusiness",
+    "tier": "NotSpecified"
+  }
+}
+```
+
+**`source` values:** `Invoker` (run-as invoking user), `EmbeddedConnection` (run-as connection owner).
+
+## Expression Language Reference
+
+Common expressions for use in action inputs:
+
+| Expression | Purpose | Example |
+|-----------|---------|---------|
+| `@triggerOutputs()` | Access trigger output | `@triggerOutputs()?['body']` |
+| `@outputs('ActionName')` | Access action output | `@outputs('Run_script')?['body/result']` |
+| `@variables('name')` | Access variable | `@variables('rowCount')` |
+| `@utcNow()` | Current UTC timestamp | `2026-03-01T12:00:00Z` |
+| `@formatDateTime()` | Format date | `@formatDateTime(utcNow(), 'yyyy-MM-dd')` |
+| `@json()` | Parse JSON string | `@json(outputs('Compose'))` |
+| `@concat()` | Concatenate strings | `@concat('Report-', utcNow())` |
+| `@length()` | Array/string length | `@length(outputs('Get_rows')?['body/value'])` |
+| `@if()` | Inline conditional | `@if(equals(variables('status'), 'Active'), 'Yes', 'No')` |
+| `@coalesce()` | First non-null value | `@coalesce(triggerBody()?['name'], 'Default')` |
+
+## Authentication
+
+All Dataverse API calls require an Azure AD OAuth 2.0 token:
+
+```typescript
+import { ClientSecretCredential } from "@azure/identity";
+
+const credential = new ClientSecretCredential(tenantId, clientId, clientSecret);
+const token = await credential.getToken("https://{org}.crm.dynamics.com/.default");
+```
+
+### Required App Registration Permissions
+
+| Permission | Type | Purpose |
+|-----------|------|---------|
+| `user_impersonation` (Dynamics CRM) | Delegated | Access Dataverse as signed-in user |
+| Dataverse application user | Application | Service principal access to Dataverse |
+
+## Error Handling
+
+### Dataverse API Errors
+
+| Status | Code | Cause | Fix |
+|--------|------|-------|-----|
+| 400 | `BadRequest` | Invalid `clientdata` JSON, missing required fields | Validate JSON structure |
+| 401 | `Unauthorized` | Expired or invalid token | Refresh OAuth token |
+| 403 | `Forbidden` | Insufficient Dataverse security role | Add Environment Maker role |
+| 404 | `NotFound` | Workflow ID does not exist | Verify workflowid GUID |
+| 409 | `Conflict` | Flow name already exists in environment | Use unique name |
+| 429 | `TooManyRequests` | Dataverse API throttle limit | Wait per `Retry-After` header |
+
+### Flow Run Errors
+
+| Error Code | Cause | Resolution |
+|-----------|-------|------------|
+| `ActionFailed` | An action within the flow failed | Check action error message |
+| `TriggerFailed` | Trigger could not fire | Verify connection and permissions |
+| `WorkflowRunActionRepetitionFailed` | Loop iteration failed | Check individual iteration errors |
+| `InvalidTemplate` | `clientdata` schema is invalid | Validate against Logic Apps schema |
+| `ConnectionAuthorizationFailed` | Connection expired | Re-authenticate connector |
+
+### Retry Policy Configuration
+
+```json
+{
+  "retryPolicy": {
+    "type": "exponential",
+    "count": 4,
+    "interval": "PT10S",
+    "minimumInterval": "PT5S",
+    "maximumInterval": "PT1H"
+  }
+}
+```
+
+**Retry types:** `none`, `fixed`, `exponential`. Default: `exponential` with 4 retries.
+
+### Scope-Based Error Handling (Try/Catch)
+
+```json
+{
+  "Try_Scope": {
+    "type": "Scope",
+    "actions": {
+      "Run_script": { },
+      "Process_results": { }
+    }
+  },
+  "Catch_Scope": {
+    "type": "Scope",
+    "actions": {
+      "Send_error_notification": { }
+    },
+    "runAfter": {
+      "Try_Scope": ["Failed", "TimedOut"]
+    }
+  },
+  "Finally_Scope": {
+    "type": "Scope",
+    "actions": {
+      "Log_completion": { }
+    },
+    "runAfter": {
+      "Catch_Scope": ["Succeeded", "Failed", "Skipped"]
+    }
+  }
+}
+```
+
+### `runAfter` Status Values
+
+| Status | Description |
+|--------|-------------|
+| `Succeeded` | Previous action completed successfully |
+| `Failed` | Previous action failed |
+| `Skipped` | Previous action was skipped |
+| `TimedOut` | Previous action timed out |
+
+## Common Deployment Patterns
+
+### Pattern 1: Office Script + Scheduled Flow
+
+1. Build `clientdata` with Recurrence trigger (daily at 8 AM)
+2. Add "Run script" action targeting the Excel workbook and script
+3. Add condition to check script return value
+4. Add email notification for success/failure
+5. `POST /api/data/v9.2/workflows` → `PATCH` to enable
+6. Test via manual trigger before enabling schedule
+
+### Pattern 2: HTTP API Flow
+
+1. Build `clientdata` with HTTP Request trigger (POST with JSON schema)
+2. Add "Run script" action passing trigger body parameters
+3. Add "Response" action to return script results
+4. `POST /api/data/v9.2/workflows` → `PATCH` to enable
+5. Retrieve the generated trigger URL from the flow properties
+6. Call the URL from external applications
+
+### Pattern 3: Multi-Environment CI/CD Deployment
+
+1. Build `clientdata` template with parameterized connection references
+2. Store template in source control (Git)
+3. For each environment: substitute connection names and IDs
+4. `POST /api/data/v9.2/workflows` to create in target environment
+5. `PATCH` to enable after validation
+6. Run integration tests against the deployed flow
+
+### Pattern 4: Event-Driven Excel Processing
+
+1. Build `clientdata` with SharePoint trigger ("When file is created in folder")
+2. Add "Get file metadata" to retrieve the new file's drive/item IDs
+3. Add "Run script" action with dynamic drive/file parameters
+4. Add error handling scope with Teams notification on failure
+5. Add "Move file" action to archive folder on success
+6. Deploy and test with sample file upload
 
 ## Quick Checklist for Creating a Flow via API
 

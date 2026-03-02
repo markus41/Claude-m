@@ -26,6 +26,11 @@ triggers:
   - delegation
   - patch function
   - collect function
+  - power apps management api
+  - dataverse web api
+  - pac cli
+  - pcf
+  - environment management
 ---
 
 # Power Apps Development
@@ -224,6 +229,148 @@ The Power Apps Solution Checker runs static analysis to identify performance iss
 - **Web API**: Deprecated API usage, incorrect metadata.
 
 Run via `pac solution check --path <solution.zip>` or via the Power Platform admin center.
+
+## Power Apps Management REST API
+
+The Business Application Platform (BAP) API provides environment and app lifecycle management outside of the maker portal.
+
+Base URL: `https://api.bap.microsoft.com/providers/Microsoft.BusinessAppPlatform`
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| GET | `/scopes/admin/environments` | List all environments in the tenant |
+| GET | `/scopes/admin/environments/{envId}` | Get environment details (type, region, state) |
+| POST | `/environments` | Create a new environment |
+| DELETE | `/scopes/admin/environments/{envId}` | Delete an environment |
+| GET | `/scopes/admin/environments/{envId}/apps` | List canvas apps in an environment |
+| GET | `/scopes/admin/environments/{envId}/apps/{appId}` | Get app details (version, owner, last modified) |
+| DELETE | `/scopes/admin/environments/{envId}/apps/{appId}` | Delete a canvas app |
+| POST | `/scopes/admin/environments/{envId}/apps/{appId}/permissions` | Grant or revoke app permissions |
+| GET | `/scopes/admin/environments/{envId}/apps/{appId}/permissions` | List current app permissions |
+
+**Headers**: `Authorization: Bearer <token>`, `api-version: 2016-11-01`
+
+**Create environment body**:
+```json
+{
+  "location": "unitedstates",
+  "properties": {
+    "displayName": "Dev Sandbox",
+    "environmentSku": "Sandbox",
+    "linkedEnvironmentMetadata": {
+      "type": "Dynamics365Instance",
+      "securityGroupId": "<aad-group-id>"
+    }
+  }
+}
+```
+
+Environment SKU values: `Production`, `Sandbox`, `Trial`, `Developer`.
+
+## Dataverse Web API for App Data
+
+The Dataverse Web API provides REST-based CRUD operations on Dataverse tables — the data layer behind model-driven and canvas apps.
+
+Base URL: `https://{org}.api.crm.dynamics.com/api/data/v9.2`
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| GET | `/{entitySetName}` | List records (with OData query) |
+| GET | `/{entitySetName}({id})` | Get a single record |
+| POST | `/{entitySetName}` | Create a record |
+| PATCH | `/{entitySetName}({id})` | Update a record (merge semantics) |
+| DELETE | `/{entitySetName}({id})` | Delete a record |
+| POST | `/{entitySetName}({id})/Microsoft.Dynamics.CRM.{actionName}` | Execute a bound action |
+
+**Create record example**:
+```json
+POST /api/data/v9.2/accounts
+{
+  "name": "Contoso Ltd",
+  "telephone1": "555-0100",
+  "address1_city": "Seattle",
+  "primarycontactid@odata.bind": "/contacts(00000000-0000-0000-0000-000000000001)"
+}
+```
+
+**Update record example**:
+```json
+PATCH /api/data/v9.2/accounts(00000000-0000-0000-0000-000000000002)
+{
+  "telephone1": "555-0200",
+  "address1_city": "Redmond"
+}
+```
+
+**OData query options**: `$select`, `$filter`, `$orderby`, `$top`, `$skip`, `$expand`, `$count`.
+
+Example: `GET /accounts?$select=name,telephone1&$filter=address1_city eq 'Seattle'&$top=50`
+
+## Permissions and Scopes
+
+| Scope / Resource | Purpose |
+|------------------|---------|
+| `https://api.bap.microsoft.com/.default` | BAP Management API — environment and app management |
+| `https://{org}.crm.dynamics.com/.default` | Dataverse Web API — record-level CRUD |
+| `https://graph.microsoft.com/User.Read` | Basic user profile for maker identity |
+| `https://service.powerapps.com/.default` | Power Apps authoring service |
+
+Token acquisition uses `@azure/identity` with `ClientSecretCredential` or `InteractiveBrowserCredential`. The `{org}` placeholder is the Dataverse organization URL (e.g., `contoso.crm.dynamics.com`).
+
+## HTTP Error Handling
+
+| Status | Meaning | Action |
+|--------|---------|--------|
+| 400 | Bad Request — invalid JSON, missing required field, or malformed OData query | Check request body schema and query syntax |
+| 401 | Unauthorized — expired or missing token | Re-acquire token; verify scope matches the resource |
+| 403 | Forbidden — insufficient privileges or security role | Verify the user/app has the required Dataverse security role or BAP admin role |
+| 404 | Not Found — record, app, or environment does not exist | Confirm the ID and entity set name; check for deleted records |
+| 409 | Conflict — duplicate key or concurrent update | Retry with fresh ETag; check for alternate key collisions |
+| 429 | Too Many Requests — throttled by Dataverse or BAP | Retry after the `Retry-After` header value (seconds); implement exponential backoff |
+
+Dataverse error responses follow this structure:
+```json
+{
+  "error": {
+    "code": "0x80040265",
+    "message": "The specified record was not found or you do not have permission."
+  }
+}
+```
+
+## Common Patterns
+
+### Multi-Step Canvas Form with Offline Collection
+
+Build a multi-screen form that collects data offline and syncs on connectivity:
+
+1. Create a `colPendingRecords` collection on app start with `ClearCollect`.
+2. Each form screen writes to the collection via `Collect(colPendingRecords, {Field1: txt1.Text, ...})`.
+3. A "Submit All" button iterates with `ForAll(colPendingRecords, Patch(DataSource, Defaults(DataSource), ThisRecord))`.
+4. Wrap each `Patch` in `IfError` to track failures: `Collect(colErrors, {Record: ThisRecord, Error: FirstError.Message})`.
+5. Show a summary screen with success count and error table.
+6. Use `Connection.Connected` to check connectivity before submission.
+
+### Model-Driven App with Custom Business Process Flow
+
+Build a model-driven app for a multi-stage approval workflow:
+
+1. Create a Dataverse table (e.g., `cr_expense_request`) with status columns for each stage.
+2. Define a Business Process Flow with stages: Submission → Manager Review → Finance Approval → Completed.
+3. Add branching logic: if amount > $5,000, route to VP Approval stage before Finance.
+4. Configure each stage with required fields (justification, receipt attachment, approval notes).
+5. Add a Business Rule to lock the Amount field after Submission stage completes.
+6. Use a Real-time Workflow or Power Automate flow to send email notifications on stage transitions.
+
+### PCF Control with Dataverse Web API
+
+Build a custom PCF (PowerApps Component Framework) control:
+
+1. Scaffold with `pac pcf init --namespace Contoso --name MapPicker --template field`.
+2. Define the manifest (`ControlManifest.Input.xml`) with input properties: `latitude`, `longitude`, `zoomLevel`.
+3. In `index.ts`, implement `init()` to render a map container, `updateView()` to re-center on property changes, and `getOutputs()` to return the selected coordinates.
+4. Use `this.context.webAPI.retrieveMultipleRecords("account", "?$select=name,address1_latitude,address1_longitude&$top=100")` to fetch nearby records.
+5. Build with `npm run build`, test with `npm start watch`, and package with `pac pcf push --publisher-prefix cr`.
 
 ## Best Practices
 

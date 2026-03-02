@@ -242,11 +242,153 @@ POST /me/todo/lists/{listId}/tasks/{taskId}/linkedResources
 
 ## Authentication & Scopes
 
-| Scope | Description |
-|-------|-------------|
-| `Tasks.ReadWrite` | Read and write Planner tasks |
-| `Group.ReadWrite.All` | Required for creating plans (plans are owned by groups) |
-| `Tasks.ReadWrite` | Read and write To Do tasks |
+| Scope | Type | Description |
+|-------|------|-------------|
+| `Tasks.ReadWrite` | Delegated | Read and write Planner tasks and To Do tasks for the signed-in user |
+| `Tasks.ReadWrite.All` | Application | Read and write all Planner tasks without a signed-in user (app-only) |
+| `Group.ReadWrite.All` | Delegated | Required for creating plans (plans must be owned by a Microsoft 365 Group) |
+| `Group.Read.All` | Delegated | Read group membership to discover plans the user has access to |
+
+**Note**: To Do endpoints only support delegated permissions — there are no application-only permissions for To Do. Planner supports both delegated and application permissions.
+
+## HTTP Error Handling
+
+| Status | Meaning | Action |
+|--------|---------|--------|
+| 400 | Bad Request — invalid JSON, missing required field, or malformed assignment object | Validate `planId`, `bucketId`, and `assignments` structure |
+| 404 | Not Found — plan, bucket, task, or list does not exist | Confirm IDs; plan may have been deleted or user removed from group |
+| 409 | Conflict — ETag mismatch on PATCH/DELETE (concurrent edit detected) | Re-GET the resource to obtain the latest `@odata.etag`, then retry |
+| 412 | Precondition Failed — `If-Match` header missing or stale on Planner writes | All Planner PATCH/DELETE require `If-Match: {etag}`. Fetch the resource first |
+| 429 | Too Many Requests — throttled by Graph API | Retry after the `Retry-After` header value (seconds); use exponential backoff |
+| 503 | Service Unavailable — Planner service temporarily down | Retry with backoff; Planner can be intermittently unavailable during deployments |
+
+Planner error responses follow this structure:
+```json
+{
+  "error": {
+    "code": "InvalidRequest",
+    "message": "The specified eTag value is not the current value for the item.",
+    "innerError": {
+      "date": "2026-03-01T10:00:00",
+      "request-id": "abc-123"
+    }
+  }
+}
+```
+
+## OData Query Optimization
+
+Planner and To Do endpoints support a subset of OData query parameters:
+
+### Supported Parameters
+
+- `$select` — Limit returned properties: `GET /planner/tasks/{id}?$select=title,percentComplete,dueDateTime`
+- `$filter` — Filter tasks by properties:
+  - By completion: `$filter=percentComplete ne 100`
+  - By due date: `$filter=dueDateTime lt '2026-04-01T00:00:00Z'`
+  - By assignment: `$filter=assignments/any()`
+- `$top` / `$skip` — Paginate results: `$top=50&$skip=0`
+- `$orderby` — Sort results (To Do only): `$orderby=dueDateTime/dateTime asc`
+- `$count` — Include total count: `$count=true`
+
+### Limitations
+
+- Planner does **not** support `$expand=details` when listing tasks — you must GET each task's details individually.
+- Planner `$filter` support is limited: only `percentComplete`, `dueDateTime`, and `assignments` are reliably filterable.
+- To Do supports broader filtering on `status`, `importance`, and `dueDateTime`.
+- Maximum page size is 999 for Planner list operations.
+
+## Recurrence (To Do)
+
+To Do tasks support recurrence patterns for repeating tasks:
+
+**Weekly recurrence example**:
+```json
+{
+  "title": "Weekly standup prep",
+  "status": "notStarted",
+  "recurrence": {
+    "pattern": {
+      "type": "weekly",
+      "interval": 1,
+      "daysOfWeek": ["monday"],
+      "firstDayOfWeek": "monday"
+    },
+    "range": {
+      "type": "noEnd",
+      "startDate": "2026-03-03"
+    }
+  }
+}
+```
+
+**Daily recurrence example**:
+```json
+{
+  "title": "Daily journal entry",
+  "status": "notStarted",
+  "recurrence": {
+    "pattern": {
+      "type": "daily",
+      "interval": 1
+    },
+    "range": {
+      "type": "endDate",
+      "startDate": "2026-03-01",
+      "endDate": "2026-06-30"
+    }
+  }
+}
+```
+
+**Pattern types**: `daily`, `weekly`, `absoluteMonthly`, `relativeMonthly`, `absoluteYearly`, `relativeYearly`.
+
+**Range types**: `endDate` (stop on a date), `numbered` (stop after N occurrences), `noEnd` (repeat indefinitely).
+
+## Common Patterns
+
+### Sprint Board Initialization
+
+Set up a complete sprint board with buckets and pre-populated tasks:
+
+1. `POST /planner/plans` with `owner: <group-id>` and `title: "Sprint 14"`.
+2. `PATCH /planner/plans/{planId}/details` to set label descriptions: `category1: "Bug"`, `category2: "Feature"`, `category3: "Tech Debt"`, `category4: "Blocked"`.
+3. Create 4 buckets in order: "Backlog", "In Progress", "Review", "Done" with ascending `orderHint` values.
+4. Import tasks from a backlog source, assigning each to the "Backlog" bucket with `percentComplete: 0`.
+5. Assign team members by adding user IDs to the `assignments` object.
+6. Set `priority` (0=Urgent, 1=Important, 5=Low) and `dueDateTime` for each task.
+
+### Bulk Task Import from CSV
+
+Import tasks from a structured CSV file into a Planner plan:
+
+1. Parse CSV columns: `Title`, `Assignee`, `DueDate`, `Priority`, `Bucket`, `Description`.
+2. Map bucket names to bucket IDs (create buckets first if they don't exist).
+3. Map assignee emails to AAD user IDs via `GET /users/{email}`.
+4. `POST /planner/tasks` for each row with the mapped IDs.
+5. For each task with a description, immediately `PATCH /planner/tasks/{taskId}/details` (requires the task's ETag from the create response).
+6. Rate limit: process in batches of 4 concurrent requests to avoid 429 throttling.
+
+### Weekly Personal Task Routine
+
+Create a To Do list with recurring tasks for weekly rituals:
+
+1. `POST /me/todo/lists` with `displayName: "Weekly Routine"`.
+2. For each recurring task, `POST /me/todo/lists/{listId}/tasks` with a `recurrence` block:
+   - "Monday standup prep" — weekly on Monday.
+   - "Wednesday 1:1 notes" — weekly on Wednesday.
+   - "Friday timesheet submission" — weekly on Friday.
+3. Set `isReminderOn: true` and `reminderDateTime` for 30 minutes before each task.
+4. Add checklist items (steps) for multi-step tasks.
+
+### Cross-Tool Linking (Planner → Teams → To Do)
+
+Link tasks across Microsoft 365 tools:
+
+1. Create a Planner plan associated with a Teams channel tab.
+2. For each assigned task, use `POST /me/todo/lists/{listId}/tasks/{taskId}/linkedResources` to create a link back to the Planner task URL.
+3. Post a Teams channel message via Graph with an adaptive card summarizing the sprint board and deep links to individual tasks.
+4. Use `@mentions` in the adaptive card to notify assignees.
 
 ## Best Practices
 

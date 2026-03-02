@@ -384,6 +384,286 @@ def generate_quality_report(df_before: pd.DataFrame, df_after: pd.DataFrame,
 | Group + aggregate | `df.groupby("key").agg({"val": "sum"})` |
 | Write Excel | `df.to_excel("output.xlsx", index=False)` |
 
+## Advanced Transformations
+
+### Pivot / Unpivot
+
+```python
+# Pivot: rows → columns
+pivot_df = df.pivot_table(
+    index="department",
+    columns="quarter",
+    values="revenue",
+    aggfunc="sum",
+    fill_value=0,
+    margins=True,          # Add row/column totals
+    margins_name="Total"
+)
+
+# Unpivot (melt): columns → rows
+melted = pd.melt(
+    df,
+    id_vars=["employee", "department"],
+    value_vars=["jan", "feb", "mar"],
+    var_name="month",
+    value_name="sales"
+)
+```
+
+### Multi-Sheet Processing
+
+Process all sheets in a workbook and combine:
+
+```python
+def process_all_sheets(path: str) -> pd.DataFrame:
+    """Read all sheets, normalize, and stack."""
+    sheets = pd.read_excel(path, sheet_name=None)
+    frames = []
+    for name, df in sheets.items():
+        df = normalize_columns(df)
+        df["source_sheet"] = name
+        frames.append(df)
+    return pd.concat(frames, ignore_index=True)
+```
+
+### Cross-File Merge
+
+Join data across multiple source files:
+
+```python
+def merge_sources(primary: str, lookup: str, key: str) -> pd.DataFrame:
+    """Merge primary data with lookup table."""
+    df_main = pd.read_excel(primary)
+    df_lookup = pd.read_excel(lookup)
+    merged = df_main.merge(df_lookup, on=key, how="left", indicator=True)
+    # Flag rows that didn't match
+    merged["_matched"] = merged["_merge"] == "both"
+    merged = merged.drop(columns=["_merge"])
+    return merged
+```
+
+### Conditional Column Creation
+
+```python
+# Bin numeric values into categories
+df["revenue_tier"] = pd.cut(
+    df["revenue"],
+    bins=[0, 10000, 50000, 100000, float("inf")],
+    labels=["Small", "Medium", "Large", "Enterprise"]
+)
+
+# Map values with fallback
+df["region"] = df["state"].map({
+    "CA": "West", "OR": "West", "WA": "West",
+    "NY": "East", "MA": "East", "CT": "East",
+}).fillna("Other")
+```
+
+### Date Intelligence
+
+```python
+def add_date_columns(df: pd.DataFrame, date_col: str) -> pd.DataFrame:
+    """Add fiscal year, quarter, week number from a date column."""
+    dt = pd.to_datetime(df[date_col], errors="coerce")
+    df[f"{date_col}_year"] = dt.dt.year
+    df[f"{date_col}_quarter"] = dt.dt.quarter
+    df[f"{date_col}_month"] = dt.dt.month
+    df[f"{date_col}_week"] = dt.dt.isocalendar().week.astype(int)
+    df[f"{date_col}_day_of_week"] = dt.dt.day_name()
+    # Fiscal year (July start)
+    df[f"{date_col}_fiscal_year"] = dt.apply(
+        lambda x: x.year + 1 if x.month >= 7 else x.year if pd.notna(x) else None
+    )
+    return df
+```
+
+## Graph API Integration (Reading Excel from OneDrive/SharePoint)
+
+When the source file is in OneDrive or SharePoint, use the Graph API to download before cleaning:
+
+```python
+import requests
+import io
+
+def read_excel_from_graph(access_token: str, drive_item_id: str,
+                          sheet_name: str = None) -> pd.DataFrame:
+    """Download Excel file from OneDrive/SharePoint via Graph API and load into pandas."""
+    url = f"https://graph.microsoft.com/v1.0/me/drive/items/{drive_item_id}/content"
+    headers = {"Authorization": f"Bearer {access_token}"}
+    response = requests.get(url, headers=headers)
+    response.raise_for_status()
+
+    return pd.read_excel(
+        io.BytesIO(response.content),
+        sheet_name=sheet_name,
+        engine="openpyxl"
+    )
+
+
+def upload_excel_to_graph(access_token: str, drive_id: str,
+                          folder_path: str, file_name: str,
+                          file_bytes: bytes) -> dict:
+    """Upload cleaned Excel file back to OneDrive/SharePoint."""
+    url = (
+        f"https://graph.microsoft.com/v1.0/drives/{drive_id}"
+        f"/root:/{folder_path}/{file_name}:/content"
+    )
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    }
+    response = requests.put(url, headers=headers, data=file_bytes)
+    response.raise_for_status()
+    return response.json()
+```
+
+### End-to-End Graph Pipeline
+
+```python
+def clean_and_upload(access_token: str, source_item_id: str,
+                     dest_drive_id: str, dest_folder: str) -> dict:
+    """Download → clean → upload pipeline."""
+    # 1. Download
+    df = read_excel_from_graph(access_token, source_item_id)
+
+    # 2. Clean
+    df = normalize_columns(df)
+    df = coerce_types(df)
+    df = handle_nulls(df, strategy="smart")
+    df, removed = deduplicate(df)
+    df = clean_strings(df)
+
+    # 3. Write to buffer
+    buffer = io.BytesIO()
+    write_polished_xlsx(df, buffer)
+    buffer.seek(0)
+
+    # 4. Upload
+    result = upload_excel_to_graph(
+        access_token, dest_drive_id, dest_folder,
+        "cleaned_output.xlsx", buffer.read()
+    )
+    return result
+```
+
+## Error Handling
+
+### Common pandas Errors
+
+| Error | Cause | Fix |
+|-------|-------|-----|
+| `ParserError` | Malformed CSV (inconsistent columns) | Use `error_bad_lines=False` or `on_bad_lines="skip"` |
+| `ValueError: Excel file format not supported` | Wrong engine for file type | Use `engine="xlrd"` for `.xls`, `engine="pyxlsb"` for `.xlsb` |
+| `UnicodeDecodeError` | Wrong encoding | Try `encoding="utf-8-sig"`, `"latin-1"`, or `"cp1252"` |
+| `SettingWithCopyWarning` | Chained assignment on DataFrame view | Use `.loc[]` or `.copy()` before modification |
+| `MergeError` | Duplicate keys in merge | Deduplicate before merge or use `validate="many_to_one"` |
+| `OutOfMemoryError` | File too large for RAM | Use `chunksize` parameter or `dtype` optimization |
+
+### Encoding Detection
+
+```python
+def detect_encoding(file_path: str) -> str:
+    """Detect file encoding using chardet."""
+    import chardet
+    with open(file_path, "rb") as f:
+        raw = f.read(10000)
+    result = chardet.detect(raw)
+    return result["encoding"]
+
+# Usage
+encoding = detect_encoding("mystery_file.csv")
+df = pd.read_csv("mystery_file.csv", encoding=encoding)
+```
+
+### Safe Type Conversion
+
+```python
+def safe_to_numeric(series: pd.Series) -> pd.Series:
+    """Convert to numeric, preserving original values on failure."""
+    # Remove currency symbols and thousands separators
+    cleaned = series.astype(str).str.replace(r'[$,€£]', '', regex=True).str.strip()
+    converted = pd.to_numeric(cleaned, errors='coerce')
+    # Only convert if >80% succeeded
+    if converted.notna().mean() > 0.8:
+        return converted
+    return series
+
+def safe_to_datetime(series: pd.Series, formats: list[str] = None) -> pd.Series:
+    """Try multiple date formats in order."""
+    formats = formats or [
+        "%Y-%m-%d", "%m/%d/%Y", "%d/%m/%Y", "%Y-%m-%d %H:%M:%S",
+        "%m/%d/%Y %I:%M %p", "%d-%b-%Y", "%B %d, %Y"
+    ]
+    for fmt in formats:
+        try:
+            parsed = pd.to_datetime(series, format=fmt, errors='coerce')
+            if parsed.notna().mean() > 0.8:
+                return parsed
+        except Exception:
+            continue
+    # Fallback: let pandas infer
+    return pd.to_datetime(series, errors='coerce')
+```
+
+### Memory Optimization
+
+```python
+def optimize_dtypes(df: pd.DataFrame) -> pd.DataFrame:
+    """Downcast numeric columns and convert low-cardinality strings to category."""
+    for col in df.select_dtypes(include=['int64']).columns:
+        df[col] = pd.to_numeric(df[col], downcast='integer')
+    for col in df.select_dtypes(include=['float64']).columns:
+        df[col] = pd.to_numeric(df[col], downcast='float')
+    for col in df.select_dtypes(include=['object']).columns:
+        if df[col].nunique() / len(df) < 0.5:  # <50% unique → category
+            df[col] = df[col].astype('category')
+    return df
+```
+
+## Common Patterns
+
+### Pattern 1: CSV-to-Excel Cleanup Pipeline
+
+1. Read CSV with encoding detection and `dtype=str` to preserve data
+2. Normalize column names to snake_case
+3. Coerce types (numeric, datetime, boolean)
+4. Handle nulls with smart strategy (drop columns >50% null, fill rest)
+5. Deduplicate on business key columns
+6. Clean strings (strip, collapse whitespace, replace sentinel values)
+7. Validate emails/phones if detected
+8. Write polished `.xlsx` with formatted headers, freeze panes, autofit columns
+9. Generate data quality report on separate sheet
+
+### Pattern 2: Dataverse Export Cleaning
+
+1. Read CSV with `encoding="utf-8-sig"` and `dtype=str`
+2. Drop OData annotation columns (`@OData.*`)
+3. Strip publisher prefixes from column names (`cr_xxx_` → bare name)
+4. Resolve option set integers to display labels using mapping dict
+5. Flatten lookup GUID columns to display names using `@OData.Community.Display.V1.FormattedValue`
+6. Normalize remaining columns to snake_case
+7. Coerce types and handle nulls
+8. Write output with separate summary sheet
+
+### Pattern 3: Multi-Source Reconciliation
+
+1. Read primary and secondary files (may be different formats)
+2. Normalize column names in both
+3. Identify common key column(s)
+4. Merge with `indicator=True` to flag matched/unmatched
+5. Write three-sheet output: Matched, Primary Only, Secondary Only
+6. Add summary statistics on a fourth sheet
+
+### Pattern 4: Periodic Report Refresh
+
+1. Download current Excel from Graph API (OneDrive/SharePoint)
+2. Read existing data from "Data" sheet
+3. Read new data from CSV/JSON source
+4. Append new rows, deduplicate on primary key
+5. Recalculate summary statistics
+6. Write updated workbook with Data + Summary sheets
+7. Upload back to Graph API, replacing original file
+
 ## Dependencies
 
 Required Python packages:
@@ -392,8 +672,10 @@ Required Python packages:
 - `xlrd` (legacy .xls support)
 - `pyxlsb` (.xlsb binary format)
 - `pyarrow` or `fastparquet` (Parquet files)
+- `chardet` (encoding detection — optional)
+- `requests` (Graph API integration — optional)
 
-Install: `pip install pandas openpyxl xlrd pyxlsb pyarrow`
+Install: `pip install pandas openpyxl xlrd pyxlsb pyarrow chardet requests`
 
 ## Reference Files
 

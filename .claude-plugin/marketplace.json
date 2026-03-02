@@ -478,6 +478,82 @@
         "meeting-notes"
       ],
       "strict": true
+    },
+    {
+      "name": "marketplace-dev-tools",
+      "source": "./marketplace-dev-tools",
+      "description": "Research Microsoft APIs, scaffold new plugins, extend existing ones, and audit marketplace coverage gaps.",
+      "category": "devops",
+      "tags": [
+        "microsoft",
+        "marketplace",
+        "scaffold",
+        "research",
+        "graph-api",
+        "plugin-dev"
+      ],
+      "strict": true
+    },
+    {
+      "name": "power-pages",
+      "source": "./power-pages",
+      "description": "Microsoft Power Pages — sites, page templates, Liquid, web forms, table permissions, web roles, and Dataverse portal integration",
+      "category": "productivity",
+      "tags": [
+        "microsoft",
+        "power-pages",
+        "portals",
+        "power-platform",
+        "liquid",
+        "dataverse"
+      ],
+      "strict": true
+    },
+    {
+      "name": "azure-web-apps",
+      "source": "./azure-web-apps",
+      "description": "Azure App Service — create, deploy, and manage web apps, deployment slots, custom domains, and TLS certificates via ARM REST API",
+      "category": "cloud",
+      "tags": [
+        "microsoft",
+        "azure",
+        "app-service",
+        "web-apps",
+        "deployment",
+        "paas"
+      ],
+      "strict": true
+    },
+    {
+      "name": "azure-static-web-apps",
+      "source": "./azure-static-web-apps",
+      "description": "Azure Static Web Apps — JAMstack/SPA hosting with built-in auth, API backends, PR preview environments, and staticwebapp.config.json management",
+      "category": "cloud",
+      "tags": [
+        "microsoft",
+        "azure",
+        "static-web-apps",
+        "jamstack",
+        "spa",
+        "serverless"
+      ],
+      "strict": true
+    },
+    {
+      "name": "teams-app-dev",
+      "source": "./teams-app-dev",
+      "description": "Custom Teams app development — Adaptive Cards, message extensions, bot handlers, tab apps, manifest authoring, and Teams Toolkit CLI workflows.",
+      "category": "devops",
+      "tags": [
+        "microsoft",
+        "teams",
+        "teams-toolkit",
+        "adaptive-cards",
+        "bot-framework",
+        "message-extensions",
+        "typescript"
+      ],
+      "strict": true
     }
   ]
 }

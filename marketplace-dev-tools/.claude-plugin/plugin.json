@@ -1,0 +1,24 @@
+{
+  "name": "marketplace-dev-tools",
+  "version": "1.0.0",
+  "description": "Research Microsoft APIs, scaffold new plugins, extend existing ones, and audit marketplace coverage",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft", "marketplace", "scaffold", "research",
+    "graph-api", "plugin-dev", "coverage-audit"
+  ],
+  "skills": [
+    "./skills/marketplace-research/SKILL.md"
+  ],
+  "agents": [
+    "./agents/research-reviewer.md"
+  ],
+  "commands": [
+    "./commands/research-service.md",
+    "./commands/scaffold-plugin.md",
+    "./commands/extend-plugin.md",
+    "./commands/audit-coverage.md"
+  ]
+}

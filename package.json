@@ -16,7 +16,8 @@
     "validate:all": "npm run validate:marketplace && npm run validate:knowledge-plugins && npm run validate:command-frontmatter",
     "validate:plugins": "node scripts/validate-plugins.mjs",
     "validate:command-frontmatter": "node scripts/validate-command-frontmatter.mjs",
-    "validate:knowledge-plugins": "node scripts/validate-plugins.mjs"
+    "validate:knowledge-plugins": "node scripts/validate-plugins.mjs",
+    "research": "node marketplace-dev-tools/scripts/research-service.mjs"
   },
   "repository": {
     "type": "git",

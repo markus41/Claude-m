@@ -1,0 +1,29 @@
+{
+  "name": "power-pages",
+  "version": "1.0.0",
+  "description": "Microsoft Power Pages — sites, page templates, Liquid, web forms, table permissions, web roles, and Dataverse portal integration",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "power-pages",
+    "portals",
+    "power-platform",
+    "liquid",
+    "dataverse"
+  ],
+  "skills": [
+    "./skills/power-pages/SKILL.md"
+  ],
+  "agents": [
+    "./agents/pages-reviewer.md"
+  ],
+  "commands": [
+    "./commands/pages-site-create.md",
+    "./commands/pages-template-apply.md",
+    "./commands/pages-webform-create.md",
+    "./commands/pages-permissions.md",
+    "./commands/setup.md"
+  ]
+}

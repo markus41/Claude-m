@@ -27,6 +27,13 @@ triggers:
   - power query M
   - calculated column
   - measure
+  - power bi rest api
+  - fabric rest api
+  - workspace management
+  - dataset refresh
+  - embed token
+  - report export
+  - direct lake
 ---
 
 # Power BI & Fabric Analytics
@@ -203,20 +210,240 @@ project-name.Report/
 
 **model.bim** (JSON format) is the alternative to TMDL. It contains the entire model definition in a single JSON file following the TOM (Tabular Object Model) schema. Includes `model.tables[]`, `model.relationships[]`, and `model.dataSources[]`.
 
-## Power BI REST API Overview
+## Power BI REST API
 
 The REST API base URL is `https://api.powerbi.com/v1.0/myorg/`. Authentication uses Azure AD tokens with the scope `https://analysis.windows.net/powerbi/api/.default`.
 
-Key endpoint groups:
+### Workspaces (Groups)
 
-| Area | Endpoints | Key Operations |
-|------|-----------|----------------|
-| Workspaces | `/groups` | Create, list, add users, assign capacity |
-| Datasets | `/groups/{id}/datasets` | List, refresh, get refresh history, patch datasources |
-| Reports | `/groups/{id}/reports` | List, clone, rebind, export to PDF/PNG/PPTX |
-| Imports | `/groups/{id}/imports` | Upload .pbix, check import status |
-| Admin | `/admin/groups`, `/admin/datasets` | Tenant-wide management, activity events |
-| Embed | `/groups/{id}/reports/{id}/GenerateToken` | Generate embed tokens |
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| GET | `/groups` | List workspaces the user has access to |
+| POST | `/groups` | Create a new workspace |
+| GET | `/groups/{groupId}` | Get workspace details |
+| DELETE | `/groups/{groupId}` | Delete a workspace |
+| POST | `/groups/{groupId}/users` | Add user/service principal to workspace |
+| PUT | `/groups/{groupId}/users` | Update user role in workspace |
+| DELETE | `/groups/{groupId}/users/{userEmail}` | Remove user from workspace |
+
+**Create workspace body**:
+```json
+{
+  "name": "Finance Analytics - Prod"
+}
+```
+
+**Add user body**:
+```json
+{
+  "emailAddress": "analyst@contoso.com",
+  "groupUserAccessRight": "Member"
+}
+```
+
+Access rights: `Admin`, `Member`, `Contributor`, `Viewer`.
+
+### Datasets / Semantic Models
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| GET | `/groups/{groupId}/datasets` | List datasets in workspace |
+| GET | `/groups/{groupId}/datasets/{datasetId}` | Get dataset details |
+| DELETE | `/groups/{groupId}/datasets/{datasetId}` | Delete a dataset |
+| POST | `/groups/{groupId}/datasets/{datasetId}/refreshes` | Trigger dataset refresh |
+| GET | `/groups/{groupId}/datasets/{datasetId}/refreshes` | Get refresh history |
+| PATCH | `/groups/{groupId}/datasets/{datasetId}/datasources` | Update data source credentials |
+| POST | `/groups/{groupId}/datasets/{datasetId}/executeQueries` | Execute DAX query against dataset |
+
+**Trigger refresh body** (enhanced with options):
+```json
+{
+  "type": "Full",
+  "commitMode": "transactional",
+  "applyRefreshPolicy": false,
+  "objects": [
+    { "table": "FactSales", "partition": "FactSales-2026" }
+  ],
+  "notifyOption": "MailOnCompletion"
+}
+```
+
+Omit `objects` for a full refresh of all tables. The `notifyOption` values are: `NoNotification`, `MailOnFailure`, `MailOnCompletion`.
+
+### Reports
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| GET | `/groups/{groupId}/reports` | List reports in workspace |
+| GET | `/groups/{groupId}/reports/{reportId}` | Get report details |
+| POST | `/groups/{groupId}/reports/{reportId}/Clone` | Clone report to same or different workspace |
+| POST | `/groups/{groupId}/reports/{reportId}/Rebind` | Rebind report to a different dataset |
+| POST | `/groups/{groupId}/reports/{reportId}/ExportTo` | Export report to PDF, PNG, or PPTX |
+
+**Export report body** (PDF):
+```json
+{
+  "format": "PDF",
+  "powerBIReportConfiguration": {
+    "pages": [
+      { "pageName": "ReportSection1" }
+    ],
+    "defaultBookmark": {
+      "name": "BookmarkForExport"
+    }
+  }
+}
+```
+
+Export is async — the response returns a 202 with an export ID. Poll `GET /groups/{groupId}/reports/{reportId}/exports/{exportId}` until `status` is `Succeeded`, then download via `GET .../exports/{exportId}/file`.
+
+### Imports
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| POST | `/groups/{groupId}/imports?datasetDisplayName={name}` | Upload .pbix file |
+| GET | `/groups/{groupId}/imports/{importId}` | Check import status |
+
+Upload uses `multipart/form-data` with the .pbix file as the body. Add `nameConflict=CreateOrOverwrite` to replace existing datasets.
+
+### Embedding
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| POST | `/groups/{groupId}/reports/{reportId}/GenerateToken` | Generate embed token for a report |
+| POST | `/groups/{groupId}/datasets/{datasetId}/GenerateToken` | Generate embed token for a dataset |
+| POST | `/GenerateToken` | Generate multi-resource embed token |
+
+**Generate embed token body**:
+```json
+{
+  "accessLevel": "View",
+  "identities": [
+    {
+      "username": "user@contoso.com",
+      "roles": ["SalesRegion"],
+      "datasets": ["<datasetId>"]
+    }
+  ]
+}
+```
+
+Access levels: `View`, `Edit`, `Create`. The `identities` array is required only when the dataset uses Row-Level Security (RLS).
+
+### JSON Request Body Examples
+
+**Execute DAX query**:
+```json
+POST /groups/{groupId}/datasets/{datasetId}/executeQueries
+{
+  "queries": [
+    {
+      "query": "EVALUATE SUMMARIZECOLUMNS('Date'[Year], 'Date'[Month], \"Total Sales\", [Total Sales])"
+    }
+  ],
+  "serializerSettings": {
+    "includeNulls": true
+  }
+}
+```
+
+## Permissions / Scopes
+
+| Scope | Purpose |
+|-------|---------|
+| `https://analysis.windows.net/powerbi/api/Dataset.ReadWrite.All` | Read and write datasets (semantic models) |
+| `https://analysis.windows.net/powerbi/api/Report.ReadWrite.All` | Read and write reports |
+| `https://analysis.windows.net/powerbi/api/Workspace.ReadWrite.All` | Create and manage workspaces |
+| `https://analysis.windows.net/powerbi/api/Content.Create` | Create content in workspaces |
+| `https://analysis.windows.net/powerbi/api/Tenant.ReadWrite.All` | Admin API — tenant-wide management |
+| `https://analysis.windows.net/powerbi/api/.default` | Shorthand for all assigned permissions |
+
+For service principal authentication, register the app in Azure AD > Power BI Service > Admin Portal > Tenant Settings > Enable "Allow service principals to use Power BI APIs".
+
+## REST API Error Handling
+
+| Status | Meaning | Action |
+|--------|---------|--------|
+| 400 | Bad Request — invalid JSON, malformed DAX query, or missing required field | Check request body schema; validate DAX syntax |
+| 401 | Unauthorized — expired or missing token | Re-acquire token with correct scope |
+| 403 | Forbidden — user lacks workspace role or admin permission | Verify workspace membership and access level |
+| 404 | Not Found — workspace, dataset, or report does not exist | Confirm resource IDs; resource may have been deleted |
+| 409 | Conflict — dataset refresh already in progress | Wait for current refresh to complete before starting another |
+| 429 | Too Many Requests — API throttled | Retry after `Retry-After` header; implement exponential backoff |
+| 202 | Accepted — async operation started (export, refresh) | Poll the status endpoint until completion |
+
+Error response structure:
+```json
+{
+  "error": {
+    "code": "InvalidRequest",
+    "message": "The provided dataset ID is not valid.",
+    "details": [
+      { "code": "DatasetNotFound", "message": "..." }
+    ]
+  }
+}
+```
+
+## Fabric REST API
+
+Microsoft Fabric provides its own REST API at `https://api.fabric.microsoft.com/v1/`. Authentication uses Azure AD tokens with the scope `https://api.fabric.microsoft.com/.default`.
+
+### Workspaces
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| GET | `/workspaces` | List Fabric workspaces |
+| POST | `/workspaces` | Create a Fabric workspace |
+| GET | `/workspaces/{workspaceId}` | Get workspace details |
+| DELETE | `/workspaces/{workspaceId}` | Delete a workspace |
+| POST | `/workspaces/{workspaceId}/assignToCapacity` | Assign workspace to a Fabric capacity |
+
+### Lakehouses
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| GET | `/workspaces/{workspaceId}/lakehouses` | List lakehouses in workspace |
+| POST | `/workspaces/{workspaceId}/lakehouses` | Create a new lakehouse |
+| GET | `/workspaces/{workspaceId}/lakehouses/{lakehouseId}` | Get lakehouse details |
+| DELETE | `/workspaces/{workspaceId}/lakehouses/{lakehouseId}` | Delete a lakehouse |
+| GET | `/workspaces/{workspaceId}/lakehouses/{lakehouseId}/tables` | List Delta tables in lakehouse |
+
+**Create lakehouse body**:
+```json
+{
+  "displayName": "sales_lakehouse",
+  "description": "Gold-layer Lakehouse for sales analytics"
+}
+```
+
+### Notebooks
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| GET | `/workspaces/{workspaceId}/notebooks` | List notebooks in workspace |
+| POST | `/workspaces/{workspaceId}/notebooks` | Create a notebook |
+| GET | `/workspaces/{workspaceId}/notebooks/{notebookId}` | Get notebook details |
+| DELETE | `/workspaces/{workspaceId}/notebooks/{notebookId}` | Delete a notebook |
+
+### Data Pipelines
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| GET | `/workspaces/{workspaceId}/dataPipelines` | List pipelines |
+| POST | `/workspaces/{workspaceId}/dataPipelines` | Create a pipeline |
+| GET | `/workspaces/{workspaceId}/dataPipelines/{pipelineId}` | Get pipeline details |
+| DELETE | `/workspaces/{workspaceId}/dataPipelines/{pipelineId}` | Delete a pipeline |
+| POST | `/workspaces/{workspaceId}/dataPipelines/{pipelineId}/jobs/instances?jobType=Pipeline` | Run a pipeline |
+
+### Semantic Models (Fabric)
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| GET | `/workspaces/{workspaceId}/semanticModels` | List semantic models |
+| POST | `/workspaces/{workspaceId}/semanticModels` | Create a semantic model |
+| GET | `/workspaces/{workspaceId}/semanticModels/{modelId}` | Get model details |
+| DELETE | `/workspaces/{workspaceId}/semanticModels/{modelId}` | Delete a semantic model |
 
 ## Fabric Integration Summary
 

@@ -57,6 +57,11 @@ Then re-run `/plugin marketplace add markus41/Claude-m`.
 | `microsoft-lists-tracker` | productivity | Lists for process tracking, issue logs, project trackers |
 | `copilot-studio-bots` | productivity | Bot topics, trigger phrases, generative AI orchestration |
 | `onenote-knowledge-base` | productivity | Notebooks, sections, pages — team wiki and meeting notes |
+| `power-pages` | productivity | Power Pages sites, Liquid templates, web forms, table permissions |
+| `azure-web-apps` | cloud | App Service web apps, deployment slots, custom domains, CI/CD |
+| `azure-static-web-apps` | cloud | JAMstack/SPA hosting, built-in auth, PR preview environments |
+| `teams-app-dev` | devops | Custom Teams app development — Adaptive Cards, message extensions, bot handlers, tab apps, manifest authoring, and Teams Toolkit CLI workflows |
+| `marketplace-dev-tools` | devops | Research APIs, scaffold plugins, audit coverage |
 
 Install any plugin with:
 ```bash

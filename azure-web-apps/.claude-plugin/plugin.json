@@ -1,0 +1,29 @@
+{
+  "name": "azure-web-apps",
+  "version": "1.0.0",
+  "description": "Azure App Service — create, deploy, and manage web apps, deployment slots, custom domains, and TLS certificates via ARM REST API",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "azure",
+    "app-service",
+    "web-apps",
+    "deployment",
+    "paas"
+  ],
+  "skills": [
+    "./skills/azure-web-apps/SKILL.md"
+  ],
+  "agents": [
+    "./agents/webapp-reviewer.md"
+  ],
+  "commands": [
+    "./commands/webapp-create.md",
+    "./commands/webapp-deploy.md",
+    "./commands/webapp-slots.md",
+    "./commands/webapp-config.md",
+    "./commands/setup.md"
+  ]
+}

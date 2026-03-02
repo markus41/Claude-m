@@ -335,6 +335,153 @@ const graphClient = Client.initWithMiddleware({ authProvider });
 const forms = await graphClient.api("/me/forms").version("beta").get();
 ```
 
+## Quiz Mode
+
+Forms supports a quiz mode that adds scoring, correct answers, and feedback to questions.
+
+**Create a quiz**:
+```json
+POST /me/forms
+{
+  "title": "Cloud Fundamentals Quiz",
+  "description": "Test your knowledge of Azure basics",
+  "isQuiz": true
+}
+```
+
+**Quiz choice question with correct answer and points**:
+```json
+{
+  "displayName": "Which Azure service provides serverless compute?",
+  "questionType": "choice",
+  "isRequired": true,
+  "orderIndex": 0,
+  "choiceOptions": {
+    "choices": [
+      { "displayName": "Azure Functions", "value": "functions" },
+      { "displayName": "Azure VMs", "value": "vms" },
+      { "displayName": "Azure SQL", "value": "sql" }
+    ],
+    "allowMultipleAnswers": false
+  },
+  "grading": {
+    "correctAnswers": ["functions"],
+    "points": 10
+  }
+}
+```
+
+When `isQuiz` is true, the form displays scores to respondents after submission. Each question can have a `grading` block with `correctAnswers` (array of matching values) and `points` (numeric score). Text questions can also be graded manually after submission.
+
+## Form Publish API
+
+New forms are created in `draft` status. To make a form available to respondents, publish it:
+
+```
+PATCH /me/forms/{formId}
+```
+
+**Publish body**:
+```json
+{
+  "status": "active"
+}
+```
+
+**Unpublish** (close form to new responses):
+```json
+{
+  "status": "closed"
+}
+```
+
+Valid status values: `draft`, `active`, `closed`. A form must be `active` for the `webUrl` to accept submissions.
+
+## OData Filter Examples
+
+Responses and questions support OData query parameters for efficient data retrieval:
+
+| Parameter | Example | Purpose |
+|-----------|---------|---------|
+| `$top` | `GET /me/forms/{id}/responses?$top=25` | Limit to first 25 responses |
+| `$orderby` | `GET /me/forms/{id}/responses?$orderby=submitDateTime desc` | Sort by newest first |
+| `$filter` | `GET /me/forms/{id}/responses?$filter=submitDateTime ge 2026-03-01T00:00:00Z` | Responses after a date |
+| `$select` | `GET /me/forms/{id}/responses?$select=submitDateTime,respondent` | Return only specific fields |
+| `$skip` | `GET /me/forms/{id}/responses?$skip=100&$top=100` | Paginate results (page 2) |
+
+**Combined example**: Get the 10 most recent responses with only answers and timestamps:
+```
+GET /me/forms/{formId}/responses?$top=10&$orderby=submitDateTime desc&$select=submitDateTime,answers
+```
+
+## Error Response Shape
+
+Forms endpoints return the standard Graph error envelope:
+
+```json
+{
+  "error": {
+    "code": "ItemNotFound",
+    "message": "The specified form was not found.",
+    "innerError": {
+      "date": "2026-03-01T12:00:00",
+      "request-id": "abc-123-def",
+      "client-request-id": "client-456"
+    }
+  }
+}
+```
+
+**Forms-specific error codes**:
+
+| Code | Status | Meaning |
+|------|--------|---------|
+| `ItemNotFound` | 404 | Form, question, or response does not exist |
+| `AccessDenied` | 403 | User does not own the form or lacks Forms.ReadWrite |
+| `InvalidRequest` | 400 | Malformed question body (e.g., choice question with no choices) |
+| `QuotaExceeded` | 429 | Too many requests — retry after `Retry-After` header |
+| `GeneralException` | 500 | Server error — retry with exponential backoff |
+| `BadGateway` | 502 | Upstream service error — Forms beta can be intermittently unstable |
+
+## Branching Logic
+
+Forms supports conditional question display based on prior answers. Branching lets you show or skip questions depending on what the respondent selected.
+
+**Branch definition** (on a choice question):
+```json
+{
+  "displayName": "Are you attending in person?",
+  "questionType": "choice",
+  "isRequired": true,
+  "orderIndex": 3,
+  "choiceOptions": {
+    "choices": [
+      { "displayName": "Yes — in person", "value": "in-person" },
+      { "displayName": "No — remote", "value": "remote" }
+    ],
+    "allowMultipleAnswers": false
+  },
+  "branching": {
+    "rules": [
+      {
+        "matchValue": "in-person",
+        "targetQuestionId": "<dietary-question-id>"
+      },
+      {
+        "matchValue": "remote",
+        "targetQuestionId": "<timezone-question-id>"
+      }
+    ]
+  }
+}
+```
+
+**Branching rules**:
+- Each `rule` maps a `matchValue` (the selected choice value) to a `targetQuestionId` (the next question to display).
+- If no rule matches, the form proceeds to the next question in `orderIndex` order.
+- Branching only works on choice questions (single-select).
+- Use branching for event RSVPs (in-person → dietary, remote → timezone), conditional feedback (satisfied → thanks, unsatisfied → details), or skip-logic surveys.
+
 ## Important Notes
 
 - **Beta only**: All Forms endpoints are under `/beta`. They are not available in `/v1.0`.

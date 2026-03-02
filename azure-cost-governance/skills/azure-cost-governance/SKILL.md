@@ -1,46 +1,418 @@
-# Azure Cost Governance Skill
+---
+name: azure-cost-governance
+description: >
+  Deep expertise in Azure Cost Management FinOps — cost queries, budget alerts, forecast,
+  idle resource detection, usage details, scope hierarchy, dimension grouping, and
+  savings recommendations via the Azure Cost Management and Consumption REST APIs.
+allowed-tools:
+  - Read
+  - Grep
+  - Glob
+  - Bash
+  - Write
+  - Edit
+triggers:
+  - azure cost
+  - cost management
+  - finops
+  - cost query
+  - budget alert
+  - idle resources
+  - cost savings
+  - azure spend
+  - cost forecast
+  - cost optimization
+  - budget overrun
+  - cost analysis
+---
 
-## Purpose
-Provide practical FinOps guidance with high-confidence savings actions, business impact (monthly + annualized), and explicit rollback risk notes.
+# Azure Cost Governance
 
-## Trigger phrases (natural prompts → command)
-Use these mappings to route user requests predictably:
-- "show Azure spend by resource group/service/tag" → `azure-cost-query`
-- "build a cost query for last 30 days" → `azure-cost-query`
-- "check budget overrun risk this month" → `azure-budget-check`
-- "forecast whether we will exceed budget" → `azure-budget-check`
-- "find idle Azure resources and savings" → `azure-idle-resources`
-- "identify shutdown/deallocation candidates" → `azure-idle-resources`
-- "set up cost governance context first" → `setup`
+This skill provides comprehensive FinOps guidance via the Azure Cost Management and Consumption REST APIs — cost queries, budgets, forecasts, idle resource detection, and savings recommendations with risk-ranked actions and rollback notes.
 
-## Prerequisites
-- Tenant role: reader-level visibility to billing/cost data for target scope; contributor/owner only if user asks for execution actions.
-- Permissions: access to Cost Management data and budgets at subscription/management group/tenant billing scope.
-- Subscription scope: explicit scope path is required (for example `/subscriptions/<id>`).
-- Tooling: Azure CLI authenticated (`az login`) and access to cost/budget telemetry sources used by this plugin.
-- Governance context: timeframe, currency, and analysis dimensions agreed before running optimization recommendations.
+## Base URLs
 
-## Expected inputs
-- `scope`: subscription, resource group, or management group path.
-- `timeframe`: preset (`MTD`, `QTD`, `last-30-days`, etc.) or explicit `start/end` dates.
-- `focus`: budget health, spend breakdown, or idle-resource optimization objective.
-- Optional constraints: resource types, savings floor, alert thresholds, forecast horizon.
+```
+Cost Management:  https://management.azure.com/{scope}/providers/Microsoft.CostManagement
+Consumption:      https://management.azure.com/{scope}/providers/Microsoft.Consumption
+```
 
-## Promised output structure
-Always return deterministic, command-aligned sections:
-1. Short executive summary (3-6 bullets).
-2. Primary result table/JSON schema required by selected command.
-3. Prioritized actions with estimated savings range and owner suggestion.
-4. Assumptions, telemetry gaps, and confidence/risk notes.
+## API Endpoints
 
-## Decision tree (which command to run)
+### Cost Management (Microsoft.CostManagement)
+
+| Method | Endpoint | API Version | Purpose |
+|--------|----------|-------------|---------|
+| POST | `/{scope}/providers/Microsoft.CostManagement/query` | `2025-03-01` | Query cost data with grouping and filters |
+| POST | `/{scope}/providers/Microsoft.CostManagement/forecast` | `2024-08-01` | Forecast future costs |
+| GET | `/{scope}/providers/Microsoft.CostManagement/dimensions` | `2024-08-01` | List available dimensions for grouping |
+| POST | `/{scope}/providers/Microsoft.CostManagement/generateCostDetailsReport` | `2024-08-01` | Generate detailed cost report (replaces Usage Details) |
+
+### Consumption (Microsoft.Consumption)
+
+| Method | Endpoint | API Version | Purpose |
+|--------|----------|-------------|---------|
+| PUT | `/{scope}/providers/Microsoft.Consumption/budgets/{name}` | `2024-08-01` | Create or update budget |
+| GET | `/{scope}/providers/Microsoft.Consumption/budgets` | `2024-08-01` | List budgets |
+| GET | `/{scope}/providers/Microsoft.Consumption/budgets/{name}` | `2024-08-01` | Get budget details |
+| DELETE | `/{scope}/providers/Microsoft.Consumption/budgets/{name}` | `2024-08-01` | Delete budget |
+| GET | `/{scope}/providers/Microsoft.Consumption/usageDetails` | `2024-08-01` | List usage details (deprecated — use generateCostDetailsReport) |
+
+## Query API
+
+### Request Body Schema
+
+```json
+POST /{scope}/providers/Microsoft.CostManagement/query?api-version=2025-03-01
+{
+  "type": "ActualCost",
+  "timeframe": "MonthToDate",
+  "dataset": {
+    "granularity": "Daily",
+    "aggregation": {
+      "totalCost": {
+        "name": "PreTaxCost",
+        "function": "Sum"
+      }
+    },
+    "grouping": [
+      {
+        "name": "ServiceName",
+        "type": "Dimension"
+      }
+    ],
+    "filter": {
+      "dimensions": {
+        "name": "ResourceGroup",
+        "operator": "In",
+        "values": ["rg-production", "rg-staging"]
+      }
+    }
+  }
+}
+```
+
+### Query Type Values
+
+| Type | Description |
+|------|-------------|
+| `ActualCost` | Actual billed cost |
+| `AmortizedCost` | Spreads reservation purchases over the commitment term |
+| `Usage` | Equivalent to ActualCost for non-reservation scopes |
+
+### Timeframe Values
+
+| Timeframe | Description |
+|-----------|-------------|
+| `MonthToDate` | Current month so far |
+| `BillingMonthToDate` | Current billing month |
+| `TheLastMonth` | Previous full calendar month |
+| `TheLastBillingMonth` | Previous full billing month |
+| `WeekToDate` | Current week (Monday-based) |
+| `Custom` | Requires `timePeriod` with `from` and `to` dates |
+
+### Custom Time Period
+
+```json
+{
+  "type": "ActualCost",
+  "timeframe": "Custom",
+  "timePeriod": {
+    "from": "2026-01-01T00:00:00Z",
+    "to": "2026-01-31T23:59:59Z"
+  },
+  "dataset": { ... }
+}
+```
+
+### Dataset Options
+
+- `granularity`: `Daily` or `Monthly`
+- `aggregation`: up to 2 clauses, only `Sum` function. Columns: `PreTaxCost`, `Cost`, `CostUSD`, `PreTaxCostUSD`
+- `grouping`: up to 2 clauses, `type` is `Dimension` or `TagKey`
+- `filter`: nested structure with `and[]`, `or[]`, `dimensions`, `tags`
+
+### Filter Structure
+
+```json
+{
+  "filter": {
+    "and": [
+      {
+        "dimensions": {
+          "name": "ResourceGroup",
+          "operator": "In",
+          "values": ["rg-production"]
+        }
+      },
+      {
+        "tags": {
+          "name": "Environment",
+          "operator": "In",
+          "values": ["Production"]
+        }
+      }
+    ]
+  }
+}
+```
+
+### Pagination
+
+Response includes `properties.nextLink` when more pages exist. POST the same body to the full `nextLink` URL (contains `$skiptoken`) until `nextLink` is `null`.
+
+## Budgets API
+
+### Create/Update Budget
+
+```json
+PUT /{scope}/providers/Microsoft.Consumption/budgets/{budgetName}?api-version=2024-08-01
+{
+  "properties": {
+    "category": "Cost",
+    "amount": 5000,
+    "timeGrain": "Monthly",
+    "timePeriod": {
+      "startDate": "2026-03-01T00:00:00Z",
+      "endDate": "2027-02-28T00:00:00Z"
+    },
+    "filter": {
+      "and": [
+        {
+          "dimensions": {
+            "name": "ResourceGroupName",
+            "operator": "In",
+            "values": ["rg-production"]
+          }
+        }
+      ]
+    },
+    "notifications": {
+      "actual_GreaterThan_80_Percent": {
+        "enabled": true,
+        "operator": "GreaterThan",
+        "threshold": 80,
+        "thresholdType": "Actual",
+        "contactEmails": ["finops@contoso.com"],
+        "contactRoles": ["Owner", "Contributor"],
+        "contactGroups": [],
+        "locale": "en-us"
+      },
+      "forecasted_GreaterThan_100_Percent": {
+        "enabled": true,
+        "operator": "GreaterThan",
+        "threshold": 100,
+        "thresholdType": "Forecasted",
+        "contactEmails": ["finops@contoso.com"],
+        "contactRoles": ["Owner"]
+      }
+    }
+  }
+}
+```
+
+### Budget Properties
+
+| Property | Values | Description |
+|----------|--------|-------------|
+| `category` | `Cost` | Only `Cost` is supported |
+| `timeGrain` | `Monthly`, `Quarterly`, `Annually` | Budget evaluation period |
+| `thresholdType` | `Actual`, `Forecasted` | Alert on actual spend or forecasted spend |
+| `operator` | `GreaterThan`, `GreaterThanOrEqualTo`, `EqualTo` | Alert comparison |
+| `threshold` | 0-1000 | Percentage of budget amount |
+
+Up to 5 notification rules per budget.
+
+## Forecast API
+
+```json
+POST /{scope}/providers/Microsoft.CostManagement/forecast?api-version=2024-08-01
+{
+  "type": "ActualCost",
+  "timeframe": "Custom",
+  "timePeriod": {
+    "from": "2026-03-01T00:00:00Z",
+    "to": "2026-03-31T23:59:59Z"
+  },
+  "dataset": {
+    "granularity": "Daily",
+    "aggregation": {
+      "totalCost": {
+        "name": "Cost",
+        "function": "Sum"
+      }
+    }
+  },
+  "includeActualCost": true,
+  "includeFreshPartialCost": true
+}
+```
+
+**Notes:**
+- `timeframe` must be `Custom` for forecast
+- `granularity` must be `Daily`
+- `includeActualCost: true` merges already-accrued actuals with forecast rows
+- Requires at least 1 week of historical data; returns `424 FailedDependency` if insufficient
+
+## Usage Details (OData Filters)
+
+```
+GET /{scope}/providers/Microsoft.Consumption/usageDetails?api-version=2024-08-01
+  &$filter=properties/resourceGroup eq 'rg-production' and properties/usageStart ge '2026-02-01'
+  &$top=1000
+  &metric=ActualCost
+```
+
+**Note:** This API is deprecated. Use `generateCostDetailsReport` for new implementations.
+
+| Parameter | Description |
+|-----------|-------------|
+| `$filter` | OData filter on `properties/resourceGroup`, `properties/resourceName`, `properties/chargeType`, `properties/publisherType`, `tags` |
+| `$top` | 1-1000 results per page |
+| `$skiptoken` | Pagination token |
+| `$expand` | `additionalInfo`, `meterDetails` |
+| `metric` | `ActualCost`, `AmortizedCost`, `Usage` |
+
+## Scope Reference
+
+| Scope | URI Path |
+|-------|----------|
+| Management group | `/providers/Microsoft.Management/managementGroups/{id}` |
+| Subscription | `/subscriptions/{id}` |
+| Resource group | `/subscriptions/{id}/resourceGroups/{name}` |
+| EA Billing account | `/providers/Microsoft.Billing/billingAccounts/{id}` |
+| EA Department | `/providers/Microsoft.Billing/billingAccounts/{id}/departments/{deptId}` |
+| EA Enrollment account | `/providers/Microsoft.Billing/billingAccounts/{id}/enrollmentAccounts/{acctId}` |
+| MCA Billing profile | `/providers/Microsoft.Billing/billingAccounts/{id}/billingProfiles/{profileId}` |
+| MCA Invoice section | `/providers/Microsoft.Billing/billingAccounts/{id}/billingProfiles/{profileId}/invoiceSections/{sectionId}` |
+
+## Dimension Reference
+
+Common dimension names for `grouping` and `filter`:
+
+### Resource Dimensions
+
+| Dimension | Description |
+|-----------|-------------|
+| `ResourceId` | Full ARM resource ID |
+| `ResourceGroup` | Resource group name |
+| `ResourceType` | ARM resource type (e.g., `Microsoft.Compute/virtualMachines`) |
+| `ResourceLocation` | Azure region |
+| `ResourceName` | Resource display name |
+
+### Service Dimensions
+
+| Dimension | Description |
+|-----------|-------------|
+| `ServiceName` | Service category (equivalent to MeterCategory) |
+| `ServiceFamily` | Broader service family grouping |
+| `MeterCategory` | Meter category |
+| `MeterSubCategory` | Meter sub-category |
+| `Meter` | Specific meter |
+| `UnitOfMeasure` | Billing unit |
+
+### Billing Dimensions
+
+| Dimension | Description |
+|-----------|-------------|
+| `ChargeType` | `Usage`, `Purchase`, `Refund`, `Adjustment` |
+| `PublisherType` | `Microsoft`/`Azure` (first-party) or `Marketplace` (third-party) |
+| `Frequency` | `OneTime`, `Recurring`, `UsageBased` |
+| `PricingModel` | `OnDemand`, `Reservation`, `Spot` |
+| `SubscriptionId` | Subscription GUID |
+
+### Tag Dimensions
+
+Use `type: "TagKey"` in grouping. Use `filter.tags` for tag-based filtering.
+
+## Common FinOps Patterns
+
+### Pattern 1: Monthly Cost Breakdown by Service
+
+1. `POST /{scope}/providers/Microsoft.CostManagement/query` with `type: ActualCost`, `timeframe: TheLastMonth`, grouping by `ServiceName`
+2. Sort results by cost descending
+3. Identify top 5 cost drivers
+4. Compare with previous month using `Custom` timeframe
+5. Flag services with >20% month-over-month growth
+
+### Pattern 2: Budget Health Check
+
+1. `GET /{scope}/providers/Microsoft.Consumption/budgets` — list all budgets
+2. For each budget: calculate `currentSpend / amount * 100` to get utilization percentage
+3. `POST .../forecast` — forecast remaining month spend
+4. If forecast exceeds budget: flag with projected overrun amount
+5. Generate alert recommendations for budgets missing forecasted thresholds
+
+### Pattern 3: Idle Resource Detection
+
+1. Query cost by `ResourceId` for the last 30 days — identify resources with near-zero cost
+2. Cross-reference with Azure Advisor recommendations for right-sizing
+3. Check for: unattached disks, stopped VMs with premium disks, idle load balancers, unused public IPs
+4. Estimate monthly savings per idle resource
+5. Classify by reversibility: safe to stop (VMs), safe to delete (unattached disks), needs review (load balancers)
+
+### Pattern 4: Tag Compliance Audit
+
+1. Query cost grouped by a required tag (e.g., `CostCenter`) — identify untagged spend
+2. `POST .../query` with filter for resources missing the tag
+3. Calculate percentage of total spend that is untagged
+4. Identify top untagged resource groups for remediation
+5. Produce tag compliance report with untagged cost by resource group
+
+### Pattern 5: Reservation Utilization Review
+
+1. `POST .../query` with `type: AmortizedCost` to see reservation amortization
+2. Compare amortized cost vs on-demand equivalent
+3. Identify underutilized reservations (amortized cost > actual usage)
+4. Recommend reservation modifications or exchanges
+5. Calculate net savings from reservation portfolio
+
+## Required Permissions
+
+| Role | Description |
+|------|-------------|
+| Cost Management Reader | Read cost data, view budgets/exports, view recommendations |
+| Cost Management Contributor | Read/write budgets, exports, shared views |
+| Reader | Read all cost data (includes Cost Management Reader) |
+| Contributor | Full cost management access (includes Cost Management Contributor) |
+| Billing Reader | Read billing data and invoices |
+| Monitoring Contributor | Required for budget Action Group notifications |
+
+**EA-specific roles:** Enterprise Administrator, Enterprise Read-Only, Department Administrator (requires DA view charges enabled), Account Owner (requires AO view charges enabled).
+
+## Error Handling
+
+| Status Code | Error Code | Common Cause |
+|-------------|-----------|--------------|
+| 400 | `BadRequest` | Malformed query body, unsupported scope, invalid filter |
+| 401 | `AccountCostDisabled` | EA "view charges" not enabled for this role |
+| 403 | `AuthorizationFailed` | Missing RBAC role at the target scope |
+| 403 | `RBACAccessDenied` | Missing role for budget Action Group (needs Monitoring Reader) |
+| 404 | `SubscriptionNotFound` | Invalid subscription ID or unsupported type |
+| 424 | `FailedDependency` | Forecast: insufficient history (wait 1 week) or multiple currencies |
+| 429 | `ResourceRequestsThrottled` | Rate limit — wait per `Retry-After` header (typically 5 minutes) |
+
+### Throttle Handling
+
+For 429 responses, read the `x-ms-ratelimit-microsoft.consumption-retry-after` or `Retry-After` header and wait before retrying:
+
+```javascript
+if (response.status === 429) {
+  const retryAfter = parseInt(response.headers["retry-after"] || "300", 10);
+  await new Promise(r => setTimeout(r, retryAfter * 1000));
+}
+```
+
+## Decision Tree
+
 1. Need to initialize scope/timeframe/currency/dimensions before analysis? → `setup`
 2. Need spend breakdowns, groupings, filters, or reproducible query JSON? → `azure-cost-query`
 3. Need budget utilization + forecast breach risk + interventions? → `azure-budget-check`
 4. Need underutilization detection and reversible optimization actions? → `azure-idle-resources`
-5. Request combines multiple goals? Run in order: `setup` → `azure-cost-query`/`azure-budget-check` → `azure-idle-resources` as needed.
+5. Request combines multiple goals? Run in order: `setup` → `azure-cost-query`/`azure-budget-check` → `azure-idle-resources`
 
-## Minimal references
+## Minimal References
+
 - `azure-cost-governance/commands/setup.md`
 - `azure-cost-governance/commands/azure-cost-query.md`
 - `azure-cost-governance/commands/azure-budget-check.md`
