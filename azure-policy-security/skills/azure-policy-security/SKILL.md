@@ -23,9 +23,15 @@ triggers:
   - cis benchmark
   - nist compliance
   - policy remediation
+  - cost policy optimization workflow
 ---
 
 # Azure Policy & Security Governance
+
+## Shared Workflow Routing
+- Use the shared workflow spec for deterministic multi-plugin routing: [`workflows/multi-plugin-workflows.md`](../../../workflows/multi-plugin-workflows.md#cost--policy-optimization-azure-cost-governance--azure-policy-security--microsoft-azure-mcp).
+- Apply the trigger phrases, handoff contracts, auth prerequisites, validation checkpoints, and stop conditions before escalating to the next plugin.
+
 
 This skill provides comprehensive knowledge for assessing Azure governance posture via the Azure Policy REST API — policy assignments, compliance state queries, initiatives, exemptions, and drift analysis with actionable remediation plans.
 

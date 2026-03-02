@@ -24,9 +24,15 @@ triggers:
   - cost optimization
   - budget overrun
   - cost analysis
+  - cost policy optimization workflow
 ---
 
 # Azure Cost Governance
+
+## Shared Workflow Routing
+- Use the shared workflow spec for deterministic multi-plugin routing: [`workflows/multi-plugin-workflows.md`](../../../workflows/multi-plugin-workflows.md#cost--policy-optimization-azure-cost-governance--azure-policy-security--microsoft-azure-mcp).
+- Apply the trigger phrases, handoff contracts, auth prerequisites, validation checkpoints, and stop conditions before escalating to the next plugin.
+
 
 This skill provides comprehensive FinOps guidance via the Azure Cost Management and Consumption REST APIs — cost queries, budgets, forecasts, idle resource detection, and savings recommendations with risk-ranked actions and rollback notes.
 
