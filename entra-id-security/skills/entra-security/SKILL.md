@@ -229,3 +229,7 @@ Most of these require **application permissions** with admin consent for automat
 | CA Policy Suite | `examples/ca-policy-suite.md` | Common conditional access policy configurations |
 | Sign-In Audit | `examples/signin-audit.md` | Analyze failed sign-ins and detect anomalies |
 | Permission Audit | `examples/permission-audit.md` | Find and revoke over-permissioned OAuth grants |
+
+## Knowledge references
+
+- `references/operational-knowledge.md` — compact API surface map, prerequisite matrix, deterministic failure remediation, limits/quotas and pagination/throttling guidance, and safe-default read-first/apply-second pattern.

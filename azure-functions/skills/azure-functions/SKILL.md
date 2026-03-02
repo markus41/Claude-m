@@ -1432,3 +1432,7 @@ app.timer("cleanupExpiredRecords", {
     handler: cleanupExpiredRecords,
 });
 ```
+
+## Knowledge references
+
+- `references/operational-knowledge.md` — compact API surface map, prerequisite matrix, deterministic failure remediation, limits/throttling guidance, and safe-default read-first/apply-second pattern.
