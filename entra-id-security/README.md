@@ -15,6 +15,18 @@ Run `/setup` to configure authentication and verify Entra ID access:
 /setup --minimal    # Node.js dependencies only
 ```
 
+## Integration Context Contract
+- Canonical contract: [`docs/integration-context.md`](../docs/integration-context.md)
+
+| Command family | tenantId | subscriptionId | environmentCloud | principalType | scopesOrRoles |
+|---|---|---|---|---|---|
+| App/SP/CA/sign-in/risk operations | required | optional (required only when chaining to Azure scope) | `AzureCloud`\* | `delegated-user` or `service-principal` | `Application.ReadWrite.All`, `Policy.Read.All`, `AuditLog.Read.All`, `Directory.Read.All` |
+
+\* Use sovereign cloud values from the contract when applicable.
+
+Commands must fail fast on missing context before issuing Graph calls and use standardized context error codes.
+All outputs/reviews must redact tenant/object identifiers using the contract redaction policy.
+
 ## Capabilities
 
 | Area | What Claude Can Do |

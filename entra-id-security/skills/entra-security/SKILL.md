@@ -34,6 +34,18 @@ triggers:
 
 # Entra ID Security & Identity
 
+## Integration Context Contract
+- Canonical contract: [`docs/integration-context.md`](../../../docs/integration-context.md)
+
+| Workflow | tenantId | subscriptionId | environmentCloud | principalType | scopesOrRoles |
+|---|---|---|---|---|---|
+| App registration, CA policy, sign-in, risky user, permission audit | required | optional (for Azure chain handoff) | `AzureCloud`\* | `delegated-user` or `service-principal` | `Application.ReadWrite.All`, `Policy.Read.All`, `AuditLog.Read.All`, `Directory.Read.All` |
+
+\* Use sovereign cloud values from the canonical contract when applicable.
+
+Fail fast before Graph calls when required context is missing or invalid. Redact tenant/object identifiers in all outputs.
+
+
 ## Shared Workflow Routing
 - Use the shared workflow spec for deterministic multi-plugin routing: [`workflows/multi-plugin-workflows.md`](../../../workflows/multi-plugin-workflows.md#identitydata-risk-review-entra-id-security--purview-compliance--sharing-auditor).
 - Apply the trigger phrases, handoff contracts, auth prerequisites, validation checkpoints, and stop conditions before escalating to the next plugin.

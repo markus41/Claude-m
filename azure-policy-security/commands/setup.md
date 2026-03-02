@@ -16,6 +16,18 @@ allowed-tools:
 
 Prepare posture analysis before running policy and security assessments.
 
+## Integration Context Fail-Fast Check
+
+Before any external API call, validate integration context from [`docs/integration-context.md`](../../docs/integration-context.md):
+- `tenantId` (always required)
+- `subscriptionId` (required for Azure-scope workflows)
+- `environmentCloud`
+- `principalType`
+- `scopesOrRoles`
+
+If validation fails, stop immediately and return a structured error using contract codes (`MissingIntegrationContext`, `InvalidIntegrationContext`, `ContextCloudMismatch`, `InsufficientScopesOrRoles`).
+Redact tenant/subscription/object identifiers in setup output using contract redaction rules.
+
 ## Step 1: Confirm Scope
 
 Confirm the governance scope: tenant, management group, or specific subscriptions. Provide explicit scope paths (e.g., `/providers/Microsoft.Management/managementGroups/<name>` or `/subscriptions/<id>`).

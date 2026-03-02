@@ -27,6 +27,19 @@ Run `/setup` to configure authentication and install dependencies:
 /setup --with-sharepoint-pnp    # Include PnP PowerShell module
 ```
 
+## Integration Context Contract
+- Canonical contract: [`docs/integration-context.md`](../docs/integration-context.md)
+
+| Command family | tenantId | subscriptionId | environmentCloud | principalType | scopesOrRoles |
+|---|---|---|---|---|---|
+| User/group/license/admin workflows | required | optional (only when chaining with Azure plugins) | `AzureCloud`\* | `delegated-user` | `User.ReadWrite.All`, `Group.ReadWrite.All`, `Directory.ReadWrite.All`, `AuditLog.Read.All` |
+| Exchange/SharePoint admin workflows | required | optional | `AzureCloud`\* | `delegated-user` | `MailboxSettings.ReadWrite`, `Mail.ReadWrite`, `Sites.FullControl.All` |
+
+\* Use sovereign cloud values from the contract when applicable.
+
+Every command must validate required context up front and fail fast with contract error codes before Graph/PowerShell execution.
+Examples and reports must redact sensitive identifiers per the shared contract.
+
 ## Authentication
 
 All operations use delegated authentication with interactive browser login (MSAL). Scopes are requested dynamically based on the operation following the principle of least privilege.

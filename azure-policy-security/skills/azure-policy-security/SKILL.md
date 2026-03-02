@@ -35,6 +35,17 @@ triggers:
 
 This skill provides comprehensive knowledge for assessing Azure governance posture via the Azure Policy REST API — policy assignments, compliance state queries, initiatives, exemptions, and drift analysis with actionable remediation plans.
 
+## Integration Context Contract
+- Canonical contract: [`docs/integration-context.md`](../../../docs/integration-context.md)
+
+| Workflow | tenantId | subscriptionId | environmentCloud | principalType | scopesOrRoles |
+|---|---|---|---|---|---|
+| Policy coverage, drift, remediation | required | required | `AzureCloud`\* | `delegated-user` or `service-principal` | `PolicyInsights.Read`, `Policy.Read.All`, Azure `Reader` |
+
+\* Use sovereign cloud values from the canonical contract when applicable.
+
+Fail fast before API calls when required context is missing or invalid. Redact tenant/subscription/object IDs in outputs.
+
 ## Base URL
 
 ```

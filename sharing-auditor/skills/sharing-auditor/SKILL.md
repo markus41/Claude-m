@@ -33,6 +33,17 @@ triggers:
 
 This skill provides comprehensive knowledge for auditing and managing external sharing across SharePoint and OneDrive via Graph API and SharePoint PowerShell, with a focus on safe remediation that avoids accidental data loss.
 
+## Integration Context Contract
+- Canonical contract: [`docs/integration-context.md`](../../../docs/integration-context.md)
+
+| Workflow | tenantId | subscriptionId | environmentCloud | principalType | scopesOrRoles |
+|---|---|---|---|---|---|
+| Sharing scan and remediation | required | optional | `AzureCloud`\* | `delegated-user` | `Sites.Read.All`, `Sites.FullControl.All`, `User.Read.All`, `AuditLog.Read.All` |
+
+\* Use sovereign cloud values from the canonical contract when applicable.
+
+Fail fast before Graph/SharePoint calls when required context is missing or invalid. Redact tenant/object identifiers in outputs.
+
 ## Base URL
 
 ```

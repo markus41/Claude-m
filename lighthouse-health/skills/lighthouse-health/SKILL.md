@@ -28,6 +28,17 @@ triggers:
 
 This skill provides comprehensive knowledge for managing multiple Microsoft 365 customer tenants via Lighthouse, with focus on health scoring, GDAP relationship management, and remediation planning for MSPs/CSPs.
 
+## Integration Context Contract
+- Canonical contract: [`docs/integration-context.md`](../../../docs/integration-context.md)
+
+| Workflow | tenantId | subscriptionId | environmentCloud | principalType | scopesOrRoles |
+|---|---|---|---|---|---|
+| Multi-tenant health scoring and remediation | required (partner + customer) | optional | `AzureCloud`\* | `delegated-user` | `DelegatedAdminRelationship.Read.All`, `Directory.Read.All`, `AuditLog.Read.All` |
+
+\* Use sovereign cloud values from the canonical contract when applicable.
+
+Fail fast before scanning tenants when required context is missing or invalid. Redact partner/customer IDs in outputs.
+
 ## Base URL
 
 ```

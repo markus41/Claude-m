@@ -45,6 +45,17 @@ This skill provides comprehensive knowledge for managing Microsoft Purview compl
 3. **Legally aware** — Flag when legal counsel should be involved
 4. **Non-destructive** — Prefer test mode, dry runs, and gradual rollouts
 
+## Integration Context Contract
+- Canonical contract: [`docs/integration-context.md`](../../../docs/integration-context.md)
+
+| Workflow | tenantId | subscriptionId | environmentCloud | principalType | scopesOrRoles |
+|---|---|---|---|---|---|
+| DLP, retention, eDiscovery, compliance playbooks | required | optional (Azure-linked evidence only) | `AzureCloud`\* | `delegated-user` | `Compliance.Read.All`, `SecurityEvents.Read.All`, `AuditLog.Read.All` |
+
+\* Use sovereign cloud values from the canonical contract when applicable.
+
+Fail fast before compliance queries when required context is missing or invalid. Redact tenant/object identifiers in outputs.
+
 ## Base URLs
 
 ```
