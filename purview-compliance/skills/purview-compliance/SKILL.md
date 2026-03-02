@@ -26,9 +26,15 @@ triggers:
   - information protection
   - audit log
   - content search
+  - identity data risk review
 ---
 
 # Microsoft Purview Compliance
+
+## Shared Workflow Routing
+- Use the shared workflow spec for deterministic multi-plugin routing: [`workflows/multi-plugin-workflows.md`](../../../workflows/multi-plugin-workflows.md#identitydata-risk-review-entra-id-security--purview-compliance--sharing-auditor).
+- Apply the trigger phrases, handoff contracts, auth prerequisites, validation checkpoints, and stop conditions before escalating to the next plugin.
+
 
 This skill provides comprehensive knowledge for managing Microsoft Purview compliance features via Graph API and Security & Compliance PowerShell. All guidance is risk-ranked, auditable, and explicit about assumptions and legal dependencies.
 

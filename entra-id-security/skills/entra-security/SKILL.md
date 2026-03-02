@@ -29,9 +29,15 @@ triggers:
   - ca what-if
   - mfa policy
   - block legacy auth
+  - identity data risk review
 ---
 
 # Entra ID Security & Identity
+
+## Shared Workflow Routing
+- Use the shared workflow spec for deterministic multi-plugin routing: [`workflows/multi-plugin-workflows.md`](../../../workflows/multi-plugin-workflows.md#identitydata-risk-review-entra-id-security--purview-compliance--sharing-auditor).
+- Apply the trigger phrases, handoff contracts, auth prerequisites, validation checkpoints, and stop conditions before escalating to the next plugin.
+
 
 ## Microsoft Entra ID Overview
 

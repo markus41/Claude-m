@@ -24,9 +24,15 @@ triggers:
   - sprint board
   - devops board
   - artifact feed
+  - incident triage workflow
 ---
 
 # Azure DevOps
+
+## Shared Workflow Routing
+- Use the shared workflow spec for deterministic multi-plugin routing: [`workflows/multi-plugin-workflows.md`](../../../workflows/multi-plugin-workflows.md#incident-triage-azure-monitor--azure-functions--azure-devops).
+- Apply the trigger phrases, handoff contracts, auth prerequisites, validation checkpoints, and stop conditions before escalating to the next plugin.
+
 
 ## Azure DevOps Overview
 
