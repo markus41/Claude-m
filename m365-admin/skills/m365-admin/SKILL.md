@@ -34,6 +34,19 @@ triggers:
 
 This skill provides comprehensive knowledge for administering a Microsoft 365 tenant through the Microsoft Graph API. It covers user lifecycle management, license assignment, group administration, Exchange Online mailbox operations, SharePoint site management, and bulk processing patterns. All operations use delegated authentication with least-privilege scopes and produce structured reports.
 
+## Integration Context Contract
+- Canonical contract: [`docs/integration-context.md`](../../../docs/integration-context.md)
+
+| Workflow | tenantId | subscriptionId | environmentCloud | principalType | scopesOrRoles |
+|---|---|---|---|---|---|
+| User, group, license, audit workflows | required | optional (for Azure chain handoff) | `AzureCloud`\* | `delegated-user` | `User.ReadWrite.All`, `Group.ReadWrite.All`, `Directory.ReadWrite.All`, `AuditLog.Read.All` |
+| Exchange and SharePoint admin workflows | required | optional | `AzureCloud`\* | `delegated-user` | `MailboxSettings.ReadWrite`, `Mail.ReadWrite`, `Sites.FullControl.All` |
+
+\* Use sovereign cloud values from the canonical contract when applicable.
+
+Fail fast before Graph/PowerShell execution when required context is missing or invalid. Redact tenant and object identifiers in outputs.
+
+
 ## Microsoft Graph Admin API Overview
 
 The Microsoft Graph API is the unified gateway to data and intelligence in Microsoft 365. All admin operations target the base URL:

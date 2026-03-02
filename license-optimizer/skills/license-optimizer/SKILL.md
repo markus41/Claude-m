@@ -28,6 +28,17 @@ triggers:
 
 This skill provides comprehensive knowledge for identifying license waste, recommending right-sizing, managing group-based licensing, and generating savings reports for MSP/CSP customer review meetings via Graph API.
 
+## Integration Context Contract
+- Canonical contract: [`docs/integration-context.md`](../../../docs/integration-context.md)
+
+| Workflow | tenantId | subscriptionId | environmentCloud | principalType | scopesOrRoles |
+|---|---|---|---|---|---|
+| License scan, right-sizing, reporting | required | optional | `AzureCloud`\* | `delegated-user` | `Directory.Read.All`, `User.Read.All`, `Reports.Read.All` |
+
+\* Use sovereign cloud values from the canonical contract when applicable.
+
+Fail fast before Graph calls when required context is missing or invalid. Redact tenant/user identifiers in outputs.
+
 ## Base URL
 
 ```

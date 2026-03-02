@@ -36,6 +36,17 @@ triggers:
 
 This skill provides comprehensive FinOps guidance via the Azure Cost Management and Consumption REST APIs — cost queries, budgets, forecasts, idle resource detection, and savings recommendations with risk-ranked actions and rollback notes.
 
+## Integration Context Contract
+- Canonical contract: [`docs/integration-context.md`](../../../docs/integration-context.md)
+
+| Workflow | tenantId | subscriptionId | environmentCloud | principalType | scopesOrRoles |
+|---|---|---|---|---|---|
+| Cost query, budget, idle resource analysis | required | required | `AzureCloud`\* | `delegated-user` or `service-principal` | `CostManagement.Read`, `Consumption.Read`, Azure `Reader` |
+
+\* Use sovereign cloud values from the canonical contract when applicable.
+
+Fail fast before API calls when required context is missing or invalid. Redact tenant/subscription/object IDs in outputs.
+
 ## Base URLs
 
 ```

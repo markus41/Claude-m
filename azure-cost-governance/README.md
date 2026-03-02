@@ -8,6 +8,18 @@ Azure cost governance workflows for Claude Code teams.
 - Identify idle or underutilized resources
 - Produce optimization recommendations with expected savings
 
+## Integration Context Contract
+- Canonical contract: [`docs/integration-context.md`](../docs/integration-context.md)
+
+| Command family | tenantId | subscriptionId | environmentCloud | principalType | scopesOrRoles |
+|---|---|---|---|---|---|
+| Cost query, budgets, idle resources | required | required | `AzureCloud`\* | `delegated-user` or `service-principal` | `CostManagement.Read`, `Consumption.Read`, Azure `Reader` |
+
+\* Use sovereign cloud values from the contract when applicable.
+
+Commands must fail fast on missing/invalid context before Azure API calls and return contract error codes.
+All outputs must redact tenant/subscription identifiers using the shared policy.
+
 ## Included commands
 - `commands/setup.md`
 - `commands/azure-cost-query.md`

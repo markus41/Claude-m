@@ -24,6 +24,18 @@ Interactive guided setup for the M365 Admin plugin. Checks prerequisites, instal
 
 Default (no flags): Full guided setup including Node.js dependencies, Azure app registration, and connectivity verification. Exchange and PnP modules are offered as optional steps.
 
+## Integration Context Fail-Fast Check
+
+Before any external API call, validate integration context from [`docs/integration-context.md`](../../docs/integration-context.md):
+- `tenantId` (always required)
+- `subscriptionId` (required for Azure-scope workflows)
+- `environmentCloud`
+- `principalType`
+- `scopesOrRoles`
+
+If validation fails, stop immediately and return a structured error using contract codes (`MissingIntegrationContext`, `InvalidIntegrationContext`, `ContextCloudMismatch`, `InsufficientScopesOrRoles`).
+Redact tenant/subscription/object identifiers in setup output using contract redaction rules.
+
 ## Step 1: Check Prerequisites
 
 Verify the following tools are available on the system. Report version and status for each.

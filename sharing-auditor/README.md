@@ -8,6 +8,18 @@ Find overshared links, anonymous access, and stale guest users across SharePoint
 - Audit external sharing policies across site collections
 - Generate approval-based revocation tasks (no accidental hard deletes)
 
+## Integration Context Contract
+- Canonical contract: [`docs/integration-context.md`](../docs/integration-context.md)
+
+| Command family | tenantId | subscriptionId | environmentCloud | principalType | scopesOrRoles |
+|---|---|---|---|---|---|
+| Sharing scans and remediation plans | required | optional | `AzureCloud`\* | `delegated-user` | `Sites.Read.All`, `Sites.FullControl.All`, `User.Read.All`, `AuditLog.Read.All` |
+
+\* Use sovereign cloud values from the contract when applicable.
+
+Commands must fail fast before Graph/SharePoint calls when required context fields are missing.
+Results must redact sensitive IDs according to the shared redaction rules.
+
 ## Included commands
 - `/sharing-setup` — Configure SharePoint admin and Graph access
 - `/sharing-scan` — Scan for overshared links, anonymous access, and stale guests
