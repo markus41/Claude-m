@@ -1407,3 +1407,7 @@ az consumption budget create \
   --category Cost \
   --notifications '{"actual_GreaterThan_80":{"enabled":true,"operator":"GreaterThan","threshold":80,"contactEmails":["ops@contoso.com"]}}'
 ```
+
+## Knowledge references
+
+- `references/operational-knowledge.md` — compact API surface map, prerequisite matrix, deterministic failure remediation, limits/quotas and pagination/throttling guidance, and safe-default read-first/apply-second pattern.

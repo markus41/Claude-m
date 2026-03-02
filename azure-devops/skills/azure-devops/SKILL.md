@@ -277,3 +277,7 @@ ORDER BY [Microsoft.VSTS.Common.Priority] ASC, [System.CreatedDate] DESC
 | PR Automation | `examples/pr-automation.md` | Create PRs, add reviewers, auto-complete |
 | Sprint Setup | `examples/sprint-setup.md` | Create iteration paths, work items, and board configuration |
 | Artifact Publishing | `examples/artifact-publishing.md` | Publish and consume npm/NuGet packages |
+
+## Knowledge references
+
+- `references/operational-knowledge.md` — compact API surface map, prerequisite matrix, deterministic failure remediation, limits/quotas and pagination/throttling guidance, and safe-default read-first/apply-second pattern.

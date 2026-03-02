@@ -371,3 +371,7 @@ Every operation produces a structured markdown report containing:
 | License Management | `examples/license-management.md` | Assign, revoke, reassign with SKU handling |
 | Exchange Operations | `examples/exchange-operations.md` | Mailbox management, DLs, rules, calendar |
 | SharePoint Operations | `examples/sharepoint-operations.md` | Site CRUD, permissions, sharing, hubs |
+
+## Knowledge references
+
+- `references/operational-knowledge.md` — compact API surface map, prerequisite matrix, deterministic failure remediation, limits/quotas and pagination/throttling guidance, and safe-default read-first/apply-second pattern.
