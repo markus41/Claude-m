@@ -1,9 +1,12 @@
 ---
 name: power-automate
 description: >
-  Deep expertise in Power Automate cloud flows — flow design, debugging, deployment,
-  connector management, trigger types, retry policies, solution-aware concepts,
-  throttle limits, and flow lifecycle via Dataverse Web API and Power Platform API.
+  Deep expertise in all Power Automate product areas: cloud flows (automated, instant,
+  scheduled), desktop flows and RPA, Business Process Flows, AI Builder integration,
+  Process Mining, Approvals, custom connectors, governance and DLP, advanced expressions,
+  child flows, Power Platform Pipelines, and solution-aware ALM. Covers Dataverse Web API,
+  Power Platform API, connector throttling, retry policies, environment strategy, CoE Toolkit,
+  and end-to-end flow lifecycle from design through production.
 allowed-tools:
   - Read
   - Grep
@@ -24,365 +27,334 @@ triggers:
   - power platform flow
   - approval flow
   - automated flow
+  - desktop flow
+  - RPA
+  - robotic process automation
+  - business process flow
+  - BPF
+  - AI Builder
+  - form processing
+  - document intelligence
+  - process mining
+  - custom connector
+  - DLP policy
+  - flow governance
+  - CoE toolkit
+  - power platform pipelines
+  - child flow
+  - power automate expression
+  - flow expression
+  - attended automation
+  - unattended automation
+  - flow solution
+  - connection reference
+  - environment variable
 ---
 
-# Power Automate Cloud Flows
+# Power Automate — Full Product Reference
 
-This skill provides comprehensive knowledge for designing, troubleshooting, and deploying Power Automate cloud flows with idempotent patterns, connector management, retry policies, and solution-aware deployment via the supported Dataverse Web API and Power Platform API.
+This skill provides comprehensive knowledge for designing, building, troubleshooting, and
+governing all Power Automate product areas: cloud flows, desktop flows/RPA, Business Process
+Flows, AI Builder, Process Mining, Approvals, custom connectors, governance, and ALM.
+
+## Product Areas at a Glance
+
+| Area | Description | Entry Point |
+|---|---|---|
+| **Cloud flows** | Automated, instant, and scheduled flows; connector-based integration | [references/cloud-flows.md](./references/cloud-flows.md) |
+| **Desktop flows / RPA** | UI automation, attended/unattended bots, PAD recorder | [references/desktop-flows.md](./references/desktop-flows.md) |
+| **Business Process Flows** | Dataverse-guided stage/step processes for model-driven apps | [references/business-process-flows.md](./references/business-process-flows.md) |
+| **AI Builder** | Form processing, document intelligence, prediction, classification | [references/ai-builder.md](./references/ai-builder.md) |
+| **Process Mining** | Event log analysis, process discovery, conformance checking | [references/process-mining.md](./references/process-mining.md) |
+| **Approvals** | Teams-integrated approvals, adaptive cards, delegation | [references/approvals-adaptive-cards.md](./references/approvals-adaptive-cards.md) |
+| **Connectors & triggers** | Standard/premium connectors, HTTP, throttling limits | [references/connectors-triggers.md](./references/connectors-triggers.md) |
+| **Error handling & retry** | Try/catch/finally scopes, run-after, retry policies | [references/error-handling-retry.md](./references/error-handling-retry.md) |
+| **Custom connectors** | OpenAPI spec, code policies, certification, environment mgmt | [references/custom-connectors.md](./references/custom-connectors.md) |
+| **Governance & DLP** | Admin center, DLP policies, CoE Toolkit, environment strategy | [references/governance-dlp.md](./references/governance-dlp.md) |
+| **Expressions** | Full expression function library, operators, type coercions | [references/expressions-advanced.md](./references/expressions-advanced.md) |
+| **Child flows & Pipelines** | Child flow patterns, Power Platform Pipelines CI/CD | [references/child-flows-pipelines.md](./references/child-flows-pipelines.md) |
+
+---
 
 ## Base URLs
 
 ### Supported APIs
 
 ```
-Dataverse Web API:   https://{org}.{region}.dynamics.com/api/data/v9.2
-Power Platform API:  https://api.powerplatform.com/powerautomate/environments/{envId}
+Dataverse Web API:     https://{org}.{region}.dynamics.com/api/data/v9.2
+Power Platform API:    https://api.powerplatform.com/powerautomate/environments/{envId}
+AI Builder API:        https://{org}.{region}.dynamics.com/api/data/v9.2/msdyn_AIModels
+Process Mining API:    https://api.powerplatform.com/processinsights/environments/{envId}
+Approvals API:         https://{org}.{region}.dynamics.com/api/data/v9.2/approvals
 ```
 
-### Legacy API (Unsupported — Diagnostic Only)
+### Legacy API (Diagnostic Only — Do Not Use in Production)
 
 ```
 https://api.flow.microsoft.com/providers/Microsoft.ProcessSimple/environments/{envId}
 ```
 
-**Note:** Microsoft explicitly states `api.flow.microsoft.com` is unsupported and subject to breaking changes. Use the Dataverse Web API for production integrations.
+---
 
-## API Endpoints
+## Cloud Flow Management (Dataverse Web API)
 
-### Flow Management (Dataverse Web API)
+### Core Endpoints
 
 | Method | Endpoint | Purpose |
-|--------|----------|---------|
+|---|---|---|
 | GET | `/api/data/v9.2/workflows?$filter=category eq 5` | List cloud flows |
 | GET | `/api/data/v9.2/workflows({workflowid})` | Get specific flow |
 | POST | `/api/data/v9.2/workflows` | Create flow |
-| PATCH | `/api/data/v9.2/workflows({workflowid})` | Update flow (enable/disable) |
+| PATCH | `/api/data/v9.2/workflows({workflowid})` | Update / enable / disable |
 | DELETE | `/api/data/v9.2/workflows({workflowid})` | Delete flow |
 
-**Enable/Disable flow:**
+**`category` values:** `0` = Classic workflow, `5` = Cloud flow, `6` = Desktop flow, `9` = BPF
+
+**Enable/disable:**
 ```json
 PATCH /api/data/v9.2/workflows({workflowid})
-{
-  "statecode": 1
-}
+{ "statecode": 1 }
 ```
+`statecode`: `0` = Off/Draft, `1` = On/Activated.
 
-`statecode` values: `0` = Draft/Off, `1` = Activated/On.
-
-### Flow Runs (Power Platform API)
-
-| Method | Endpoint | Purpose |
-|--------|----------|---------|
-| GET | `/powerautomate/environments/{envId}/flowRuns?workflowId={id}&api-version=2022-03-01-preview` | List flow runs |
-
-### Flow Management Connector Actions
-
-The Power Automate Management connector provides 21 actions:
-
-| Action | Purpose |
-|--------|---------|
-| `ListMyFlows` | List flows owned by caller |
-| `ListFlowsInEnvironment_V2` | List all flows in environment (admin) |
-| `GetFlow` | Get flow details |
-| `StartFlow` | Enable a flow |
-| `StopFlow` | Disable a flow |
-| `DeleteFlow` | Delete a flow |
-| `CreateFlow` | Create a new flow |
-| `ResubmitFlow` | Resubmit a failed run |
-| `CancelFlowRun` | Cancel a running flow |
-
-## Flow Run Status Values
+### Flow Run Status Values
 
 | Status | Description |
-|--------|-------------|
-| `Running` | Flow is currently executing |
-| `Succeeded` | Flow completed successfully |
-| `Failed` | Flow failed — check error details |
-| `Cancelled` | Flow was manually cancelled |
-| `TimedOut` | Flow exceeded timeout limit (30 days default) |
-| `Skipping` | Trigger condition not met, run skipped |
-| `Suspended` | Flow is paused (e.g., waiting for approval) |
+|---|---|
+| `Running` | Currently executing |
+| `Succeeded` | Completed successfully |
+| `Failed` | Failed — check `error.code` and `error.message` |
+| `Cancelled` | Manually cancelled |
+| `TimedOut` | Exceeded 30-day timeout |
+| `Skipping` | Trigger condition not met |
+| `Suspended` | Paused — waiting for approval or external signal |
 
-### Flow Run Detail Schema
+### OData Query Patterns
 
-```json
-{
-  "name": "08585329-1234-5678-abcd-000000000000",
-  "startTime": "2026-03-01T10:00:00Z",
-  "endTime": "2026-03-01T10:00:15Z",
-  "status": "Failed",
-  "trigger": {
-    "name": "When_an_item_is_created",
-    "status": "Succeeded",
-    "code": "OK"
-  },
-  "error": {
-    "code": "ActionFailed",
-    "message": "The 'Send_an_email' action failed with status 429 (TooManyRequests)."
-  },
-  "correlation": {
-    "clientTrackingId": "custom-tracking-id-123"
-  }
-}
+```
+# Active cloud flows
+GET /api/data/v9.2/workflows?$filter=category eq 5 and statecode eq 1
+  &$select=name,statecode,workflowid,modifiedon&$orderby=modifiedon desc&$top=50
+
+# Flows by owner
+GET /api/data/v9.2/workflows?$filter=category eq 5 and _ownerid_value eq '{userId}'
+  &$expand=ownerid($select=fullname)
+
+# Flows with recent failures
+GET /api/data/v9.2/workflows?$filter=category eq 5 and statuscode eq 2
+  &$orderby=modifiedon desc
 ```
 
-## Connector Throttle Limits
+---
 
-| Connector | Limit | Window | Notes |
-|-----------|-------|--------|-------|
-| SharePoint | 600 API calls | 60 seconds per connection | Per-connection limit |
-| Office 365 Outlook | 300 API calls | 60 seconds per connection | Inbox limits apply independently |
-| Dataverse (Web API) | 6,000 requests | 5-minute sliding window per user | Also: 1,200s execution time limit |
-| Custom connectors | 500 requests | 60 seconds per connection | Default for all custom connectors |
-| Power Automate Management | 5 GET / 300 non-GET | 60s / 3,600s per connection | Admin operations |
-| HTTP connector | No published fixed limit | — | Subject to platform burst cap |
+## Trigger Types
 
-**Platform-level burst cap:** 100,000 actions per 5 minutes across all flows in an environment.
-
-## Flow Trigger Types
-
-| Trigger Type | `type` Value | `kind` Value | Description |
-|-------------|-------------|-------------|-------------|
-| Manual/Button | `Request` | `Button` | Instant flow triggered by user |
-| Recurrence/Schedule | `Recurrence` | — | Runs on schedule (min 60s interval) |
-| Automated/Event | `ApiConnectionWebhook` | — | Triggered by connector event (e.g., "When item created") |
-| HTTP Request | `Request` | `Http` | External webhook — generates SAS-signed URL |
+| Trigger | `type` | `kind` | Description |
+|---|---|---|---|
+| Automated / Event | `ApiConnectionWebhook` | — | Connector event (SharePoint, Dataverse, etc.) |
+| Scheduled | `Recurrence` | — | Time-based schedule (min 60s) |
+| Instant / Button | `Request` | `Button` | User-triggered |
+| HTTP Webhook | `Request` | `Http` | External webhook with SAS-signed URL |
 | Power Apps V2 | `Request` | `PowerAppsV2` | Strongly typed canvas app trigger |
+| Power Pages | `Request` | `PowerPagesV2` | From Power Pages form submit |
+| Dataverse row | `OpenApiConnection` | — | When row is added/modified/deleted |
 
-### Trigger Configuration Examples
-
-**Recurrence:**
+**Recurrence example:**
 ```json
 {
   "type": "Recurrence",
   "recurrence": {
-    "frequency": "Day",
-    "interval": 1,
-    "startTime": "2026-03-01T08:00:00Z",
+    "frequency": "Day", "interval": 1,
+    "startTime": "2026-01-01T08:00:00Z",
     "timeZone": "Central Standard Time",
-    "schedule": {
-      "hours": ["8", "17"],
-      "minutes": ["0"]
-    }
+    "schedule": { "hours": ["8","17"], "minutes": ["0"] }
   }
 }
 ```
 
-**Recurrence frequency values:** `Second` (min 60), `Minute`, `Hour`, `Day`, `Week`, `Month`.
+---
 
 ## Solution-Aware Flow Concepts
 
 ### Connection References
 
-Solution components that decouple connector configuration from concrete connections:
-- Defined in solution as component type
+Decouple connector configuration from concrete connections:
+- Defined in solution as a component
 - Must be re-mapped on import to target environment connections
 - Allows same flow to work across dev/test/prod without editing
 
 ### Environment Variables
 
-Configuration values that vary per environment:
-- **Types:** `String`, `Number`, `Boolean`, `JSON`, `Data source`, `Secret`
-- Values should be kept in a separate unmanaged layer for per-environment overrides
-- Reference in flow expressions: `@parameters('envVarSchemaName')`
+| Type | Reference Syntax | Notes |
+|---|---|---|
+| `String` | `@parameters('env_SchemaName')` | URLs, IDs, names |
+| `Number` | `@parameters('env_SchemaName')` | Thresholds, limits |
+| `Boolean` | `@parameters('env_SchemaName')` | Feature flags |
+| `JSON` | `@parameters('env_SchemaName')` | Structured config |
+| `Secret` | Via Key Vault reference | Credentials — never plain text |
+| `Data source` | Dataverse table reference | For data source connectors |
 
-### Managed vs Unmanaged
+Values kept in unmanaged layer for per-environment overrides.
+
+### Managed vs Unmanaged Layers
 
 | Aspect | Managed | Unmanaged |
-|--------|---------|-----------|
+|---|---|---|
 | Editable | No (locked) | Yes |
 | Removal | Components removed on uninstall | Manual cleanup |
 | Use case | Production deployment | Development |
 | Layering | Base layer | Customization layer (wins) |
 
-Use `Remove active customization` to revert unmanaged changes back to managed base.
+Use `Remove active customization` to revert unmanaged changes.
+
+---
 
 ## Retry Policies
 
-### Retry Policy Types
+| Policy | Description |
+|---|---|
+| `exponential` | Default — exponential backoff |
+| `fixed` | Constant delay between retries |
+| `none` | Fail immediately — no retries |
 
-| Policy | Description | Default Behavior |
-|--------|-------------|-----------------|
-| `exponential` | Exponential backoff (default) | Low: 2 retries ~10 min; Medium/High: 12 retries ~1 hr |
-| `fixed` | Constant delay between retries | Fixed interval, configurable |
-| `none` | Immediate fail on first error | No retries |
+**Limits:** Max 90 retries, max 1-day delay, min 5s delay.
+**Triggers:** `408`, `429`, `5xx`. `Retry-After` header is honored.
 
-### Retry Limits
+**Run-after statuses:** `is successful` | `has failed` | `is skipped` | `has timed out`
 
-- Maximum 90 retries
-- Maximum 1 day delay between retries
-- Minimum 5 second delay
-- Retries trigger on: `408` (timeout), `429` (throttled), `5xx` (server error)
-- `Retry-After` header is honored when present
-
-### Configure Run After
-
-Control flow branching based on previous action outcome:
-
-| Status | Description |
-|--------|-------------|
-| `is successful` | Action completed normally |
-| `has failed` | Action threw an error |
-| `is skipped` | Action was skipped |
-| `has timed out` | Action exceeded its timeout |
-
-Combine statuses for error-handling patterns:
-
+**Scope-based try/catch/finally:**
 ```
-Configure run after: has failed, has timed out
-→ Execute error notification action
+Scope: "Try"           → business logic
+Scope: "Catch"         → run after: Try has failed
+  Log error, notify
+Scope: "Finally"       → run after: Catch succeeded / failed / skipped
+  Cleanup, release locks
 ```
 
-### Scope-Based Error Handling Pattern
+---
 
-```
-Scope: "Try"
-  Action 1
-  Action 2
-  Action 3
+## Connector Throttle Limits
 
-Scope: "Catch" (configure run after: Try has failed)
-  Log error details
-  Send notification
+| Connector | Limit | Window | Notes |
+|---|---|---|---|
+| SharePoint | 600 calls | 60s per connection | Per-connection |
+| Office 365 Outlook | 300 calls | 60s per connection | |
+| Dataverse (Web API) | 6,000 requests | 5-min sliding window per user | |
+| Custom connectors | 500 requests | 60s per connection | Default |
+| Power Automate Mgmt | 5 GET / 300 non-GET | 60s / 3,600s per connection | Admin ops |
+| HTTP connector | No published limit | — | Subject to burst cap |
 
-Scope: "Finally" (configure run after: Catch is successful, has failed, is skipped)
-  Cleanup actions
-```
+**Platform burst cap:** 100,000 actions / 5 minutes across all flows in an environment.
 
-## Flow Plan Types
+---
 
-| Plan | Per-User Cost | PPR/Day | Premium Connectors | RPA |
-|------|-------------|---------|-------------------|-----|
+## Plan Types & Licensing
+
+| Plan | Cost | Power Platform Requests/Day | Premium Connectors | RPA |
+|---|---|---|---|---|
 | Power Automate Premium | $15/user/mo | 40,000 | Yes | Attended |
-| Power Automate Process | Per-flow capacity | 250,000 (stackable) | Yes | Unattended |
+| Power Automate Process | Per-flow | 250,000 (stackable) | Yes | Unattended |
 | Power Automate Hosted Process | Per-flow | 250,000 | Yes | Hosted unattended |
-| Seeded (O365/M365) | Included | ~10,000 (Low profile) | No | No |
+| Seeded (M365) | Included | ~10,000 (Low profile) | No | No |
 | Pay-as-you-go | Per run | 10M (Extended) | Yes | Yes |
 
-**PPR = Power Platform Requests.** Seeded plans only support standard connectors.
+**AI Builder credits:** Separate from PPR. Included in Premium (500 credits/user/mo); pooled at tenant level.
+
+---
 
 ## Required Permissions
 
 | Role | Scope | Capabilities |
-|------|-------|-------------|
+|---|---|---|
 | Environment Maker | Environment | Create flows, manage own flows |
 | Environment Admin | Environment | All flows visible, manage all resources |
 | System Administrator | Dataverse | Full admin including schema |
-| Flow co-owner | Per flow | Full edit/delete/share (except cannot remove creator) |
-| Flow run-only user | Per flow | Trigger only — no flow logic visibility |
+| Flow co-owner | Per flow | Full edit/delete/share |
+| Flow run-only user | Per flow | Trigger only |
+| Process Mining Contributor | Environment | Create/edit mining processes |
+| AI Builder Customizer | Dataverse | Create/train AI models |
 
-Security groups can be assigned as co-owners or run-only users for scale management.
+---
 
-## Error Handling
+## Common Error Codes
 
-### Common Error Codes
+| Code | HTTP | Cause | Remediation |
+|---|---|---|---|
+| `ActionFailed` | Varies | Generic failure | Check inner error details |
+| `TooManyRequests` | 429 | Throttle exceeded | Add delay, reduce concurrency |
+| `RequestTimeout` | 408 | Action timed out | Increase timeout or split work |
+| `Unauthorized` | 401 | Connection expired | Re-authenticate connection |
+| `Forbidden` | 403 | DLP / permissions | Check DLP group, RBAC role |
+| `NotFound` | 404 | Resource missing | Verify list/table/user exists |
+| `BadGateway` | 502 | Connector unavailable | Retry with exponential backoff |
+| `ServiceUnavailable` | 503 | Platform outage | Monitor service health |
+| `-2147015902` | Dataverse | Duplicate detection | Check duplicate detection rules |
+| `-2147015898` | Dataverse | Privilege check failed | Check security role assignment |
 
-| Code | HTTP Status | Cause |
-|------|------------|-------|
-| `ActionFailed` | Varies | Generic action failure — check inner error |
-| `TooManyRequests` | 429 | Connector throttle limit exceeded |
-| `RequestTimeout` | 408 | Action exceeded timeout |
-| `Unauthorized` | 401 | Connection expired or revoked |
-| `Forbidden` | 403 | DLP policy blocking connector or insufficient permissions |
-| `NotFound` | 404 | Referenced resource (list, file, user) not found |
-| `BadGateway` | 502 | Connector service temporarily unavailable |
-| `ServiceUnavailable` | 503 | Platform or connector outage |
+**DLP violations:** Flow suspended — resolve by moving connectors to same DLP group, splitting flow, or requesting exception.
 
-### Dataverse-Specific Error Codes
+---
 
-| Code | Description |
-|------|-------------|
-| `-2147015902` | Duplicate detection — record already exists |
-| `-2147015903` | Object reference not set — missing required field |
-| `-2147015898` | Privilege check failed — insufficient security role |
+## Core Design Patterns
 
-### DLP (Data Loss Prevention) Policy Errors
+### Approval Flow
+1. Trigger: item created/modified in SharePoint or Dataverse
+2. `Start and wait for an approval` (Approve/Reject - First to respond)
+3. Condition on `outcome` → approved branch / rejected branch
+4. Wrap in try/catch scope
+5. Retry policy: `none` for approval actions (avoid duplicate requests)
 
-If a flow uses connectors from different DLP groups (Business vs Non-Business), the flow will be suspended with a DLP violation error. Resolve by:
-1. Moving connectors to the same group in DLP policy
-2. Splitting the flow into multiple flows (one per DLP group)
-3. Requesting a DLP policy exception from the tenant admin
+### Resilient Integration Flow
+1. Scope-based try/catch/finally
+2. Exponential retry on external API calls
+3. Concurrency limit: prevent parallel runs causing throttle
+4. Compose actions to capture intermediate state for debugging
+5. Error notification in catch (Teams adaptive card)
+6. Cleanup in finally (update status record, release locks)
 
-## OData Query Reference (Dataverse)
+### Solution-Aware Deployment
+1. Build flow in dev inside a solution
+2. Use connection references (never hardcode connections)
+3. Use environment variables for all config values
+4. Export as managed; import to target; re-map connection references
+5. Set environment variable values in target layer
 
-```
-# List active cloud flows
-/api/data/v9.2/workflows?$filter=category eq 5 and statecode eq 1
-  &$select=name,statecode,workflowid,modifiedon
-  &$orderby=modifiedon desc
-  &$top=50
+### Failed Run Investigation
+1. `GET /powerautomate/environments/{envId}/flowRuns?workflowId={id}` — find `status: Failed` runs
+2. Check `error.code` + `error.message`
+3. `429` → check throttle table, add delays
+4. `401` → re-authenticate connection
+5. DLP → check connector group placement
+6. Resubmit: `ResubmitFlow` management connector action
 
-# List flows by owner
-/api/data/v9.2/workflows?$filter=category eq 5 and _ownerid_value eq '{userId}'
-  &$expand=ownerid($select=fullname)
-
-# List failed flows (most recently modified)
-/api/data/v9.2/workflows?$filter=category eq 5 and statuscode eq 2
-  &$orderby=modifiedon desc
-```
-
-## Common Flow Patterns
-
-### Pattern 1: Approval Flow Design
-
-1. Design trigger: "When an item is created" in SharePoint list
-2. Add "Start and wait for an approval" action (Approval type: Approve/Reject - First to respond)
-3. Add condition branch on approval outcome
-4. Approved: execute business logic (update record, send notification)
-5. Rejected: notify requester with rejection reason
-6. Add scope-based try/catch around the entire approval block
-7. Configure retry policy: `none` for approval actions (avoid duplicate requests)
-
-### Pattern 2: Failed Run Investigation
-
-1. Identify failed run: `GET /powerautomate/environments/{envId}/flowRuns?workflowId={id}` — find runs with `status: Failed`
-2. Check `error.code` and `error.message` for root cause
-3. If `429 TooManyRequests`: check connector throttle table — add delays or reduce concurrency
-4. If `401 Unauthorized`: check connection status — re-authenticate or recreate connection
-5. If `DLP violation`: check DLP policies — resolve connector grouping conflicts
-6. Resubmit after fix: use `ResubmitFlow` management connector action
-
-### Pattern 3: Solution-Aware Deployment
-
-1. Build flow in development environment inside a solution
-2. Use connection references (not hardcoded connections)
-3. Use environment variables for configuration values
-4. Export solution as managed
-5. Import to target environment — map connection references to target connections
-6. Set environment variable values for target environment
-7. Verify flow activates and test with manual trigger
-
-### Pattern 4: Resilient Integration Flow
-
-1. Design with scope-based try/catch/finally pattern
-2. Configure retry policy: `exponential` for external API calls
-3. Add concurrency control: limit parallel runs to avoid throttling
-4. Add `compose` actions to capture intermediate state for debugging
-5. Add error notification in catch scope (Teams message or email)
-6. Add cleanup in finally scope (update status, release locks)
-7. Test with simulated failures before deployment
+---
 
 ## Decision Tree
 
-1. Need to capture environment/connectors/SLA/failure expectations? → `setup`
-2. Need architecture for a new/refactored flow (trigger, branches, retries, idempotency)? → `flow-design`
-3. Need root-cause for failed/timed-out/intermittent runs? → `flow-debug`
-4. Need go/no-go readiness before promoting flow across environments? → `flow-deploy-check`
-5. End-to-end? Run: `setup` → `flow-design` → `flow-deploy-check`; use `flow-debug` for incidents.
+1. **New flow architecture** (trigger, branches, retries, idempotency) → `/flow-design`
+2. **Failed / timed-out / intermittent run** → `/flow-debug`
+3. **Pre-promotion readiness check** → `/flow-deploy-check`
+4. **AI Builder model setup** → `/pa-ai-builder`
+5. **Custom connector creation** → `/pa-custom-connector`
+6. **BPF design** → `/pa-bpf-design`
+7. **Governance, DLP audit, CoE** → `/pa-governance`
+8. **Full setup & onboarding** → `/flow-setup`
 
-## Minimal References
-
-- `power-automate/commands/setup.md`
-- `power-automate/commands/flow-design.md`
-- `power-automate/commands/flow-debug.md`
-- `power-automate/commands/flow-deploy-check.md`
-- `power-automate/README.md`
+---
 
 ## Progressive Disclosure — Reference Files
 
 | Topic | File |
 |---|---|
-| Flow types, trigger configuration, action chaining, expressions, dynamic content, environment variables | [`references/cloud-flows.md`](./references/cloud-flows.md) |
-| Standard vs Premium connectors, SharePoint/Outlook/Teams/Dataverse triggers, HTTP action, throttling | [`references/connectors-triggers.md`](./references/connectors-triggers.md) |
-| Configure run after, try-catch-finally scopes, Terminate action, retry policies, timeout, dead letter | [`references/error-handling-retry.md`](./references/error-handling-retry.md) |
-| PAD recorder, UI automation, web automation, attended vs unattended, machine groups, SAP, Citrix | [`references/desktop-flows.md`](./references/desktop-flows.md) |
+| Flow types, triggers, expressions, control flow, environment variables | [`references/cloud-flows.md`](./references/cloud-flows.md) |
+| Standard/premium connectors, HTTP action, throttling limits, connection references | [`references/connectors-triggers.md`](./references/connectors-triggers.md) |
+| Try/catch/finally, run-after, retry policies, dead letter, timeout | [`references/error-handling-retry.md`](./references/error-handling-retry.md) |
+| PAD recorder, UI/web automation, attended/unattended, machine groups, SAP/Citrix | [`references/desktop-flows.md`](./references/desktop-flows.md) |
+| Business Process Flows — stages, steps, branching, Dataverse integration | [`references/business-process-flows.md`](./references/business-process-flows.md) |
+| AI Builder — form processing, document intelligence, prediction, custom models | [`references/ai-builder.md`](./references/ai-builder.md) |
+| Process Mining — event logs, discovery, conformance, KPIs, analytics | [`references/process-mining.md`](./references/process-mining.md) |
+| Approvals — Teams adaptive cards, parallel/sequential, delegation, mobile | [`references/approvals-adaptive-cards.md`](./references/approvals-adaptive-cards.md) |
+| Custom connectors — OpenAPI spec, code policies, certification | [`references/custom-connectors.md`](./references/custom-connectors.md) |
+| Governance — DLP policies, admin center, CoE Toolkit, environment strategy | [`references/governance-dlp.md`](./references/governance-dlp.md) |
+| Expression function library — string, date, number, array, type coercions | [`references/expressions-advanced.md`](./references/expressions-advanced.md) |
+| Child flows, Power Platform Pipelines, CI/CD deployment patterns | [`references/child-flows-pipelines.md`](./references/child-flows-pipelines.md) |

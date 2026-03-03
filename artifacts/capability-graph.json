@@ -2801,7 +2801,11 @@
           "power-automate\\commands\\flow-debug.md",
           "power-automate\\commands\\flow-deploy-check.md",
           "power-automate\\commands\\flow-design.md",
-          "power-automate\\commands\\flow-setup.md"
+          "power-automate\\commands\\flow-setup.md",
+          "power-automate\\commands\\pa-ai-builder.md",
+          "power-automate\\commands\\pa-bpf-design.md",
+          "power-automate\\commands\\pa-custom-connector.md",
+          "power-automate\\commands\\pa-governance.md"
         ],
         "agents": [
           "power-automate\\agents\\power-automate-reviewer.md"
@@ -2829,9 +2833,38 @@
               "name": "flow-setup",
               "description": "Prepare Power Automate flow work by confirming environment boundaries, connectors, scale expectations, and failure handling.",
               "source": "power-automate\\commands\\flow-setup.md"
+            },
+            {
+              "name": "pa-ai-builder",
+              "description": "AI Builder Integration",
+              "source": "power-automate\\commands\\pa-ai-builder.md"
+            },
+            {
+              "name": "pa-bpf-design",
+              "description": "Business Process Flow Design",
+              "source": "power-automate\\commands\\pa-bpf-design.md"
+            },
+            {
+              "name": "pa-custom-connector",
+              "description": "Custom Connector Creation",
+              "source": "power-automate\\commands\\pa-custom-connector.md"
+            },
+            {
+              "name": "pa-governance",
+              "description": "Power Platform Governance Audit",
+              "source": "power-automate\\commands\\pa-governance.md"
             }
           ],
-          "prerequisites": []
+          "prerequisites": [
+            "**API Key**: define `in: header` or `in: query`, set `name`",
+            "**Basic**: simple `type: basic` securityDefinition",
+            "**Client credentials**: `flow: application` with `tokenUrl` and tenant-specific scope",
+            "**OAuth2 authorization code**: include `authorizationUrl`, `tokenUrl`, `refreshUrl`, `scopes`",
+            "For service accounts running cloud flows: list required privileges",
+            "Identify roles that need `prvReadProcessSession` + `prvWriteProcessSession`",
+            "Note any client ID/secret placeholder values — document where to enter them",
+            "Security roles to assign (system-generated roles vs custom)"
+          ]
         }
       }
     },
