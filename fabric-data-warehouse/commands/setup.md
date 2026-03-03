@@ -1,5 +1,5 @@
 ---
-name: setup
+name: warehouse-setup
 description: Set up the Fabric Data Warehouse plugin — configure workspace connection, install SQL tools, verify access
 argument-hint: "[--minimal]"
 allowed-tools:

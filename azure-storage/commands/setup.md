@@ -1,5 +1,5 @@
 ---
-name: setup
+name: storage-setup
 description: Set up the Azure Storage plugin — install Azure CLI, create a storage account, configure network rules and managed identity
 argument-hint: "[--minimal]"
 allowed-tools:

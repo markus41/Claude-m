@@ -1,5 +1,5 @@
 ---
-name: setup
+name: network-setup
 description: Set up Azure Networking plugin — install Azure CLI, verify networking providers, check subscription quotas
 argument-hint: "[--minimal]"
 allowed-tools:

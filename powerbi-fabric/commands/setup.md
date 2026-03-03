@@ -1,5 +1,5 @@
 ---
-name: setup
+name: pbi-setup
 description: Set up the Power BI / Fabric plugin — configure Azure auth, verify workspace access, and optionally set up Fabric notebook environment
 argument-hint: "[--minimal] [--with-fabric] [--with-desktop-check]"
 allowed-tools:

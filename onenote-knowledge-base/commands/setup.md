@@ -1,5 +1,5 @@
 ---
-name: setup
+name: onenote-setup
 description: Set up the OneNote Knowledge Base plugin — configure Azure auth, install dependencies, and verify notebook access
 argument-hint: "[--minimal]"
 allowed-tools:

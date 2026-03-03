@@ -1,5 +1,5 @@
 ---
-name: setup
+name: m365-setup
 description: Set up the M365 Admin plugin — configure Azure app registration, install dependencies, and verify Graph API connectivity
 argument-hint: "[--minimal] [--with-exchange] [--with-sharepoint-pnp]"
 allowed-tools:

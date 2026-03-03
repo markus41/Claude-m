@@ -1,5 +1,5 @@
 ---
-name: setup
+name: policy-setup
 description: Prepare Azure policy and security posture analysis by confirming scope, baseline initiatives, severity model, and ownership.
 argument-hint: "[--scope <tenant|management-group|subscription>] [--baseline <cis|nist|custom>] [--severity-model <model>] [--owners <team-or-group,...>]"
 allowed-tools:

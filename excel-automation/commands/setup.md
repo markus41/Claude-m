@@ -1,5 +1,5 @@
 ---
-name: setup
+name: excel-setup
 description: Set up the Excel Automation plugin — install Python dependencies, configure auth, and verify connectivity
 argument-hint: "[--minimal] [--with-dataverse] [--with-power-automate]"
 allowed-tools:

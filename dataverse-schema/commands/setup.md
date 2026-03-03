@@ -1,5 +1,5 @@
 ---
-name: setup
+name: dataverse-setup
 description: Set up the Dataverse Schema plugin — configure environment URL, auth credentials, publisher prefix, and verify Web API connectivity
 argument-hint: "[--minimal] [--with-pac-cli]"
 allowed-tools:

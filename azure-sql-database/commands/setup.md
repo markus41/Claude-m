@@ -1,5 +1,5 @@
 ---
-name: setup
+name: db-setup
 description: Set up the Azure SQL Database plugin — install Azure CLI, sqlcmd, create SQL Server + database or Cosmos DB account
 argument-hint: "[--minimal]"
 allowed-tools:

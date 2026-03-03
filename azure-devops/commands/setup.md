@@ -1,5 +1,5 @@
 ---
-name: setup
+name: ado-setup
 description: Set up the Azure DevOps plugin — configure PAT or OAuth, verify organization and project access
 argument-hint: "[--minimal] [--org <organization>] [--project <project>]"
 allowed-tools:

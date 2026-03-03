@@ -1,5 +1,5 @@
 ---
-name: setup
+name: forms-setup
 description: Set up the Microsoft Forms Surveys plugin — configure Azure auth and verify Graph API access for forms management
 argument-hint: "[--minimal]"
 allowed-tools:

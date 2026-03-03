@@ -1,5 +1,5 @@
 ---
-name: setup
+name: fabric-adf-setup
 description: Set up the Fabric Data Factory plugin — configure workspace access, authenticate with Azure, and verify Fabric API connectivity
 argument-hint: "[--minimal]"
 allowed-tools:

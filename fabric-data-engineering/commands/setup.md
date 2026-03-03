@@ -1,5 +1,5 @@
 ---
-name: setup
+name: fabric-eng-setup
 description: Set up the Fabric Data Engineering plugin — verify Fabric capacity, create workspace, configure lakehouse access
 argument-hint: "[--minimal]"
 allowed-tools:

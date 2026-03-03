@@ -1,5 +1,5 @@
 ---
-name: setup
+name: kv-setup
 description: Set up the Azure Key Vault plugin -- install Azure CLI, create a Key Vault, configure RBAC access
 argument-hint: "[--minimal]"
 allowed-tools:

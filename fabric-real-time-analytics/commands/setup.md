@@ -1,5 +1,5 @@
 ---
-name: setup
+name: fabric-rta-setup
 description: Set up the Fabric Real-Time Analytics plugin — install SDKs, configure workspace access, verify Eventhouse connectivity
 argument-hint: "[--minimal]"
 allowed-tools:

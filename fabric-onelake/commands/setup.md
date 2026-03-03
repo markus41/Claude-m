@@ -1,5 +1,5 @@
 ---
-name: setup
+name: onelake-setup
 description: Set up the Fabric OneLake plugin — install Azure CLI, authenticate, configure workspace access and OneLake endpoints
 argument-hint: "[--minimal]"
 allowed-tools:

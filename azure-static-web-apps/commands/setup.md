@@ -1,5 +1,5 @@
 ---
-name: setup
+name: swa-setup
 description: Set up the Azure Static Web Apps plugin — install SWA CLI, configure Azure subscription
 argument-hint: "[--minimal]"
 allowed-tools:

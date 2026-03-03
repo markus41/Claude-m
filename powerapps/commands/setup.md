@@ -1,5 +1,5 @@
 ---
-name: setup
+name: pa-setup
 description: Set up the Power Apps plugin — configure Power Platform environment access and install development tools
 argument-hint: "[--minimal] [--with-pcf]"
 allowed-tools:

@@ -1,5 +1,5 @@
 ---
-name: setup
+name: bot-setup
 description: Set up the Copilot Studio Bots plugin — configure Power Platform environment access, Dataverse credentials, and Direct Line token
 argument-hint: "[--minimal]"
 allowed-tools:

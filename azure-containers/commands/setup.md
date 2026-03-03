@@ -1,5 +1,5 @@
 ---
-name: setup
+name: container-setup
 description: Set up the Azure Containers plugin — install Docker, Azure CLI, create ACR and Container Apps environment
 argument-hint: "[--minimal]"
 allowed-tools:

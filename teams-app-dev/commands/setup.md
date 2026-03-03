@@ -1,5 +1,5 @@
 ---
-name: setup
+name: teams-app-setup
 description: Set up the Teams App Dev plugin — install Teams Toolkit CLI, register Azure Bot, configure BOT_ID and BOT_PASSWORD
 argument-hint: "[--minimal]"
 allowed-tools:

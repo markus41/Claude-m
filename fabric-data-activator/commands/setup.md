@@ -1,5 +1,5 @@
 ---
-name: setup
+name: reflex-setup
 description: Set up the Fabric Data Activator plugin — verify Fabric workspace access, configure Azure identity, and prepare eventstream connectivity
 argument-hint: "[--minimal]"
 allowed-tools:

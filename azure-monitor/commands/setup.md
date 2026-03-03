@@ -1,5 +1,5 @@
 ---
-name: setup
+name: monitor-setup
 description: Set up the Azure Monitor plugin — install Azure CLI, create a Log Analytics workspace, and enable diagnostic settings
 argument-hint: "[--minimal]"
 allowed-tools:

@@ -1,5 +1,5 @@
 ---
-name: setup
+name: azure-cost-setup
 description: Prepare Azure cost governance analysis by confirming scope, timeframe, dimensions, and an execution plan.
 argument-hint: "[--scope <subscription|management-group|tenant>] [--period <last-30-days|last-90-days|custom>] [--currency <code>] [--dimensions <service,resource-group,tag,...>]"
 allowed-tools:

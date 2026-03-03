@@ -1,5 +1,5 @@
 ---
-name: setup
+name: alm-setup
 description: Set up the Power Platform ALM plugin — install PAC CLI, configure environments, authenticate, and optionally set up CI/CD pipelines and PCF development
 argument-hint: "[--minimal] [--with-cicd] [--with-pcf]"
 allowed-tools:

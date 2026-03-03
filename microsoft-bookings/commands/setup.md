@@ -1,5 +1,5 @@
 ---
-name: setup
+name: bookings-setup
 description: Set up the Microsoft Bookings plugin — install dependencies, configure Azure Entra app registration, and verify Graph API access
 argument-hint: "[--minimal]"
 allowed-tools:

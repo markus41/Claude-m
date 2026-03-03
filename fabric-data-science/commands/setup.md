@@ -1,5 +1,5 @@
 ---
-name: setup
+name: fabric-ds-setup
 description: Set up the Fabric Data Science plugin — configure workspace, lakehouse connection, and install Python ML libraries
 argument-hint: "[--minimal]"
 allowed-tools:

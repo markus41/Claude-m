@@ -1,5 +1,5 @@
 ---
-name: setup
+name: lists-setup
 description: Set up the Microsoft Lists Tracker plugin — configure Azure auth and verify Graph API access to SharePoint Lists
 argument-hint: "[--minimal]"
 allowed-tools:

@@ -1,5 +1,5 @@
 ---
-name: setup
+name: pages-setup
 description: Set up the Power Pages plugin — install PAC CLI, configure Dataverse connection, and verify portal access
 argument-hint: "[--minimal]"
 allowed-tools:

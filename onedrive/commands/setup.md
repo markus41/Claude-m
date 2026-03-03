@@ -1,5 +1,5 @@
 ---
-name: setup
+name: onedrive-setup
 description: Set up the OneDrive plugin — configure Azure auth, verify drive access, and test file operations
 argument-hint: "[--minimal]"
 allowed-tools:

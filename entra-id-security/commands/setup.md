@@ -1,5 +1,5 @@
 ---
-name: setup
+name: entra-setup
 description: Set up the Entra ID Security plugin — configure Azure auth with identity and security Graph API permissions
 argument-hint: "[--minimal]"
 allowed-tools:

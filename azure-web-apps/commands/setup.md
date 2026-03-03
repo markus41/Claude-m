@@ -1,5 +1,5 @@
 ---
-name: setup
+name: webapp-setup
 description: Set up the Azure Web Apps plugin — install Azure CLI, configure subscription, and verify App Service access
 argument-hint: "[--minimal]"
 allowed-tools:

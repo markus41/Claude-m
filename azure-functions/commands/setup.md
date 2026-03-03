@@ -1,5 +1,5 @@
 ---
-name: setup
+name: func-setup
 description: Set up the Azure Functions plugin — install Azure Functions Core Tools, Azure CLI, create Function App, configure local.settings.json
 argument-hint: "[--minimal]"
 allowed-tools:

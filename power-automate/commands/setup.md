@@ -1,5 +1,5 @@
 ---
-name: setup
+name: flow-setup
 description: Prepare Power Automate flow work by confirming environment boundaries, connectors, scale expectations, and failure handling.
 argument-hint: "[--environment <name>] [--solution <name>] [--connectors <connector,...>] [--trigger-volume <low|medium|high>] [--sla <minutes>]"
 allowed-tools:

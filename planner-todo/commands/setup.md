@@ -1,5 +1,5 @@
 ---
-name: setup
+name: planner-setup
 description: Set up the Planner & To Do plugin — configure Azure auth and verify Graph API access to plans and task lists
 argument-hint: "[--minimal]"
 allowed-tools:
