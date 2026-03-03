@@ -20,7 +20,7 @@
     "./agents/azure-policy-security-reviewer.md"
   ],
   "commands": [
-    "./commands/setup.md",
+    "./commands/policy-setup.md",
     "./commands/policy-coverage.md",
     "./commands/drift-analysis.md",
     "./commands/remediation-plan.md"

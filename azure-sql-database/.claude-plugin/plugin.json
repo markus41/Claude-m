@@ -22,7 +22,7 @@
     "./agents/database-reviewer.md"
   ],
   "commands": [
-    "./commands/setup.md",
+    "./commands/db-setup.md",
     "./commands/sql-create.md",
     "./commands/sql-query.md",
     "./commands/cosmos-create.md",

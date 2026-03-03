@@ -1,7 +1,7 @@
 {
   "name": "sharing-auditor",
   "version": "1.0.0",
-  "description": "SharePoint and OneDrive external sharing auditor \u2014 find overshared links, anonymous access, stale guest users, and auto-generate approval tasks for safe revocation",
+  "description": "SharePoint and OneDrive external sharing auditor — find overshared links, anonymous access, stale guest users, and auto-generate approval tasks for safe revocation",
   "author": {
     "name": "Markus Ahling"
   },
@@ -21,7 +21,7 @@
     "./agents/sharing-auditor-reviewer.md"
   ],
   "commands": [
-    "./commands/setup.md",
+    "./commands/sharing-setup.md",
     "./commands/sharing-scan.md",
     "./commands/sharing-remediate.md"
   ]

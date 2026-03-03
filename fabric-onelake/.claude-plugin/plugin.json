@@ -22,7 +22,7 @@
     "./agents/onelake-reviewer.md"
   ],
   "commands": [
-    "./commands/setup.md",
+    "./commands/onelake-setup.md",
     "./commands/onelake-browse.md",
     "./commands/shortcut-create.md",
     "./commands/onelake-upload.md",

@@ -22,7 +22,7 @@
     "./agents/realtime-reviewer.md"
   ],
   "commands": [
-    "./commands/setup.md",
+    "./commands/fabric-rta-setup.md",
     "./commands/eventhouse-create.md",
     "./commands/kql-query.md",
     "./commands/eventstream-create.md",

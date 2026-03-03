@@ -29,6 +29,6 @@
     "./commands/pbi-fabric-notebook.md",
     "./commands/pbi-fabric-pipeline.md",
     "./commands/pbi-direct-lake-model.md",
-    "./commands/setup.md"
+    "./commands/pbi-setup.md"
   ]
 }

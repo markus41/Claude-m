@@ -1,7 +1,7 @@
 {
   "name": "microsoft-bookings",
   "version": "1.0.0",
-  "description": "Microsoft Bookings \u2014 manage appointment calendars, services, staff availability, and customer bookings via Graph API",
+  "description": "Microsoft Bookings — manage appointment calendars, services, staff availability, and customer bookings via Graph API",
   "author": {
     "name": "Markus Ahling"
   },
@@ -24,6 +24,6 @@
     "./commands/bookings-availability.md",
     "./commands/bookings-upcoming.md",
     "./commands/bookings-coverage-audit.md",
-    "./commands/setup.md"
+    "./commands/bookings-setup.md"
   ]
 }

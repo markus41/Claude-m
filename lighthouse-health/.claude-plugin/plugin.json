@@ -1,7 +1,7 @@
 {
   "name": "lighthouse-health",
   "version": "1.0.0",
-  "description": "Microsoft 365 Lighthouse tenant health scorecard \u2014 green/yellow/red dashboard for security posture, MFA coverage, stale accounts, and licensing anomalies across managed tenants",
+  "description": "Microsoft 365 Lighthouse tenant health scorecard — green/yellow/red dashboard for security posture, MFA coverage, stale accounts, and licensing anomalies across managed tenants",
   "author": {
     "name": "Markus Ahling"
   },
@@ -21,7 +21,7 @@
     "./agents/lighthouse-health-reviewer.md"
   ],
   "commands": [
-    "./commands/setup.md",
+    "./commands/lighthouse-setup.md",
     "./commands/lighthouse-health-scan.md",
     "./commands/lighthouse-remediation.md"
   ]

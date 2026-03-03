@@ -31,6 +31,6 @@
     "./commands/create-script.md",
     "./commands/validate-script.md",
     "./commands/create-flow.md",
-    "./commands/setup.md"
+    "./commands/excel-setup.md"
   ]
 }

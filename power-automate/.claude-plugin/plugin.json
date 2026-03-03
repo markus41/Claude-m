@@ -20,7 +20,7 @@
     "./agents/power-automate-reviewer.md"
   ],
   "commands": [
-    "./commands/setup.md",
+    "./commands/flow-setup.md",
     "./commands/flow-design.md",
     "./commands/flow-debug.md",
     "./commands/flow-deploy-check.md"

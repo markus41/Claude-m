@@ -23,7 +23,7 @@
     "./agents/networking-reviewer.md"
   ],
   "commands": [
-    "./commands/setup.md",
+    "./commands/network-setup.md",
     "./commands/vnet-create.md",
     "./commands/nsg-configure.md",
     "./commands/lb-create.md",

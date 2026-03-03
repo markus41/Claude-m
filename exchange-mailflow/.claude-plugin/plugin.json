@@ -1,7 +1,7 @@
 {
   "name": "exchange-mailflow",
   "version": "1.0.0",
-  "description": "Exchange Online mail flow diagnostics and deliverability \u2014 guided 'email not received' troubleshooting, transport rules, quarantine, connectors, and SPF/DKIM/DMARC checks with client-safe explanations",
+  "description": "Exchange Online mail flow diagnostics and deliverability — guided 'email not received' troubleshooting, transport rules, quarantine, connectors, and SPF/DKIM/DMARC checks with client-safe explanations",
   "author": {
     "name": "Markus Ahling"
   },
@@ -22,7 +22,7 @@
     "./agents/mailflow-reviewer.md"
   ],
   "commands": [
-    "./commands/setup.md",
+    "./commands/mailflow-setup.md",
     "./commands/mailflow-diagnose.md",
     "./commands/mailflow-explain.md"
   ]

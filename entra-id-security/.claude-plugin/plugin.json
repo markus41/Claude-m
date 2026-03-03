@@ -1,7 +1,7 @@
 {
   "name": "entra-id-security",
   "version": "1.0.0",
-  "description": "Microsoft Entra ID identity governance and security \u2014 app registrations, service principals, conditional access, sign-in logs, and risk detection",
+  "description": "Microsoft Entra ID identity governance and security — app registrations, service principals, conditional access, sign-in logs, and risk detection",
   "author": {
     "name": "Markus Ahling"
   },
@@ -28,6 +28,6 @@
     "./commands/entra-signin-logs.md",
     "./commands/entra-risky-users.md",
     "./commands/entra-permissions-audit.md",
-    "./commands/setup.md"
+    "./commands/entra-setup.md"
   ]
 }

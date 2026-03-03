@@ -24,6 +24,6 @@
     "./commands/webapp-deploy.md",
     "./commands/webapp-slots.md",
     "./commands/webapp-config.md",
-    "./commands/setup.md"
+    "./commands/webapp-setup.md"
   ]
 }

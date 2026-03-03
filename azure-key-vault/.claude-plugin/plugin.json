@@ -21,7 +21,7 @@
     "./agents/keyvault-reviewer.md"
   ],
   "commands": [
-    "./commands/setup.md",
+    "./commands/kv-setup.md",
     "./commands/kv-secret-manage.md",
     "./commands/kv-certificate-manage.md",
     "./commands/kv-access-audit.md",

@@ -24,6 +24,6 @@
     "./commands/pages-template-apply.md",
     "./commands/pages-webform-create.md",
     "./commands/pages-permissions.md",
-    "./commands/setup.md"
+    "./commands/pages-setup.md"
   ]
 }

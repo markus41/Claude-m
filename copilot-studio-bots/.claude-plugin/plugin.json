@@ -24,6 +24,6 @@
     "./commands/bot-topic-create.md",
     "./commands/bot-test-conversation.md",
     "./commands/bot-publish.md",
-    "./commands/setup.md"
+    "./commands/bot-setup.md"
   ]
 }

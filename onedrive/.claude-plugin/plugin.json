@@ -1,7 +1,7 @@
 {
   "name": "onedrive",
   "version": "1.0.0",
-  "description": "OneDrive file management via Microsoft Graph \u2014 upload, download, share, search, and manage files and folders",
+  "description": "OneDrive file management via Microsoft Graph — upload, download, share, search, and manage files and folders",
   "author": {
     "name": "Markus Ahling"
   },
@@ -25,6 +25,6 @@
     "./commands/onedrive-share.md",
     "./commands/onedrive-search.md",
     "./commands/onedrive-sync-status.md",
-    "./commands/setup.md"
+    "./commands/onedrive-setup.md"
   ]
 }

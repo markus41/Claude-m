@@ -22,7 +22,7 @@
     "./agents/data-engineering-reviewer.md"
   ],
   "commands": [
-    "./commands/setup.md",
+    "./commands/fabric-eng-setup.md",
     "./commands/lakehouse-create.md",
     "./commands/notebook-create.md",
     "./commands/pipeline-create.md",

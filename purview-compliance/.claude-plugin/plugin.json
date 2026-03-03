@@ -1,7 +1,7 @@
 {
   "name": "purview-compliance",
   "version": "1.0.0",
-  "description": "Microsoft Purview compliance workflows \u2014 DLP review, retention planning, sensitivity labels, eDiscovery readiness, and guided compliance playbooks with audit-ready change logs",
+  "description": "Microsoft Purview compliance workflows — DLP review, retention planning, sensitivity labels, eDiscovery readiness, and guided compliance playbooks with audit-ready change logs",
   "author": {
     "name": "Markus Ahling"
   },
@@ -22,7 +22,7 @@
     "./agents/compliance-reviewer.md"
   ],
   "commands": [
-    "./commands/setup.md",
+    "./commands/purview-setup.md",
     "./commands/dlp-review.md",
     "./commands/retention-review.md",
     "./commands/ediscovery-plan.md",

@@ -22,7 +22,7 @@
     "./agents/monitor-reviewer.md"
   ],
   "commands": [
-    "./commands/setup.md",
+    "./commands/monitor-setup.md",
     "./commands/kql-query.md",
     "./commands/alert-create.md",
     "./commands/appinsights-setup.md",

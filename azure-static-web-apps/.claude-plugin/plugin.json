@@ -24,6 +24,6 @@
     "./commands/swa-config.md",
     "./commands/swa-api-deploy.md",
     "./commands/swa-auth-configure.md",
-    "./commands/setup.md"
+    "./commands/swa-setup.md"
   ]
 }

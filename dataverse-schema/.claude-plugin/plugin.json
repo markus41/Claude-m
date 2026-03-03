@@ -1,7 +1,7 @@
 {
   "name": "dataverse-schema",
   "version": "1.0.0",
-  "description": "Dataverse table, column, and relationship management via Web API \u2014 schema design, data seeding, and solution lifecycle",
+  "description": "Dataverse table, column, and relationship management via Web API — schema design, data seeding, and solution lifecycle",
   "author": {
     "name": "Markus Ahling"
   },
@@ -20,7 +20,7 @@
     "./agents/schema-reviewer.md"
   ],
   "commands": [
-    "./commands/setup.md",
+    "./commands/dataverse-setup.md",
     "./commands/dataverse-table-create.md",
     "./commands/dataverse-column-add.md",
     "./commands/dataverse-relationship-create.md",

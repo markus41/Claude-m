@@ -21,7 +21,7 @@
     "./agents/teams-app-reviewer.md"
   ],
   "commands": [
-    "./commands/setup.md",
+    "./commands/teams-app-setup.md",
     "./commands/teams-scaffold.md",
     "./commands/teams-adaptive-card.md",
     "./commands/teams-message-extension.md",

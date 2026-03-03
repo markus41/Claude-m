@@ -22,7 +22,7 @@
     "./agents/storage-reviewer.md"
   ],
   "commands": [
-    "./commands/setup.md",
+    "./commands/storage-setup.md",
     "./commands/blob-manage.md",
     "./commands/queue-manage.md",
     "./commands/storage-security.md",

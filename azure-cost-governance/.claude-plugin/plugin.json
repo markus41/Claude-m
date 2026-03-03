@@ -20,7 +20,7 @@
     "./agents/azure-cost-governance-reviewer.md"
   ],
   "commands": [
-    "./commands/setup.md",
+    "./commands/azure-cost-setup.md",
     "./commands/azure-cost-query.md",
     "./commands/azure-budget-check.md",
     "./commands/azure-idle-resources.md"

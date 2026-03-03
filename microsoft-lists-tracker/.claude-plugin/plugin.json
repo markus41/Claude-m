@@ -1,7 +1,7 @@
 {
   "name": "microsoft-lists-tracker",
   "version": "1.0.0",
-  "description": "Microsoft Lists \u2014 create and manage lists for process tracking, issue logs, and project trackers via Graph API",
+  "description": "Microsoft Lists — create and manage lists for process tracking, issue logs, and project trackers via Graph API",
   "author": {
     "name": "Markus Ahling"
   },
@@ -25,6 +25,6 @@
     "./commands/lists-add-item.md",
     "./commands/lists-view-filter.md",
     "./commands/lists-coverage-audit.md",
-    "./commands/setup.md"
+    "./commands/lists-setup.md"
   ]
 }

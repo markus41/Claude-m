@@ -22,7 +22,7 @@
     "./agents/container-reviewer.md"
   ],
   "commands": [
-    "./commands/setup.md",
+    "./commands/container-setup.md",
     "./commands/acr-build-push.md",
     "./commands/container-app-create.md",
     "./commands/container-app-deploy.md",

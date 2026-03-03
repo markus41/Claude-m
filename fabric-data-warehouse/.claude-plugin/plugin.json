@@ -22,7 +22,7 @@
     "./agents/warehouse-reviewer.md"
   ],
   "commands": [
-    "./commands/setup.md",
+    "./commands/warehouse-setup.md",
     "./commands/warehouse-create.md",
     "./commands/warehouse-table-create.md",
     "./commands/warehouse-query.md",

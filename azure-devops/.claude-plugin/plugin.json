@@ -1,7 +1,7 @@
 {
   "name": "azure-devops",
   "version": "1.0.0",
-  "description": "Azure DevOps project management \u2014 repos, pipelines, work items, pull requests, and build/release automation",
+  "description": "Azure DevOps project management — repos, pipelines, work items, pull requests, and build/release automation",
   "author": {
     "name": "Markus Ahling"
   },
@@ -27,6 +27,6 @@
     "./commands/ado-pr-create.md",
     "./commands/ado-build-status.md",
     "./commands/ado-query-workitems.md",
-    "./commands/setup.md"
+    "./commands/ado-setup.md"
   ]
 }

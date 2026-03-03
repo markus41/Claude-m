@@ -22,7 +22,7 @@
     "./agents/data-science-reviewer.md"
   ],
   "commands": [
-    "./commands/setup.md",
+    "./commands/fabric-ds-setup.md",
     "./commands/experiment-create.md",
     "./commands/model-train.md",
     "./commands/model-register.md",

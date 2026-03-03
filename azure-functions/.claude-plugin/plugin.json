@@ -21,7 +21,7 @@
     "./agents/functions-reviewer.md"
   ],
   "commands": [
-    "./commands/setup.md",
+    "./commands/func-setup.md",
     "./commands/func-create.md",
     "./commands/func-trigger-add.md",
     "./commands/func-deploy.md",

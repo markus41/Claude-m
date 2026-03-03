@@ -1,7 +1,7 @@
 {
   "name": "powerplatform-alm",
   "version": "1.0.0",
-  "description": "Power Platform ALM \u2014 environments, solution transport, CI/CD pipelines, PCF controls, and deployment automation",
+  "description": "Power Platform ALM — environments, solution transport, CI/CD pipelines, PCF controls, and deployment automation",
   "author": {
     "name": "Markus Ahling"
   },
@@ -30,6 +30,6 @@
     "./commands/alm-pcf-init.md",
     "./commands/alm-pcf-build.md",
     "./commands/alm-envvar-set.md",
-    "./commands/setup.md"
+    "./commands/alm-setup.md"
   ]
 }
