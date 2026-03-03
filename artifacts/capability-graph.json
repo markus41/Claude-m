@@ -79,7 +79,7 @@
     },
     "excel-automation": {
       "category": "productivity",
-      "description": "Clean messy data with pandas, generate Office Scripts and Power Automate flows, and create Excel templates — with Dataverse-aware mode and VBA fallback.",
+      "description": "Clean messy data with pandas, generate Office Scripts and Power Automate flows, and create Excel templates â€” with Dataverse-aware mode and VBA fallback.",
       "files": {
         "manifest": "excel-automation\\.claude-plugin\\plugin.json",
         "readme": "excel-automation\\README.md",
@@ -333,7 +333,7 @@
     },
     "m365-admin": {
       "category": "cloud",
-      "description": "M365 tenant admin via Microsoft Graph — users, groups, licenses, Exchange Online, SharePoint, and CSV-driven bulk operations.",
+      "description": "M365 tenant admin via Microsoft Graph â€” users, groups, licenses, Exchange Online, SharePoint, and CSV-driven bulk operations.",
       "files": {
         "manifest": "m365-admin\\.claude-plugin\\plugin.json",
         "readme": "m365-admin\\README.md",
@@ -474,7 +474,7 @@
     },
     "dataverse-schema": {
       "category": "cloud",
-      "description": "Create and manage Dataverse tables, columns, relationships, and solutions via Web API — with FetchXML generation and data seeding.",
+      "description": "Create and manage Dataverse tables, columns, relationships, and solutions via Web API â€” with FetchXML generation and data seeding.",
       "files": {
         "manifest": "dataverse-schema\\.claude-plugin\\plugin.json",
         "readme": "dataverse-schema\\README.md",
@@ -597,23 +597,32 @@
           "powerbi-fabric\\skills\\powerbi-analytics\\SKILL.md"
         ],
         "commands": [
+          "powerbi-fabric\\commands\\pbi-dataflow.md",
           "powerbi-fabric\\commands\\pbi-dataset-refresh.md",
           "powerbi-fabric\\commands\\pbi-direct-lake-model.md",
           "powerbi-fabric\\commands\\pbi-fabric-notebook.md",
           "powerbi-fabric\\commands\\pbi-fabric-pipeline.md",
           "powerbi-fabric\\commands\\pbi-measure.md",
+          "powerbi-fabric\\commands\\pbi-model-validate.md",
           "powerbi-fabric\\commands\\pbi-query.md",
+          "powerbi-fabric\\commands\\pbi-rls-role.md",
           "powerbi-fabric\\commands\\pbi-scaffold.md",
           "powerbi-fabric\\commands\\pbi-setup.md",
           "powerbi-fabric\\commands\\pbi-workspace-create.md"
         ],
         "agents": [
-          "powerbi-fabric\\agents\\dax-reviewer.md"
+          "powerbi-fabric\\agents\\dax-reviewer.md",
+          "powerbi-fabric\\agents\\pbi-performance-advisor.md"
         ]
       },
       "domains": {
         "DAX Measures": {
           "actions": [
+            {
+              "name": "pbi-dataflow",
+              "description": "Dataflow Gen2 Scaffolder",
+              "source": "powerbi-fabric\\commands\\pbi-dataflow.md"
+            },
             {
               "name": "pbi-dataset-refresh",
               "description": "Generate TypeScript code to trigger a Power BI dataset refresh and poll for completion status via the REST API.",
@@ -640,9 +649,19 @@
               "source": "powerbi-fabric\\commands\\pbi-measure.md"
             },
             {
+              "name": "pbi-model-validate",
+              "description": "PBIP Model Validator",
+              "source": "powerbi-fabric\\commands\\pbi-model-validate.md"
+            },
+            {
               "name": "pbi-query",
               "description": "Generate Power Query M code for data transformation or source connection. Supports multiple data source types and common transformation patterns.",
               "source": "powerbi-fabric\\commands\\pbi-query.md"
+            },
+            {
+              "name": "pbi-rls-role",
+              "description": "RLS Role Generator",
+              "source": "powerbi-fabric\\commands\\pbi-rls-role.md"
             },
             {
               "name": "pbi-scaffold",
@@ -665,6 +684,11 @@
         "Power Query M": {
           "actions": [
             {
+              "name": "pbi-dataflow",
+              "description": "Dataflow Gen2 Scaffolder",
+              "source": "powerbi-fabric\\commands\\pbi-dataflow.md"
+            },
+            {
               "name": "pbi-dataset-refresh",
               "description": "Generate TypeScript code to trigger a Power BI dataset refresh and poll for completion status via the REST API.",
               "source": "powerbi-fabric\\commands\\pbi-dataset-refresh.md"
@@ -690,9 +714,19 @@
               "source": "powerbi-fabric\\commands\\pbi-measure.md"
             },
             {
+              "name": "pbi-model-validate",
+              "description": "PBIP Model Validator",
+              "source": "powerbi-fabric\\commands\\pbi-model-validate.md"
+            },
+            {
               "name": "pbi-query",
               "description": "Generate Power Query M code for data transformation or source connection. Supports multiple data source types and common transformation patterns.",
               "source": "powerbi-fabric\\commands\\pbi-query.md"
+            },
+            {
+              "name": "pbi-rls-role",
+              "description": "RLS Role Generator",
+              "source": "powerbi-fabric\\commands\\pbi-rls-role.md"
             },
             {
               "name": "pbi-scaffold",
@@ -715,6 +749,11 @@
         "PBIP Projects": {
           "actions": [
             {
+              "name": "pbi-dataflow",
+              "description": "Dataflow Gen2 Scaffolder",
+              "source": "powerbi-fabric\\commands\\pbi-dataflow.md"
+            },
+            {
               "name": "pbi-dataset-refresh",
               "description": "Generate TypeScript code to trigger a Power BI dataset refresh and poll for completion status via the REST API.",
               "source": "powerbi-fabric\\commands\\pbi-dataset-refresh.md"
@@ -740,9 +779,19 @@
               "source": "powerbi-fabric\\commands\\pbi-measure.md"
             },
             {
+              "name": "pbi-model-validate",
+              "description": "PBIP Model Validator",
+              "source": "powerbi-fabric\\commands\\pbi-model-validate.md"
+            },
+            {
               "name": "pbi-query",
               "description": "Generate Power Query M code for data transformation or source connection. Supports multiple data source types and common transformation patterns.",
               "source": "powerbi-fabric\\commands\\pbi-query.md"
+            },
+            {
+              "name": "pbi-rls-role",
+              "description": "RLS Role Generator",
+              "source": "powerbi-fabric\\commands\\pbi-rls-role.md"
             },
             {
               "name": "pbi-scaffold",
@@ -765,6 +814,11 @@
         "REST API": {
           "actions": [
             {
+              "name": "pbi-dataflow",
+              "description": "Dataflow Gen2 Scaffolder",
+              "source": "powerbi-fabric\\commands\\pbi-dataflow.md"
+            },
+            {
               "name": "pbi-dataset-refresh",
               "description": "Generate TypeScript code to trigger a Power BI dataset refresh and poll for completion status via the REST API.",
               "source": "powerbi-fabric\\commands\\pbi-dataset-refresh.md"
@@ -790,9 +844,19 @@
               "source": "powerbi-fabric\\commands\\pbi-measure.md"
             },
             {
+              "name": "pbi-model-validate",
+              "description": "PBIP Model Validator",
+              "source": "powerbi-fabric\\commands\\pbi-model-validate.md"
+            },
+            {
               "name": "pbi-query",
               "description": "Generate Power Query M code for data transformation or source connection. Supports multiple data source types and common transformation patterns.",
               "source": "powerbi-fabric\\commands\\pbi-query.md"
+            },
+            {
+              "name": "pbi-rls-role",
+              "description": "RLS Role Generator",
+              "source": "powerbi-fabric\\commands\\pbi-rls-role.md"
             },
             {
               "name": "pbi-scaffold",
@@ -815,6 +879,11 @@
         "Fabric": {
           "actions": [
             {
+              "name": "pbi-dataflow",
+              "description": "Dataflow Gen2 Scaffolder",
+              "source": "powerbi-fabric\\commands\\pbi-dataflow.md"
+            },
+            {
               "name": "pbi-dataset-refresh",
               "description": "Generate TypeScript code to trigger a Power BI dataset refresh and poll for completion status via the REST API.",
               "source": "powerbi-fabric\\commands\\pbi-dataset-refresh.md"
@@ -840,9 +909,19 @@
               "source": "powerbi-fabric\\commands\\pbi-measure.md"
             },
             {
+              "name": "pbi-model-validate",
+              "description": "PBIP Model Validator",
+              "source": "powerbi-fabric\\commands\\pbi-model-validate.md"
+            },
+            {
               "name": "pbi-query",
               "description": "Generate Power Query M code for data transformation or source connection. Supports multiple data source types and common transformation patterns.",
               "source": "powerbi-fabric\\commands\\pbi-query.md"
+            },
+            {
+              "name": "pbi-rls-role",
+              "description": "RLS Role Generator",
+              "source": "powerbi-fabric\\commands\\pbi-rls-role.md"
             },
             {
               "name": "pbi-scaffold",
@@ -865,6 +944,11 @@
         "Review": {
           "actions": [
             {
+              "name": "pbi-dataflow",
+              "description": "Dataflow Gen2 Scaffolder",
+              "source": "powerbi-fabric\\commands\\pbi-dataflow.md"
+            },
+            {
               "name": "pbi-dataset-refresh",
               "description": "Generate TypeScript code to trigger a Power BI dataset refresh and poll for completion status via the REST API.",
               "source": "powerbi-fabric\\commands\\pbi-dataset-refresh.md"
@@ -890,9 +974,19 @@
               "source": "powerbi-fabric\\commands\\pbi-measure.md"
             },
             {
+              "name": "pbi-model-validate",
+              "description": "PBIP Model Validator",
+              "source": "powerbi-fabric\\commands\\pbi-model-validate.md"
+            },
+            {
               "name": "pbi-query",
               "description": "Generate Power Query M code for data transformation or source connection. Supports multiple data source types and common transformation patterns.",
               "source": "powerbi-fabric\\commands\\pbi-query.md"
+            },
+            {
+              "name": "pbi-rls-role",
+              "description": "RLS Role Generator",
+              "source": "powerbi-fabric\\commands\\pbi-rls-role.md"
             },
             {
               "name": "pbi-scaffold",
@@ -915,6 +1009,11 @@
         "DAX & Power BI Reviewer": {
           "actions": [
             {
+              "name": "pbi-dataflow",
+              "description": "Dataflow Gen2 Scaffolder",
+              "source": "powerbi-fabric\\commands\\pbi-dataflow.md"
+            },
+            {
               "name": "pbi-dataset-refresh",
               "description": "Generate TypeScript code to trigger a Power BI dataset refresh and poll for completion status via the REST API.",
               "source": "powerbi-fabric\\commands\\pbi-dataset-refresh.md"
@@ -940,9 +1039,19 @@
               "source": "powerbi-fabric\\commands\\pbi-measure.md"
             },
             {
+              "name": "pbi-model-validate",
+              "description": "PBIP Model Validator",
+              "source": "powerbi-fabric\\commands\\pbi-model-validate.md"
+            },
+            {
               "name": "pbi-query",
               "description": "Generate Power Query M code for data transformation or source connection. Supports multiple data source types and common transformation patterns.",
               "source": "powerbi-fabric\\commands\\pbi-query.md"
+            },
+            {
+              "name": "pbi-rls-role",
+              "description": "RLS Role Generator",
+              "source": "powerbi-fabric\\commands\\pbi-rls-role.md"
             },
             {
               "name": "pbi-scaffold",
@@ -966,7 +1075,7 @@
     },
     "powerplatform-alm": {
       "category": "devops",
-      "description": "Application lifecycle management — environment provisioning, solution transport, CI/CD pipeline generation, and PCF control scaffolding.",
+      "description": "Application lifecycle management â€” environment provisioning, solution transport, CI/CD pipeline generation, and PCF control scaffolding.",
       "files": {
         "manifest": "powerplatform-alm\\.claude-plugin\\plugin.json",
         "readme": "powerplatform-alm\\README.md",
@@ -1053,7 +1162,7 @@
     },
     "onedrive": {
       "category": "productivity",
-      "description": "OneDrive file management via Microsoft Graph — upload, download, share, search, and delta sync for personal and business drives.",
+      "description": "OneDrive file management via Microsoft Graph â€” upload, download, share, search, and delta sync for personal and business drives.",
       "files": {
         "manifest": "onedrive\\.claude-plugin\\plugin.json",
         "readme": "onedrive\\README.md",
@@ -1322,7 +1431,7 @@
     },
     "planner-todo": {
       "category": "productivity",
-      "description": "Task and project management via Microsoft Graph — Planner plans, buckets, tasks, assignments, and To Do lists with steps and recurrence.",
+      "description": "Task and project management via Microsoft Graph â€” Planner plans, buckets, tasks, assignments, and To Do lists with steps and recurrence.",
       "files": {
         "manifest": "planner-todo\\.claude-plugin\\plugin.json",
         "readme": "planner-todo\\README.md",
@@ -1335,8 +1444,13 @@
           "planner-todo\\commands\\planner-setup.md",
           "planner-todo\\commands\\planner-task-assign.md",
           "planner-todo\\commands\\planner-task-create.md",
+          "planner-todo\\commands\\planner-task-details.md",
+          "planner-todo\\commands\\planner-task-list.md",
+          "planner-todo\\commands\\planner-task-update.md",
           "planner-todo\\commands\\todo-list-create.md",
-          "planner-todo\\commands\\todo-task-create.md"
+          "planner-todo\\commands\\todo-task-create-recurring.md",
+          "planner-todo\\commands\\todo-task-create.md",
+          "planner-todo\\commands\\todo-tasks-list.md"
         ],
         "agents": [
           "planner-todo\\agents\\planner-reviewer.md"
@@ -1371,17 +1485,55 @@
               "source": "planner-todo\\commands\\planner-task-create.md"
             },
             {
+              "name": "planner-task-details",
+              "description": "Update Planner Task Details",
+              "source": "planner-todo\\commands\\planner-task-details.md"
+            },
+            {
+              "name": "planner-task-list",
+              "description": "List Planner Tasks",
+              "source": "planner-todo\\commands\\planner-task-list.md"
+            },
+            {
+              "name": "planner-task-update",
+              "description": "Update Planner Task",
+              "source": "planner-todo\\commands\\planner-task-update.md"
+            },
+            {
               "name": "todo-list-create",
               "description": "Create a new Microsoft To Do task list",
               "source": "planner-todo\\commands\\todo-list-create.md"
             },
             {
+              "name": "todo-task-create-recurring",
+              "description": "Create Recurring To Do Task",
+              "source": "planner-todo\\commands\\todo-task-create-recurring.md"
+            },
+            {
               "name": "todo-task-create",
               "description": "Create a task in a Microsoft To Do list with optional due date and reminder",
               "source": "planner-todo\\commands\\todo-task-create.md"
+            },
+            {
+              "name": "todo-tasks-list",
+              "description": "List To Do Tasks",
+              "source": "planner-todo\\commands\\todo-tasks-list.md"
             }
           ],
-          "prerequisites": []
+          "prerequisites": [
+            "`Group.ReadWrite.All` — associate the plan with the specified M365 Group",
+            "`Tasks.ReadWrite` — create and manage Planner buckets",
+            "`Tasks.ReadWrite` — create and manage Planner plans and buckets",
+            "`Tasks.ReadWrite` — create and manage Planner tasks",
+            "`Tasks.ReadWrite` — create and manage To Do tasks including recurring ones",
+            "`Tasks.ReadWrite` — create and manage the signed-in user's To Do lists and tasks",
+            "`Tasks.ReadWrite` — create and manage the signed-in user's To Do tasks",
+            "`Tasks.ReadWrite` — read and modify Planner task assignments",
+            "`Tasks.ReadWrite` — read and update Planner task details",
+            "`Tasks.ReadWrite` — read and update Planner tasks",
+            "`Tasks.Read` — read Planner tasks (use `Tasks.ReadWrite` if you also need to modify)",
+            "`Tasks.Read` — read the signed-in user's To Do tasks and lists"
+          ]
         },
         "Tasks": {
           "actions": [
@@ -1411,17 +1563,55 @@
               "source": "planner-todo\\commands\\planner-task-create.md"
             },
             {
+              "name": "planner-task-details",
+              "description": "Update Planner Task Details",
+              "source": "planner-todo\\commands\\planner-task-details.md"
+            },
+            {
+              "name": "planner-task-list",
+              "description": "List Planner Tasks",
+              "source": "planner-todo\\commands\\planner-task-list.md"
+            },
+            {
+              "name": "planner-task-update",
+              "description": "Update Planner Task",
+              "source": "planner-todo\\commands\\planner-task-update.md"
+            },
+            {
               "name": "todo-list-create",
               "description": "Create a new Microsoft To Do task list",
               "source": "planner-todo\\commands\\todo-list-create.md"
             },
             {
+              "name": "todo-task-create-recurring",
+              "description": "Create Recurring To Do Task",
+              "source": "planner-todo\\commands\\todo-task-create-recurring.md"
+            },
+            {
               "name": "todo-task-create",
               "description": "Create a task in a Microsoft To Do list with optional due date and reminder",
               "source": "planner-todo\\commands\\todo-task-create.md"
+            },
+            {
+              "name": "todo-tasks-list",
+              "description": "List To Do Tasks",
+              "source": "planner-todo\\commands\\todo-tasks-list.md"
             }
           ],
-          "prerequisites": []
+          "prerequisites": [
+            "`Group.ReadWrite.All` — associate the plan with the specified M365 Group",
+            "`Tasks.ReadWrite` — create and manage Planner buckets",
+            "`Tasks.ReadWrite` — create and manage Planner plans and buckets",
+            "`Tasks.ReadWrite` — create and manage Planner tasks",
+            "`Tasks.ReadWrite` — create and manage To Do tasks including recurring ones",
+            "`Tasks.ReadWrite` — create and manage the signed-in user's To Do lists and tasks",
+            "`Tasks.ReadWrite` — create and manage the signed-in user's To Do tasks",
+            "`Tasks.ReadWrite` — read and modify Planner task assignments",
+            "`Tasks.ReadWrite` — read and update Planner task details",
+            "`Tasks.ReadWrite` — read and update Planner tasks",
+            "`Tasks.Read` — read Planner tasks (use `Tasks.ReadWrite` if you also need to modify)",
+            "`Tasks.Read` — read the signed-in user's To Do tasks and lists"
+          ]
         },
         "Assignments": {
           "actions": [
@@ -1451,17 +1641,55 @@
               "source": "planner-todo\\commands\\planner-task-create.md"
             },
             {
+              "name": "planner-task-details",
+              "description": "Update Planner Task Details",
+              "source": "planner-todo\\commands\\planner-task-details.md"
+            },
+            {
+              "name": "planner-task-list",
+              "description": "List Planner Tasks",
+              "source": "planner-todo\\commands\\planner-task-list.md"
+            },
+            {
+              "name": "planner-task-update",
+              "description": "Update Planner Task",
+              "source": "planner-todo\\commands\\planner-task-update.md"
+            },
+            {
               "name": "todo-list-create",
               "description": "Create a new Microsoft To Do task list",
               "source": "planner-todo\\commands\\todo-list-create.md"
             },
             {
+              "name": "todo-task-create-recurring",
+              "description": "Create Recurring To Do Task",
+              "source": "planner-todo\\commands\\todo-task-create-recurring.md"
+            },
+            {
               "name": "todo-task-create",
               "description": "Create a task in a Microsoft To Do list with optional due date and reminder",
               "source": "planner-todo\\commands\\todo-task-create.md"
+            },
+            {
+              "name": "todo-tasks-list",
+              "description": "List To Do Tasks",
+              "source": "planner-todo\\commands\\todo-tasks-list.md"
             }
           ],
-          "prerequisites": []
+          "prerequisites": [
+            "`Group.ReadWrite.All` — associate the plan with the specified M365 Group",
+            "`Tasks.ReadWrite` — create and manage Planner buckets",
+            "`Tasks.ReadWrite` — create and manage Planner plans and buckets",
+            "`Tasks.ReadWrite` — create and manage Planner tasks",
+            "`Tasks.ReadWrite` — create and manage To Do tasks including recurring ones",
+            "`Tasks.ReadWrite` — create and manage the signed-in user's To Do lists and tasks",
+            "`Tasks.ReadWrite` — create and manage the signed-in user's To Do tasks",
+            "`Tasks.ReadWrite` — read and modify Planner task assignments",
+            "`Tasks.ReadWrite` — read and update Planner task details",
+            "`Tasks.ReadWrite` — read and update Planner tasks",
+            "`Tasks.Read` — read Planner tasks (use `Tasks.ReadWrite` if you also need to modify)",
+            "`Tasks.Read` — read the signed-in user's To Do tasks and lists"
+          ]
         },
         "Labels": {
           "actions": [
@@ -1491,17 +1719,55 @@
               "source": "planner-todo\\commands\\planner-task-create.md"
             },
             {
+              "name": "planner-task-details",
+              "description": "Update Planner Task Details",
+              "source": "planner-todo\\commands\\planner-task-details.md"
+            },
+            {
+              "name": "planner-task-list",
+              "description": "List Planner Tasks",
+              "source": "planner-todo\\commands\\planner-task-list.md"
+            },
+            {
+              "name": "planner-task-update",
+              "description": "Update Planner Task",
+              "source": "planner-todo\\commands\\planner-task-update.md"
+            },
+            {
               "name": "todo-list-create",
               "description": "Create a new Microsoft To Do task list",
               "source": "planner-todo\\commands\\todo-list-create.md"
             },
             {
+              "name": "todo-task-create-recurring",
+              "description": "Create Recurring To Do Task",
+              "source": "planner-todo\\commands\\todo-task-create-recurring.md"
+            },
+            {
               "name": "todo-task-create",
               "description": "Create a task in a Microsoft To Do list with optional due date and reminder",
               "source": "planner-todo\\commands\\todo-task-create.md"
+            },
+            {
+              "name": "todo-tasks-list",
+              "description": "List To Do Tasks",
+              "source": "planner-todo\\commands\\todo-tasks-list.md"
             }
           ],
-          "prerequisites": []
+          "prerequisites": [
+            "`Group.ReadWrite.All` — associate the plan with the specified M365 Group",
+            "`Tasks.ReadWrite` — create and manage Planner buckets",
+            "`Tasks.ReadWrite` — create and manage Planner plans and buckets",
+            "`Tasks.ReadWrite` — create and manage Planner tasks",
+            "`Tasks.ReadWrite` — create and manage To Do tasks including recurring ones",
+            "`Tasks.ReadWrite` — create and manage the signed-in user's To Do lists and tasks",
+            "`Tasks.ReadWrite` — create and manage the signed-in user's To Do tasks",
+            "`Tasks.ReadWrite` — read and modify Planner task assignments",
+            "`Tasks.ReadWrite` — read and update Planner task details",
+            "`Tasks.ReadWrite` — read and update Planner tasks",
+            "`Tasks.Read` — read Planner tasks (use `Tasks.ReadWrite` if you also need to modify)",
+            "`Tasks.Read` — read the signed-in user's To Do tasks and lists"
+          ]
         },
         "To Do Lists": {
           "actions": [
@@ -1531,17 +1797,55 @@
               "source": "planner-todo\\commands\\planner-task-create.md"
             },
             {
+              "name": "planner-task-details",
+              "description": "Update Planner Task Details",
+              "source": "planner-todo\\commands\\planner-task-details.md"
+            },
+            {
+              "name": "planner-task-list",
+              "description": "List Planner Tasks",
+              "source": "planner-todo\\commands\\planner-task-list.md"
+            },
+            {
+              "name": "planner-task-update",
+              "description": "Update Planner Task",
+              "source": "planner-todo\\commands\\planner-task-update.md"
+            },
+            {
               "name": "todo-list-create",
               "description": "Create a new Microsoft To Do task list",
               "source": "planner-todo\\commands\\todo-list-create.md"
             },
             {
+              "name": "todo-task-create-recurring",
+              "description": "Create Recurring To Do Task",
+              "source": "planner-todo\\commands\\todo-task-create-recurring.md"
+            },
+            {
               "name": "todo-task-create",
               "description": "Create a task in a Microsoft To Do list with optional due date and reminder",
               "source": "planner-todo\\commands\\todo-task-create.md"
+            },
+            {
+              "name": "todo-tasks-list",
+              "description": "List To Do Tasks",
+              "source": "planner-todo\\commands\\todo-tasks-list.md"
             }
           ],
-          "prerequisites": []
+          "prerequisites": [
+            "`Group.ReadWrite.All` — associate the plan with the specified M365 Group",
+            "`Tasks.ReadWrite` — create and manage Planner buckets",
+            "`Tasks.ReadWrite` — create and manage Planner plans and buckets",
+            "`Tasks.ReadWrite` — create and manage Planner tasks",
+            "`Tasks.ReadWrite` — create and manage To Do tasks including recurring ones",
+            "`Tasks.ReadWrite` — create and manage the signed-in user's To Do lists and tasks",
+            "`Tasks.ReadWrite` — create and manage the signed-in user's To Do tasks",
+            "`Tasks.ReadWrite` — read and modify Planner task assignments",
+            "`Tasks.ReadWrite` — read and update Planner task details",
+            "`Tasks.ReadWrite` — read and update Planner tasks",
+            "`Tasks.Read` — read Planner tasks (use `Tasks.ReadWrite` if you also need to modify)",
+            "`Tasks.Read` — read the signed-in user's To Do tasks and lists"
+          ]
         },
         "Review": {
           "actions": [
@@ -1571,17 +1875,55 @@
               "source": "planner-todo\\commands\\planner-task-create.md"
             },
             {
+              "name": "planner-task-details",
+              "description": "Update Planner Task Details",
+              "source": "planner-todo\\commands\\planner-task-details.md"
+            },
+            {
+              "name": "planner-task-list",
+              "description": "List Planner Tasks",
+              "source": "planner-todo\\commands\\planner-task-list.md"
+            },
+            {
+              "name": "planner-task-update",
+              "description": "Update Planner Task",
+              "source": "planner-todo\\commands\\planner-task-update.md"
+            },
+            {
               "name": "todo-list-create",
               "description": "Create a new Microsoft To Do task list",
               "source": "planner-todo\\commands\\todo-list-create.md"
             },
             {
+              "name": "todo-task-create-recurring",
+              "description": "Create Recurring To Do Task",
+              "source": "planner-todo\\commands\\todo-task-create-recurring.md"
+            },
+            {
               "name": "todo-task-create",
               "description": "Create a task in a Microsoft To Do list with optional due date and reminder",
               "source": "planner-todo\\commands\\todo-task-create.md"
+            },
+            {
+              "name": "todo-tasks-list",
+              "description": "List To Do Tasks",
+              "source": "planner-todo\\commands\\todo-tasks-list.md"
             }
           ],
-          "prerequisites": []
+          "prerequisites": [
+            "`Group.ReadWrite.All` — associate the plan with the specified M365 Group",
+            "`Tasks.ReadWrite` — create and manage Planner buckets",
+            "`Tasks.ReadWrite` — create and manage Planner plans and buckets",
+            "`Tasks.ReadWrite` — create and manage Planner tasks",
+            "`Tasks.ReadWrite` — create and manage To Do tasks including recurring ones",
+            "`Tasks.ReadWrite` — create and manage the signed-in user's To Do lists and tasks",
+            "`Tasks.ReadWrite` — create and manage the signed-in user's To Do tasks",
+            "`Tasks.ReadWrite` — read and modify Planner task assignments",
+            "`Tasks.ReadWrite` — read and update Planner task details",
+            "`Tasks.ReadWrite` — read and update Planner tasks",
+            "`Tasks.Read` — read Planner tasks (use `Tasks.ReadWrite` if you also need to modify)",
+            "`Tasks.Read` — read the signed-in user's To Do tasks and lists"
+          ]
         },
         "Planner & To Do Reviewer": {
           "actions": [
@@ -1611,23 +1953,61 @@
               "source": "planner-todo\\commands\\planner-task-create.md"
             },
             {
+              "name": "planner-task-details",
+              "description": "Update Planner Task Details",
+              "source": "planner-todo\\commands\\planner-task-details.md"
+            },
+            {
+              "name": "planner-task-list",
+              "description": "List Planner Tasks",
+              "source": "planner-todo\\commands\\planner-task-list.md"
+            },
+            {
+              "name": "planner-task-update",
+              "description": "Update Planner Task",
+              "source": "planner-todo\\commands\\planner-task-update.md"
+            },
+            {
               "name": "todo-list-create",
               "description": "Create a new Microsoft To Do task list",
               "source": "planner-todo\\commands\\todo-list-create.md"
             },
             {
+              "name": "todo-task-create-recurring",
+              "description": "Create Recurring To Do Task",
+              "source": "planner-todo\\commands\\todo-task-create-recurring.md"
+            },
+            {
               "name": "todo-task-create",
               "description": "Create a task in a Microsoft To Do list with optional due date and reminder",
               "source": "planner-todo\\commands\\todo-task-create.md"
+            },
+            {
+              "name": "todo-tasks-list",
+              "description": "List To Do Tasks",
+              "source": "planner-todo\\commands\\todo-tasks-list.md"
             }
           ],
-          "prerequisites": []
+          "prerequisites": [
+            "`Group.ReadWrite.All` — associate the plan with the specified M365 Group",
+            "`Tasks.ReadWrite` — create and manage Planner buckets",
+            "`Tasks.ReadWrite` — create and manage Planner plans and buckets",
+            "`Tasks.ReadWrite` — create and manage Planner tasks",
+            "`Tasks.ReadWrite` — create and manage To Do tasks including recurring ones",
+            "`Tasks.ReadWrite` — create and manage the signed-in user's To Do lists and tasks",
+            "`Tasks.ReadWrite` — create and manage the signed-in user's To Do tasks",
+            "`Tasks.ReadWrite` — read and modify Planner task assignments",
+            "`Tasks.ReadWrite` — read and update Planner task details",
+            "`Tasks.ReadWrite` — read and update Planner tasks",
+            "`Tasks.Read` — read Planner tasks (use `Tasks.ReadWrite` if you also need to modify)",
+            "`Tasks.Read` — read the signed-in user's To Do tasks and lists"
+          ]
         }
       }
     },
     "azure-devops": {
       "category": "devops",
-      "description": "Azure DevOps project management — Git repos, YAML pipelines, work items, pull requests, WIQL queries, and artifact feeds via REST API.",
+      "description": "Azure DevOps project management â€” Git repos, YAML pipelines, work items, pull requests, WIQL queries, and artifact feeds via REST API.",
       "files": {
         "manifest": "azure-devops\\.claude-plugin\\plugin.json",
         "readme": "azure-devops\\README.md",
@@ -2012,7 +2392,7 @@
     },
     "entra-id-security": {
       "category": "security",
-      "description": "Microsoft Entra ID identity governance — app registrations, service principals, conditional access policies, sign-in log analysis, and risk detection.",
+      "description": "Microsoft Entra ID identity governance â€” app registrations, service principals, conditional access policies, sign-in log analysis, and risk detection.",
       "files": {
         "manifest": "entra-id-security\\.claude-plugin\\plugin.json",
         "readme": "entra-id-security\\README.md",
@@ -2398,7 +2778,7 @@
     },
     "powerapps": {
       "category": "productivity",
-      "description": "Power Apps development — canvas app Power Fx formulas, model-driven app configuration, custom connectors, component libraries, and solution checker.",
+      "description": "Power Apps development â€” canvas app Power Fx formulas, model-driven app configuration, custom connectors, component libraries, and solution checker.",
       "files": {
         "manifest": "powerapps\\.claude-plugin\\plugin.json",
         "readme": "powerapps\\README.md",
@@ -2743,7 +3123,7 @@
     },
     "azure-cost-governance": {
       "category": "cloud",
-      "description": "Azure FinOps and governance workflows — query costs, monitor budgets, detect anomalies, and identify idle resources for optimization.",
+      "description": "Azure FinOps and governance workflows â€” query costs, monitor budgets, detect anomalies, and identify idle resources for optimization.",
       "files": {
         "manifest": "azure-cost-governance\\.claude-plugin\\plugin.json",
         "readme": "azure-cost-governance\\README.md",
@@ -2790,7 +3170,7 @@
     },
     "power-automate": {
       "category": "productivity",
-      "description": "Design and troubleshoot Power Automate cloud flows — trigger/action patterns, run diagnostics, retries, and deployment-safe flow definitions.",
+      "description": "Design and troubleshoot Power Automate cloud flows â€” trigger/action patterns, run diagnostics, retries, and deployment-safe flow definitions.",
       "files": {
         "manifest": "power-automate\\.claude-plugin\\plugin.json",
         "readme": "power-automate\\README.md",
@@ -2870,7 +3250,7 @@
     },
     "purview-compliance": {
       "category": "security",
-      "description": "Compliance and information protection guidance for Microsoft Purview — DLP, retention, sensitivity labels, and eDiscovery workflows.",
+      "description": "Compliance and information protection guidance for Microsoft Purview â€” DLP, retention, sensitivity labels, and eDiscovery workflows.",
       "files": {
         "manifest": "purview-compliance\\.claude-plugin\\plugin.json",
         "readme": "purview-compliance\\README.md",
@@ -2923,7 +3303,7 @@
     },
     "azure-policy-security": {
       "category": "security",
-      "description": "Evaluate Azure policy compliance and security posture — policy assignments, drift analysis, remediation planning, and guardrail recommendations.",
+      "description": "Evaluate Azure policy compliance and security posture â€” policy assignments, drift analysis, remediation planning, and guardrail recommendations.",
       "files": {
         "manifest": "azure-policy-security\\.claude-plugin\\plugin.json",
         "readme": "azure-policy-security\\README.md",
@@ -2970,7 +3350,7 @@
     },
     "lighthouse-health": {
       "category": "security",
-      "description": "Multi-tenant health dashboard for MSPs/CSPs — green/yellow/red scoring for security posture, MFA coverage, stale accounts, and licensing anomalies with one-click remediation plans.",
+      "description": "Multi-tenant health dashboard for MSPs/CSPs â€” green/yellow/red scoring for security posture, MFA coverage, stale accounts, and licensing anomalies with one-click remediation plans.",
       "files": {
         "manifest": "lighthouse-health\\.claude-plugin\\plugin.json",
         "readme": "lighthouse-health\\README.md",
@@ -3060,7 +3440,7 @@
     },
     "exchange-mailflow": {
       "category": "productivity",
-      "description": "Guided 'email not received' diagnostics — message trace, transport rules, quarantine, connectors, and SPF/DKIM/DMARC checks with client-safe explanations.",
+      "description": "Guided 'email not received' diagnostics â€” message trace, transport rules, quarantine, connectors, and SPF/DKIM/DMARC checks with client-safe explanations.",
       "files": {
         "manifest": "exchange-mailflow\\.claude-plugin\\plugin.json",
         "readme": "exchange-mailflow\\README.md",
@@ -3105,7 +3485,7 @@
     },
     "sharing-auditor": {
       "category": "security",
-      "description": "Audit external sharing across SharePoint and OneDrive — find overshared links, anonymous access, and stale guest users with approval-based revocation tasks.",
+      "description": "Audit external sharing across SharePoint and OneDrive â€” find overshared links, anonymous access, and stale guest users with approval-based revocation tasks.",
       "files": {
         "manifest": "sharing-auditor\\.claude-plugin\\plugin.json",
         "readme": "sharing-auditor\\README.md",
@@ -3154,7 +3534,7 @@
     },
     "teams-lifecycle": {
       "category": "productivity",
-      "description": "Create and archive teams with templates, enforce naming and ownership, apply sensitivity labels, and run expiration reviews — using non-technical 'project start/end' language.",
+      "description": "Create and archive teams with templates, enforce naming and ownership, apply sensitivity labels, and run expiration reviews â€” using non-technical 'project start/end' language.",
       "files": {
         "manifest": "teams-lifecycle\\.claude-plugin\\plugin.json",
         "readme": "teams-lifecycle\\README.md",
@@ -3204,7 +3584,7 @@
     },
     "servicedesk-runbooks": {
       "category": "productivity",
-      "description": "Guided workflows for common IT tickets — shared mailbox access, MFA reset, file recovery, and password reset with pre-checks, approval gates, and end-user verification.",
+      "description": "Guided workflows for common IT tickets â€” shared mailbox access, MFA reset, file recovery, and password reset with pre-checks, approval gates, and end-user verification.",
       "files": {
         "manifest": "servicedesk-runbooks\\.claude-plugin\\plugin.json",
         "readme": "servicedesk-runbooks\\README.md",
@@ -3264,7 +3644,7 @@
     },
     "microsoft-bookings": {
       "category": "productivity",
-      "description": "Microsoft Bookings — manage appointment calendars, services, staff availability, and customer bookings via Graph API.",
+      "description": "Microsoft Bookings â€” manage appointment calendars, services, staff availability, and customer bookings via Graph API.",
       "files": {
         "manifest": "microsoft-bookings\\.claude-plugin\\plugin.json",
         "readme": "microsoft-bookings\\README.md",
@@ -3320,7 +3700,7 @@
     },
     "microsoft-forms-surveys": {
       "category": "productivity",
-      "description": "Microsoft Forms — create surveys, add questions, collect responses, and summarize results via Graph API.",
+      "description": "Microsoft Forms â€” create surveys, add questions, collect responses, and summarize results via Graph API.",
       "files": {
         "manifest": "microsoft-forms-surveys\\.claude-plugin\\plugin.json",
         "readme": "microsoft-forms-surveys\\README.md",
@@ -3376,7 +3756,7 @@
     },
     "microsoft-lists-tracker": {
       "category": "productivity",
-      "description": "Microsoft Lists — create and manage lists for process tracking, issue logs, and project trackers via Graph API.",
+      "description": "Microsoft Lists â€” create and manage lists for process tracking, issue logs, and project trackers via Graph API.",
       "files": {
         "manifest": "microsoft-lists-tracker\\.claude-plugin\\plugin.json",
         "readme": "microsoft-lists-tracker\\README.md",
@@ -3432,7 +3812,7 @@
     },
     "copilot-studio-bots": {
       "category": "productivity",
-      "description": "Copilot Studio — design bot topics, author trigger phrases, configure generative AI orchestration, and publish chatbots.",
+      "description": "Copilot Studio â€” design bot topics, author trigger phrases, configure generative AI orchestration, and publish chatbots.",
       "files": {
         "manifest": "copilot-studio-bots\\.claude-plugin\\plugin.json",
         "readme": "copilot-studio-bots\\README.md",
@@ -3483,7 +3863,7 @@
     },
     "onenote-knowledge-base": {
       "category": "productivity",
-      "description": "OneNote Knowledge Base — read, create, and search notebooks, sections, and pages via Graph API for team documentation.",
+      "description": "OneNote Knowledge Base â€” read, create, and search notebooks, sections, and pages via Graph API for team documentation.",
       "files": {
         "manifest": "onenote-knowledge-base\\.claude-plugin\\plugin.json",
         "readme": "onenote-knowledge-base\\README.md",
@@ -3581,7 +3961,7 @@
     },
     "power-pages": {
       "category": "productivity",
-      "description": "Microsoft Power Pages — sites, page templates, Liquid, web forms, table permissions, web roles, and Dataverse portal integration",
+      "description": "Microsoft Power Pages â€” sites, page templates, Liquid, web forms, table permissions, web roles, and Dataverse portal integration",
       "files": {
         "manifest": "power-pages\\.claude-plugin\\plugin.json",
         "readme": "power-pages\\README.md",
@@ -3637,7 +4017,7 @@
     },
     "azure-web-apps": {
       "category": "cloud",
-      "description": "Azure App Service — create, deploy, and manage web apps, deployment slots, custom domains, and TLS certificates via ARM REST API",
+      "description": "Azure App Service â€” create, deploy, and manage web apps, deployment slots, custom domains, and TLS certificates via ARM REST API",
       "files": {
         "manifest": "azure-web-apps\\.claude-plugin\\plugin.json",
         "readme": "azure-web-apps\\README.md",
@@ -3690,7 +4070,7 @@
     },
     "azure-static-web-apps": {
       "category": "cloud",
-      "description": "Azure Static Web Apps — JAMstack/SPA hosting with built-in auth, API backends, PR preview environments, and staticwebapp.config.json management",
+      "description": "Azure Static Web Apps â€” JAMstack/SPA hosting with built-in auth, API backends, PR preview environments, and staticwebapp.config.json management",
       "files": {
         "manifest": "azure-static-web-apps\\.claude-plugin\\plugin.json",
         "readme": "azure-static-web-apps\\README.md",
@@ -3743,7 +4123,7 @@
     },
     "teams-app-dev": {
       "category": "devops",
-      "description": "Custom Teams app development — Adaptive Cards, message extensions, bot handlers, tab apps, manifest authoring, and Teams Toolkit CLI workflows.",
+      "description": "Custom Teams app development â€” Adaptive Cards, message extensions, bot handlers, tab apps, manifest authoring, and Teams Toolkit CLI workflows.",
       "files": {
         "manifest": "teams-app-dev\\.claude-plugin\\plugin.json",
         "readme": "teams-app-dev\\README.md",
@@ -3811,7 +4191,7 @@
     },
     "azure-storage": {
       "category": "cloud",
-      "description": "Azure Storage — Blob, Queue, Table, and Files services with lifecycle policies, SAS tokens, and managed identity access",
+      "description": "Azure Storage â€” Blob, Queue, Table, and Files services with lifecycle policies, SAS tokens, and managed identity access",
       "files": {
         "manifest": "azure-storage\\.claude-plugin\\plugin.json",
         "readme": "azure-storage\\README.md",
@@ -3873,7 +4253,7 @@
     },
     "azure-functions": {
       "category": "cloud",
-      "description": "Azure Functions — triggers, bindings, Durable Functions, deployment, and local development with Azure Functions Core Tools",
+      "description": "Azure Functions â€” triggers, bindings, Durable Functions, deployment, and local development with Azure Functions Core Tools",
       "files": {
         "manifest": "azure-functions\\.claude-plugin\\plugin.json",
         "readme": "azure-functions\\README.md",
@@ -3935,7 +4315,7 @@
     },
     "azure-containers": {
       "category": "cloud",
-      "description": "Azure Container Apps, Container Instances, and Container Registry — build, push, deploy, and scale containerized workloads",
+      "description": "Azure Container Apps, Container Instances, and Container Registry â€” build, push, deploy, and scale containerized workloads",
       "files": {
         "manifest": "azure-containers\\.claude-plugin\\plugin.json",
         "readme": "azure-containers\\README.md",
@@ -3997,7 +4377,7 @@
     },
     "azure-sql-database": {
       "category": "cloud",
-      "description": "Azure SQL Database and Cosmos DB — provisioning, schema management, query optimization, security hardening, and backup/restore",
+      "description": "Azure SQL Database and Cosmos DB â€” provisioning, schema management, query optimization, security hardening, and backup/restore",
       "files": {
         "manifest": "azure-sql-database\\.claude-plugin\\plugin.json",
         "readme": "azure-sql-database\\README.md",
@@ -4059,7 +4439,7 @@
     },
     "azure-key-vault": {
       "category": "security",
-      "description": "Azure Key Vault — secrets, keys, and certificates management with RBAC, rotation policies, and managed identity integration",
+      "description": "Azure Key Vault â€” secrets, keys, and certificates management with RBAC, rotation policies, and managed identity integration",
       "files": {
         "manifest": "azure-key-vault\\.claude-plugin\\plugin.json",
         "readme": "azure-key-vault\\README.md",
@@ -4121,7 +4501,7 @@
     },
     "azure-monitor": {
       "category": "cloud",
-      "description": "Azure Monitor, Application Insights, and Log Analytics — metrics, alerts, KQL queries, dashboards, and diagnostic settings",
+      "description": "Azure Monitor, Application Insights, and Log Analytics â€” metrics, alerts, KQL queries, dashboards, and diagnostic settings",
       "files": {
         "manifest": "azure-monitor\\.claude-plugin\\plugin.json",
         "readme": "azure-monitor\\README.md",
@@ -4187,7 +4567,7 @@
     },
     "azure-networking": {
       "category": "cloud",
-      "description": "Azure Networking — VNets, subnets, NSGs, Load Balancers, Front Door, DNS zones, VPN gateways, and Private Link",
+      "description": "Azure Networking â€” VNets, subnets, NSGs, Load Balancers, Front Door, DNS zones, VPN gateways, and Private Link",
       "files": {
         "manifest": "azure-networking\\.claude-plugin\\plugin.json",
         "readme": "azure-networking\\README.md",
@@ -4248,7 +4628,7 @@
     },
     "fabric-data-engineering": {
       "category": "analytics",
-      "description": "Microsoft Fabric Data Engineering — lakehouses, Spark notebooks, data pipelines, Delta Lake tables, and lakehouse SQL endpoints",
+      "description": "Microsoft Fabric Data Engineering â€” lakehouses, Spark notebooks, data pipelines, Delta Lake tables, and lakehouse SQL endpoints",
       "files": {
         "manifest": "fabric-data-engineering\\.claude-plugin\\plugin.json",
         "readme": "fabric-data-engineering\\README.md",
@@ -4311,7 +4691,7 @@
     },
     "fabric-data-warehouse": {
       "category": "analytics",
-      "description": "Microsoft Fabric Data Warehouse — Synapse warehouses, T-SQL DDL/DML, cross-database queries, stored procedures, and data modeling",
+      "description": "Microsoft Fabric Data Warehouse â€” Synapse warehouses, T-SQL DDL/DML, cross-database queries, stored procedures, and data modeling",
       "files": {
         "manifest": "fabric-data-warehouse\\.claude-plugin\\plugin.json",
         "readme": "fabric-data-warehouse\\README.md",
@@ -4373,7 +4753,7 @@
     },
     "fabric-real-time-analytics": {
       "category": "analytics",
-      "description": "Microsoft Fabric Real-Time Analytics — Eventhouse, KQL databases, eventstreams, Real-Time Dashboards, and streaming ingestion",
+      "description": "Microsoft Fabric Real-Time Analytics â€” Eventhouse, KQL databases, eventstreams, Real-Time Dashboards, and streaming ingestion",
       "files": {
         "manifest": "fabric-real-time-analytics\\.claude-plugin\\plugin.json",
         "readme": "fabric-real-time-analytics\\README.md",
@@ -4436,7 +4816,7 @@
     },
     "fabric-data-factory": {
       "category": "analytics",
-      "description": "Microsoft Fabric Data Factory — data pipelines, Dataflow Gen2, Copy activity, orchestration patterns, and scheduling",
+      "description": "Microsoft Fabric Data Factory â€” data pipelines, Dataflow Gen2, Copy activity, orchestration patterns, and scheduling",
       "files": {
         "manifest": "fabric-data-factory\\.claude-plugin\\plugin.json",
         "readme": "fabric-data-factory\\README.md",
@@ -4509,7 +4889,7 @@
     },
     "fabric-data-science": {
       "category": "analytics",
-      "description": "Microsoft Fabric Data Science — ML experiments, model training, MLflow tracking, PREDICT function, and semantic link integration",
+      "description": "Microsoft Fabric Data Science â€” ML experiments, model training, MLflow tracking, PREDICT function, and semantic link integration",
       "files": {
         "manifest": "fabric-data-science\\.claude-plugin\\plugin.json",
         "readme": "fabric-data-science\\README.md",
@@ -4572,7 +4952,7 @@
     },
     "fabric-data-activator": {
       "category": "analytics",
-      "description": "Microsoft Fabric Data Activator — Reflex triggers, condition-based alerts, real-time actions, and event-driven automation on Fabric data",
+      "description": "Microsoft Fabric Data Activator â€” Reflex triggers, condition-based alerts, real-time actions, and event-driven automation on Fabric data",
       "files": {
         "manifest": "fabric-data-activator\\.claude-plugin\\plugin.json",
         "readme": "fabric-data-activator\\README.md",
@@ -4634,7 +5014,7 @@
     },
     "fabric-onelake": {
       "category": "analytics",
-      "description": "Microsoft Fabric OneLake — unified data lake, shortcuts, file explorer, ADLS Gen2 APIs, and cross-workspace data access",
+      "description": "Microsoft Fabric OneLake â€” unified data lake, shortcuts, file explorer, ADLS Gen2 APIs, and cross-workspace data access",
       "files": {
         "manifest": "fabric-onelake\\.claude-plugin\\plugin.json",
         "readme": "fabric-onelake\\README.md",
@@ -4703,7 +5083,7 @@
     },
     "fabric-semantic-models": {
       "category": "analytics",
-      "description": "Microsoft Fabric Semantic Models — Direct Lake modeling, DAX governance, calculation groups, XMLA deployment, and semantic link automation",
+      "description": "Microsoft Fabric Semantic Models â€” Direct Lake modeling, DAX governance, calculation groups, XMLA deployment, and semantic link automation",
       "files": {
         "manifest": "fabric-semantic-models\\.claude-plugin\\plugin.json",
         "readme": "fabric-semantic-models\\README.md",
@@ -4755,7 +5135,7 @@
     },
     "fabric-gitops-cicd": {
       "category": "devops",
-      "description": "Microsoft Fabric GitOps CI/CD — workspace Git integration, deployment pipelines, artifact promotion, branch strategy, and release validation",
+      "description": "Microsoft Fabric GitOps CI/CD â€” workspace Git integration, deployment pipelines, artifact promotion, branch strategy, and release validation",
       "files": {
         "manifest": "fabric-gitops-cicd\\.claude-plugin\\plugin.json",
         "readme": "fabric-gitops-cicd\\README.md",
@@ -4807,7 +5187,7 @@
     },
     "fabric-capacity-ops": {
       "category": "analytics",
-      "description": "Microsoft Fabric Capacity Operations — CU monitoring, throttling diagnostics, workload tuning, autoscale planning, and cost-performance optimization",
+      "description": "Microsoft Fabric Capacity Operations â€” CU monitoring, throttling diagnostics, workload tuning, autoscale planning, and cost-performance optimization",
       "files": {
         "manifest": "fabric-capacity-ops\\.claude-plugin\\plugin.json",
         "readme": "fabric-capacity-ops\\README.md",
@@ -4859,7 +5239,7 @@
     },
     "fabric-mirroring": {
       "category": "analytics",
-      "description": "Microsoft Fabric Mirroring — source onboarding, CDC replication, latency monitoring, schema drift handling, and reconciliation workflows",
+      "description": "Microsoft Fabric Mirroring â€” source onboarding, CDC replication, latency monitoring, schema drift handling, and reconciliation workflows",
       "files": {
         "manifest": "fabric-mirroring\\.claude-plugin\\plugin.json",
         "readme": "fabric-mirroring\\README.md",
@@ -4911,7 +5291,7 @@
     },
     "fabric-security-governance": {
       "category": "security",
-      "description": "Microsoft Fabric Security Governance — workspace RBAC, RLS/OLS patterns, sensitivity labels, lineage controls, and audit readiness",
+      "description": "Microsoft Fabric Security Governance â€” workspace RBAC, RLS/OLS patterns, sensitivity labels, lineage controls, and audit readiness",
       "files": {
         "manifest": "fabric-security-governance\\.claude-plugin\\plugin.json",
         "readme": "fabric-security-governance\\README.md",
@@ -4963,7 +5343,7 @@
     },
     "fabric-observability": {
       "category": "analytics",
-      "description": "Microsoft Fabric Observability — Monitor Hub triage, notebook/pipeline reliability runbooks, SLA tracking, alert design, and incident diagnostics",
+      "description": "Microsoft Fabric Observability â€” Monitor Hub triage, notebook/pipeline reliability runbooks, SLA tracking, alert design, and incident diagnostics",
       "files": {
         "manifest": "fabric-observability\\.claude-plugin\\plugin.json",
         "readme": "fabric-observability\\README.md",
@@ -5015,7 +5395,7 @@
     },
     "azure-tenant-assessment": {
       "category": "cloud",
-      "description": "Entry-point Azure tenant assessment — subscription inventory, resource catalog, security posture snapshot, and plugin setup recommendations.",
+      "description": "Entry-point Azure tenant assessment â€” subscription inventory, resource catalog, security posture snapshot, and plugin setup recommendations.",
       "files": {
         "manifest": "azure-tenant-assessment\\.claude-plugin\\plugin.json",
         "readme": "azure-tenant-assessment\\README.md",
@@ -5113,7 +5493,7 @@
     },
     "process-task-mining": {
       "category": "analytics",
-      "description": "Process and task mining from M365, Power Automate, and Azure Monitor logs — extract event logs, discover process models, analyze performance, and check conformance.",
+      "description": "Process and task mining from M365, Power Automate, and Azure Monitor logs â€” extract event logs, discover process models, analyze performance, and check conformance.",
       "files": {
         "manifest": "process-task-mining\\.claude-plugin\\plugin.json",
         "readme": "process-task-mining\\README.md",
@@ -5172,7 +5552,7 @@
     },
     "azure-graph-dotnet": {
       "category": "devops",
-      "description": "Scaffold and build Microsoft Graph C# / .NET solutions on Azure — Functions, Container Jobs, Azure Identity, Polly resilience, and SharePoint file intelligence implementations.",
+      "description": "Scaffold and build Microsoft Graph C# / .NET solutions on Azure â€” Functions, Container Jobs, Azure Identity, Polly resilience, and SharePoint file intelligence implementations.",
       "files": {
         "manifest": "azure-graph-dotnet\\.claude-plugin\\plugin.json",
         "readme": "azure-graph-dotnet\\README.md",
@@ -5229,7 +5609,7 @@
     },
     "agent-foundry": {
       "category": "cloud",
-      "description": "Azure AI Foundry agent lifecycle management — scaffold, deploy, test, and manage AI agents with Azure AI Foundry MCP integration for agent service, model deployments, and evaluations.",
+      "description": "Azure AI Foundry agent lifecycle management â€” scaffold, deploy, test, and manage AI agents with Azure AI Foundry MCP integration for agent service, model deployments, and evaluations.",
       "files": {
         "manifest": "agent-foundry\\.claude-plugin\\plugin.json",
         "readme": "agent-foundry\\README.md",
@@ -5332,7 +5712,7 @@
     },
     "defender-sentinel": {
       "category": "security",
-      "description": "Microsoft Sentinel SIEM/SOAR and Defender XDR — incident triage, KQL threat hunting, analytics rules, SOAR playbooks, and advanced hunting across device, identity, email, and cloud app signals.",
+      "description": "Microsoft Sentinel SIEM/SOAR and Defender XDR â€” incident triage, KQL threat hunting, analytics rules, SOAR playbooks, and advanced hunting across device, identity, email, and cloud app signals.",
       "files": {
         "manifest": "defender-sentinel\\.claude-plugin\\plugin.json",
         "readme": "defender-sentinel\\README.md",
@@ -5388,7 +5768,7 @@
     },
     "azure-ai-services": {
       "category": "cloud",
-      "description": "Azure AI workloads — Azure OpenAI Service deployments, AI Search indexes and RAG pipelines, AI Studio/Foundry projects, Cognitive Services provisioning, content filtering, and responsible AI governance.",
+      "description": "Azure AI workloads â€” Azure OpenAI Service deployments, AI Search indexes and RAG pipelines, AI Studio/Foundry projects, Cognitive Services provisioning, content filtering, and responsible AI governance.",
       "files": {
         "manifest": "azure-ai-services\\.claude-plugin\\plugin.json",
         "readme": "azure-ai-services\\README.md",
@@ -5441,7 +5821,7 @@
     },
     "dynamics-365-crm": {
       "category": "productivity",
-      "description": "Dynamics 365 Sales and Customer Service via Dataverse Web API — leads, opportunities, accounts, contacts, cases, SLAs, queues, pipeline reporting, and CRM workflow automation.",
+      "description": "Dynamics 365 Sales and Customer Service via Dataverse Web API â€” leads, opportunities, accounts, contacts, cases, SLAs, queues, pipeline reporting, and CRM workflow automation.",
       "files": {
         "manifest": "dynamics-365-crm\\.claude-plugin\\plugin.json",
         "readme": "dynamics-365-crm\\README.md",
@@ -5488,7 +5868,7 @@
     },
     "dynamics-365-field-service": {
       "category": "productivity",
-      "description": "Dynamics 365 Field Service via Dataverse Web API — work orders, bookings, resource scheduling, service accounts, customer assets, incident types, and IoT-triggered service events.",
+      "description": "Dynamics 365 Field Service via Dataverse Web API â€” work orders, bookings, resource scheduling, service accounts, customer assets, incident types, and IoT-triggered service events.",
       "files": {
         "manifest": "dynamics-365-field-service\\.claude-plugin\\plugin.json",
         "readme": "dynamics-365-field-service\\README.md",
@@ -5541,7 +5921,7 @@
     },
     "dynamics-365-project-ops": {
       "category": "productivity",
-      "description": "Dynamics 365 Project Operations via Dataverse Web API — projects, WBS, time and expense tracking, resource assignments, project contracts, invoice proposals, and billing actuals.",
+      "description": "Dynamics 365 Project Operations via Dataverse Web API â€” projects, WBS, time and expense tracking, resource assignments, project contracts, invoice proposals, and billing actuals.",
       "files": {
         "manifest": "dynamics-365-project-ops\\.claude-plugin\\plugin.json",
         "readme": "dynamics-365-project-ops\\README.md",
@@ -5594,7 +5974,7 @@
     },
     "azure-dotnet-webapp": {
       "category": "devops",
-      "description": "Scaffold and build ASP.NET Core Web API and Blazor apps on Azure — Minimal API, controllers, Microsoft.Identity.Web, EF Core, SignalR, OpenAPI, App Service deployment, and Graph API integration patterns.",
+      "description": "Scaffold and build ASP.NET Core Web API and Blazor apps on Azure â€” Minimal API, controllers, Microsoft.Identity.Web, EF Core, SignalR, OpenAPI, App Service deployment, and Graph API integration patterns.",
       "files": {
         "manifest": "azure-dotnet-webapp\\.claude-plugin\\plugin.json",
         "readme": "azure-dotnet-webapp\\README.md",
@@ -5647,7 +6027,7 @@
     },
     "lighthouse-operations": {
       "category": "security",
-      "description": "Deep operational tooling for Azure Lighthouse delegation and M365 Lighthouse multi-tenant management — GDAP lifecycle, Bicep delegation templates, baseline compliance, cross-tenant governance, alert management, and monthly MSP health reports.",
+      "description": "Deep operational tooling for Azure Lighthouse delegation and M365 Lighthouse multi-tenant management â€” GDAP lifecycle, Bicep delegation templates, baseline compliance, cross-tenant governance, alert management, and monthly MSP health reports.",
       "files": {
         "manifest": "lighthouse-operations\\.claude-plugin\\plugin.json",
         "readme": "lighthouse-operations\\README.md",
@@ -5710,7 +6090,7 @@
     },
     "msp-tenant-provisioning": {
       "category": "cloud",
-      "description": "End-to-end new customer onboarding for MSPs and CSPs — CSP tenant creation via Partner Center API, M365 security baseline (CA policies, PIM, break-glass), custom domain DNS setup, Azure subscription and Defender for Cloud, and full Lighthouse management enrollment.",
+      "description": "End-to-end new customer onboarding for MSPs and CSPs â€” CSP tenant creation via Partner Center API, M365 security baseline (CA policies, PIM, break-glass), custom domain DNS setup, Azure subscription and Defender for Cloud, and full Lighthouse management enrollment.",
       "files": {
         "manifest": "msp-tenant-provisioning\\.claude-plugin\\plugin.json",
         "readme": "msp-tenant-provisioning\\README.md",
@@ -5768,7 +6148,7 @@
     },
     "business-central": {
       "category": "productivity",
-      "description": "Microsoft Dynamics 365 Business Central ERP — finance, supply chain, and inventory management via BC OData v4 / API v2.0 REST API.",
+      "description": "Microsoft Dynamics 365 Business Central ERP â€” finance, supply chain, and inventory management via BC OData v4 / API v2.0 REST API.",
       "files": {
         "manifest": "business-central\\.claude-plugin\\plugin.json",
         "readme": "business-central\\README.md",

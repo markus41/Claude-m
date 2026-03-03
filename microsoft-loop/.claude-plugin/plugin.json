@@ -1,0 +1,26 @@
+{
+  "name": "microsoft-loop",
+  "version": "1.0.0",
+  "description": "Microsoft Loop workspaces, pages, and components — create collaborative spaces, embed portable Loop components across M365 apps, manage via Graph API, and govern Loop at the tenant level.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "loop",
+    "workspace",
+    "pages",
+    "components",
+    "collaboration",
+    "fluid",
+    "graph-api",
+    "m365"
+  ],
+  "skills": [
+    "./skills/microsoft-loop/SKILL.md"
+  ],
+  "commands": [
+    "./commands/loop-workspace-setup.md",
+    "./commands/loop-page-structure.md"
+  ]
+}

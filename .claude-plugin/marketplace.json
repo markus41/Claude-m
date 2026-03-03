@@ -111,7 +111,7 @@
     {
       "name": "excel-automation",
       "source": "./excel-automation",
-      "description": "Clean messy data with pandas, generate Office Scripts and Power Automate flows, and create Excel templates — with Dataverse-aware mode and VBA fallback.",
+      "description": "Clean messy data with pandas, generate Office Scripts and Power Automate flows, and create Excel templates \u00e2\u20ac\u201d with Dataverse-aware mode and VBA fallback.",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -126,7 +126,7 @@
     {
       "name": "m365-admin",
       "source": "./m365-admin",
-      "description": "M365 tenant admin via Microsoft Graph — users, groups, licenses, Exchange Online, SharePoint, and CSV-driven bulk operations.",
+      "description": "M365 tenant admin via Microsoft Graph \u00e2\u20ac\u201d users, groups, licenses, Exchange Online, SharePoint, and CSV-driven bulk operations.",
       "category": "cloud",
       "tags": [
         "microsoft",
@@ -141,7 +141,7 @@
     {
       "name": "dataverse-schema",
       "source": "./dataverse-schema",
-      "description": "Create and manage Dataverse tables, columns, relationships, and solutions via Web API — with FetchXML generation and data seeding.",
+      "description": "Create and manage Dataverse tables, columns, relationships, and solutions via Web API \u00e2\u20ac\u201d with FetchXML generation and data seeding.",
       "category": "cloud",
       "tags": [
         "microsoft",
@@ -172,7 +172,7 @@
     {
       "name": "powerplatform-alm",
       "source": "./powerplatform-alm",
-      "description": "Application lifecycle management — environment provisioning, solution transport, CI/CD pipeline generation, and PCF control scaffolding.",
+      "description": "Application lifecycle management \u00e2\u20ac\u201d environment provisioning, solution transport, CI/CD pipeline generation, and PCF control scaffolding.",
       "category": "devops",
       "tags": [
         "microsoft",
@@ -188,7 +188,7 @@
     {
       "name": "onedrive",
       "source": "./onedrive",
-      "description": "OneDrive file management via Microsoft Graph — upload, download, share, search, and delta sync for personal and business drives.",
+      "description": "OneDrive file management via Microsoft Graph \u00e2\u20ac\u201d upload, download, share, search, and delta sync for personal and business drives.",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -203,7 +203,7 @@
     {
       "name": "planner-todo",
       "source": "./planner-todo",
-      "description": "Task and project management via Microsoft Graph — Planner plans, buckets, tasks, assignments, and To Do lists with steps and recurrence.",
+      "description": "Task and project management via Microsoft Graph \u00e2\u20ac\u201d Planner plans, buckets, tasks, assignments, and To Do lists with steps and recurrence.",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -218,7 +218,7 @@
     {
       "name": "azure-devops",
       "source": "./azure-devops",
-      "description": "Azure DevOps project management — Git repos, YAML pipelines, work items, pull requests, WIQL queries, and artifact feeds via REST API.",
+      "description": "Azure DevOps project management \u00e2\u20ac\u201d Git repos, YAML pipelines, work items, pull requests, WIQL queries, and artifact feeds via REST API.",
       "category": "devops",
       "tags": [
         "microsoft",
@@ -233,7 +233,7 @@
     {
       "name": "entra-id-security",
       "source": "./entra-id-security",
-      "description": "Microsoft Entra ID identity governance — app registrations, service principals, conditional access policies, sign-in log analysis, and risk detection.",
+      "description": "Microsoft Entra ID identity governance \u00e2\u20ac\u201d app registrations, service principals, conditional access policies, sign-in log analysis, and risk detection.",
       "category": "security",
       "tags": [
         "microsoft",
@@ -248,7 +248,7 @@
     {
       "name": "powerapps",
       "source": "./powerapps",
-      "description": "Power Apps development — canvas app Power Fx formulas, model-driven app configuration, custom connectors, component libraries, and solution checker.",
+      "description": "Power Apps development \u00e2\u20ac\u201d canvas app Power Fx formulas, model-driven app configuration, custom connectors, component libraries, and solution checker.",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -263,7 +263,7 @@
     {
       "name": "azure-cost-governance",
       "source": "./azure-cost-governance",
-      "description": "Azure FinOps and governance workflows — query costs, monitor budgets, detect anomalies, and identify idle resources for optimization.",
+      "description": "Azure FinOps and governance workflows \u00e2\u20ac\u201d query costs, monitor budgets, detect anomalies, and identify idle resources for optimization.",
       "category": "cloud",
       "tags": [
         "microsoft",
@@ -278,7 +278,7 @@
     {
       "name": "power-automate",
       "source": "./power-automate",
-      "description": "Design and troubleshoot Power Automate cloud flows — trigger/action patterns, run diagnostics, retries, and deployment-safe flow definitions.",
+      "description": "Design and troubleshoot Power Automate cloud flows \u00e2\u20ac\u201d trigger/action patterns, run diagnostics, retries, and deployment-safe flow definitions.",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -293,7 +293,7 @@
     {
       "name": "purview-compliance",
       "source": "./purview-compliance",
-      "description": "Compliance and information protection guidance for Microsoft Purview — DLP, retention, sensitivity labels, and eDiscovery workflows.",
+      "description": "Compliance and information protection guidance for Microsoft Purview \u00e2\u20ac\u201d DLP, retention, sensitivity labels, and eDiscovery workflows.",
       "category": "security",
       "tags": [
         "microsoft",
@@ -308,7 +308,7 @@
     {
       "name": "azure-policy-security",
       "source": "./azure-policy-security",
-      "description": "Evaluate Azure policy compliance and security posture — policy assignments, drift analysis, remediation planning, and guardrail recommendations.",
+      "description": "Evaluate Azure policy compliance and security posture \u00e2\u20ac\u201d policy assignments, drift analysis, remediation planning, and guardrail recommendations.",
       "category": "security",
       "tags": [
         "microsoft",
@@ -323,7 +323,7 @@
     {
       "name": "lighthouse-health",
       "source": "./lighthouse-health",
-      "description": "Multi-tenant health dashboard for MSPs/CSPs — green/yellow/red scoring for security posture, MFA coverage, stale accounts, and licensing anomalies with one-click remediation plans.",
+      "description": "Multi-tenant health dashboard for MSPs/CSPs \u00e2\u20ac\u201d green/yellow/red scoring for security posture, MFA coverage, stale accounts, and licensing anomalies with one-click remediation plans.",
       "category": "security",
       "tags": [
         "microsoft",
@@ -352,7 +352,7 @@
     {
       "name": "exchange-mailflow",
       "source": "./exchange-mailflow",
-      "description": "Guided 'email not received' diagnostics — message trace, transport rules, quarantine, connectors, and SPF/DKIM/DMARC checks with client-safe explanations.",
+      "description": "Guided 'email not received' diagnostics \u00e2\u20ac\u201d message trace, transport rules, quarantine, connectors, and SPF/DKIM/DMARC checks with client-safe explanations.",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -368,7 +368,7 @@
     {
       "name": "sharing-auditor",
       "source": "./sharing-auditor",
-      "description": "Audit external sharing across SharePoint and OneDrive — find overshared links, anonymous access, and stale guest users with approval-based revocation tasks.",
+      "description": "Audit external sharing across SharePoint and OneDrive \u00e2\u20ac\u201d find overshared links, anonymous access, and stale guest users with approval-based revocation tasks.",
       "category": "security",
       "tags": [
         "microsoft",
@@ -383,7 +383,7 @@
     {
       "name": "teams-lifecycle",
       "source": "./teams-lifecycle",
-      "description": "Create and archive teams with templates, enforce naming and ownership, apply sensitivity labels, and run expiration reviews — using non-technical 'project start/end' language.",
+      "description": "Create and archive teams with templates, enforce naming and ownership, apply sensitivity labels, and run expiration reviews \u00e2\u20ac\u201d using non-technical 'project start/end' language.",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -398,7 +398,7 @@
     {
       "name": "servicedesk-runbooks",
       "source": "./servicedesk-runbooks",
-      "description": "Guided workflows for common IT tickets — shared mailbox access, MFA reset, file recovery, and password reset with pre-checks, approval gates, and end-user verification.",
+      "description": "Guided workflows for common IT tickets \u00e2\u20ac\u201d shared mailbox access, MFA reset, file recovery, and password reset with pre-checks, approval gates, and end-user verification.",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -412,7 +412,7 @@
     {
       "name": "microsoft-bookings",
       "source": "./microsoft-bookings",
-      "description": "Microsoft Bookings — manage appointment calendars, services, staff availability, and customer bookings via Graph API.",
+      "description": "Microsoft Bookings \u00e2\u20ac\u201d manage appointment calendars, services, staff availability, and customer bookings via Graph API.",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -426,7 +426,7 @@
     {
       "name": "microsoft-forms-surveys",
       "source": "./microsoft-forms-surveys",
-      "description": "Microsoft Forms — create surveys, add questions, collect responses, and summarize results via Graph API.",
+      "description": "Microsoft Forms \u00e2\u20ac\u201d create surveys, add questions, collect responses, and summarize results via Graph API.",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -440,7 +440,7 @@
     {
       "name": "microsoft-lists-tracker",
       "source": "./microsoft-lists-tracker",
-      "description": "Microsoft Lists — create and manage lists for process tracking, issue logs, and project trackers via Graph API.",
+      "description": "Microsoft Lists \u00e2\u20ac\u201d create and manage lists for process tracking, issue logs, and project trackers via Graph API.",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -454,7 +454,7 @@
     {
       "name": "copilot-studio-bots",
       "source": "./copilot-studio-bots",
-      "description": "Copilot Studio — design bot topics, author trigger phrases, configure generative AI orchestration, and publish chatbots.",
+      "description": "Copilot Studio \u00e2\u20ac\u201d design bot topics, author trigger phrases, configure generative AI orchestration, and publish chatbots.",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -468,7 +468,7 @@
     {
       "name": "onenote-knowledge-base",
       "source": "./onenote-knowledge-base",
-      "description": "OneNote Knowledge Base — read, create, and search notebooks, sections, and pages via Graph API for team documentation.",
+      "description": "OneNote Knowledge Base \u00e2\u20ac\u201d read, create, and search notebooks, sections, and pages via Graph API for team documentation.",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -476,6 +476,24 @@
         "knowledge-base",
         "wiki",
         "meeting-notes"
+      ],
+      "strict": true
+    },
+    {
+      "name": "microsoft-loop",
+      "source": {
+        "source": "github",
+        "repo": "markus41/Claude-m"
+      },
+      "description": "Microsoft Loop workspaces, pages, and portable Loop components \u2014 create collaborative spaces, embed components across Teams and Outlook, manage via Graph API, and govern Loop at tenant level.",
+      "category": "productivity",
+      "tags": [
+        "microsoft",
+        "loop",
+        "collaboration",
+        "workspace",
+        "components",
+        "graph-api"
       ],
       "strict": true
     },
@@ -497,7 +515,7 @@
     {
       "name": "power-pages",
       "source": "./power-pages",
-      "description": "Microsoft Power Pages — sites, page templates, Liquid, web forms, table permissions, web roles, and Dataverse portal integration",
+      "description": "Microsoft Power Pages \u00e2\u20ac\u201d sites, page templates, Liquid, web forms, table permissions, web roles, and Dataverse portal integration",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -512,7 +530,7 @@
     {
       "name": "azure-web-apps",
       "source": "./azure-web-apps",
-      "description": "Azure App Service — create, deploy, and manage web apps, deployment slots, custom domains, and TLS certificates via ARM REST API",
+      "description": "Azure App Service \u00e2\u20ac\u201d create, deploy, and manage web apps, deployment slots, custom domains, and TLS certificates via ARM REST API",
       "category": "cloud",
       "tags": [
         "microsoft",
@@ -527,7 +545,7 @@
     {
       "name": "azure-static-web-apps",
       "source": "./azure-static-web-apps",
-      "description": "Azure Static Web Apps — JAMstack/SPA hosting with built-in auth, API backends, PR preview environments, and staticwebapp.config.json management",
+      "description": "Azure Static Web Apps \u00e2\u20ac\u201d JAMstack/SPA hosting with built-in auth, API backends, PR preview environments, and staticwebapp.config.json management",
       "category": "cloud",
       "tags": [
         "microsoft",
@@ -542,7 +560,7 @@
     {
       "name": "teams-app-dev",
       "source": "./teams-app-dev",
-      "description": "Custom Teams app development — Adaptive Cards, message extensions, bot handlers, tab apps, manifest authoring, and Teams Toolkit CLI workflows.",
+      "description": "Custom Teams app development \u00e2\u20ac\u201d Adaptive Cards, message extensions, bot handlers, tab apps, manifest authoring, and Teams Toolkit CLI workflows.",
       "category": "devops",
       "tags": [
         "microsoft",
@@ -558,7 +576,7 @@
     {
       "name": "azure-storage",
       "source": "./azure-storage",
-      "description": "Azure Storage — Blob, Queue, Table, and Files services with lifecycle policies, SAS tokens, and managed identity access",
+      "description": "Azure Storage \u00e2\u20ac\u201d Blob, Queue, Table, and Files services with lifecycle policies, SAS tokens, and managed identity access",
       "category": "cloud",
       "tags": [
         "microsoft",
@@ -575,7 +593,7 @@
     {
       "name": "azure-functions",
       "source": "./azure-functions",
-      "description": "Azure Functions — triggers, bindings, Durable Functions, deployment, and local development with Azure Functions Core Tools",
+      "description": "Azure Functions \u00e2\u20ac\u201d triggers, bindings, Durable Functions, deployment, and local development with Azure Functions Core Tools",
       "category": "cloud",
       "tags": [
         "microsoft",
@@ -591,7 +609,7 @@
     {
       "name": "azure-containers",
       "source": "./azure-containers",
-      "description": "Azure Container Apps, Container Instances, and Container Registry — build, push, deploy, and scale containerized workloads",
+      "description": "Azure Container Apps, Container Instances, and Container Registry \u00e2\u20ac\u201d build, push, deploy, and scale containerized workloads",
       "category": "cloud",
       "tags": [
         "microsoft",
@@ -608,7 +626,7 @@
     {
       "name": "azure-sql-database",
       "source": "./azure-sql-database",
-      "description": "Azure SQL Database and Cosmos DB — provisioning, schema management, query optimization, security hardening, and backup/restore",
+      "description": "Azure SQL Database and Cosmos DB \u00e2\u20ac\u201d provisioning, schema management, query optimization, security hardening, and backup/restore",
       "category": "cloud",
       "tags": [
         "microsoft",
@@ -625,7 +643,7 @@
     {
       "name": "azure-key-vault",
       "source": "./azure-key-vault",
-      "description": "Azure Key Vault — secrets, keys, and certificates management with RBAC, rotation policies, and managed identity integration",
+      "description": "Azure Key Vault \u00e2\u20ac\u201d secrets, keys, and certificates management with RBAC, rotation policies, and managed identity integration",
       "category": "security",
       "tags": [
         "microsoft",
@@ -641,7 +659,7 @@
     {
       "name": "azure-monitor",
       "source": "./azure-monitor",
-      "description": "Azure Monitor, Application Insights, and Log Analytics — metrics, alerts, KQL queries, dashboards, and diagnostic settings",
+      "description": "Azure Monitor, Application Insights, and Log Analytics \u00e2\u20ac\u201d metrics, alerts, KQL queries, dashboards, and diagnostic settings",
       "category": "cloud",
       "tags": [
         "microsoft",
@@ -658,7 +676,7 @@
     {
       "name": "azure-networking",
       "source": "./azure-networking",
-      "description": "Azure Networking — VNets, subnets, NSGs, Load Balancers, Front Door, DNS zones, VPN gateways, and Private Link",
+      "description": "Azure Networking \u00e2\u20ac\u201d VNets, subnets, NSGs, Load Balancers, Front Door, DNS zones, VPN gateways, and Private Link",
       "category": "cloud",
       "tags": [
         "microsoft",
@@ -676,7 +694,7 @@
     {
       "name": "fabric-data-engineering",
       "source": "./fabric-data-engineering",
-      "description": "Microsoft Fabric Data Engineering — lakehouses, Spark notebooks, data pipelines, Delta Lake tables, and lakehouse SQL endpoints",
+      "description": "Microsoft Fabric Data Engineering \u00e2\u20ac\u201d lakehouses, Spark notebooks, data pipelines, Delta Lake tables, and lakehouse SQL endpoints",
       "category": "analytics",
       "tags": [
         "microsoft",
@@ -693,7 +711,7 @@
     {
       "name": "fabric-data-warehouse",
       "source": "./fabric-data-warehouse",
-      "description": "Microsoft Fabric Data Warehouse — Synapse warehouses, T-SQL DDL/DML, cross-database queries, stored procedures, and data modeling",
+      "description": "Microsoft Fabric Data Warehouse \u00e2\u20ac\u201d Synapse warehouses, T-SQL DDL/DML, cross-database queries, stored procedures, and data modeling",
       "category": "analytics",
       "tags": [
         "microsoft",
@@ -710,7 +728,7 @@
     {
       "name": "fabric-real-time-analytics",
       "source": "./fabric-real-time-analytics",
-      "description": "Microsoft Fabric Real-Time Analytics — Eventhouse, KQL databases, eventstreams, Real-Time Dashboards, and streaming ingestion",
+      "description": "Microsoft Fabric Real-Time Analytics \u00e2\u20ac\u201d Eventhouse, KQL databases, eventstreams, Real-Time Dashboards, and streaming ingestion",
       "category": "analytics",
       "tags": [
         "microsoft",
@@ -727,7 +745,7 @@
     {
       "name": "fabric-data-factory",
       "source": "./fabric-data-factory",
-      "description": "Microsoft Fabric Data Factory — data pipelines, Dataflow Gen2, Copy activity, orchestration patterns, and scheduling",
+      "description": "Microsoft Fabric Data Factory \u00e2\u20ac\u201d data pipelines, Dataflow Gen2, Copy activity, orchestration patterns, and scheduling",
       "category": "analytics",
       "tags": [
         "microsoft",
@@ -744,7 +762,7 @@
     {
       "name": "fabric-data-science",
       "source": "./fabric-data-science",
-      "description": "Microsoft Fabric Data Science — ML experiments, model training, MLflow tracking, PREDICT function, and semantic link integration",
+      "description": "Microsoft Fabric Data Science \u00e2\u20ac\u201d ML experiments, model training, MLflow tracking, PREDICT function, and semantic link integration",
       "category": "analytics",
       "tags": [
         "microsoft",
@@ -761,7 +779,7 @@
     {
       "name": "fabric-data-activator",
       "source": "./fabric-data-activator",
-      "description": "Microsoft Fabric Data Activator — Reflex triggers, condition-based alerts, real-time actions, and event-driven automation on Fabric data",
+      "description": "Microsoft Fabric Data Activator \u00e2\u20ac\u201d Reflex triggers, condition-based alerts, real-time actions, and event-driven automation on Fabric data",
       "category": "analytics",
       "tags": [
         "microsoft",
@@ -778,7 +796,7 @@
     {
       "name": "fabric-onelake",
       "source": "./fabric-onelake",
-      "description": "Microsoft Fabric OneLake — unified data lake, shortcuts, file explorer, ADLS Gen2 APIs, and cross-workspace data access",
+      "description": "Microsoft Fabric OneLake \u00e2\u20ac\u201d unified data lake, shortcuts, file explorer, ADLS Gen2 APIs, and cross-workspace data access",
       "category": "analytics",
       "tags": [
         "microsoft",
@@ -795,7 +813,7 @@
     {
       "name": "fabric-semantic-models",
       "source": "./fabric-semantic-models",
-      "description": "Microsoft Fabric Semantic Models — Direct Lake modeling, DAX governance, calculation groups, XMLA deployment, and semantic link automation",
+      "description": "Microsoft Fabric Semantic Models \u00e2\u20ac\u201d Direct Lake modeling, DAX governance, calculation groups, XMLA deployment, and semantic link automation",
       "category": "analytics",
       "tags": [
         "microsoft",
@@ -812,7 +830,7 @@
     {
       "name": "fabric-gitops-cicd",
       "source": "./fabric-gitops-cicd",
-      "description": "Microsoft Fabric GitOps CI/CD — workspace Git integration, deployment pipelines, artifact promotion, branch strategy, and release validation",
+      "description": "Microsoft Fabric GitOps CI/CD \u00e2\u20ac\u201d workspace Git integration, deployment pipelines, artifact promotion, branch strategy, and release validation",
       "category": "devops",
       "tags": [
         "microsoft",
@@ -829,7 +847,7 @@
     {
       "name": "fabric-capacity-ops",
       "source": "./fabric-capacity-ops",
-      "description": "Microsoft Fabric Capacity Operations — CU monitoring, throttling diagnostics, workload tuning, autoscale planning, and cost-performance optimization",
+      "description": "Microsoft Fabric Capacity Operations \u00e2\u20ac\u201d CU monitoring, throttling diagnostics, workload tuning, autoscale planning, and cost-performance optimization",
       "category": "analytics",
       "tags": [
         "microsoft",
@@ -846,7 +864,7 @@
     {
       "name": "fabric-mirroring",
       "source": "./fabric-mirroring",
-      "description": "Microsoft Fabric Mirroring — source onboarding, CDC replication, latency monitoring, schema drift handling, and reconciliation workflows",
+      "description": "Microsoft Fabric Mirroring \u00e2\u20ac\u201d source onboarding, CDC replication, latency monitoring, schema drift handling, and reconciliation workflows",
       "category": "analytics",
       "tags": [
         "microsoft",
@@ -863,7 +881,7 @@
     {
       "name": "fabric-security-governance",
       "source": "./fabric-security-governance",
-      "description": "Microsoft Fabric Security Governance — workspace RBAC, RLS/OLS patterns, sensitivity labels, lineage controls, and audit readiness",
+      "description": "Microsoft Fabric Security Governance \u00e2\u20ac\u201d workspace RBAC, RLS/OLS patterns, sensitivity labels, lineage controls, and audit readiness",
       "category": "security",
       "tags": [
         "microsoft",
@@ -880,7 +898,7 @@
     {
       "name": "fabric-observability",
       "source": "./fabric-observability",
-      "description": "Microsoft Fabric Observability — Monitor Hub triage, notebook/pipeline reliability runbooks, SLA tracking, alert design, and incident diagnostics",
+      "description": "Microsoft Fabric Observability \u00e2\u20ac\u201d Monitor Hub triage, notebook/pipeline reliability runbooks, SLA tracking, alert design, and incident diagnostics",
       "category": "analytics",
       "tags": [
         "microsoft",
@@ -913,7 +931,7 @@
     {
       "name": "azure-tenant-assessment",
       "source": "./azure-tenant-assessment",
-      "description": "Entry-point Azure tenant assessment — subscription inventory, resource catalog, security posture snapshot, and plugin setup recommendations.",
+      "description": "Entry-point Azure tenant assessment \u00e2\u20ac\u201d subscription inventory, resource catalog, security posture snapshot, and plugin setup recommendations.",
       "category": "cloud",
       "tags": [
         "microsoft",
@@ -942,7 +960,7 @@
     {
       "name": "process-task-mining",
       "source": "./process-task-mining",
-      "description": "Process and task mining from M365, Power Automate, and Azure Monitor logs — extract event logs, discover process models, analyze performance, and check conformance.",
+      "description": "Process and task mining from M365, Power Automate, and Azure Monitor logs \u00e2\u20ac\u201d extract event logs, discover process models, analyze performance, and check conformance.",
       "category": "analytics",
       "tags": [
         "microsoft",
@@ -959,7 +977,7 @@
     {
       "name": "azure-graph-dotnet",
       "source": "./azure-graph-dotnet",
-      "description": "Scaffold and build Microsoft Graph C# / .NET solutions on Azure — Functions, Container Jobs, Azure Identity, Polly resilience, and SharePoint file intelligence implementations.",
+      "description": "Scaffold and build Microsoft Graph C# / .NET solutions on Azure \u00e2\u20ac\u201d Functions, Container Jobs, Azure Identity, Polly resilience, and SharePoint file intelligence implementations.",
       "category": "devops",
       "tags": [
         "microsoft",
@@ -975,7 +993,7 @@
     {
       "name": "agent-foundry",
       "source": "./agent-foundry",
-      "description": "Azure AI Foundry agent lifecycle management — scaffold, deploy, test, and manage AI agents with Azure AI Foundry MCP integration for agent service, model deployments, and evaluations.",
+      "description": "Azure AI Foundry agent lifecycle management \u00e2\u20ac\u201d scaffold, deploy, test, and manage AI agents with Azure AI Foundry MCP integration for agent service, model deployments, and evaluations.",
       "category": "cloud",
       "tags": [
         "microsoft",
@@ -992,7 +1010,7 @@
     {
       "name": "defender-sentinel",
       "source": "./defender-sentinel",
-      "description": "Microsoft Sentinel SIEM/SOAR and Defender XDR — incident triage, KQL threat hunting, analytics rules, SOAR playbooks, and advanced hunting across device, identity, email, and cloud app signals.",
+      "description": "Microsoft Sentinel SIEM/SOAR and Defender XDR \u00e2\u20ac\u201d incident triage, KQL threat hunting, analytics rules, SOAR playbooks, and advanced hunting across device, identity, email, and cloud app signals.",
       "category": "security",
       "tags": [
         "microsoft",
@@ -1009,7 +1027,7 @@
     {
       "name": "azure-ai-services",
       "source": "./azure-ai-services",
-      "description": "Azure AI workloads — Azure OpenAI Service deployments, AI Search indexes and RAG pipelines, AI Studio/Foundry projects, Cognitive Services provisioning, content filtering, and responsible AI governance.",
+      "description": "Azure AI workloads \u00e2\u20ac\u201d Azure OpenAI Service deployments, AI Search indexes and RAG pipelines, AI Studio/Foundry projects, Cognitive Services provisioning, content filtering, and responsible AI governance.",
       "category": "cloud",
       "tags": [
         "microsoft",
@@ -1026,7 +1044,7 @@
     {
       "name": "dynamics-365-crm",
       "source": "./dynamics-365-crm",
-      "description": "Dynamics 365 Sales and Customer Service via Dataverse Web API — leads, opportunities, accounts, contacts, cases, SLAs, queues, pipeline reporting, and CRM workflow automation.",
+      "description": "Dynamics 365 Sales and Customer Service via Dataverse Web API \u00e2\u20ac\u201d leads, opportunities, accounts, contacts, cases, SLAs, queues, pipeline reporting, and CRM workflow automation.",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -1043,7 +1061,7 @@
     {
       "name": "dynamics-365-field-service",
       "source": "./dynamics-365-field-service",
-      "description": "Dynamics 365 Field Service via Dataverse Web API — work orders, bookings, resource scheduling, service accounts, customer assets, incident types, and IoT-triggered service events.",
+      "description": "Dynamics 365 Field Service via Dataverse Web API \u00e2\u20ac\u201d work orders, bookings, resource scheduling, service accounts, customer assets, incident types, and IoT-triggered service events.",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -1060,7 +1078,7 @@
     {
       "name": "dynamics-365-project-ops",
       "source": "./dynamics-365-project-ops",
-      "description": "Dynamics 365 Project Operations via Dataverse Web API — projects, WBS, time and expense tracking, resource assignments, project contracts, invoice proposals, and billing actuals.",
+      "description": "Dynamics 365 Project Operations via Dataverse Web API \u00e2\u20ac\u201d projects, WBS, time and expense tracking, resource assignments, project contracts, invoice proposals, and billing actuals.",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -1077,7 +1095,7 @@
     {
       "name": "azure-dotnet-webapp",
       "source": "./azure-dotnet-webapp",
-      "description": "Scaffold and build ASP.NET Core Web API and Blazor apps on Azure — Minimal API, controllers, Microsoft.Identity.Web, EF Core, SignalR, OpenAPI, App Service deployment, and Graph API integration patterns.",
+      "description": "Scaffold and build ASP.NET Core Web API and Blazor apps on Azure \u00e2\u20ac\u201d Minimal API, controllers, Microsoft.Identity.Web, EF Core, SignalR, OpenAPI, App Service deployment, and Graph API integration patterns.",
       "category": "devops",
       "tags": [
         "microsoft",
@@ -1093,7 +1111,7 @@
     {
       "name": "lighthouse-operations",
       "source": "./lighthouse-operations",
-      "description": "Deep operational tooling for Azure Lighthouse delegation and M365 Lighthouse multi-tenant management — GDAP lifecycle, Bicep delegation templates, baseline compliance, cross-tenant governance, alert management, and monthly MSP health reports.",
+      "description": "Deep operational tooling for Azure Lighthouse delegation and M365 Lighthouse multi-tenant management \u00e2\u20ac\u201d GDAP lifecycle, Bicep delegation templates, baseline compliance, cross-tenant governance, alert management, and monthly MSP health reports.",
       "category": "security",
       "tags": [
         "microsoft",
@@ -1110,7 +1128,7 @@
     {
       "name": "msp-tenant-provisioning",
       "source": "./msp-tenant-provisioning",
-      "description": "End-to-end new customer onboarding for MSPs and CSPs — CSP tenant creation via Partner Center API, M365 security baseline (CA policies, PIM, break-glass), custom domain DNS setup, Azure subscription and Defender for Cloud, and full Lighthouse management enrollment.",
+      "description": "End-to-end new customer onboarding for MSPs and CSPs \u00e2\u20ac\u201d CSP tenant creation via Partner Center API, M365 security baseline (CA policies, PIM, break-glass), custom domain DNS setup, Azure subscription and Defender for Cloud, and full Lighthouse management enrollment.",
       "category": "cloud",
       "tags": [
         "microsoft",
@@ -1127,7 +1145,7 @@
     {
       "name": "business-central",
       "source": "./business-central",
-      "description": "Microsoft Dynamics 365 Business Central ERP — finance, supply chain, and inventory management via BC OData v4 / API v2.0 REST API.",
+      "description": "Microsoft Dynamics 365 Business Central ERP \u00e2\u20ac\u201d finance, supply chain, and inventory management via BC OData v4 / API v2.0 REST API.",
       "category": "productivity",
       "tags": [
         "microsoft",
