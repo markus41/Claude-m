@@ -6,7 +6,7 @@ description: >
   variable usage, and audits generative AI node configuration for correctness and safety.
 model: inherit
 color: purple
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

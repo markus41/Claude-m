@@ -5,7 +5,7 @@ description: >
   and component libraries for correctness, delegation compliance, performance, and best practices.
 model: inherit
 color: purple
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

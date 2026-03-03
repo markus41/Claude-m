@@ -3,7 +3,7 @@ name: excel-reviewer
 description: Reviews Excel automation artifacts — pandas cleaning scripts, Office Scripts, VBA macros, and data quality — for correctness, performance, and best practices
 model: inherit
 color: cyan
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

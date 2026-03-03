@@ -3,7 +3,7 @@ name: flow-definition-reviewer
 description: Reviews Power Automate flow definitions for schema correctness, connection references, trigger/action validation, and Office Script integration
 model: inherit
 color: green
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

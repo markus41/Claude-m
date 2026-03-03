@@ -6,7 +6,7 @@ description: >
   orchestration patterns, error handling, and performance best practices.
 model: inherit
 color: green
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

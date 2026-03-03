@@ -3,7 +3,7 @@ name: m365-client-reviewer
 description: Reviews TypeScript code that uses Dataverse Web API or Microsoft Graph for correctness, auth patterns, and best practices
 model: inherit
 color: blue
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

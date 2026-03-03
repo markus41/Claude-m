@@ -3,7 +3,7 @@ name: servicedesk-runbooks-reviewer
 description: Reviews service desk runbook executions for safety — checks pre-checks, approval gates, secure password handling, and post-action verification.
 model: inherit
 color: red
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

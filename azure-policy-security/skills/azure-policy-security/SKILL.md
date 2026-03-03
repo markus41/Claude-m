@@ -388,3 +388,11 @@ $apply=groupby((PolicyAssignmentId, PolicyDefinitionId), aggregate($count as Num
 - `azure-policy-security/commands/drift-analysis.md`
 - `azure-policy-security/commands/remediation-plan.md`
 - `azure-policy-security/README.md`
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Policy definition JSON schema; effect types (Deny, Audit, Modify, DeployIfNotExists); initiative structure; built-in vs custom policies; aliasing | [`references/policy-definitions-initiatives.md`](./references/policy-definitions-initiatives.md) |
+| Compliance state REST API; Policy Insights API; exemptions; compliance scan triggers; reporting at management group scope | [`references/compliance-reporting.md`](./references/compliance-reporting.md) |
+| Remediation task creation; DeployIfNotExists remediation; managed identity for remediation; monitoring progress; common remediation patterns | [`references/remediation-tasks.md`](./references/remediation-tasks.md) |

@@ -1222,3 +1222,12 @@ BEGIN
     VALUES ('usp_IncrementalLoadSales', 'SUCCESS', @RowsLoaded, GETDATE());
 END;
 ```
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Warehouse REST API, connection strings, RBAC, Entra ID auth, cross-workspace shortcuts | [`references/warehouse-provisioning.md`](./references/warehouse-provisioning.md) |
+| CREATE TABLE/VIEW/PROCEDURE, COPY INTO, distributed design, statistics, T-SQL gotchas | [`references/t-sql-patterns.md`](./references/t-sql-patterns.md) |
+| Three-part naming, lakehouse SQL endpoint, warehouse-to-warehouse queries, query folding | [`references/cross-db-queries.md`](./references/cross-db-queries.md) |
+| Query Insights, execution plans, statistics, result caching, concurrency, CU consumption | [`references/performance-indexing.md`](./references/performance-indexing.md) |

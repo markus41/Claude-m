@@ -6,7 +6,7 @@ description: >
   across the full Key Vault management stack.
 model: inherit
 color: blue
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

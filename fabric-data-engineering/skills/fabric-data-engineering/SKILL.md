@@ -1414,4 +1414,14 @@ This pattern ensures:
 - **Idempotency**: MERGE operations make re-runs safe.
 - **Error handling**: Every activity has a failure path to the notification activity.
 - **Parameterization**: No hardcoded values — everything is driven by pipeline parameters.
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Lakehouse creation, Delta tables, ACID transactions, time travel, V-Order, OPTIMIZE/VACUUM | [`references/lakehouses-delta.md`](./references/lakehouses-delta.md) |
+| Notebook API, Spark session config, magic commands, mssparkutils, cross-lakehouse access | [`references/spark-notebooks.md`](./references/spark-notebooks.md) |
+| Pipeline REST API, Copy activity, activity dependencies, parallel execution, retry, monitoring | [`references/data-pipelines.md`](./references/data-pipelines.md) |
+| Bronze/Silver/Gold patterns, incremental load, CDC, schema enforcement, data quality | [`references/medallion-architecture.md`](./references/medallion-architecture.md) |
+| Spark tuning, partition strategies, Delta optimization, V-Order, CU consumption, caching | [`references/performance-optimization.md`](./references/performance-optimization.md) |
 - **Monitoring**: Failure alerts sent via webhook to Teams/Slack/PagerDuty.

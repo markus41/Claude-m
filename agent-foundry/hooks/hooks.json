@@ -1,0 +1,13 @@
+{
+  "PostToolUse": [
+    {
+      "matcher": "Write|Edit",
+      "hooks": [
+        {
+          "type": "prompt",
+          "prompt": "Check whether the file just written or edited is a Claude Code agent definition file (a .md file located inside an agents/ directory, or a .md file whose YAML frontmatter contains a top-level 'description:' field that describes an agent role). If it is, invoke the Agent Evaluator agent to validate the file's frontmatter completeness, description clarity, tool scope, and system prompt quality. Report any issues found with severity (error/warning) and a short remediation suggestion. If the file is NOT an agent definition, do nothing."
+        }
+      ]
+    }
+  ]
+}

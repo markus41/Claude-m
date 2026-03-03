@@ -461,3 +461,177 @@ Get-Mailbox -Identity "user@contoso.com" | Select-Object RecipientTypeDetails, P
 # Cloud mailbox: RecipientTypeDetails = UserMailbox
 # On-prem (mail-enabled in cloud): RecipientTypeDetails = MailUser
 ```
+
+## DKIM Signing Configuration
+
+DKIM (DomainKeys Identified Mail) signs outbound email to prove authenticity.
+
+```powershell
+# Check DKIM status for a domain
+Get-DkimSigningConfig -Identity contoso.com
+
+# Enable DKIM for a domain (after adding CNAME records to DNS)
+Set-DkimSigningConfig -Identity contoso.com -Enabled $true
+
+# If DKIM was never set up, create the config first
+New-DkimSigningConfig -DomainName contoso.com -Enabled $true
+
+# Rotate DKIM keys (generates new Selector2 key and DNS record)
+Rotate-DkimSigningConfig -KeySize 2048 -Identity contoso.com
+
+# List all DKIM configurations
+Get-DkimSigningConfig | Select-Object Domain, Enabled, Selector1KeySize, LastCheckedTime
+```
+
+After enabling, retrieve the CNAME records to add to DNS:
+
+```powershell
+Get-DkimSigningConfig -Identity contoso.com | Select-Object Selector1CNAME, Selector2CNAME
+```
+
+## Anti-Spam Policies
+
+### Inbound Anti-Spam Policy
+
+```powershell
+# Get default anti-spam policy
+Get-HostedContentFilterPolicy
+
+# Create a strict anti-spam policy for executives
+New-HostedContentFilterPolicy -Name "Executive Anti-Spam" `
+  -SpamAction MoveToJmf `
+  -HighConfidenceSpamAction Quarantine `
+  -PhishSpamAction Quarantine `
+  -HighConfidencePhishAction Quarantine `
+  -BulkThreshold 4 `
+  -MarkAsSpamBulkMail On `
+  -EnableLanguageBlockList $true `
+  -LanguageBlockList @("zh", "ru")
+
+# Create rule to apply policy to a group
+New-HostedContentFilterRule -Name "Executives Anti-Spam Rule" `
+  -HostedContentFilterPolicy "Executive Anti-Spam" `
+  -SentToMemberOf "ExecutiveTeam@contoso.com" `
+  -Priority 0
+
+# Get outbound spam policy (prevents account compromise from sending spam)
+Get-HostedOutboundSpamFilterPolicy
+
+# Update outbound spam limits
+Set-HostedOutboundSpamFilterPolicy -Identity Default `
+  -RecipientLimitExternalPerHour 500 `
+  -RecipientLimitInternalPerHour 1000 `
+  -RecipientLimitPerDay 1000 `
+  -ActionWhenThresholdReached BlockUser
+```
+
+### Anti-Phishing Policy
+
+```powershell
+# Get anti-phishing policy
+Get-AntiPhishPolicy
+
+# Enable impersonation protection
+Set-AntiPhishPolicy -Identity "Office365 AntiPhish Default" `
+  -EnableMailboxIntelligence $true `
+  -EnableMailboxIntelligenceProtection $true `
+  -MailboxIntelligenceProtectionAction MoveToJmf `
+  -EnableSpoofIntelligence $true `
+  -EnableFirstContactSafetyTips $true
+```
+
+## Mail Flow Connectors
+
+Connectors define how Exchange Online routes mail to/from partner organizations or on-premises.
+
+```powershell
+# List all connectors
+Get-InboundConnector
+Get-OutboundConnector
+
+# Create inbound connector (from partner with TLS)
+New-InboundConnector -Name "Partner Inbound" `
+  -ConnectorType Partner `
+  -SenderDomains "partner.com" `
+  -RequireTls $true `
+  -TlsSenderCertificateName "*.partner.com"
+
+# Create outbound connector (to partner via smart host)
+New-OutboundConnector -Name "Partner Outbound" `
+  -ConnectorType Partner `
+  -RecipientDomains "partner.com" `
+  -SmartHosts "mail.partner.com" `
+  -TlsSettings EncryptionOnly `
+  -IsTransportRuleScoped $false
+
+# Create connector for hybrid (to on-premises)
+New-OutboundConnector -Name "To On-Premises" `
+  -ConnectorType OnPremises `
+  -SmartHosts "mail.contoso.local" `
+  -TlsSettings DomainValidation `
+  -TlsDomain "mail.contoso.local"
+
+# Test connector
+Validate-OutboundConnector -Identity "Partner Outbound" -Recipients @("test@partner.com")
+```
+
+## Anti-Malware Policy
+
+```powershell
+# Get malware filter policy
+Get-MalwareFilterPolicy
+
+# Configure malware policy with admin notifications
+Set-MalwareFilterPolicy -Identity Default `
+  -EnableFileFilter $true `
+  -FileTypes @("ace", "ani", "app", "docm", "exe", "jar", "reg", "scr", "vbe", "vbs") `
+  -ZapEnabled $true `
+  -Action DeleteAttachmentAndUseDefaultAlertText `
+  -EnableInternalSenderAdminNotifications $true `
+  -InternalSenderAdminAddress "securityteam@contoso.com"
+```
+
+## Safe Attachments and Safe Links (Defender for Office 365)
+
+```powershell
+# Get Safe Attachments policies
+Get-SafeAttachmentPolicy
+
+# Create Safe Attachments policy (requires Defender for Office 365 Plan 1+)
+New-SafeAttachmentPolicy -Name "Protect All Users" `
+  -Action Block `
+  -Enable $true `
+  -Redirect $false
+
+New-SafeAttachmentRule -Name "All Users Safe Attachments" `
+  -SafeAttachmentPolicy "Protect All Users" `
+  -RecipientDomainIs "contoso.com"
+
+# Get Safe Links policies
+Get-SafeLinksPolicy
+
+# Create Safe Links policy
+New-SafeLinksPolicy -Name "Safe Links All Users" `
+  -EnableSafeLinksForEmail $true `
+  -EnableSafeLinksForTeams $true `
+  -EnableSafeLinksForOffice $true `
+  -TrackClicks $true `
+  -ScanUrls $true `
+  -EnableForInternalSenders $true
+```
+
+## Quarantine Management
+
+```powershell
+# List quarantined messages
+Get-QuarantineMessage -StartReceivedDate (Get-Date).AddDays(-7) -EndReceivedDate (Get-Date) | Select-Object Subject, SenderAddress, RecipientAddress, QuarantineTypes, Expires
+
+# Release a specific quarantined message to recipient
+Release-QuarantineMessage -Identity "quarantine-message-id" -ReleaseToAll
+
+# Delete a quarantined message
+Delete-QuarantineMessage -Identity "quarantine-message-id"
+
+# Approve a release request submitted by an end user
+Approve-QuarantineMessage -Identity "quarantine-message-id"
+```

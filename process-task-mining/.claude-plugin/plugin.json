@@ -1,0 +1,32 @@
+{
+  "name": "process-task-mining",
+  "version": "1.0.0",
+  "description": "Process and task mining from M365, Power Automate, and Azure Monitor logs — extract event logs, discover process models, analyze performance, and check conformance",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "process-mining",
+    "task-mining",
+    "power-automate",
+    "azure-monitor",
+    "m365",
+    "event-log",
+    "conformance"
+  ],
+  "skills": [
+    "./skills/process-task-mining/SKILL.md"
+  ],
+  "agents": [
+    "./agents/process-mining-reviewer.md"
+  ],
+  "commands": [
+    "./commands/mining-setup.md",
+    "./commands/log-extract.md",
+    "./commands/process-discover.md",
+    "./commands/performance-analyze.md",
+    "./commands/conformance-check.md",
+    "./commands/resource-analyze.md"
+  ]
+}

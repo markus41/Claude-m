@@ -324,3 +324,12 @@ Without this header, the API returns `400 Bad Request`.
 | Pending guests | Never redeemed | `$filter=userType eq 'Guest' and externalUserState eq 'PendingAcceptance'` |
 | Sort by activity | Least active first | `$orderby=signInActivity/lastSignInDateTime asc` |
 | With count | Include total count | `$count=true` (requires `ConsistencyLevel: eventual`) |
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Office 365 Management Activity API, SharePoint audit events, Graph audit log queries, Purview audit search, report scheduling | [`references/audit-reporting.md`](./references/audit-reporting.md) |
+| Graph driveItem permissions API, anonymous/org-wide link detection, external sharing by site, scanning at scale | [`references/overshared-links.md`](./references/overshared-links.md) |
+| Guest sign-in activity API, stale guest detection, access reviews, B2B collaboration settings, guest expiration | [`references/stale-guests.md`](./references/stale-guests.md) |
+| Bulk permission removal, anonymous→specific link conversion, guest removal, tenant-level prevention settings, CA for guests | [`references/remediation.md`](./references/remediation.md) |

@@ -1,0 +1,30 @@
+{
+  "name": "fabric-observability",
+  "version": "1.0.0",
+  "description": "Microsoft Fabric Observability — Monitor Hub triage, notebook/pipeline reliability runbooks, SLA tracking, alert design, and incident diagnostics",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "fabric",
+    "observability",
+    "monitor-hub",
+    "reliability",
+    "slo",
+    "alerts",
+    "diagnostics"
+  ],
+  "skills": [
+    "./skills/fabric-observability/SKILL.md"
+  ],
+  "agents": [
+    "./agents/observability-reviewer.md"
+  ],
+  "commands": [
+    "./commands/observability-setup.md",
+    "./commands/monitor-hub-triage.md",
+    "./commands/notebook-pipeline-slo.md",
+    "./commands/incident-runbook.md"
+  ]
+}

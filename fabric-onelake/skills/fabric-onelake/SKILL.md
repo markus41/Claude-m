@@ -894,3 +894,12 @@ analytics-workspace
 - Shortcuts minimize data copies between layers
 - Direct Lake on gold tables provides fast Power BI queries without import
 - V-Order on all Delta writes ensures optimal read performance
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Shortcuts REST API, ADLS Gen2/S3/GCS/Dataverse/OneLake shortcut patterns, permissions, refresh behavior | [`references/shortcuts-adls.md`](./references/shortcuts-adls.md) |
+| DFS API reference, authentication, list/upload/download/delete files, ABFSS URI scheme, Storage Explorer | [`references/file-explorer-api.md`](./references/file-explorer-api.md) |
+| Workspace identity, cross-workspace shortcut creation, access control layers, lineage across workspaces | [`references/cross-workspace-access.md`](./references/cross-workspace-access.md) |
+| Data access roles, sensitivity labels, audit logs (KQL), data residency, Purview integration, retention | [`references/governance.md`](./references/governance.md) |

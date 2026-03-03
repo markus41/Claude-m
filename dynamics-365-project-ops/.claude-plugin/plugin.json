@@ -1,0 +1,33 @@
+{
+  "name": "dynamics-365-project-ops",
+  "version": "1.0.0",
+  "description": "Dynamics 365 Project Operations via Dataverse Web API — projects, WBS, time and expense tracking, resource assignments, project contracts, and billing",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "dynamics-365",
+    "project-operations",
+    "project-management",
+    "time-tracking",
+    "expense",
+    "billing",
+    "dataverse",
+    "wbs",
+    "resources",
+    "invoicing"
+  ],
+  "skills": [
+    "./skills/dynamics-365-project-ops/SKILL.md"
+  ],
+  "agents": [
+    "./agents/dynamics-365-project-ops-reviewer.md"
+  ],
+  "commands": [
+    "./commands/proj-setup.md",
+    "./commands/proj-manage.md",
+    "./commands/proj-time-expense.md",
+    "./commands/proj-resources.md",
+    "./commands/proj-billing.md"
+  ]
+}

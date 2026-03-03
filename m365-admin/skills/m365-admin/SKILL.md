@@ -1,6 +1,6 @@
 ---
 name: m365-admin
-description: Deep expertise in Microsoft 365 tenant administration via Microsoft Graph API — managing users, groups, licenses, Exchange Online, SharePoint, and bulk operations with proper auth, rate limiting, and audit trails.
+description: Deep expertise in Microsoft 365 tenant administration via Microsoft Graph API — managing users, groups, licenses, Exchange Online, SharePoint, Teams, Intune, PIM, access reviews, usage reports, guest users, administrative units, Microsoft Search, and domain/federation management with proper auth, rate limiting, and audit trails.
 allowed-tools:
   - Read
   - Grep
@@ -28,6 +28,69 @@ triggers:
   - offboarding wizard
   - access cleanup
   - lighthouse offboarding
+  - teams admin
+  - teams management
+  - create team
+  - manage channels
+  - teams policy
+  - messaging policy
+  - meeting policy
+  - intune
+  - device management
+  - device compliance
+  - managed devices
+  - wipe device
+  - retire device
+  - device enrollment
+  - autopilot
+  - PIM
+  - privileged identity
+  - role eligibility
+  - just in time
+  - JIT activation
+  - access review
+  - entitlement management
+  - access package
+  - usage report
+  - adoption score
+  - inactive users
+  - teams activity
+  - email activity
+  - onedrive usage
+  - sharepoint usage
+  - mailbox usage
+  - guest user
+  - B2B
+  - invite guest
+  - external user
+  - cross-tenant access
+  - guest cleanup
+  - stale guests
+  - administrative unit
+  - admin unit
+  - scoped admin
+  - delegated admin
+  - search admin
+  - search bookmark
+  - search Q&A
+  - acronym
+  - promoted result
+  - domain management
+  - custom domain
+  - domain verification
+  - federation
+  - SAML federation
+  - WS-Fed
+  - AD FS
+  - transport rules
+  - mail flow rules
+  - DKIM
+  - anti-spam
+  - named location
+  - conditional access
+  - SSPR
+  - MFA methods
+  - security defaults
 ---
 
 # Microsoft 365 Administration via Microsoft Graph API
@@ -41,6 +104,14 @@ This skill provides comprehensive knowledge for administering a Microsoft 365 te
 |---|---|---|---|---|---|
 | User, group, license, audit workflows | required | optional (for Azure chain handoff) | `AzureCloud`\* | `delegated-user` | `User.ReadWrite.All`, `Group.ReadWrite.All`, `Directory.ReadWrite.All`, `AuditLog.Read.All` |
 | Exchange and SharePoint admin workflows | required | optional | `AzureCloud`\* | `delegated-user` | `MailboxSettings.ReadWrite`, `Mail.ReadWrite`, `Sites.FullControl.All` |
+| Teams admin workflows | required | optional | `AzureCloud`\* | `delegated-user` | `Team.ReadWrite.All`, `TeamMember.ReadWrite.All`, `TeamsAppInstallation.ReadWriteForTeam.All` |
+| Intune / device management workflows | required | optional | `AzureCloud`\* | `delegated-user` | `DeviceManagementManagedDevices.ReadWrite.All`, `DeviceManagementConfiguration.ReadWrite.All` |
+| PIM and access review workflows | required | optional | `AzureCloud`\* | `delegated-user` | `RoleManagement.ReadWrite.Directory`, `AccessReview.ReadWrite.All`, `EntitlementManagement.ReadWrite.All` |
+| Usage report workflows | required | optional | `AzureCloud`\* | `delegated-user` | `Reports.Read.All` |
+| Guest / external identity workflows | required | optional | `AzureCloud`\* | `delegated-user` | `User.Invite.All`, `Policy.ReadWrite.CrossTenantAccess`, `User.ReadWrite.All` |
+| Administrative unit workflows | required | optional | `AzureCloud`\* | `delegated-user` | `AdministrativeUnit.ReadWrite.All`, `RoleManagement.ReadWrite.Directory` |
+| Microsoft Search admin workflows | required | optional | `AzureCloud`\* | `delegated-user` | `SearchConfiguration.ReadWrite.All` |
+| Domain management workflows | required | optional | `AzureCloud`\* | `delegated-user` | `Domain.ReadWrite.All` |
 
 \* Use sovereign cloud values from the canonical contract when applicable.
 
@@ -371,10 +442,18 @@ Every operation produces a structured markdown report containing:
 
 | Reference | Path | Topics |
 |---|---|---|
-| Entra ID | `references/entra-id.md` | User CRUD, licenses, groups, roles, sign-in audit |
-| Exchange Online | `references/exchange-online.md` | Mailboxes, DLs, mail flow rules, shared mailboxes, auto-replies |
+| Entra ID | `references/entra-id.md` | User CRUD, licenses, groups, roles, named locations, auth strength, SSPR, MFA, security defaults, sign-in audit |
+| Exchange Online | `references/exchange-online.md` | Mailboxes, DLs, mail flow/transport rules, shared mailboxes, connectors, DKIM, anti-spam, resource mailboxes, message trace |
 | SharePoint Admin | `references/sharepoint-admin.md` | Site collections, storage, sharing, hub sites, permissions |
 | Bulk Operations | `references/bulk-operations.md` | CSV processing, dry-run, retry, rate limits, reports |
+| Teams Administration | `references/teams-admin.md` | Team CRUD, channels, membership, app installation, messaging/meeting policies, Teams PowerShell |
+| Intune / Device Management | `references/intune-admin.md` | Managed devices, device actions, compliance policies, configuration profiles, apps, Autopilot |
+| PIM and Access Reviews | `references/pim-access.md` | Role eligibility schedules, JIT activation, access reviews, entitlement management, PIM for Groups |
+| Usage Reports and Analytics | `references/reports-analytics.md` | Email/Teams/OneDrive/SharePoint/mailbox usage reports, active user counts, adoption analytics |
+| External Identities | `references/external-identities.md` | Guest invitations, stale guest cleanup, cross-tenant access policy, authorization policy, B2B settings |
+| Administrative Units | `references/admin-units.md` | AU CRUD, static/dynamic membership, scoped role assignments, delegated administration |
+| Microsoft Search Admin | `references/search-admin.md` | Bookmarks, Q&As, acronyms, audience targeting, bulk import |
+| Domain Management | `references/domain-management.md` | Custom domain add/verify/delete, DNS records, default domain, SAML/WS-Fed federation |
 
 ## Example Files
 
@@ -388,3 +467,23 @@ Every operation produces a structured markdown report containing:
 ## Knowledge references
 
 - `references/operational-knowledge.md` — compact API surface map, prerequisite matrix, deterministic failure remediation, limits/quotas and pagination/throttling guidance, and safe-default read-first/apply-second pattern.
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Users, groups, licenses, roles, named locations, MFA, sign-in audit | [`references/entra-id.md`](./references/entra-id.md) |
+| Mailboxes, distribution lists, mail flow rules, DKIM, anti-spam, message trace | [`references/exchange-online.md`](./references/exchange-online.md) |
+| SharePoint site collections, storage, sharing policies, hub sites, permissions | [`references/sharepoint-admin.md`](./references/sharepoint-admin.md) |
+| CSV bulk processing, dry-run, retry logic, rate limiting, audit reports | [`references/bulk-operations.md`](./references/bulk-operations.md) |
+| Teams CRUD, channels, membership, app installation, meeting and messaging policies | [`references/teams-admin.md`](./references/teams-admin.md) |
+| Managed devices, device actions, compliance policies, configuration profiles, Autopilot | [`references/intune-admin.md`](./references/intune-admin.md) |
+| PIM role eligibility, JIT activation, approval workflows, access reviews, PIM for Groups | [`references/pim-access.md`](./references/pim-access.md) |
+| Usage reports — Teams, email, OneDrive, SharePoint, mailbox activity, adoption analytics | [`references/reports-analytics.md`](./references/reports-analytics.md) |
+| Guest invitations, stale guest cleanup, cross-tenant access policy, B2B settings | [`references/external-identities.md`](./references/external-identities.md) |
+| Administrative unit CRUD, dynamic membership, scoped role assignments, delegation | [`references/admin-units.md`](./references/admin-units.md) |
+| Bookmarks, Q&As, acronyms, audience targeting, search vertical configuration | [`references/search-admin.md`](./references/search-admin.md) |
+| Custom domain add/verify/delete, DNS records, default domain, SAML/WS-Fed federation | [`references/domain-management.md`](./references/domain-management.md) |
+| Onboarding wizard — provisioning checklist, welcome email, group membership | [`references/onboarding-concierge.md`](./references/onboarding-concierge.md) |
+| Offboarding cleanup — disable, revoke, convert mailbox, transfer OneDrive | [`references/offboarding-cleanup.md`](./references/offboarding-cleanup.md) |
+| Compact API surface map, prerequisite matrix, failure remediation, throttling | [`references/operational-knowledge.md`](./references/operational-knowledge.md) |

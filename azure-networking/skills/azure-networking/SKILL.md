@@ -1170,3 +1170,13 @@ Key configuration:
 - NSGs: allow inbound only from `AzureFrontDoor.Backend` service tag on port 443.
 - Health probes: Front Door probes origins every 30 seconds, removes unhealthy origins.
 - Failover: if an entire region goes down, Front Door routes 100% to the healthy region.
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| VNet, subnets, NSGs, ASGs, VNet peering, route tables | [`references/vnet-subnets-nsg.md`](./references/vnet-subnets-nsg.md) |
+| Standard Load Balancer and Application Gateway with WAF | [`references/load-balancing-appgw.md`](./references/load-balancing-appgw.md) |
+| Azure DNS, private DNS zones, Private Link and private endpoints | [`references/dns-private-link.md`](./references/dns-private-link.md) |
+| VPN Gateway site-to-site, P2S, ExpressRoute, BGP routing | [`references/vpn-expressroute.md`](./references/vpn-expressroute.md) |
+| Azure Front Door, WAF policies, Azure Firewall, DNAT rules | [`references/front-door-firewall.md`](./references/front-door-firewall.md) |

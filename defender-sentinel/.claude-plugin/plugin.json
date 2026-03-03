@@ -1,0 +1,33 @@
+{
+  "name": "defender-sentinel",
+  "version": "1.0.0",
+  "description": "Microsoft Sentinel SIEM/SOAR and Defender XDR — incident triage, KQL threat hunting, analytics rules, SOAR playbooks, advanced hunting, and unified security operations center workflows",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft-sentinel",
+    "defender-xdr",
+    "siem",
+    "soar",
+    "threat-hunting",
+    "kql",
+    "incidents",
+    "security-operations",
+    "analytics-rules",
+    "playbooks"
+  ],
+  "skills": [
+    "./skills/defender-sentinel/SKILL.md"
+  ],
+  "agents": [
+    "./agents/defender-sentinel-reviewer.md"
+  ],
+  "commands": [
+    "./commands/defender-sentinel-setup.md",
+    "./commands/sentinel-incident-triage.md",
+    "./commands/sentinel-hunting-query.md",
+    "./commands/sentinel-analytics-rule.md",
+    "./commands/defender-alert-investigate.md"
+  ]
+}

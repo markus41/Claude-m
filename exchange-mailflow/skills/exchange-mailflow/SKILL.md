@@ -374,3 +374,12 @@ When reporting findings to a non-technical user:
 ## Timeline
 [When they should expect resolution]
 ```
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Message trace REST API, historical trace vs real-time, filtering by sender/recipient/status, delivery events, MX lookup, connector routing diagnostics | [`references/message-trace-api.md`](./references/message-trace-api.md) |
+| SPF record syntax and mechanism semantics, DKIM key setup and rotation, DMARC policy configuration and reporting, alignment failure diagnostics, MTA-STS enforcement | [`references/spf-dkim-dmarc.md`](./references/spf-dkim-dmarc.md) |
+| Transport rule conditions/actions/exceptions, rule priority, inbound/outbound connector configuration, TLS enforcement, IP allowlisting, smart host routing | [`references/transport-rules-connectors.md`](./references/transport-rules-connectors.md) |
+| NDR codes (4xx/5xx SMTP), Microsoft enhanced status codes (5.7.x series), on-premises vs Exchange Online error differences, per-category remediation steps | [`references/ndr-codes.md`](./references/ndr-codes.md) |

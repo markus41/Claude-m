@@ -355,3 +355,11 @@ Annual savings = monthly_savings × 12
 - CSP license changes take effect at next billing cycle
 - Group-based licensing requires Azure AD Premium P1
 - Maximum 999 users per `$top` parameter — always paginate
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Graph subscribedSku API, user license assignment, SKU ID mapping table, service plan IDs, assignment path (direct vs group) | [`references/license-analysis-api.md`](./references/license-analysis-api.md) |
+| Inactive user detection, signInActivity API, 90-day threshold, activity reports (Exchange/Teams/Office apps), EXO mailbox stats | [`references/inactive-detection.md`](./references/inactive-detection.md) |
+| License cost table, downgrade scenarios, savings calculation, group-based efficiency, executive summary report format | [`references/savings-reporting.md`](./references/savings-reporting.md) |

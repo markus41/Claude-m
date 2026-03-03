@@ -3,7 +3,7 @@ name: azure-cost-governance-reviewer
 description: Reviews Azure FinOps and governance findings for data quality, savings realism, and remediation safety before recommendations are shared.
 model: inherit
 color: green
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

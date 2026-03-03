@@ -1,0 +1,19 @@
+{
+  "name": "Microsoft Docs MCP",
+  "version": "1.0.0",
+  "description": "Search and fetch official Microsoft documentation via the Learn MCP server",
+  "author": "Claude-m",
+  "mcpServer": {
+    "type": "http",
+    "url": "https://learn.microsoft.com/api/mcp"
+  },
+  "capabilities": {
+    "tools": [
+      "microsoft_docs_search",
+      "microsoft_docs_fetch",
+      "microsoft_code_sample_search"
+    ]
+  },
+  "category": "devops",
+  "tags": ["microsoft", "docs", "documentation", "learn", "reference"]
+}

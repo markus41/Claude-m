@@ -1,0 +1,277 @@
+# Azure Storage SAS Tokens and Identity Security — Deep Reference
+
+## Overview
+
+Azure Storage supports two access models: Shared Access Signatures (SAS) for delegated access using account keys or Entra ID tokens, and Azure RBAC with managed identity for identity-based access. Best practice is to prefer managed identity over SAS keys. When SAS is required, use User Delegation SAS (backed by Entra ID) instead of Account Key SAS.
+
+## SAS Token Types
+
+| Type | Backed By | Recommended | Max Validity | Revocation |
+|---|---|---|---|---|
+| Account SAS | Storage account key | No | Unlimited (key rotation required) | Rotate account key (breaks all SAS tokens) |
+| Service SAS | Storage account key | No | Unlimited (key rotation required) | Rotate account key |
+| User Delegation SAS | Entra ID token | Yes | 7 days | Revoke delegation key via API |
+
+## REST API Endpoints for User Delegation Key
+
+| Method | Endpoint | Required Permissions | Key Parameters | Notes |
+|---|---|---|---|---|
+| POST | `https://{account}.blob.core.windows.net/?restype=service&comp=userdelegationkey` | Storage Blob Delegator | `{signedStart, signedExpiry}` body | Returns delegation key for SAS signing |
+
+## User Delegation SAS — Parameter Reference
+
+| Parameter | Description | Example |
+|---|---|---|
+| `sv` | Signed version (API version) | `2023-11-03` |
+| `sr` | Signed resource: `b`=blob, `c`=container, `d`=directory | `b` |
+| `sp` | Signed permissions: `r`=read, `w`=write, `d`=delete, `l`=list, `a`=add, `c`=create, `u`=update, `p`=process, `t`=tag, `m`=move, `e`=execute, `i`=set immutability | `r` |
+| `se` | Signed expiry (ISO 8601 UTC) | `2026-03-04T12:00:00Z` |
+| `ss` | Signed start (optional) | `2026-03-03T11:00:00Z` |
+| `spr` | Signed protocols: `https` or `https,http` | `https` |
+| `sip` | Signed IP address or range | `203.0.113.0/24` |
+| `skoid` | Signed key object ID (from delegation key) | `<oid>` |
+| `sktid` | Signed key tenant ID | `<tenant-id>` |
+| `skt` | Signed key start | `2026-03-03T00:00:00Z` |
+| `ske` | Signed key expiry | `2026-03-04T00:00:00Z` |
+| `sks` | Signed key service (`b`=blob, `f`=file, `q`=queue, `t`=table) | `b` |
+| `skv` | Signed key version | `2023-11-03` |
+| `sig` | HMAC-SHA256 signature | `<base64>` |
+
+## TypeScript SDK Patterns (Azure SDK v12)
+
+### Generate a User Delegation SAS for a blob
+
+```typescript
+import {
+  BlobServiceClient,
+  BlobSASPermissions,
+  generateBlobSASQueryParameters,
+  SASProtocol,
+} from "@azure/storage-blob";
+import { DefaultAzureCredential } from "@azure/identity";
+
+const accountName = process.env.AZURE_STORAGE_ACCOUNT_NAME!;
+const credential = new DefaultAzureCredential();
+const serviceClient = new BlobServiceClient(
+  `https://${accountName}.blob.core.windows.net`,
+  credential
+);
+
+// Get User Delegation Key (valid for up to 7 days)
+const startsOn = new Date();
+const expiresOn = new Date(startsOn.getTime() + 60 * 60 * 1000); // 1 hour
+const userDelegationKey = await serviceClient.getUserDelegationKey(startsOn, expiresOn);
+
+// Generate SAS for a specific blob
+const sasParams = generateBlobSASQueryParameters(
+  {
+    containerName: "reports",
+    blobName: "monthly-summary.pdf",
+    permissions: BlobSASPermissions.parse("r"), // read only
+    startsOn,
+    expiresOn,
+    protocol: SASProtocol.Https, // HTTPS only
+    ipRange: { start: "203.0.113.0", end: "203.0.113.255" }, // optional IP restriction
+  },
+  userDelegationKey,
+  accountName
+);
+
+const sasUri = `https://${accountName}.blob.core.windows.net/reports/monthly-summary.pdf?${sasParams}`;
+console.log("SAS URI:", sasUri);
+// Expiry: 1 hour; HTTPS only; read-only; no account key used
+```
+
+### Generate a User Delegation SAS for a container
+
+```typescript
+import {
+  BlobServiceClient,
+  ContainerSASPermissions,
+  generateBlobSASQueryParameters,
+  SASProtocol,
+} from "@azure/storage-blob";
+import { DefaultAzureCredential } from "@azure/identity";
+
+const serviceClient = new BlobServiceClient(
+  `https://${accountName}.blob.core.windows.net`,
+  new DefaultAzureCredential()
+);
+
+const expiresOn = new Date(Date.now() + 30 * 60 * 1000); // 30 minutes
+const userDelegationKey = await serviceClient.getUserDelegationKey(new Date(), expiresOn);
+
+const containerSas = generateBlobSASQueryParameters(
+  {
+    containerName: "uploads",
+    permissions: ContainerSASPermissions.parse("rwdla"), // read, write, delete, list, add
+    expiresOn,
+    protocol: SASProtocol.Https,
+  },
+  userDelegationKey,
+  accountName
+);
+
+const containerSasUri = `https://${accountName}.blob.core.windows.net/uploads?${containerSas}`;
+```
+
+### Revoke User Delegation SAS keys
+
+```typescript
+import { BlobServiceClient } from "@azure/storage-blob";
+import { DefaultAzureCredential } from "@azure/identity";
+
+const serviceClient = new BlobServiceClient(
+  `https://${accountName}.blob.core.windows.net`,
+  new DefaultAzureCredential()
+);
+
+// Revoke all user delegation keys for a specific user principal
+// This invalidates ALL SAS tokens generated by that user's delegation keys
+await serviceClient.revokeUserDelegationKeys();
+// Note: This revokes keys for the calling principal; admins use Resource Manager API
+```
+
+### Stored Access Policies (for Service SAS revocation)
+
+```typescript
+import { ContainerClient, BlobServiceClient } from "@azure/storage-blob";
+import { DefaultAzureCredential } from "@azure/identity";
+
+const containerClient = new ContainerClient(
+  `https://${accountName}.blob.core.windows.net/reports`,
+  new DefaultAzureCredential()
+);
+
+// Create a stored access policy
+await containerClient.setAccessPolicy("private", [
+  {
+    id: "read-policy-2026",
+    accessPolicy: {
+      permissions: "r",
+      startsOn: new Date("2026-01-01"),
+      expiresOn: new Date("2027-01-01"),
+    },
+  },
+]);
+
+// To revoke: delete or modify the stored access policy
+await containerClient.setAccessPolicy("private", []); // Removes all stored policies
+// All SAS tokens referencing this policy are immediately invalid
+```
+
+## Azure RBAC Roles for Storage
+
+| Role | Scope | Capabilities |
+|---|---|---|
+| Storage Blob Data Owner | Account/Container | Full data-plane access + ACL management on ADLS Gen2 |
+| Storage Blob Data Contributor | Account/Container | Read, write, delete blobs and containers |
+| Storage Blob Data Reader | Account/Container | Read blobs and containers only |
+| Storage Blob Delegator | Account | Get User Delegation Key (required for User Delegation SAS) |
+| Storage Queue Data Contributor | Account/Queue | Read, write, delete queue messages |
+| Storage Queue Data Message Sender | Account/Queue | Send messages to queue |
+| Storage Queue Data Message Processor | Account/Queue | Receive and delete queue messages |
+| Storage Queue Data Reader | Account/Queue | Peek/read messages |
+| Storage Table Data Contributor | Account/Table | Read, write, delete table entities |
+| Storage Table Data Reader | Account/Table | Read table entities |
+| Storage File Data Privileged Contributor | Account/Share | Full file share management |
+| Storage File Data Contributor | Account/Share | Read, write, delete files |
+| Storage Account Contributor | Account | Manage account settings; no data-plane access |
+| Reader and Data Access | Account | List keys + access data (avoid; grants key access) |
+
+## Storage Firewall and Network Security
+
+```bash
+# Restrict to specific VNet subnet
+az storage account update \
+  --name mystorageaccount \
+  --resource-group rg-prod \
+  --default-action Deny
+
+az storage account network-rule add \
+  --account-name mystorageaccount \
+  --resource-group rg-prod \
+  --subnet /subscriptions/<sub-id>/resourceGroups/rg-prod/providers/Microsoft.Network/virtualNetworks/vnet-prod/subnets/subnet-app
+
+# Add trusted IP range (e.g., build agent IPs)
+az storage account network-rule add \
+  --account-name mystorageaccount \
+  --resource-group rg-prod \
+  --ip-address 203.0.113.0/24
+
+# Allow Azure trusted services (e.g., Azure Backup, Azure Site Recovery)
+az storage account update \
+  --name mystorageaccount \
+  --resource-group rg-prod \
+  --bypass AzureServices Logging Metrics
+
+# Create private endpoint for complete network isolation
+az network private-endpoint create \
+  --name pe-storage \
+  --resource-group rg-prod \
+  --vnet-name vnet-prod \
+  --subnet subnet-private-endpoints \
+  --private-connection-resource-id /subscriptions/<sub>/resourceGroups/rg-prod/providers/Microsoft.Storage/storageAccounts/mystorageaccount \
+  --group-id blob \
+  --connection-name conn-storage-blob
+```
+
+## PowerShell — Storage Security
+
+```powershell
+# Disable shared key access (enforce Entra ID only)
+Set-AzStorageAccount `
+  -ResourceGroupName "rg-prod" `
+  -Name "mystorageaccount" `
+  -AllowSharedKeyAccess $false
+
+# Enable infrastructure encryption (double encryption)
+az storage account create `
+  --name mystorageaccount `
+  --resource-group rg-prod `
+  --require-infrastructure-encryption true
+
+# Generate SAS token via PowerShell (account key — avoid in production)
+$ctx = New-AzStorageContext -StorageAccountName "mystorageaccount" -UseConnectedAccount
+New-AzStorageBlobSASToken `
+  -Container "reports" `
+  -Blob "summary.pdf" `
+  -Permission r `
+  -ExpiryTime (Get-Date).AddHours(1) `
+  -Context $ctx `
+  -FullUri
+```
+
+## Error Codes
+
+| Code | Meaning | Remediation |
+|---|---|---|
+| AuthorizationFailure (403) | RBAC role missing | Assign required Storage RBAC role at appropriate scope |
+| AuthorizationPermissionMismatch (403) | ADLS Gen2 ACL denies access | Check POSIX ACL execute bits on parent directories |
+| SharedAccessSignatureNotAllowed (403) | Account has shared key access disabled | Use managed identity or Entra ID token; cannot use account key SAS |
+| InvalidAuthenticationInfo (400) | Malformed Authorization header | Check token format; ensure `Bearer` prefix for OAuth tokens |
+| InvalidSasToken (403) | SAS token expired or malformed | Generate fresh SAS token; check clock skew |
+| KeyBasedSasNotAllowed (403) | Account key SAS when shared key disabled | Use User Delegation SAS or managed identity |
+| AccountClosed (403) | Storage account disabled | Enable account in Azure portal |
+| NetworkAccessDenied (403) | Firewall rules block client IP | Add client IP to allowlist or use private endpoint |
+| ResourceNotFound (404) | Resource does not exist | Verify container/blob path and account name |
+
+## Throttling Limits
+
+| Resource | Limit | Retry Strategy |
+|---|---|---|
+| User Delegation Key validity | 7 days maximum | Refresh delegation key before expiry; cache and reuse |
+| Stored access policies per container | 5 policies | Design policies for revocation groups, not individual users |
+| Account key SAS signing | No API rate limit | Key rotation invalidates all account key SAS tokens simultaneously |
+| RBAC role assignments per subscription | 4,000 | Use groups to assign roles; avoid per-user individual assignments |
+
+## Production Gotchas
+
+- **Disable shared key access**: For maximum security, disable `AllowSharedKeyAccess` on storage accounts. This prevents all account key and SAS token access and forces Entra ID. Be aware: AzCopy, Storage Explorer, and some Azure services still use keys — audit dependencies first.
+- **User Delegation Key is scoped to the caller's identity**: Any SAS token generated with a user's delegation key can be revoked by rotating the key (calling `revokeUserDelegationKeys`). The SAS token's maximum lifetime is bounded by the delegation key's expiry (max 7 days).
+- **SAS tokens are bearer tokens**: A SAS URI grants access to anyone who has it. Use HTTPS only (`spr=https`) and restrict by IP where possible. Treat SAS URIs as sensitive credentials.
+- **Stored access policies are the only way to revoke Account Key SAS**: If you must use Account Key SAS, always reference a stored access policy so you can revoke it by deleting the policy. Plain SAS tokens with no policy cannot be revoked short of rotating the account key.
+- **RBAC at container vs account scope**: Assigning RBAC at the account level grants access to all containers. Assign at the container level for least-privilege. For ADLS Gen2, combine RBAC at container level with POSIX ACLs for directory-level control.
+- **Managed identity for compute**: VMs, App Service, Functions, Container Apps, AKS pods (with workload identity) should all use managed identity for storage access. This eliminates credentials entirely.
+- **Clock skew for SAS start time**: If `startsOn` is set to `now`, some clients with clock drift will receive 403 errors. Set `startsOn` to 5 minutes in the past to account for clock skew.
+- **Private endpoint DNS**: When using private endpoints, storage account DNS must resolve to the private IP. Configure private DNS zones (`privatelink.blob.core.windows.net`) linked to the VNet. Avoid split-horizon DNS issues by using Azure DNS or Azure-provided DNS resolver.

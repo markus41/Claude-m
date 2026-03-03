@@ -1,0 +1,31 @@
+{
+  "name": "sharepoint-file-intelligence",
+  "version": "1.0.0",
+  "description": "Scan, categorize, deduplicate, and organize SharePoint and OneDrive files at scale using Microsoft Graph.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "sharepoint",
+    "onedrive",
+    "file-management",
+    "governance",
+    "deduplication",
+    "metadata",
+    "content-types"
+  ],
+  "skills": [
+    "./skills/sharepoint-file-intelligence/SKILL.md"
+  ],
+  "agents": [
+    "./agents/file-analyst.md"
+  ],
+  "commands": [
+    "./commands/sfi-setup.md",
+    "./commands/scan-inventory.md",
+    "./commands/find-duplicates.md",
+    "./commands/apply-categories.md",
+    "./commands/consolidate-files.md"
+  ]
+}

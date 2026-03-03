@@ -180,3 +180,12 @@ Names: `documents`, `photos`, `cameraroll`, `approot`, `music`.
 | Sharing Workflows | `examples/sharing-workflows.md` | Create links, invite users, manage permissions |
 | Sync Client | `examples/sync-client.md` | Delta query-based change tracking implementation |
 | Batch Operations | `examples/batch-operations.md` | Graph batch API for bulk file operations |
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| DriveItem CRUD, upload/download, copy/move, folder management, search, versioning, thumbnails | [`references/file-operations.md`](./references/file-operations.md) |
+| Sharing links (view/edit/embed), direct permissions, password-protected links, expiry, inherited vs direct | [`references/sharing-permissions.md`](./references/sharing-permissions.md) |
+| Delta function, incremental sync, delta tokens, deleted item handling, token persistence, conflict resolution | [`references/delta-sync.md`](./references/delta-sync.md) |
+| Upload session creation, chunked upload, resume interrupted uploads, progress tracking, 250 GB limit | [`references/large-file-upload.md`](./references/large-file-upload.md) |

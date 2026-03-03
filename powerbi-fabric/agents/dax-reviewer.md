@@ -5,7 +5,7 @@ description: >
   and Power BI REST API usage for correctness, performance, and best practices.
 model: inherit
 color: yellow
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

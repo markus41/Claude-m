@@ -3,7 +3,7 @@ name: teams-lifecycle-reviewer
 description: Reviews Teams governance configurations, naming policies, and lifecycle decisions for correctness and organizational alignment.
 model: inherit
 color: blue
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

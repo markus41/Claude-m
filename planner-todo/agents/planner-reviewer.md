@@ -5,7 +5,7 @@ description: >
   handling, proper task creation patterns, and assignment workflows.
 model: inherit
 color: green
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

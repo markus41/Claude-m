@@ -421,3 +421,12 @@ Passwordless deployment from GitHub:
 | Container Deploy | `examples/container-deploy.md` | ACR + managed identity + continuous deployment |
 | GitHub Actions OIDC | `examples/github-actions-oidc.md` | Passwordless CI/CD pipeline |
 | Full ARM Template | `examples/arm-template.md` | Complete ARM template for App Service + Plan + Identity |
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| SKU tiers (Free/Shared/Basic/Standard/Premium/Isolated); scaling limits; App Service Environment v3; pricing tier comparison | [`references/app-service-plans.md`](./references/app-service-plans.md) |
+| Slot creation; swap operations (standard and with-preview); auto-swap; slot-sticky settings; blue/green deployment patterns | [`references/deployment-slots.md`](./references/deployment-slots.md) |
+| DNS configuration (CNAME/A records); managed TLS certificates; custom certificate upload; domain verification; SNI SSL vs IP SSL | [`references/custom-domains-ssl.md`](./references/custom-domains-ssl.md) |
+| Manual vs auto-scale rules; scale-out/in triggers; cool-down periods; scheduled scaling; zone-redundant scaling | [`references/scaling-autoscale.md`](./references/scaling-autoscale.md) |

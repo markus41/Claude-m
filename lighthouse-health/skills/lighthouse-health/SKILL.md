@@ -348,3 +348,11 @@ For each Red/Yellow finding, generate an actionable remediation item:
 4. **Effort**: Estimated complexity (Quick Fix / Moderate / Complex)
 5. **Impact**: Which users/systems are affected
 6. **GDAP Role**: Which delegated role is required to remediate
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Azure Lighthouse delegated management, cross-tenant query, health score dimensions, weighted scoring algorithm, benchmark definitions | [`references/tenant-scoring.md`](./references/tenant-scoring.md) |
+| Secure Score API, MFA coverage metric, CA coverage, DLP policy coverage, license utilization, SLA metrics, composite metric collection | [`references/health-metrics.md`](./references/health-metrics.md) |
+| Multi-tenant report aggregation, PowerShell runbook, HTML report generation, Power BI connector, PDF export, sendMail delivery, tenant comparison matrix | [`references/msp-reporting.md`](./references/msp-reporting.md) |

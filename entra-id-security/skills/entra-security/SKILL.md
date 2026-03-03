@@ -251,3 +251,14 @@ Most of these require **application permissions** with admin consent for automat
 ## Knowledge references
 
 - `references/operational-knowledge.md` — compact API surface map, prerequisite matrix, deterministic failure remediation, limits/quotas and pagination/throttling guidance, and safe-default read-first/apply-second pattern.
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Conditional Access policy REST API, named locations, conditions, grant controls, What If tool, CA gaps analysis | [`references/conditional-access.md`](./references/conditional-access.md) |
+| App registration Graph API, application vs service principal, API permissions, credential management, app roles, token configuration | [`references/app-registrations.md`](./references/app-registrations.md) |
+| Risk detection API, user/sign-in risk levels, risk remediation, risky users report, Log Analytics KQL, workload identity risk | [`references/identity-protection.md`](./references/identity-protection.md) |
+| Authentication methods API, SSPR registration, combined registration, MFA status, FIDO2, Authenticator, TAP, authentication strength | [`references/mfa-sspr.md`](./references/mfa-sspr.md) |
+| Plain-language CA policy explanations and audit patterns | [`references/ca-plain-language.md`](./references/ca-plain-language.md) |
+| Operational knowledge, API surface map, limits, throttling guidance | [`references/operational-knowledge.md`](./references/operational-knowledge.md) |

@@ -490,3 +490,12 @@ Set up a team review workflow with PR previews:
 | Next.js Hybrid | `examples/nextjs-hybrid.md` | Next.js with SSG, API routes, and linked backend |
 | PR Preview Setup | `examples/pr-preview.md` | Team workflow with GitHub Actions and preview environments |
 | Full Config | `examples/full-config.md` | Complete staticwebapp.config.json for production |
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| staticwebapp.config.json structure; routing rules; response overrides; navigation fallback; header customization; platform settings | [`references/deployment-config.md`](./references/deployment-config.md) |
+| Built-in providers (AAD, GitHub, Twitter, Google); custom OpenID Connect; role-based access; `/.auth/me` endpoint; role assignment function | [`references/auth-providers.md`](./references/auth-providers.md) |
+| Managed functions vs linked backends; API routes; environment variables; local dev with SWA CLI; CORS configuration | [`references/api-functions-integration.md`](./references/api-functions-integration.md) |
+| GitHub Actions workflow; preview environment lifecycle; quality gates; branch policies; Azure DevOps alternative | [`references/pr-preview-envs.md`](./references/pr-preview-envs.md) |

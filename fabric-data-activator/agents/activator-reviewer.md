@@ -6,7 +6,7 @@ description: >
   across the full Data Activator stack.
 model: inherit
 color: orange
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

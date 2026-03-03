@@ -3,7 +3,7 @@ name: schema-reviewer
 description: Reviews Dataverse schema designs, API payloads, relationship configurations, queries, and solution structure for correctness and best practices
 model: inherit
 color: orange
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

@@ -1,0 +1,33 @@
+{
+  "name": "dynamics-365-field-service",
+  "version": "1.0.0",
+  "description": "Dynamics 365 Field Service via Dataverse Web API — work orders, bookings, resource scheduling, service accounts, assets, and IoT-triggered service events",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "dynamics-365",
+    "field-service",
+    "work-orders",
+    "scheduling",
+    "dataverse",
+    "bookings",
+    "resources",
+    "iot",
+    "service-accounts",
+    "assets"
+  ],
+  "skills": [
+    "./skills/dynamics-365-field-service/SKILL.md"
+  ],
+  "agents": [
+    "./agents/dynamics-365-field-service-reviewer.md"
+  ],
+  "commands": [
+    "./commands/fs-setup.md",
+    "./commands/fs-work-order.md",
+    "./commands/fs-schedule.md",
+    "./commands/fs-service-account.md",
+    "./commands/fs-reporting.md"
+  ]
+}

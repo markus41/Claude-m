@@ -1,0 +1,30 @@
+{
+  "name": "fabric-mirroring",
+  "version": "1.0.0",
+  "description": "Microsoft Fabric Mirroring — source onboarding, CDC replication, latency monitoring, schema drift handling, and reconciliation workflows",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "fabric",
+    "mirroring",
+    "cdc",
+    "replication",
+    "latency",
+    "schema-drift",
+    "analytics"
+  ],
+  "skills": [
+    "./skills/fabric-mirroring/SKILL.md"
+  ],
+  "agents": [
+    "./agents/mirroring-reviewer.md"
+  ],
+  "commands": [
+    "./commands/mirroring-setup.md",
+    "./commands/source-onboarding.md",
+    "./commands/latency-health-check.md",
+    "./commands/cdc-reconciliation.md"
+  ]
+}

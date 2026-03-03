@@ -6,7 +6,7 @@ description: >
   Table, and Files services.
 model: inherit
 color: blue
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

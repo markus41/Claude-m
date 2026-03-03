@@ -1449,3 +1449,13 @@ done
 | `{app}-kv-{env}` | `myapp-kv-prod` | Clear ownership and environment |
 | Secret name: `{Service}{Purpose}` | `SqlConnectionString` | Consistent across environments |
 | Tags: `environment`, `application`, `owner` | `environment=prod` | Searchable, auditable |
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Secrets lifecycle, versioning, rotation, App Service references | [`references/secrets-management.md`](./references/secrets-management.md) |
+| Cryptographic keys, envelope encryption, signing, auto-rotation | [`references/keys-cryptography.md`](./references/keys-cryptography.md) |
+| X.509 certificates, issuance, renewal, CSR workflow | [`references/certificates.md`](./references/certificates.md) |
+| RBAC roles, network firewall, private endpoints, Conditional Access | [`references/rbac-network-security.md`](./references/rbac-network-security.md) |
+| Diagnostic logs, KQL queries, Event Grid, secret rotation automation | [`references/monitoring-rotation.md`](./references/monitoring-rotation.md) |

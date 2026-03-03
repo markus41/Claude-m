@@ -1444,3 +1444,13 @@ az containerapp job create \
   --registry-server myregistry.azurecr.io \
   --registry-identity system
 ```
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Azure Container Registry, ACR Tasks, geo-replication, image signing | [`references/container-registry.md`](./references/container-registry.md) |
+| Container Apps, Dapr service invocation, pub/sub, state management | [`references/container-apps-dapr.md`](./references/container-apps-dapr.md) |
+| Container Instances, multi-container groups, batch job patterns | [`references/container-instances.md`](./references/container-instances.md) |
+| Container Apps networking, ingress, custom domains, VNet integration | [`references/networking-ingress.md`](./references/networking-ingress.md) |
+| CI/CD pipelines, GitHub Actions, blue/green deployments, rollback | [`references/cicd-deployment.md`](./references/cicd-deployment.md) |

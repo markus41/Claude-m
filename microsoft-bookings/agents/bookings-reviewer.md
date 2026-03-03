@@ -5,7 +5,7 @@ description: >
   staff assignments, time slot settings, and customer information fields.
 model: inherit
 color: blue
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

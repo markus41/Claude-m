@@ -1,0 +1,30 @@
+{
+  "name": "fabric-semantic-models",
+  "version": "1.0.0",
+  "description": "Microsoft Fabric Semantic Models — Direct Lake modeling, DAX governance, calculation groups, XMLA deployment, and semantic link automation",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "fabric",
+    "semantic-model",
+    "direct-lake",
+    "dax",
+    "xmla",
+    "tabular",
+    "analytics"
+  ],
+  "skills": [
+    "./skills/fabric-semantic-models/SKILL.md"
+  ],
+  "agents": [
+    "./agents/semantic-model-reviewer.md"
+  ],
+  "commands": [
+    "./commands/semantic-setup.md",
+    "./commands/directlake-model-design.md",
+    "./commands/dax-governance.md",
+    "./commands/xmla-deploy.md"
+  ]
+}

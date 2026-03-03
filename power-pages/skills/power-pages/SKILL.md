@@ -443,3 +443,12 @@ Build a portal where partner organizations see only their own data:
 | Customer Portal | `examples/customer-portal.md` | Authenticated case submission and tracking |
 | Partner Portal | `examples/partner-portal.md` | Account-scoped data with role-based access |
 | Multi-Step Form | `examples/multi-step-form.md` | Application wizard with conditional steps |
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Liquid template syntax, tags, filters, global objects, FetchXML in Liquid, JS/CSS injection | [`references/site-design-liquid.md`](./references/site-design-liquid.md) |
+| Basic forms, multi-step web forms, field validation, entity lists, subgrids, OData endpoint | [`references/web-forms-lists.md`](./references/web-forms-lists.md) |
+| Table permission scopes (Global/Contact/Account/Self/Parent), privileges, web role assignment | [`references/table-permissions.md`](./references/table-permissions.md) |
+| Local auth, Azure AD/Entra ID, Azure AD B2C, OIDC, open vs invitation registration, session timeout | [`references/authentication.md`](./references/authentication.md) |

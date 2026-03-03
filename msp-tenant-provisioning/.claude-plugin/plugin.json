@@ -1,0 +1,33 @@
+{
+  "name": "msp-tenant-provisioning",
+  "version": "1.0.0",
+  "description": "Full MSP/CSP new customer provisioning — Partner Center CSP tenant creation, Azure subscription and management group setup, initial M365 security baseline, domain DNS configuration, and Microsoft 365 Lighthouse onboarding.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "azure",
+    "m365",
+    "csp",
+    "partner-center",
+    "tenant-provisioning",
+    "msp",
+    "onboarding",
+    "subscription",
+    "gdap"
+  ],
+  "skills": [
+    "./skills/msp-tenant-provisioning/SKILL.md"
+  ],
+  "agents": [
+    "./agents/provisioning-auditor.md"
+  ],
+  "commands": [
+    "./commands/tenant-provision.md",
+    "./commands/tenant-configure.md",
+    "./commands/tenant-domain-setup.md",
+    "./commands/tenant-azure-setup.md",
+    "./commands/tenant-lighthouse-onboard.md"
+  ]
+}

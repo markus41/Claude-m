@@ -6,7 +6,7 @@ description: >
   quality, Data Activator trigger logic, and security best practices.
 model: inherit
 color: blue
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

@@ -1,0 +1,35 @@
+{
+  "name": "lighthouse-operations",
+  "version": "1.0.0",
+  "description": "Comprehensive Azure Lighthouse and M365 Lighthouse operations for MSPs/CSPs — Azure delegation ARM/Bicep templates, managed services marketplace offers, GDAP full lifecycle management, baseline deployment automation, cross-tenant governance, Partner Center integration, and alert management.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "azure",
+    "lighthouse",
+    "azure-lighthouse",
+    "m365-lighthouse",
+    "gdap",
+    "msp",
+    "csp",
+    "multi-tenant",
+    "delegation",
+    "managed-services"
+  ],
+  "skills": [
+    "./skills/lighthouse-operations/SKILL.md"
+  ],
+  "agents": [
+    "./agents/lighthouse-architect.md"
+  ],
+  "commands": [
+    "./commands/lighthouse-setup.md",
+    "./commands/gdap-manage.md",
+    "./commands/baseline-deploy.md",
+    "./commands/lighthouse-report.md",
+    "./commands/lighthouse-alerts.md",
+    "./commands/azure-lighthouse-delegate.md"
+  ]
+}

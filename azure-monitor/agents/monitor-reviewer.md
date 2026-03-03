@@ -6,7 +6,7 @@ description: >
   basic vs analytics logs), and security posture (RBAC, private link, sensitive data).
 model: inherit
 color: blue
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

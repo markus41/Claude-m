@@ -414,3 +414,11 @@ Link tasks across Microsoft 365 tools:
 | Sprint Board Setup | `examples/sprint-board.md` | Create a full sprint board with buckets, tasks, and assignments |
 | Task Migration | `examples/task-migration.md` | Bulk import tasks from CSV into Planner |
 | Personal Workflow | `examples/personal-workflow.md` | To Do lists with recurrence and reminders |
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Plan CRUD, bucket management, plan details, labels, copying, conversation thread integration | [`references/planner-plans-buckets.md`](./references/planner-plans-buckets.md) |
+| Task CRUD, assignments, due dates, progress, checklist items, attachments, bulk import | [`references/task-management.md`](./references/task-management.md) |
+| To Do list CRUD, recurrence, steps (checklistItems), linked resources, importance, reminders, delta sync | [`references/todo-lists-steps.md`](./references/todo-lists-steps.md) |

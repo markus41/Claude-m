@@ -3,7 +3,7 @@ name: mailflow-reviewer
 description: Reviews mail flow diagnostic reports and DNS recommendations for accuracy, completeness, and client-safe language.
 model: inherit
 color: yellow
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

@@ -6,7 +6,7 @@ description: >
   the full Fabric data engineering stack.
 model: inherit
 color: green
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

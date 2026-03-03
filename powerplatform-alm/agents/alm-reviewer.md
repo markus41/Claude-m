@@ -3,7 +3,7 @@ name: ALM Reviewer
 description: Reviews Power Platform ALM artifacts — solution structure, pipeline YAML, PCF controls, connection references, environment variables, and deployment settings for correctness and best practices.
 model: inherit
 color: purple
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

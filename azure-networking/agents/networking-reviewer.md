@@ -6,7 +6,7 @@ description: >
   across the full Azure networking stack.
 model: inherit
 color: blue
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

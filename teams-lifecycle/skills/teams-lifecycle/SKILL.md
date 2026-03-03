@@ -431,3 +431,11 @@ Header: ConsistencyLevel: eventual
 4. For each orphaned team: identify most active member from activity report
 5. `POST /groups/{id}/owners/$ref` — assign new owner
 6. Notify new owner and document change
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Team template creation, cloning existing teams, copying channels/apps/settings/tabs, EDU templates | [`references/team-templates-cloning.md`](./references/team-templates-cloning.md) |
+| Group naming policy (prefix/suffix/blocked words), expiration policy, auto-renewal, lifecycle management | [`references/naming-expiration-policies.md`](./references/naming-expiration-policies.md) |
+| Channel creation (standard/private/shared), membership, moderation, pinned posts, tabs, archiving | [`references/channel-settings.md`](./references/channel-settings.md) |

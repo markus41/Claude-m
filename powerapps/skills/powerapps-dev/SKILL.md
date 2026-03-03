@@ -399,3 +399,12 @@ Build a custom PCF (PowerApps Component Framework) control:
 | Custom Connector | `examples/custom-connector.md` | REST API wrapper with OAuth 2.0 |
 | Component Library | `examples/component-library.md` | Reusable header, sidebar, and data card components |
 | Responsive App | `examples/responsive-app.md` | Mobile-first responsive layout with containers |
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Canvas app creation, PAC CLI, screen navigation, Gallery patterns, Patch, offline mode, ALM | [`references/canvas-apps.md`](./references/canvas-apps.md) |
+| Model-driven app creation, sitemap XML, form/view XML, business rules, command bar, PCF | [`references/model-driven-apps.md`](./references/model-driven-apps.md) |
+| Power Fx core functions, delegation, type coercion, error handling, named formulas, ParseJSON | [`references/power-fx-formulas.md`](./references/power-fx-formulas.md) |
+| Custom connectors, OpenAPI definition, auth types, actions vs triggers, code policy, sharing | [`references/custom-connectors.md`](./references/custom-connectors.md) |

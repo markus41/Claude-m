@@ -1,0 +1,33 @@
+{
+  "name": "azure-ai-services",
+  "version": "1.0.0",
+  "description": "Azure AI workloads — Azure OpenAI Service deployments, AI Search indexes, AI Studio/Foundry projects, Cognitive Services provisioning, content filtering, and responsible AI governance",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "azure-openai",
+    "ai-search",
+    "cognitive-services",
+    "ai-studio",
+    "ai-foundry",
+    "vector-search",
+    "embeddings",
+    "content-filter",
+    "responsible-ai",
+    "fine-tuning"
+  ],
+  "skills": [
+    "./skills/azure-ai-services/SKILL.md"
+  ],
+  "agents": [
+    "./agents/azure-ai-services-reviewer.md"
+  ],
+  "commands": [
+    "./commands/azure-ai-services-setup.md",
+    "./commands/azure-openai-deploy.md",
+    "./commands/azure-openai-audit.md",
+    "./commands/azure-search-index.md",
+    "./commands/azure-ai-studio-setup.md"
+  ]
+}

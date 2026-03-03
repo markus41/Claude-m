@@ -209,7 +209,18 @@ See `references/azure-auth.md` for step-by-step setup.
 | Dataverse Client | `references/dataverse-client.md` | Full typed client class, CRUD, OData queries |
 | Graph Client | `references/graph-client.md` | Full service class, Teams/SharePoint/Users |
 | Environment Strategies | `references/environment-strategies.md` | Local vs prod auth, secrets management |
+| Graph Client Patterns | `references/graph-client-patterns.md` | Middleware, JSON Batch, PageIterator, environment credentials |
 | Auth Examples | `examples/auth-patterns.md` | Token providers for every environment |
 | Dataverse Operations | `examples/dataverse-operations.md` | Common Dataverse patterns |
 | Graph Operations | `examples/graph-operations.md` | Common Graph patterns |
 | Combined Workflows | `examples/combined-workflows.md` | Dataverse + Graph provisioning |
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| DefaultAzureCredential, managed identity, Entra app registration setup | [`references/azure-auth.md`](./references/azure-auth.md) |
+| Dataverse Web API typed client — CRUD, OData queries, batch, pagination | [`references/dataverse-client.md`](./references/dataverse-client.md) |
+| Graph SDK service class — Users, Groups, Teams, SharePoint, Mail, Calendar | [`references/graph-client.md`](./references/graph-client.md) |
+| Local vs prod auth strategies, secrets management, environment variables | [`references/environment-strategies.md`](./references/environment-strategies.md) |
+| Advanced Graph patterns — middleware chain, JSON Batch, PageIterator, credential factory | [`references/graph-client-patterns.md`](./references/graph-client-patterns.md) |

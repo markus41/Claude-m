@@ -5,7 +5,7 @@ description: >
   auth providers, API function bindings, and build configuration.
 model: inherit
 color: blue
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

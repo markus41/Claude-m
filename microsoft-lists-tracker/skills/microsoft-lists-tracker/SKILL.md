@@ -423,3 +423,11 @@ These internal names are reserved and cannot be used for custom columns:
 `ID`, `Title`, `Created`, `Modified`, `Author`, `Editor`, `_UIVersionString`, `Attachments`, `ContentType`, `FileSystemObjectType`, `ServerRedirectedEmbedUrl`.
 
 The `Title` column is always created automatically and serves as the primary display column. It can be renamed in the UI but its internal name remains `Title`.
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| List CRUD, column types (text, number, choice, dateTime, person, lookup, hyperlink, calculated, boolean), content types | [`references/lists-columns-types.md`](./references/lists-columns-types.md) |
+| View creation/update, filtering/sorting/grouping, column formatting JSON, view formatting, conditional formatting | [`references/views-formatting.md`](./references/views-formatting.md) |
+| Power Automate triggers, create/update/get item actions, SharePoint vs Graph connector, approval flows, Teams notifications | [`references/power-automate-integration.md`](./references/power-automate-integration.md) |

@@ -1163,3 +1163,12 @@ predictions_spark.write.format("delta").mode("overwrite").save("Tables/sales_pre
 # Step 5: Power BI can now consume Tables/sales_predictions via DirectLake mode
 print(f"Predictions written. RMSE: {rmse:.2f}, R2: {r2:.4f}")
 ```
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| MLflow API, experiment creation, logging patterns, model registry, run comparison, autologging | [`references/ml-experiments-mlflow.md`](./references/ml-experiments-mlflow.md) |
+| Spark ML pipelines, scikit-learn, FLAML AutoML, SynapseML LightGBM, cross-validation, ONNX export | [`references/model-training.md`](./references/model-training.md) |
+| SemPy API, read_table, evaluate_measure, evaluate_dax, FabricDataFrame, Power BI write-back | [`references/semantic-link.md`](./references/semantic-link.md) |
+| PREDICT T-SQL syntax, batch scoring patterns, model deployment to Fabric, monitoring predictions | [`references/predict-integration.md`](./references/predict-integration.md) |

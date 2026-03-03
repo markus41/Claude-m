@@ -5,7 +5,7 @@ description: >
   WIQL query correctness, work item field paths, and secure credential handling.
 model: inherit
 color: orange
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

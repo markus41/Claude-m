@@ -613,3 +613,183 @@ GET /auditLogs/directoryAudits?$filter=activityDisplayName eq 'Add user'
 GET /auditLogs/directoryAudits?$filter=activityDisplayName eq 'Update user' and targetResources/any(t: t/id eq '{userId}')
 GET /auditLogs/directoryAudits?$filter=category eq 'GroupManagement'
 ```
+
+## Named Locations
+
+Named locations define trusted IP ranges or countries used in Conditional Access policies.
+
+**Required scope**: `Policy.ReadWrite.ConditionalAccess`
+
+### List Named Locations
+
+```
+GET https://graph.microsoft.com/v1.0/identity/conditionalAccess/namedLocations
+```
+
+### Create IP-Based Named Location
+
+```
+POST https://graph.microsoft.com/v1.0/identity/conditionalAccess/namedLocations
+Content-Type: application/json
+
+{
+  "@odata.type": "#microsoft.graph.ipNamedLocation",
+  "displayName": "Corporate Office IPs",
+  "isTrusted": true,
+  "ipRanges": [
+    { "@odata.type": "#microsoft.graph.iPv4CidrRange", "cidrAddress": "198.51.100.0/24" },
+    { "@odata.type": "#microsoft.graph.iPv4CidrRange", "cidrAddress": "203.0.113.0/28" }
+  ]
+}
+```
+
+### Create Country-Based Named Location
+
+```
+POST https://graph.microsoft.com/v1.0/identity/conditionalAccess/namedLocations
+Content-Type: application/json
+
+{
+  "@odata.type": "#microsoft.graph.countryNamedLocation",
+  "displayName": "Allowed Countries",
+  "countriesAndRegions": ["US", "CA", "GB"],
+  "includeUnknownCountriesAndRegions": false
+}
+```
+
+### Update / Delete Named Location
+
+```
+PATCH https://graph.microsoft.com/v1.0/identity/conditionalAccess/namedLocations/{locationId}
+DELETE https://graph.microsoft.com/v1.0/identity/conditionalAccess/namedLocations/{locationId}
+```
+
+## Authentication Strength Policies
+
+Authentication strength defines which authentication method combinations satisfy Conditional Access requirements.
+
+**Required scope**: `Policy.ReadWrite.ConditionalAccess`
+
+### List Authentication Strengths
+
+```
+GET https://graph.microsoft.com/v1.0/policies/authenticationStrengthPolicies
+```
+
+Built-in policies: `00000000-0000-0000-0000-000000000002` (MFA), `00000000-0000-0000-0000-000000000003` (Passwordless MFA), `00000000-0000-0000-0000-000000000004` (Phishing-resistant MFA).
+
+### Create Custom Authentication Strength
+
+```
+POST https://graph.microsoft.com/v1.0/policies/authenticationStrengthPolicies
+Content-Type: application/json
+
+{
+  "displayName": "Hardware Key Required",
+  "description": "Requires FIDO2 or Windows Hello for Business",
+  "allowedCombinations": [
+    "fido2",
+    "windowsHelloForBusiness"
+  ]
+}
+```
+
+## Self-Service Password Reset (SSPR) Policy
+
+**Required scope**: `Policy.ReadWrite.Authentication`
+
+### Get SSPR Policy
+
+```
+GET https://graph.microsoft.com/v1.0/policies/authenticationMethodsPolicy
+```
+
+### Enable/Disable SSPR for All Users or Selected Groups
+
+```
+PATCH https://graph.microsoft.com/v1.0/policies/authenticationMethodsPolicy
+Content-Type: application/json
+
+{
+  "registrationEnforcement": {
+    "authenticationMethodsRegistrationCampaign": {
+      "state": "enabled",
+      "snoozeDurationInDays": 14,
+      "includeTargets": [
+        {
+          "id": "all_users",
+          "targetType": "group",
+          "authenticationMethod": "microsoftAuthenticator"
+        }
+      ]
+    }
+  }
+}
+```
+
+## MFA Methods Administration
+
+**Required scope**: `UserAuthenticationMethod.ReadWrite.All`
+
+### List User's Authentication Methods
+
+```
+GET https://graph.microsoft.com/v1.0/users/{userId}/authentication/methods
+```
+
+### List Phone Authentication Methods
+
+```
+GET https://graph.microsoft.com/v1.0/users/{userId}/authentication/phoneMethods
+```
+
+### Delete an Authentication Method (force re-registration)
+
+```
+DELETE https://graph.microsoft.com/v1.0/users/{userId}/authentication/phoneMethods/{phoneMethodId}
+DELETE https://graph.microsoft.com/v1.0/users/{userId}/authentication/microsoftAuthenticatorMethods/{methodId}
+DELETE https://graph.microsoft.com/v1.0/users/{userId}/authentication/fido2Methods/{methodId}
+```
+
+### Require Re-Registration at Next Sign-In
+
+```
+POST https://graph.microsoft.com/v1.0/users/{userId}/authentication/requirements
+Content-Type: application/json
+
+{
+  "perUserMfaState": "enabled"
+}
+```
+
+## Security Defaults
+
+Security defaults enable baseline protection (MFA required, legacy auth blocked) for free/basic tenants. Mutually exclusive with Conditional Access policies.
+
+**Required scope**: `Policy.ReadWrite.SecurityDefaults`
+
+### Get Security Defaults Status
+
+```
+GET https://graph.microsoft.com/v1.0/policies/identitySecurityDefaultsEnforcementPolicy
+```
+
+### Enable Security Defaults
+
+```
+PATCH https://graph.microsoft.com/v1.0/policies/identitySecurityDefaultsEnforcementPolicy
+Content-Type: application/json
+
+{ "isEnabled": true }
+```
+
+### Disable Security Defaults (required before creating Conditional Access policies)
+
+```
+PATCH https://graph.microsoft.com/v1.0/policies/identitySecurityDefaultsEnforcementPolicy
+Content-Type: application/json
+
+{ "isEnabled": false }
+```
+
+**Warning**: Disabling security defaults removes baseline protection. Only do this if you have equivalent Conditional Access policies in place.

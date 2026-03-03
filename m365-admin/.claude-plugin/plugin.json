@@ -1,7 +1,7 @@
 {
   "name": "m365-admin",
-  "version": "1.0.0",
-  "description": "M365 tenant admin via Microsoft Graph — users, groups, licenses, Exchange, SharePoint, and bulk operations",
+  "version": "1.1.0",
+  "description": "M365 tenant admin via Microsoft Graph — users, groups, licenses, Exchange, SharePoint, Teams, Intune, PIM, access reviews, usage reports, guest management, administrative units, Microsoft Search, and domain/federation management",
   "author": {
     "name": "Markus Ahling"
   },
@@ -11,6 +11,9 @@
     "entra-id",
     "exchange",
     "sharepoint",
+    "teams",
+    "intune",
+    "pim",
     "admin",
     "bulk-operations"
   ],
@@ -30,6 +33,14 @@
     "./commands/m365-exchange-mailbox.md",
     "./commands/m365-sharepoint-site.md",
     "./commands/m365-audit.md",
-    "./commands/m365-setup.md"
+    "./commands/m365-setup.md",
+    "./commands/m365-teams-admin.md",
+    "./commands/m365-intune-devices.md",
+    "./commands/m365-pim-roles.md",
+    "./commands/m365-usage-reports.md",
+    "./commands/m365-guest-management.md",
+    "./commands/m365-admin-units.md",
+    "./commands/m365-search-admin.md",
+    "./commands/m365-domain-management.md"
   ]
 }

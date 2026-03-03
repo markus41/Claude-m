@@ -1,0 +1,27 @@
+{
+  "name": "azure-tenant-assessment",
+  "version": "1.0.0",
+  "description": "Entry-point Azure tenant assessment — subscription inventory, resource catalog, security posture snapshot, cost overview, and plugin setup recommendations",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "azure",
+    "assessment",
+    "onboarding",
+    "inventory",
+    "governance"
+  ],
+  "skills": [
+    "./skills/azure-tenant-assessment/SKILL.md"
+  ],
+  "agents": [
+    "./agents/azure-tenant-assessment-reviewer.md"
+  ],
+  "commands": [
+    "./commands/azure-tenant-setup.md",
+    "./commands/azure-tenant-assess.md",
+    "./commands/azure-tenant-plugin-setup.md"
+  ]
+}

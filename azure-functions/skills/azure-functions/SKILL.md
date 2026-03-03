@@ -1442,3 +1442,12 @@ app.timer("cleanupExpiredRecords", {
 ## Knowledge references
 
 - `references/operational-knowledge.md` — compact API surface map, prerequisite matrix, deterministic failure remediation, limits/throttling guidance, and safe-default read-first/apply-second pattern.
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| HTTP, Timer, Service Bus, Event Hub, Blob, and Queue triggers; input/output bindings; binding expressions; v4 TypeScript examples | [`references/triggers-bindings.md`](./references/triggers-bindings.md) |
+| Orchestrator/activity/entity functions; fan-out/fan-in, chaining, human interaction patterns; DurableTaskScheduler; status query APIs | [`references/durable-functions.md`](./references/durable-functions.md) |
+| Consumption/Flex/Premium/Dedicated plans; host.json configuration; app settings reference; deployment via CLI, GitHub Actions, Bicep; slot deployment | [`references/deployment-config.md`](./references/deployment-config.md) |
+| Application Insights integration; structured logging; live metrics; distributed tracing; alert rules; Log Analytics KQL queries | [`references/monitoring-diagnostics.md`](./references/monitoring-diagnostics.md) |

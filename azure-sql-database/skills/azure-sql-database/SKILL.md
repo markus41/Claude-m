@@ -1513,3 +1513,13 @@ const { resources } = await container.items
   })
   .fetchAll();
 ```
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Azure SQL provisioning, service tiers, elastic pools, connection management | [`references/azure-sql-provisioning.md`](./references/azure-sql-provisioning.md) |
+| Cosmos DB partition design, SDK patterns, RU management, change feed | [`references/cosmos-db-patterns.md`](./references/cosmos-db-patterns.md) |
+| Security: RLS, Always Encrypted, Dynamic Data Masking, auditing | [`references/sql-security-compliance.md`](./references/sql-security-compliance.md) |
+| Query Store, DMV analysis, index management, wait statistics | [`references/query-performance.md`](./references/query-performance.md) |
+| Backup retention, PITR, geo-replication, Auto-Failover Groups | [`references/backup-dr.md`](./references/backup-dr.md) |

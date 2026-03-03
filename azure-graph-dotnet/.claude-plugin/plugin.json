@@ -1,0 +1,31 @@
+{
+  "name": "azure-graph-dotnet",
+  "version": "1.0.0",
+  "description": "Scaffold and build Microsoft Graph C# / .NET solutions on Azure — Functions, Container Jobs, Azure Identity, Polly resilience, and SharePoint file intelligence implementations.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "azure",
+    "dotnet",
+    "csharp",
+    "graph-api",
+    "azure-functions",
+    "sharepoint",
+    "onedrive"
+  ],
+  "skills": [
+    "./skills/azure-graph-dotnet/SKILL.md"
+  ],
+  "agents": [
+    "./agents/dotnet-graph-reviewer.md"
+  ],
+  "commands": [
+    "./commands/dotnet-setup.md",
+    "./commands/scaffold-function.md",
+    "./commands/scaffold-console.md",
+    "./commands/add-graph-operation.md",
+    "./commands/deploy-azure.md"
+  ]
+}

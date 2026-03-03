@@ -622,14 +622,556 @@ export async function createServer(): Promise<McpServer> {
       async (args) => {
         const result = await azurePlugin.callTool("azure_get_resource", args);
         return {
-          content: [
-            {
-              type: "text",
-              text: JSON.stringify(result.data ?? result.error, null, 2),
-            },
-          ],
+          content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }],
           isError: !result.success,
         };
+      }
+    );
+
+    // Resource Groups — write
+    mcp.registerTool(
+      "azure_create_resource_group",
+      {
+        description: "Create or update an Azure resource group.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          name: z.string().describe("Resource group name"),
+          location: z.string().describe("Azure region, e.g. eastus"),
+          tags: z.record(z.string()).optional().describe("Optional key-value tags"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_create_resource_group", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    mcp.registerTool(
+      "azure_delete_resource_group",
+      {
+        description: "Delete an Azure resource group and all its resources. This is irreversible.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          resourceGroup: z.string().describe("Resource group name to delete"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_delete_resource_group", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    // Resources — extended
+    mcp.registerTool(
+      "azure_list_resources_by_subscription",
+      {
+        description: "List all resources across an entire Azure subscription, with optional OData filter.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          filter: z.string().optional().describe("OData $filter expression"),
+          top: z.number().int().optional().describe("Max number of results"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_list_resources_by_subscription", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    mcp.registerTool(
+      "azure_create_or_update_resource",
+      {
+        description: "Create or update any Azure resource using a PUT operation.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          resourceGroup: z.string().describe("Resource group name"),
+          provider: z.string().describe("Resource provider namespace, e.g. Microsoft.Storage"),
+          resourceType: z.string().describe("Resource type, e.g. storageAccounts"),
+          resourceName: z.string().describe("Resource name"),
+          apiVersion: z.string().describe("API version for this resource type"),
+          body: z.record(z.unknown()).describe("Resource definition object"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_create_or_update_resource", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    mcp.registerTool(
+      "azure_delete_resource",
+      {
+        description: "Delete a specific Azure resource by provider, type, and name.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          resourceGroup: z.string().describe("Resource group name"),
+          provider: z.string().describe("Resource provider namespace"),
+          resourceType: z.string().describe("Resource type"),
+          resourceName: z.string().describe("Resource name"),
+          apiVersion: z.string().optional().describe("API version override"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_delete_resource", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    mcp.registerTool(
+      "azure_move_resources",
+      {
+        description: "Move one or more Azure resources to a different resource group.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          sourceResourceGroup: z.string().describe("Source resource group name"),
+          targetResourceGroupId: z.string().describe("Target resource group full resource ID"),
+          resourceIds: z.array(z.string()).describe("Array of full resource IDs to move"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_move_resources", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    // RBAC
+    mcp.registerTool(
+      "azure_list_role_assignments",
+      {
+        description: "List role assignments at subscription or resource scope.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          scope: z.string().optional().describe("Optional scope path. Defaults to subscription scope."),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_list_role_assignments", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    mcp.registerTool(
+      "azure_create_role_assignment",
+      {
+        description: "Assign an Azure RBAC role to a principal at a given scope.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          scope: z.string().describe("Full scope path for the assignment"),
+          principalId: z.string().describe("Object ID of the principal"),
+          roleDefinitionId: z.string().describe("Full resource ID of the role definition"),
+          roleAssignmentId: z.string().optional().describe("Optional GUID for the assignment"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_create_role_assignment", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    mcp.registerTool(
+      "azure_delete_role_assignment",
+      {
+        description: "Delete an Azure RBAC role assignment.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          scope: z.string().describe("Full scope path where the assignment exists"),
+          roleAssignmentId: z.string().describe("Role assignment GUID or resource ID"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_delete_role_assignment", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    mcp.registerTool(
+      "azure_list_role_definitions",
+      {
+        description: "List built-in and custom RBAC role definitions at a scope.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          scope: z.string().optional().describe("Optional scope path. Defaults to subscription scope."),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_list_role_definitions", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    // Tags
+    mcp.registerTool(
+      "azure_list_tag_names",
+      {
+        description: "List all tag names and their values in use across an Azure subscription.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_list_tag_names", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    mcp.registerTool(
+      "azure_update_resource_tags",
+      {
+        description: "Merge or replace tags on an Azure resource.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          resourceGroup: z.string().describe("Resource group name"),
+          provider: z.string().describe("Resource provider namespace"),
+          resourceType: z.string().describe("Resource type"),
+          resourceName: z.string().describe("Resource name"),
+          apiVersion: z.string().optional().describe("API version override"),
+          tags: z.record(z.string()).describe("Tags to apply"),
+          operation: z.enum(["merge", "replace"]).describe("merge: add/update; replace: overwrite all tags"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_update_resource_tags", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    mcp.registerTool(
+      "azure_list_resources_by_tag",
+      {
+        description: "List Azure resources filtered by a specific tag name and optional value.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          tagName: z.string().describe("Tag key to filter by"),
+          tagValue: z.string().optional().describe("Optional tag value to match"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_list_resources_by_tag", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    // Locks
+    mcp.registerTool(
+      "azure_list_locks",
+      {
+        description: "List management locks at subscription or resource group scope.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          resourceGroup: z.string().optional().describe("Resource group name (omit for subscription-level)"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_list_locks", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    mcp.registerTool(
+      "azure_create_lock",
+      {
+        description: "Create a CanNotDelete or ReadOnly management lock on a subscription or resource group.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          resourceGroup: z.string().optional().describe("Resource group name (omit for subscription-level lock)"),
+          lockName: z.string().describe("Lock name"),
+          level: z.enum(["CanNotDelete", "ReadOnly"]).describe("Lock level"),
+          notes: z.string().optional().describe("Optional notes about the lock"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_create_lock", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    mcp.registerTool(
+      "azure_delete_lock",
+      {
+        description: "Delete a management lock from a subscription or resource group.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          resourceGroup: z.string().optional().describe("Resource group name (omit for subscription-level lock)"),
+          lockName: z.string().describe("Lock name to delete"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_delete_lock", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    // Deployments
+    mcp.registerTool(
+      "azure_validate_deployment",
+      {
+        description: "Validate an ARM template deployment without creating resources (preflight check).",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          resourceGroup: z.string().describe("Resource group name"),
+          deploymentName: z.string().describe("Deployment name"),
+          template: z.record(z.unknown()).describe("ARM template object"),
+          parameters: z.record(z.unknown()).optional().describe("ARM parameters object"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_validate_deployment", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    mcp.registerTool(
+      "azure_create_deployment",
+      {
+        description: "Deploy an ARM template to an Azure resource group.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          resourceGroup: z.string().describe("Resource group name"),
+          deploymentName: z.string().describe("Deployment name"),
+          template: z.record(z.unknown()).describe("ARM template object"),
+          parameters: z.record(z.unknown()).optional().describe("ARM parameters object"),
+          mode: z.enum(["Incremental", "Complete"]).optional().describe("Deployment mode (default: Incremental)"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_create_deployment", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    mcp.registerTool(
+      "azure_get_deployment_status",
+      {
+        description: "Get the status and operations of an ARM template deployment.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          resourceGroup: z.string().describe("Resource group name"),
+          deploymentName: z.string().describe("Deployment name"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_get_deployment_status", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    mcp.registerTool(
+      "azure_list_deployments",
+      {
+        description: "List all ARM deployments in a resource group.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          resourceGroup: z.string().describe("Resource group name"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_list_deployments", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    // Virtual Machines
+    mcp.registerTool(
+      "azure_list_vms",
+      {
+        description: "List Azure virtual machines in a resource group.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          resourceGroup: z.string().describe("Resource group name"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_list_vms", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    mcp.registerTool(
+      "azure_get_vm_status",
+      {
+        description: "Get the power state and instance view of an Azure virtual machine.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          resourceGroup: z.string().describe("Resource group name"),
+          vmName: z.string().describe("Virtual machine name"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_get_vm_status", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    mcp.registerTool(
+      "azure_start_vm",
+      {
+        description: "Start a stopped Azure virtual machine.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          resourceGroup: z.string().describe("Resource group name"),
+          vmName: z.string().describe("Virtual machine name"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_start_vm", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    mcp.registerTool(
+      "azure_stop_vm",
+      {
+        description: "Stop (and optionally deallocate) an Azure virtual machine.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          resourceGroup: z.string().describe("Resource group name"),
+          vmName: z.string().describe("Virtual machine name"),
+          deallocate: z.boolean().optional().describe("If true (default), deallocate to stop billing. If false, power off without deallocation."),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_stop_vm", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    mcp.registerTool(
+      "azure_restart_vm",
+      {
+        description: "Restart an Azure virtual machine.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          resourceGroup: z.string().describe("Resource group name"),
+          vmName: z.string().describe("Virtual machine name"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_restart_vm", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    // Discovery
+    mcp.registerTool(
+      "azure_list_locations",
+      {
+        description: "List all available Azure regions for a subscription.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_list_locations", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    mcp.registerTool(
+      "azure_list_providers",
+      {
+        description: "List all registered Azure resource provider namespaces for a subscription.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          expand: z.string().optional().describe("Optional expand, e.g. 'resourceTypes/aliases'"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_list_providers", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    mcp.registerTool(
+      "azure_get_provider_resource_types",
+      {
+        description: "Get resource types and latest API versions for a specific Azure resource provider.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          provider: z.string().describe("Resource provider namespace, e.g. Microsoft.Compute"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_get_provider_resource_types", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    // Policy
+    mcp.registerTool(
+      "azure_list_policy_assignments",
+      {
+        description: "List Azure Policy assignments at subscription or resource scope.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          scope: z.string().optional().describe("Optional scope path. Defaults to subscription scope."),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_list_policy_assignments", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    mcp.registerTool(
+      "azure_get_policy_compliance_summary",
+      {
+        description: "Get a compliance summary showing non-compliant resource counts for all policies in a subscription.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_get_policy_compliance_summary", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    // Metrics
+    mcp.registerTool(
+      "azure_list_metric_definitions",
+      {
+        description: "List available metric names and definitions for an Azure resource.",
+        inputSchema: z.object({
+          resourceId: z.string().describe("Full Azure resource ID"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_list_metric_definitions", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    mcp.registerTool(
+      "azure_get_resource_metrics",
+      {
+        description: "Get time-series metric data for an Azure resource.",
+        inputSchema: z.object({
+          resourceId: z.string().describe("Full Azure resource ID"),
+          metricNames: z.array(z.string()).describe("List of metric names to retrieve"),
+          timespan: z.string().describe("ISO 8601 interval, e.g. PT1H or 2024-01-01T00:00:00Z/2024-01-02T00:00:00Z"),
+          interval: z.string().optional().describe("Aggregation granularity, e.g. PT1M, PT5M, PT1H"),
+          aggregation: z.enum(["Average", "Count", "Maximum", "Minimum", "Total"]).optional().describe("Aggregation type"),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_get_resource_metrics", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
+      }
+    );
+
+    // Service Health
+    mcp.registerTool(
+      "azure_list_service_health_events",
+      {
+        description: "List Azure Service Health events (incidents, maintenance) for a subscription.",
+        inputSchema: z.object({
+          subscriptionId: z.string().describe("Azure subscription ID"),
+          filter: z.string().optional().describe("OData $filter, e.g. \"EventType eq 'ServiceIssue'\""),
+        }),
+      },
+      async (args) => {
+        const result = await azurePlugin.callTool("azure_list_service_health_events", args);
+        return { content: [{ type: "text", text: JSON.stringify(result.data ?? result.error, null, 2) }], isError: !result.success };
       }
     );
   }

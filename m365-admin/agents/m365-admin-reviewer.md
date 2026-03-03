@@ -3,7 +3,7 @@ name: m365-admin-reviewer
 description: Reviews M365 admin scripts and code for correctness, security, and completeness. Checks Graph API usage, bulk operation safety, PowerShell patterns, and offboarding workflows.
 model: inherit
 color: red
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

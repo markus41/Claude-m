@@ -3,7 +3,7 @@ name: sharing-auditor-reviewer
 description: Reviews sharing remediation actions for safety — ensures no accidental hard deletes, verifies owner approval gates, and checks for active collaboration disruption.
 model: inherit
 color: red
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

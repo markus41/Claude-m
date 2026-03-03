@@ -6,7 +6,7 @@ description: >
   and security best practices across Fabric workspaces.
 model: inherit
 color: blue
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

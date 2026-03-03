@@ -340,3 +340,13 @@ Common filters for audit log queries:
 - `purview-compliance/commands/sensitivity-check.md`
 - `purview-compliance/commands/ediscovery-workflow.md`
 - `purview-compliance/README.md`
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| DLP policy REST API, rules, SIT conditions, endpoint DLP, Teams DLP, PowerShell cmdlets | [`references/dlp-policies.md`](./references/dlp-policies.md) |
+| Sensitivity label REST API, label taxonomy, auto-labeling, encryption settings, container labeling | [`references/sensitivity-labels.md`](./references/sensitivity-labels.md) |
+| Retention policy creation, label publication, event-based retention, disposition review, preservation lock, adaptive scopes | [`references/retention-policies.md`](./references/retention-policies.md) |
+| eDiscovery Standard vs Premium, case/custodian/hold/search/export API, KQL queries, review sets | [`references/ediscovery.md`](./references/ediscovery.md) |
+| Compliance playbook patterns, remediation workflows, audit patterns | [`references/playbook-patterns.md`](./references/playbook-patterns.md) |

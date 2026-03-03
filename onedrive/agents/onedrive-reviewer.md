@@ -5,7 +5,7 @@ description: >
   sharing security, delta sync implementation, and error handling.
 model: inherit
 color: blue
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

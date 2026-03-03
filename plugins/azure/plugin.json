@@ -1,7 +1,7 @@
 {
   "name": "Microsoft Azure MCP",
-  "version": "1.0.0",
-  "description": "List and manage Azure resources, resource groups, and subscriptions via the Azure Resource Manager REST API",
+  "version": "1.1.0",
+  "description": "Full lifecycle management of Azure resources, subscriptions, RBAC, tags, locks, deployments, VMs, policy, metrics, and service health via the Azure Resource Manager REST API",
   "author": "Claude-m",
   "mcpServer": {
     "command": "node",
@@ -17,13 +17,46 @@
     "tools": [
       "azure_list_subscriptions",
       "azure_list_resource_groups",
+      "azure_create_resource_group",
+      "azure_delete_resource_group",
       "azure_list_resources",
-      "azure_get_resource"
+      "azure_list_resources_by_subscription",
+      "azure_get_resource",
+      "azure_create_or_update_resource",
+      "azure_delete_resource",
+      "azure_move_resources",
+      "azure_list_role_assignments",
+      "azure_create_role_assignment",
+      "azure_delete_role_assignment",
+      "azure_list_role_definitions",
+      "azure_list_tag_names",
+      "azure_update_resource_tags",
+      "azure_list_resources_by_tag",
+      "azure_list_locks",
+      "azure_create_lock",
+      "azure_delete_lock",
+      "azure_validate_deployment",
+      "azure_create_deployment",
+      "azure_get_deployment_status",
+      "azure_list_deployments",
+      "azure_list_vms",
+      "azure_get_vm_status",
+      "azure_start_vm",
+      "azure_stop_vm",
+      "azure_restart_vm",
+      "azure_list_locations",
+      "azure_list_providers",
+      "azure_get_provider_resource_types",
+      "azure_list_policy_assignments",
+      "azure_get_policy_compliance_summary",
+      "azure_list_metric_definitions",
+      "azure_get_resource_metrics",
+      "azure_list_service_health_events"
     ]
   },
   "requiredScopes": [
     "https://management.azure.com/user_impersonation"
   ],
   "category": "cloud",
-  "tags": ["microsoft", "azure", "cloud", "infrastructure"]
+  "tags": ["microsoft", "azure", "cloud", "infrastructure", "rbac", "deployments", "virtual-machines", "policy", "monitoring"]
 }

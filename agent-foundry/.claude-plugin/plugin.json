@@ -1,0 +1,36 @@
+{
+  "name": "agent-foundry",
+  "version": "1.0.0",
+  "description": "Azure AI Foundry agent lifecycle management — scaffold, deploy, test, and manage AI agents with Azure AI Foundry MCP integration",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "azure",
+    "ai-foundry",
+    "agents",
+    "llm",
+    "agent-lifecycle",
+    "azure-ai",
+    "mcp",
+    "openai",
+    "agent-service"
+  ],
+  "skills": [
+    "./skills/agent-foundry/SKILL.md"
+  ],
+  "agents": [
+    "./agents/agent-generator.md",
+    "./agents/agent-evaluator.md"
+  ],
+  "commands": [
+    "./commands/af-setup.md",
+    "./commands/af-scaffold-agent.md",
+    "./commands/af-deploy-agent.md",
+    "./commands/af-test-agent.md",
+    "./commands/af-list-agents.md",
+    "./commands/af-agent-status.md"
+  ],
+  "hooks": "./hooks/hooks.json",
+  "mcpServers": "./.mcp.json"
+}

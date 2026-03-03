@@ -498,3 +498,11 @@ The `schedulingPolicy` object controls how customers can book:
 | 7 days | `P7D` |
 | 30 days | `P30D` |
 | No duration | `PT0S` |
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Booking business CRUD, service definition, staff management, availability windows, scheduling policies | [`references/services-staff.md`](./references/services-staff.md) |
+| Appointment booking/cancellation/rescheduling, getStaffAvailability, slots, customer management, Teams links | [`references/appointments-availability.md`](./references/appointments-availability.md) |
+| Self-service page configuration, custom questions, language/currency settings, published state, tracking | [`references/booking-pages-customization.md`](./references/booking-pages-customization.md) |

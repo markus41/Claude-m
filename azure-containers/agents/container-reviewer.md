@@ -6,7 +6,7 @@ description: >
   deployments.
 model: inherit
 color: blue
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

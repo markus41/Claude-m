@@ -1,0 +1,32 @@
+{
+  "name": "dynamics-365-crm",
+  "version": "1.0.0",
+  "description": "Dynamics 365 Sales and Customer Service via Dataverse Web API — leads, opportunities, accounts, contacts, cases, SLAs, queues, pipeline reporting, and CRM workflow automation",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "dynamics-365",
+    "dynamics-crm",
+    "dataverse",
+    "d365-sales",
+    "d365-customer-service",
+    "leads",
+    "opportunities",
+    "cases",
+    "pipeline",
+    "crm"
+  ],
+  "skills": [
+    "./skills/dynamics-365-crm/SKILL.md"
+  ],
+  "agents": [
+    "./agents/dynamics-365-crm-reviewer.md"
+  ],
+  "commands": [
+    "./commands/dynamics-365-crm-setup.md",
+    "./commands/d365-lead-qualify.md",
+    "./commands/d365-case-manage.md",
+    "./commands/d365-pipeline-report.md"
+  ]
+}

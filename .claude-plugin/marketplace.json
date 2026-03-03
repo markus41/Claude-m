@@ -791,6 +791,357 @@
         "lakehouse-files"
       ],
       "strict": true
+    },
+    {
+      "name": "fabric-semantic-models",
+      "source": "./fabric-semantic-models",
+      "description": "Microsoft Fabric Semantic Models — Direct Lake modeling, DAX governance, calculation groups, XMLA deployment, and semantic link automation",
+      "category": "analytics",
+      "tags": [
+        "microsoft",
+        "fabric",
+        "semantic-model",
+        "direct-lake",
+        "dax",
+        "xmla",
+        "tabular",
+        "analytics"
+      ],
+      "strict": true
+    },
+    {
+      "name": "fabric-gitops-cicd",
+      "source": "./fabric-gitops-cicd",
+      "description": "Microsoft Fabric GitOps CI/CD — workspace Git integration, deployment pipelines, artifact promotion, branch strategy, and release validation",
+      "category": "devops",
+      "tags": [
+        "microsoft",
+        "fabric",
+        "gitops",
+        "cicd",
+        "deployment-pipeline",
+        "workspace",
+        "release",
+        "devops"
+      ],
+      "strict": true
+    },
+    {
+      "name": "fabric-capacity-ops",
+      "source": "./fabric-capacity-ops",
+      "description": "Microsoft Fabric Capacity Operations — CU monitoring, throttling diagnostics, workload tuning, autoscale planning, and cost-performance optimization",
+      "category": "analytics",
+      "tags": [
+        "microsoft",
+        "fabric",
+        "capacity",
+        "throttling",
+        "monitoring",
+        "autoscale",
+        "optimization",
+        "analytics"
+      ],
+      "strict": true
+    },
+    {
+      "name": "fabric-mirroring",
+      "source": "./fabric-mirroring",
+      "description": "Microsoft Fabric Mirroring — source onboarding, CDC replication, latency monitoring, schema drift handling, and reconciliation workflows",
+      "category": "analytics",
+      "tags": [
+        "microsoft",
+        "fabric",
+        "mirroring",
+        "cdc",
+        "replication",
+        "latency",
+        "schema-drift",
+        "analytics"
+      ],
+      "strict": true
+    },
+    {
+      "name": "fabric-security-governance",
+      "source": "./fabric-security-governance",
+      "description": "Microsoft Fabric Security Governance — workspace RBAC, RLS/OLS patterns, sensitivity labels, lineage controls, and audit readiness",
+      "category": "security",
+      "tags": [
+        "microsoft",
+        "fabric",
+        "security",
+        "governance",
+        "rbac",
+        "rls",
+        "ols",
+        "compliance"
+      ],
+      "strict": true
+    },
+    {
+      "name": "fabric-observability",
+      "source": "./fabric-observability",
+      "description": "Microsoft Fabric Observability — Monitor Hub triage, notebook/pipeline reliability runbooks, SLA tracking, alert design, and incident diagnostics",
+      "category": "analytics",
+      "tags": [
+        "microsoft",
+        "fabric",
+        "observability",
+        "monitor-hub",
+        "reliability",
+        "slo",
+        "alerts",
+        "diagnostics"
+      ],
+      "strict": true
+    },
+    {
+      "name": "microsoft-docs-mcp",
+      "source": {
+        "source": "github",
+        "repo": "markus41/Claude-m"
+      },
+      "description": "Search and fetch official Microsoft documentation via the Learn MCP server.",
+      "category": "devops",
+      "tags": [
+        "microsoft",
+        "docs",
+        "documentation",
+        "learn"
+      ],
+      "strict": true
+    },
+    {
+      "name": "azure-tenant-assessment",
+      "source": "./azure-tenant-assessment",
+      "description": "Entry-point Azure tenant assessment — subscription inventory, resource catalog, security posture snapshot, and plugin setup recommendations.",
+      "category": "cloud",
+      "tags": [
+        "microsoft",
+        "azure",
+        "assessment",
+        "onboarding",
+        "inventory",
+        "governance"
+      ],
+      "strict": true
+    },
+    {
+      "name": "sharepoint-file-intelligence",
+      "source": "./sharepoint-file-intelligence",
+      "description": "Scan, categorize, deduplicate, and organize SharePoint and OneDrive files at scale using Microsoft Graph.",
+      "category": "productivity",
+      "tags": [
+        "microsoft",
+        "sharepoint",
+        "onedrive",
+        "file-management",
+        "governance"
+      ],
+      "strict": true
+    },
+    {
+      "name": "process-task-mining",
+      "source": "./process-task-mining",
+      "description": "Process and task mining from M365, Power Automate, and Azure Monitor logs — extract event logs, discover process models, analyze performance, and check conformance.",
+      "category": "analytics",
+      "tags": [
+        "microsoft",
+        "process-mining",
+        "task-mining",
+        "power-automate",
+        "azure-monitor",
+        "m365",
+        "event-log",
+        "conformance"
+      ],
+      "strict": true
+    },
+    {
+      "name": "azure-graph-dotnet",
+      "source": "./azure-graph-dotnet",
+      "description": "Scaffold and build Microsoft Graph C# / .NET solutions on Azure — Functions, Container Jobs, Azure Identity, Polly resilience, and SharePoint file intelligence implementations.",
+      "category": "devops",
+      "tags": [
+        "microsoft",
+        "azure",
+        "dotnet",
+        "csharp",
+        "graph-api",
+        "azure-functions",
+        "sharepoint"
+      ],
+      "strict": true
+    },
+    {
+      "name": "agent-foundry",
+      "source": "./agent-foundry",
+      "description": "Azure AI Foundry agent lifecycle management — scaffold, deploy, test, and manage AI agents with Azure AI Foundry MCP integration for agent service, model deployments, and evaluations.",
+      "category": "cloud",
+      "tags": [
+        "microsoft",
+        "azure",
+        "ai-foundry",
+        "agents",
+        "llm",
+        "agent-service",
+        "mcp",
+        "openai"
+      ],
+      "strict": true
+    },
+    {
+      "name": "defender-sentinel",
+      "source": "./defender-sentinel",
+      "description": "Microsoft Sentinel SIEM/SOAR and Defender XDR — incident triage, KQL threat hunting, analytics rules, SOAR playbooks, and advanced hunting across device, identity, email, and cloud app signals.",
+      "category": "security",
+      "tags": [
+        "microsoft",
+        "sentinel",
+        "defender-xdr",
+        "siem",
+        "soar",
+        "threat-hunting",
+        "kql",
+        "security-operations"
+      ],
+      "strict": true
+    },
+    {
+      "name": "azure-ai-services",
+      "source": "./azure-ai-services",
+      "description": "Azure AI workloads — Azure OpenAI Service deployments, AI Search indexes and RAG pipelines, AI Studio/Foundry projects, Cognitive Services provisioning, content filtering, and responsible AI governance.",
+      "category": "cloud",
+      "tags": [
+        "microsoft",
+        "azure",
+        "azure-openai",
+        "ai-search",
+        "cognitive-services",
+        "ai-studio",
+        "vector-search",
+        "responsible-ai"
+      ],
+      "strict": true
+    },
+    {
+      "name": "dynamics-365-crm",
+      "source": "./dynamics-365-crm",
+      "description": "Dynamics 365 Sales and Customer Service via Dataverse Web API — leads, opportunities, accounts, contacts, cases, SLAs, queues, pipeline reporting, and CRM workflow automation.",
+      "category": "productivity",
+      "tags": [
+        "microsoft",
+        "dynamics-365",
+        "crm",
+        "dataverse",
+        "d365-sales",
+        "d365-customer-service",
+        "pipeline",
+        "cases"
+      ],
+      "strict": true
+    },
+    {
+      "name": "dynamics-365-field-service",
+      "source": "./dynamics-365-field-service",
+      "description": "Dynamics 365 Field Service via Dataverse Web API — work orders, bookings, resource scheduling, service accounts, customer assets, incident types, and IoT-triggered service events.",
+      "category": "productivity",
+      "tags": [
+        "microsoft",
+        "dynamics-365",
+        "field-service",
+        "work-orders",
+        "scheduling",
+        "dataverse",
+        "bookings",
+        "iot"
+      ],
+      "strict": true
+    },
+    {
+      "name": "dynamics-365-project-ops",
+      "source": "./dynamics-365-project-ops",
+      "description": "Dynamics 365 Project Operations via Dataverse Web API — projects, WBS, time and expense tracking, resource assignments, project contracts, invoice proposals, and billing actuals.",
+      "category": "productivity",
+      "tags": [
+        "microsoft",
+        "dynamics-365",
+        "project-operations",
+        "project-management",
+        "time-tracking",
+        "billing",
+        "dataverse",
+        "invoicing"
+      ],
+      "strict": true
+    },
+    {
+      "name": "azure-dotnet-webapp",
+      "source": "./azure-dotnet-webapp",
+      "description": "Scaffold and build ASP.NET Core Web API and Blazor apps on Azure — Minimal API, controllers, Microsoft.Identity.Web, EF Core, SignalR, OpenAPI, App Service deployment, and Graph API integration patterns.",
+      "category": "devops",
+      "tags": [
+        "microsoft",
+        "azure",
+        "dotnet",
+        "csharp",
+        "aspnetcore",
+        "blazor",
+        "web-api"
+      ],
+      "strict": true
+    },
+    {
+      "name": "lighthouse-operations",
+      "source": "./lighthouse-operations",
+      "description": "Deep operational tooling for Azure Lighthouse delegation and M365 Lighthouse multi-tenant management — GDAP lifecycle, Bicep delegation templates, baseline compliance, cross-tenant governance, alert management, and monthly MSP health reports.",
+      "category": "security",
+      "tags": [
+        "microsoft",
+        "azure",
+        "lighthouse",
+        "msp",
+        "csp",
+        "gdap",
+        "multi-tenant",
+        "managed-services"
+      ],
+      "strict": true
+    },
+    {
+      "name": "msp-tenant-provisioning",
+      "source": "./msp-tenant-provisioning",
+      "description": "End-to-end new customer onboarding for MSPs and CSPs — CSP tenant creation via Partner Center API, M365 security baseline (CA policies, PIM, break-glass), custom domain DNS setup, Azure subscription and Defender for Cloud, and full Lighthouse management enrollment.",
+      "category": "cloud",
+      "tags": [
+        "microsoft",
+        "azure",
+        "m365",
+        "msp",
+        "csp",
+        "partner-center",
+        "tenant-provisioning",
+        "onboarding"
+      ],
+      "strict": true
+    },
+    {
+      "name": "business-central",
+      "source": "./business-central",
+      "description": "Microsoft Dynamics 365 Business Central ERP — finance, supply chain, and inventory management via BC OData v4 / API v2.0 REST API.",
+      "category": "productivity",
+      "tags": [
+        "microsoft",
+        "dynamics-365",
+        "business-central",
+        "erp",
+        "finance",
+        "general-ledger",
+        "supply-chain",
+        "inventory",
+        "accounts-payable",
+        "accounts-receivable"
+      ],
+      "strict": true
     }
   ]
 }

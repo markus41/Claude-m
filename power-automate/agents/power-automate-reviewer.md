@@ -3,7 +3,7 @@ name: power-automate-reviewer
 description: Reviews Power Automate flow designs and diagnostics for correctness, resilience, and deployment readiness.
 model: inherit
 color: yellow
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

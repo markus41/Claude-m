@@ -3,7 +3,7 @@ name: compliance-reviewer
 description: Reviews Purview compliance configurations for correctness, completeness, and regulatory alignment. Checks DLP, retention, sensitivity labels, and eDiscovery workflows.
 model: inherit
 color: yellow
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

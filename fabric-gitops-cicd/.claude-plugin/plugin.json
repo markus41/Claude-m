@@ -1,0 +1,30 @@
+{
+  "name": "fabric-gitops-cicd",
+  "version": "1.0.0",
+  "description": "Microsoft Fabric GitOps CI/CD — workspace Git integration, deployment pipelines, artifact promotion, branch strategy, and release validation",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "fabric",
+    "gitops",
+    "cicd",
+    "deployment-pipeline",
+    "workspace",
+    "release",
+    "devops"
+  ],
+  "skills": [
+    "./skills/fabric-gitops-cicd/SKILL.md"
+  ],
+  "agents": [
+    "./agents/gitops-reviewer.md"
+  ],
+  "commands": [
+    "./commands/gitops-setup.md",
+    "./commands/workspace-git-connect.md",
+    "./commands/deployment-pipeline-release.md",
+    "./commands/promotion-checklist.md"
+  ]
+}

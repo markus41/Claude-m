@@ -1273,3 +1273,12 @@ ClickEvents
           CartToCheckout = round(100.0 * Step4_Checkout / Step3_Cart, 1),
           CheckoutToConfirm = round(100.0 * Step5_Confirm / Step4_Checkout, 1)
 ```
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Eventhouse and KQL Database management — REST API, table DDL, retention policies | [`references/eventhouse-kql.md`](./references/eventhouse-kql.md) |
+| Eventstream configuration — sources, transformations, destinations, routing | [`references/eventstreams.md`](./references/eventstreams.md) |
+| Real-Time Dashboard design — tiles, auto-refresh, parameters, embedding | [`references/realtime-dashboards.md`](./references/realtime-dashboards.md) |
+| KQL query patterns — time series, anomaly detection, joins, materialized views | [`references/kusto-queries.md`](./references/kusto-queries.md) |

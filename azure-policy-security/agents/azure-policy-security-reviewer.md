@@ -3,7 +3,7 @@ name: azure-policy-security-reviewer
 description: Reviews Azure policy and security posture assessments for compliance accuracy, risk prioritization, and remediation safety.
 model: inherit
 color: red
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

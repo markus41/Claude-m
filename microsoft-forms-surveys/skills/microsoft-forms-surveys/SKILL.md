@@ -489,3 +489,11 @@ Forms supports conditional question display based on prior answers. Branching le
 - **Pagination**: Response lists follow standard OData pagination. Always check for `@odata.nextLink`.
 - **Rate limits**: Graph API enforces per-app and per-user throttling. Handle 429 responses with retry-after headers.
 - **Group forms**: To create a form owned by a Microsoft 365 Group (shared editing), use `/groups/{groupId}/forms` and ensure the `Group.ReadWrite.All` permission is also granted.
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Forms Graph API (beta), create/update/delete forms, quiz vs survey, settings, response limits, date ranges | [`references/form-creation.md`](./references/form-creation.md) |
+| Question types (choice, text, rating, date, ranking, Likert, NPS), branching logic, shuffle, subtitles | [`references/questions-branching.md`](./references/questions-branching.md) |
+| Get responses, individual detail, summary statistics, NPS calculation, export patterns, Power Automate trigger | [`references/responses-analytics.md`](./references/responses-analytics.md) |

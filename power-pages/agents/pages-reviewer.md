@@ -5,7 +5,7 @@ description: >
   table permission scopes, web role assignments, and web form step sequences.
 model: inherit
 color: blue
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

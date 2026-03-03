@@ -5,7 +5,7 @@ description: >
   registration patterns, conditional access policy safety, and permission auditing.
 model: inherit
 color: red
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

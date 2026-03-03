@@ -5,7 +5,7 @@ description: >
   deployment slot strategies, app settings security, networking, and scaling rules.
 model: inherit
 color: blue
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

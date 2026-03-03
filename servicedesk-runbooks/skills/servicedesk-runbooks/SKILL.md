@@ -506,3 +506,11 @@ If a multi-step runbook fails partway through:
 6. **Never share secrets in tickets** — Use secure channels for password delivery
 7. **Pre-check before execute** — Always validate state before making changes
 8. **Document rollback** — Record enough detail to reverse any change
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Ticket lifecycle, ServiceNow/Jira integration, Graph API notifications, Dataverse schema, SLA, triage | [`references/ticket-workflows.md`](./references/ticket-workflows.md) |
+| Power Automate approvals, Teams adaptive cards, parallel/sequential approvals, delegation, audit trail | [`references/approval-gates.md`](./references/approval-gates.md) |
+| Time-based escalation, skill routing, manager chain, cross-team, vendor, executive bridge, PIR | [`references/escalation-patterns.md`](./references/escalation-patterns.md) |

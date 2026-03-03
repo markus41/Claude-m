@@ -5,7 +5,7 @@ description: >
   column definitions, content types, views, filtering logic, and item field mappings.
 model: inherit
 color: green
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

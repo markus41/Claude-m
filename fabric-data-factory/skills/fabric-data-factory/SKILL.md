@@ -1241,3 +1241,12 @@ This pattern ensures that:
 3. On permanent failure, the error is logged to a SQL table for trend analysis.
 4. An email notification is sent to the data team via a Logic App webhook.
 5. The pipeline explicitly fails with a clear error message for the Monitoring Hub.
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Source/sink connector matrix, schema mapping, data type mapping, parallelism, staging | [`references/copy-activity-patterns.md`](./references/copy-activity-patterns.md) |
+| Power Query M patterns, incremental refresh, gateway types, staging lakehouse, output destinations | [`references/dataflow-gen2.md`](./references/dataflow-gen2.md) |
+| Schedule/event/manual triggers, ForEach/IfCondition/Until, watermark patterns, expression language | [`references/orchestration-triggers.md`](./references/orchestration-triggers.md) |
+| Activity run history API, KQL monitoring queries, failed run remediation, alerting, error logging | [`references/monitoring-debugging.md`](./references/monitoring-debugging.md) |

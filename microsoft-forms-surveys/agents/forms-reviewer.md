@@ -5,7 +5,7 @@ description: >
   branching logic, response validation rules, and Graph API beta endpoint usage.
 model: inherit
 color: purple
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

@@ -287,3 +287,13 @@ ORDER BY [Microsoft.VSTS.Common.Priority] ASC, [System.CreatedDate] DESC
 ## Knowledge references
 
 - `references/operational-knowledge.md` — compact API surface map, prerequisite matrix, deterministic failure remediation, limits/quotas and pagination/throttling guidance, and safe-default read-first/apply-second pattern.
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Operational knowledge (API surface, failure modes, limits) | [`references/operational-knowledge.md`](./references/operational-knowledge.md) |
+| YAML pipeline schema, strategies, templates, secrets, approvals | [`references/pipelines-yaml.md`](./references/pipelines-yaml.md) |
+| Git repositories, pull requests, branch policies, code search | [`references/repos-prs.md`](./references/repos-prs.md) |
+| Work items, WIQL, boards, sprints, area/iteration paths | [`references/work-items-boards.md`](./references/work-items-boards.md) |
+| Artifact feeds, package types, upstreams, retention, symbols | [`references/artifact-feeds.md`](./references/artifact-feeds.md) |

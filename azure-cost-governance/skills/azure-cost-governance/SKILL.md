@@ -435,3 +435,12 @@ if (response.status === 429) {
 - `azure-cost-governance/commands/azure-budget-check.md`
 - `azure-cost-governance/commands/azure-idle-resources.md`
 - `azure-cost-governance/README.md`
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Cost Management REST API, query construction, pagination, TypeScript SDK | [`references/cost-management-api.md`](./references/cost-management-api.md) |
+| Budget creation, threshold alerts, Action Group integration, automation | [`references/budget-alerts.md`](./references/budget-alerts.md) |
+| Idle resource detection, unattached disks, stopped VMs, savings estimates | [`references/idle-resource-detection.md`](./references/idle-resource-detection.md) |
+| FinOps query patterns, chargeback, tag compliance, reservation analysis | [`references/finops-queries.md`](./references/finops-queries.md) |

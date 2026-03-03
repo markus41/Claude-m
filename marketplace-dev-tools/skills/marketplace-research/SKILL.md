@@ -369,3 +369,11 @@ When adding a new plugin to the marketplace:
    ```
 
 5. **Commit** — stage all new/modified files and commit
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Graph Explorer, changelog tracking, permission discovery, SDK patterns, throttling | [`references/api-research-patterns.md`](./references/api-research-patterns.md) |
+| Plugin directory structure, manifest schema, SKILL.md template, command/agent frontmatter | [`references/plugin-scaffolding.md`](./references/plugin-scaffolding.md) |
+| Coverage analysis methodology, gap identification, quality scoring, marketplace readiness | [`references/coverage-audit.md`](./references/coverage-audit.md) |

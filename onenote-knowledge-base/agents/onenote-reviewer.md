@@ -6,7 +6,7 @@ description: >
   for searchability, and adherence to team documentation standards.
 model: inherit
 color: orange
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

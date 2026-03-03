@@ -69,4 +69,46 @@ export abstract class BasePlugin {
     }
     return response.json() as Promise<unknown>;
   }
+
+  protected async graphPut(url: string, body: unknown): Promise<unknown> {
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+    const text = await response.text();
+    return text ? JSON.parse(text) : null;
+  }
+
+  protected async graphPatch(url: string, body: unknown): Promise<unknown> {
+    const response = await fetch(url, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+    const text = await response.text();
+    return text ? JSON.parse(text) : null;
+  }
+
+  protected async graphDelete(url: string): Promise<void> {
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${this.accessToken}` },
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+  }
 }

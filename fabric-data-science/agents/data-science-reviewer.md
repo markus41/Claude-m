@@ -6,7 +6,7 @@ description: >
   quality, and data science best practices across the full Fabric ML stack.
 model: inherit
 color: green
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

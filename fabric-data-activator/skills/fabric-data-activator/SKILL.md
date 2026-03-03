@@ -644,3 +644,11 @@ Data Activator provides built-in tools to monitor trigger health, investigate is
    - Action: Email to `engineering-leads@contoso.com` + Power Automate flow to create a P1 incident in ServiceNow.
 
 **Result**: The two-tier alerting provides immediate visibility for the on-call team and automatic escalation if the issue persists. Each Azure service is tracked independently, so a degradation in `Azure SQL` does not affect the monitoring of `Azure App Service`. The Power Automate flow ensures a formal incident is created for prolonged outages.
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Trigger conditions — all condition types, operators, duration, compound logic | [`references/triggers-conditions.md`](./references/triggers-conditions.md) |
+| Reflex items — REST API, object/property schema, lifecycle management | [`references/reflex-items.md`](./references/reflex-items.md) |
+| Integration patterns — eventstream, Power BI, Power Automate, webhook patterns | [`references/integration-patterns.md`](./references/integration-patterns.md) |

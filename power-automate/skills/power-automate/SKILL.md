@@ -377,3 +377,12 @@ If a flow uses connectors from different DLP groups (Business vs Non-Business), 
 - `power-automate/commands/flow-debug.md`
 - `power-automate/commands/flow-deploy-check.md`
 - `power-automate/README.md`
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Flow types, trigger configuration, action chaining, expressions, dynamic content, environment variables | [`references/cloud-flows.md`](./references/cloud-flows.md) |
+| Standard vs Premium connectors, SharePoint/Outlook/Teams/Dataverse triggers, HTTP action, throttling | [`references/connectors-triggers.md`](./references/connectors-triggers.md) |
+| Configure run after, try-catch-finally scopes, Terminate action, retry policies, timeout, dead letter | [`references/error-handling-retry.md`](./references/error-handling-retry.md) |
+| PAD recorder, UI automation, web automation, attended vs unattended, machine groups, SAP, Citrix | [`references/desktop-flows.md`](./references/desktop-flows.md) |

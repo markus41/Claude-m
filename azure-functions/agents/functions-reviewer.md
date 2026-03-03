@@ -5,7 +5,7 @@ description: >
   Durable Functions determinism, and security best practices across the full Azure Functions development stack.
 model: inherit
 color: blue
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

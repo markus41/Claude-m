@@ -1416,3 +1416,13 @@ app.timer("dailyETL", {
   },
 });
 ```
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Blob containers, block/append/page blobs, copy operations, index tags | [`references/blob-storage.md`](./references/blob-storage.md) |
+| Queue Storage, Table Storage, and Azure Files | [`references/queue-table-files.md`](./references/queue-table-files.md) |
+| Data Lake Storage Gen2, hierarchical namespace, POSIX ACLs | [`references/data-lake-gen2.md`](./references/data-lake-gen2.md) |
+| SAS tokens, RBAC roles, storage firewall, private endpoints | [`references/sas-identity-security.md`](./references/sas-identity-security.md) |
+| Lifecycle management policies, monitoring, KQL diagnostics | [`references/lifecycle-monitoring.md`](./references/lifecycle-monitoring.md) |

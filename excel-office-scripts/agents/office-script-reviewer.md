@@ -3,7 +3,7 @@ name: office-script-reviewer
 description: Reviews Excel Office Scripts for TypeScript 4.0.3 compliance, API correctness, performance, and Power Automate compatibility
 model: inherit
 color: cyan
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

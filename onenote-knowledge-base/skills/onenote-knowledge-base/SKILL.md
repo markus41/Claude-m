@@ -480,3 +480,11 @@ OneNote API shares the Microsoft Graph throttling model:
 - For team wikis, prefer a shared notebook in a Microsoft 365 Group rather than sharing a personal notebook.
 - Use `$select` on every request to minimize response size and improve performance.
 - When creating pages programmatically, always validate the XHTML before posting to avoid 400 errors.
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Notebook/section/section group/page CRUD, hierarchy navigation, copy operations, sharing, permissions | [`references/notebooks-sections-pages.md`](./references/notebooks-sections-pages.md) |
+| ONML presentation HTML format, creating pages with images/tables/embedded content, updating pages, ink data | [`references/content-api-html.md`](./references/content-api-html.md) |
+| OneNote search API, sharing notebooks, embedding in Teams, export, cross-tenant limitations | [`references/search-sharing.md`](./references/search-sharing.md) |

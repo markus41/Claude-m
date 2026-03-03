@@ -1417,3 +1417,12 @@ az consumption budget create \
 ## Knowledge references
 
 - `references/operational-knowledge.md` — compact API surface map, prerequisite matrix, deterministic failure remediation, limits/quotas and pagination/throttling guidance, and safe-default read-first/apply-second pattern.
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Metric namespaces; static and dynamic threshold alert rules; action groups; composite alerts; Prometheus metrics integration | [`references/metrics-alerts.md`](./references/metrics-alerts.md) |
+| Common KQL queries for Azure resources; workspace queries; cross-workspace queries; saved searches; data export | [`references/log-analytics-kql.md`](./references/log-analytics-kql.md) |
+| SDK integration (Node.js, .NET, Python); custom events/metrics; dependency tracking; sampling; availability tests; smart detection | [`references/application-insights.md`](./references/application-insights.md) |
+| Workbook ARM templates and content schema; pinning to dashboards; parameters and queries; shared workbooks; export/import | [`references/workbooks-dashboards.md`](./references/workbooks-dashboards.md) |

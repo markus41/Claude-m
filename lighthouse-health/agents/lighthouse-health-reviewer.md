@@ -3,7 +3,7 @@ name: lighthouse-health-reviewer
 description: Reviews multi-tenant Lighthouse operations for GDAP compliance, safety, and correct scope. Ensures no cross-tenant data leakage.
 model: inherit
 color: blue
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

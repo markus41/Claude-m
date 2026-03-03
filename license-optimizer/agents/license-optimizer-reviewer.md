@@ -3,7 +3,7 @@ name: license-optimizer-reviewer
 description: Reviews license optimization recommendations for accuracy, missed dependencies, and potential user impact before changes are applied.
 model: inherit
 color: green
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

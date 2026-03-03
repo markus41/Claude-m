@@ -6,7 +6,7 @@ description: >
   the full warehouse development stack.
 model: inherit
 color: blue
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

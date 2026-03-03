@@ -1485,3 +1485,13 @@ router.get("/api/profile", async (req, res) => {
 
 export default router;
 ```
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Adaptive Cards schema 1.6, actions, templates, Universal Actions | [`references/adaptive-cards.md`](./references/adaptive-cards.md) |
+| Bot Framework SDK v4, TeamsActivityHandler, proactive messaging | [`references/bot-framework.md`](./references/bot-framework.md) |
+| Tab manifest, Teams JS SDK v2, SSO, configuration pages, deep links | [`references/tabs-personal-group.md`](./references/tabs-personal-group.md) |
+| Message extensions — search, action, link unfurling | [`references/message-extensions.md`](./references/message-extensions.md) |
+| Teams Toolkit CLI — scaffold, preview, provision, deploy, CI/CD | [`references/toolkit-cli.md`](./references/toolkit-cli.md) |

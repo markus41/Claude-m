@@ -1,0 +1,31 @@
+{
+  "name": "azure-dotnet-webapp",
+  "version": "1.0.0",
+  "description": "Scaffold and build ASP.NET Core Web API and Blazor apps on Azure — Minimal API, controllers, Microsoft.Identity.Web, EF Core, SignalR, OpenAPI, App Service deployment, and Graph API integration patterns.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "azure",
+    "dotnet",
+    "csharp",
+    "aspnetcore",
+    "blazor",
+    "web-api",
+    "app-service"
+  ],
+  "skills": [
+    "./skills/azure-dotnet-webapp/SKILL.md"
+  ],
+  "agents": [
+    "./agents/aspnetcore-reviewer.md"
+  ],
+  "commands": [
+    "./commands/webapp-setup.md",
+    "./commands/scaffold-api.md",
+    "./commands/scaffold-blazor.md",
+    "./commands/add-webapi-operation.md",
+    "./commands/deploy-webapp.md"
+  ]
+}

@@ -5,7 +5,7 @@ description: >
   schema validation, pattern quality, and coverage completeness against official docs.
 model: inherit
 color: green
-tools:
+allowed-tools:
   - Read
   - Grep
   - Glob

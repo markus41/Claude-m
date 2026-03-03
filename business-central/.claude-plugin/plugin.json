@@ -1,0 +1,34 @@
+{
+  "name": "business-central",
+  "version": "1.0.0",
+  "description": "Microsoft Dynamics 365 Business Central ERP — finance, supply chain, and inventory management via BC OData v4 / API v2.0 REST API",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "business-central",
+    "dynamics-365",
+    "erp",
+    "finance",
+    "general-ledger",
+    "accounts-payable",
+    "accounts-receivable",
+    "supply-chain",
+    "inventory",
+    "purchase-orders",
+    "sales-invoices"
+  ],
+  "skills": [
+    "./skills/business-central/SKILL.md"
+  ],
+  "agents": [
+    "./agents/business-central-reviewer.md"
+  ],
+  "commands": [
+    "./commands/business-central-setup.md",
+    "./commands/bc-gl-report.md",
+    "./commands/bc-sales-invoice.md",
+    "./commands/bc-purchase-order.md",
+    "./commands/bc-inventory-status.md"
+  ]
+}

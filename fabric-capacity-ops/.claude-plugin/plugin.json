@@ -1,0 +1,30 @@
+{
+  "name": "fabric-capacity-ops",
+  "version": "1.0.0",
+  "description": "Microsoft Fabric Capacity Operations — CU monitoring, throttling diagnostics, workload tuning, autoscale planning, and cost-performance optimization",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "fabric",
+    "capacity",
+    "throttling",
+    "monitoring",
+    "autoscale",
+    "optimization",
+    "analytics"
+  ],
+  "skills": [
+    "./skills/fabric-capacity-ops/SKILL.md"
+  ],
+  "agents": [
+    "./agents/capacity-ops-reviewer.md"
+  ],
+  "commands": [
+    "./commands/capacity-setup.md",
+    "./commands/capacity-monitor.md",
+    "./commands/throttling-diagnose.md",
+    "./commands/workload-tune.md"
+  ]
+}

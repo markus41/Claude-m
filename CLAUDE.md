@@ -1,4 +1,4 @@
-# CLAUDE.md
+c# CLAUDE.md
 
 ## Quick start
 
@@ -29,6 +29,7 @@ Then re-run `/plugin marketplace add markus41/Claude-m`.
 | `microsoft-teams-mcp` | productivity | Messages, meetings, and channel management |
 | `microsoft-outlook-mcp` | productivity | Send email, manage inbox and calendar |
 | `microsoft-sharepoint-mcp` | productivity | Browse and transfer SharePoint files |
+| `sharepoint-file-intelligence` | productivity | Scan, categorize, deduplicate, and organize SharePoint and OneDrive files at scale using Microsoft Graph |
 | `microsoft-excel-mcp` | productivity | Read/write workbooks, worksheets, and tables |
 | `excel-office-scripts` | productivity | Excel Office Scripts + Power Automate flows |
 | `excel-automation` | productivity | Pandas data cleaning, Office Scripts, VBA fallback |
@@ -75,7 +76,27 @@ Then re-run `/plugin marketplace add markus41/Claude-m`.
 | `fabric-data-science` | analytics | Microsoft Fabric Data Science — ML experiments, model training, MLflow tracking, PREDICT function, and semantic link integration |
 | `fabric-data-activator` | analytics | Microsoft Fabric Data Activator — Reflex triggers, condition-based alerts, real-time actions, and event-driven automation on Fabric data |
 | `fabric-onelake` | analytics | Microsoft Fabric OneLake — unified data lake, shortcuts, file explorer, ADLS Gen2 APIs, and cross-workspace data access |
+| `fabric-semantic-models` | analytics | Microsoft Fabric Semantic Models — Direct Lake modeling, DAX governance, calculation groups, XMLA deployment, and semantic link automation |
+| `fabric-gitops-cicd` | devops | Microsoft Fabric GitOps CI/CD — workspace Git integration, deployment pipelines, artifact promotion, branch strategy, and release validation |
+| `fabric-capacity-ops` | analytics | Microsoft Fabric Capacity Operations — CU monitoring, throttling diagnostics, workload tuning, autoscale planning, and cost-performance optimization |
+| `fabric-mirroring` | analytics | Microsoft Fabric Mirroring — source onboarding, CDC replication, latency monitoring, schema drift handling, and reconciliation workflows |
+| `fabric-security-governance` | security | Microsoft Fabric Security Governance — workspace RBAC, RLS/OLS patterns, sensitivity labels, lineage controls, and audit readiness |
+| `fabric-observability` | analytics | Microsoft Fabric Observability — Monitor Hub triage, notebook/pipeline reliability runbooks, SLA tracking, alert design, and incident diagnostics |
+| `azure-graph-dotnet` | devops | Scaffold and build Microsoft Graph C# / .NET solutions on Azure — Functions, Container Jobs, Azure Identity, Polly resilience, and SharePoint file intelligence implementations |
+| `azure-dotnet-webapp` | devops | Scaffold and build ASP.NET Core Web API and Blazor apps on Azure — Minimal API, controllers, Microsoft.Identity.Web, EF Core, SignalR, OpenAPI, App Service deployment, and Graph API integration patterns. |
+| `lighthouse-operations` | security | Deep operational tooling for Azure Lighthouse delegation and M365 Lighthouse multi-tenant management — GDAP lifecycle, Bicep delegation templates, baseline compliance, cross-tenant governance, alert management, and monthly MSP health reports. |
+| `msp-tenant-provisioning` | cloud | End-to-end new customer onboarding for MSPs and CSPs — CSP tenant creation via Partner Center API, M365 security baseline (CA policies, PIM, break-glass), custom domain DNS setup, Azure subscription and Defender for Cloud, and full Lighthouse management enrollment. |
+| `azure-tenant-assessment` | cloud | Entry-point Azure tenant assessment — subscription inventory, resource catalog, security posture snapshot, and plugin setup recommendations. |
 | `marketplace-dev-tools` | devops | Research APIs, scaffold plugins, audit coverage |
+| `microsoft-docs-mcp` | devops | Search and fetch official Microsoft documentation via the Learn MCP server |
+| `process-task-mining` | analytics | Process and task mining from M365, Power Automate, and Azure Monitor logs — extract event logs, discover process models, analyze performance, and check conformance |
+| `agent-foundry` | cloud | Azure AI Foundry agent lifecycle — scaffold, deploy, test, and manage AI agents with Azure AI Foundry MCP integration |
+| `defender-sentinel` | security | Microsoft Sentinel SIEM/SOAR and Defender XDR — incident triage, KQL threat hunting, analytics rules, SOAR playbooks, and advanced hunting |
+| `azure-ai-services` | cloud | Azure OpenAI deployments, AI Search indexes and RAG pipelines, AI Studio/Foundry projects, Cognitive Services, content filtering, and responsible AI governance |
+| `dynamics-365-crm` | productivity | Dynamics 365 Sales and Customer Service — leads, opportunities, cases, SLAs, queues, pipeline reporting, and CRM workflow automation |
+| `dynamics-365-field-service` | productivity | Dynamics 365 Field Service — work orders, bookings, resource scheduling, service accounts, assets, and IoT-triggered service events |
+| `dynamics-365-project-ops` | productivity | Dynamics 365 Project Operations — projects, WBS, time and expense tracking, resource assignments, project contracts, and billing |
+| `business-central` | productivity | Dynamics 365 Business Central ERP — finance (GL, journal entries, AP/AR), supply chain (sales invoices, purchase orders), and inventory management |
 
 Install any plugin with:
 ```bash
@@ -119,3 +140,4 @@ npm run validate:all
 4. **MSP multi-tenant health**
    Install: `lighthouse-health` + `license-optimizer` + `servicedesk-runbooks`
    Prompt: "Score all tenants for security posture and generate a monthly customer-ready report."
+

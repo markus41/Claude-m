@@ -442,3 +442,12 @@ Copilot Studio supports additional channels through the Bot Framework channel re
 - **Version topics**: Use Dataverse solutions to version and promote bots between environments (dev, test, production).
 - **Document topics**: Maintain a simple spreadsheet or list mapping each topic to its owner, last-updated date, and status.
 - **Assign topic owners**: In a small team, assign 1-2 people per topic area (IT topics to IT admin, HR topics to HR lead).
+
+## Progressive Disclosure — Reference Files
+
+| Topic | File |
+|---|---|
+| Topic structure, trigger phrases, entity types, slot filling, topic chaining, fallback, escalation | [`references/topics-trigger-phrases.md`](./references/topics-trigger-phrases.md) |
+| Generative AI orchestration, knowledge sources, system messages, safety settings, citations | [`references/generative-ai-orchestration.md`](./references/generative-ai-orchestration.md) |
+| Teams deployment, web chat embedding, Direct Line API, custom channels, mobile SDK, IVR | [`references/channel-integration.md`](./references/channel-integration.md) |
+| Test bot canvas, transcript analysis, CSAT, session metrics API, topic analytics, Power BI | [`references/testing-analytics.md`](./references/testing-analytics.md) |
