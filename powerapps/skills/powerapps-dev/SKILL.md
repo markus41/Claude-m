@@ -31,6 +31,18 @@ triggers:
   - pac cli
   - pcf
   - environment management
+  - create app
+  - scaffold app
+  - new app
+  - build app
+  - deploy app
+  - app from data
+  - app from table
+  - crud app
+  - dashboard app
+  - approval app
+  - pa.yaml
+  - git integration
 ---
 
 # Power Apps Development
@@ -372,6 +384,45 @@ Build a custom PCF (PowerApps Component Framework) control:
 4. Use `this.context.webAPI.retrieveMultipleRecords("account", "?$select=name,address1_latitude,address1_longitude&$top=100")` to fetch nearby records.
 5. Build with `npm run build`, test with `npm start watch`, and package with `pac pcf push --publisher-prefix cr`.
 
+## App Creation Workflows
+
+### Source Format Note
+
+The current Power Apps canvas source format is **`.pa.yaml`** (Source Code v3.0). The older `.fx.yaml` format is retired. New apps should always use `.pa.yaml` with Power Platform Git Integration. See `references/canvas-app-source.md` for the full schema reference.
+
+### Decision Tree — Which Command to Use
+
+```
+Want to create a Power App?
+├── Canvas app (custom UI)?
+│   ├── Have a data source schema? → /pa-app-from-data
+│   ├── Know the app pattern?     → /pa-app-create --template <type>
+│   │   ├── CRUD (list/detail/edit)    → --template crud
+│   │   ├── Dashboard with KPIs        → --template dashboard
+│   │   ├── Approval workflow           → --template approval
+│   │   ├── Side-by-side master/detail  → --template master-detail
+│   │   └── Empty starting point        → --template blank
+│   └── Need a single screen?    → /pa-canvas-screen
+├── Model-driven app (Dataverse UI)?
+│   └── /pa-mda-create --template crud|service-desk
+└── Ready to deploy?
+    └── /pa-deploy canvas|solution
+```
+
+### Canvas App Creation Workflow
+
+1. **Scaffold** — Use `/pa-app-create` to generate the project directory with `.pa.yaml` files. Choose a template that matches your use case.
+2. **Customize** — Edit individual screens with `/pa-canvas-screen`. Add formulas with `/pa-formula`. Create components with `/pa-component-create`.
+3. **Validate** — Run `pac canvas validate --path ./src` to check for errors.
+4. **Deploy** — Use `/pa-deploy canvas` to pack and import, or push to the connected Git branch for Git Integration sync.
+
+### Model-Driven App Creation Workflow
+
+1. **Scaffold** — Use `/pa-mda-create` to generate the solution with sitemap, forms, views, and optional BPF/business rules.
+2. **Customize** — Edit forms with `/pa-model-driven-form`. Add custom connectors with `/pa-connector-create`.
+3. **Validate** — Run `/pa-solution-checker` to check for issues.
+4. **Deploy** — Use `/pa-deploy solution` to pack and import to the target environment.
+
 ## Best Practices
 
 - **Delegation first**: Design data access patterns to be delegable. Use Dataverse as the primary data source for the best delegation support.
@@ -405,6 +456,8 @@ Build a custom PCF (PowerApps Component Framework) control:
 | Topic | File |
 |---|---|
 | Canvas app creation, PAC CLI, screen navigation, Gallery patterns, Patch, offline mode, ALM | [`references/canvas-apps.md`](./references/canvas-apps.md) |
+| `.pa.yaml` source format, control type catalog, Git Integration workflow, PAC CLI pack/unpack | [`references/canvas-app-source.md`](./references/canvas-app-source.md) |
+| App template patterns — CRUD, Dashboard, Approval, Master-Detail, Model-Driven CRUD/Service Desk | [`references/app-templates.md`](./references/app-templates.md) |
 | Model-driven app creation, sitemap XML, form/view XML, business rules, command bar, PCF | [`references/model-driven-apps.md`](./references/model-driven-apps.md) |
 | Power Fx core functions, delegation, type coercion, error handling, named formulas, ParseJSON | [`references/power-fx-formulas.md`](./references/power-fx-formulas.md) |
 | Custom connectors, OpenAPI definition, auth types, actions vs triggers, code policy, sharing | [`references/custom-connectors.md`](./references/custom-connectors.md) |

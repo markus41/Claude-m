@@ -1,9 +1,12 @@
 ---
 name: Planner & To Do Task Management
 description: >
-  Deep expertise in Microsoft Planner and Microsoft To Do via Graph API — create plans,
-  manage buckets and tasks, assign work, track progress with checklists and labels,
-  and manage personal to-do lists with steps, due dates, and recurrence.
+  Deep expertise in Microsoft Planner (Classic and Premium) and Microsoft To Do via Graph
+  API and Dataverse — create group/roster/nested/channel plans, manage buckets and tasks,
+  assign work, track progress with checklists and labels, manage personal to-do lists with
+  recurrence, and leverage advanced features: rich HTML notes, completion requirements,
+  task dependencies (Premium), sprints and goals (Premium), nested sub-plans, and
+  Business Scenarios for isolated app-owned task containers.
 allowed-tools:
   - Read
   - Write
@@ -24,6 +27,22 @@ triggers:
   - sprint planning
   - kanban
   - task list
+  - task dependency
+  - nested plan
+  - sub-plan
+  - roster plan
+  - planner premium
+  - project for the web
+  - gantt
+  - timeline view
+  - sprint
+  - goals
+  - OKR
+  - business scenario
+  - dataverse planner
+  - task notes
+  - completion requirements
+  - task hierarchy
 ---
 
 # Planner & To Do Task Management
@@ -56,15 +75,19 @@ Base URL: `https://graph.microsoft.com/v1.0`
 | List plan buckets | GET | `/planner/plans/{planId}/buckets` |
 | List plan tasks | GET | `/planner/plans/{planId}/tasks` |
 
-**Create plan body**:
+**Create plan body (modern container API)**:
 ```json
 {
-  "owner": "<group-id>",
+  "container": {
+    "@odata.type": "#microsoft.graph.plannerPlanContainer",
+    "type": "group",
+    "id": "<m365-group-id>"
+  },
   "title": "Sprint 12 Board"
 }
 ```
 
-Plans must be owned by a Microsoft 365 Group. The group ID is required.
+The legacy `owner` field (group-id shorthand) still works but the `container` object is preferred for new plans. Plans can be owned by `group`, `roster`, `teamsChannel`, `user`, `plannerTask`, or `driveItem` containers. See [`references/container-types.md`](./references/container-types.md) for full details.
 
 ### Buckets
 
@@ -115,14 +138,22 @@ Plans must be owned by a Microsoft 365 Group. The group ID is required.
 
 **Percent complete values**: 0 = Not started, 50 = In progress, 100 = Completed.
 
-### Task Details (Checklists, Description, Attachments)
+**Advanced task fields** (set on task creation or via PATCH):
+- `startDateTime` — task start date for Timeline view (must precede `dueDateTime`)
+- `previewType` — what shows on the task card: `automatic`, `noPreview`, `checklist`, `description`, `reference`
+- `completionRequirements` — enforce `checklistCompletion`, `formCompletion`, or `approvalCompletion` before closing
+
+### Task Details (Checklists, Notes, Attachments)
 
 Task details contain the rich content of a task:
 
-**Update task details body**:
+**Update task details body** — use `notes` (rich HTML) for new tasks; `description` is legacy plain-text:
 ```json
 {
-  "description": "Implement the OAuth 2.0 PKCE flow for the SPA client.",
+  "notes": {
+    "content": "<p>Implement the OAuth 2.0 PKCE flow for the SPA client.</p><h3>Acceptance Criteria</h3><ul><li>Token exchange works</li><li>Refresh token handled</li></ul>",
+    "contentType": "html"
+  },
   "checklist": {
     "<guid-1>": {
       "@odata.type": "#microsoft.graph.plannerChecklistItem",
@@ -390,30 +421,63 @@ Link tasks across Microsoft 365 tools:
 3. Post a Teams channel message via Graph with an adaptive card summarizing the sprint board and deep links to individual tasks.
 4. Use `@mentions` in the adaptive card to notify assignees.
 
+## Planner Tiers
+
+### Classic Planner (Graph v1.0 / beta)
+
+Standard Planner backed by Microsoft 365 Groups or lightweight containers. All plans are accessible via `https://graph.microsoft.com/v1.0/planner/*`.
+
+**Container types** — who owns the plan and controls access:
+| Type | Use Case |
+|------|----------|
+| `group` | Team project board tied to M365 Group / Teams |
+| `roster` | Ad-hoc collaboration — no M365 Group needed (beta) |
+| `teamsChannel` | Plan visible only within a specific Teams channel |
+| `user` | Personal private plan |
+| `plannerTask` | Nested sub-plan decomposing a large task into a full board |
+| `driveItem` | Plan attached to a SharePoint/OneDrive file (beta) |
+
+See [`references/container-types.md`](./references/container-types.md) for full code examples.
+
+### Planner Premium (Dataverse / Project for the web)
+
+Premium features require a **Microsoft Project** license and store data in **Microsoft Dataverse** — not the standard Graph Planner API.
+
+**Premium-only features**: task dependencies, Timeline/Gantt chart, sprints/iterations, goals/OKRs, custom fields, resource capacity planning.
+
+**API base**: `https://<org>.crm.dynamics.com/api/data/v9.2/`
+
+**Critical rule**: All write operations on premium tasks (create, update, delete, dependencies) MUST go through the **Project Scheduling Service (PSS) OperationSet** pattern — direct PATCH on `msdyn_projecttask` is not supported for schedule fields.
+
+**OperationSet flow**:
+1. `POST msdyn_CreateOperationSetV1` → get `OperationSetId`
+2. Queue ops: `POST msdyn_PssCreateV1` / `msdyn_PssUpdateV1` / `msdyn_PssDeleteV1`
+3. `POST msdyn_ExecuteOperationSetV1` → PSS applies all changes atomically
+
+See [`references/planner-premium-dataverse.md`](./references/planner-premium-dataverse.md) for the full reference.
+
+### Business Scenarios API (beta)
+
+Creates **isolated app-owned task containers** — tasks visible in Planner but owned and controlled by your app with role-based access policies.
+
+**Use cases**: Surface Jira/ServiceNow tickets in Planner, CRM-linked tasks, strict access control.
+
+**Key pattern**: Use `externalId` (your app's stable key) and `externalContextId` (group related tasks) instead of Planner internal GUIDs.
+
+See [`references/business-scenarios.md`](./references/business-scenarios.md) for the full reference.
+
 ## Best Practices
 
 - Always fetch the current ETag before updating or deleting Planner resources.
-- Use `orderHint` values to control the display order of buckets and tasks. The format is a string — insert between two existing hints by concatenating the last character of the preceding hint with ` !`.
+- Use `notes` (rich HTML) for task details in all new tasks — never mix `notes` and `description` in the same PATCH body.
+- Use `orderHint` string values to control display order: `" !"` for top, append a suffix to insert after.
 - Batch task creation by creating multiple tasks in parallel after the plan and buckets are set up.
 - Use labels (categories) consistently to enable filtering and reporting in Planner views.
-- For sprint/iteration planning, create one plan per sprint with buckets for workflow stages (Backlog, In Progress, Review, Done).
-- Use To Do for personal task tracking and Planner for team-based project management.
-
-## Reference Files
-
-| Reference | Path | Content |
-|-----------|------|---------|
-| Planner API | `references/planner-api.md` | Complete Planner endpoint reference |
-| To Do API | `references/todo-api.md` | Complete To Do endpoint reference |
-| Concurrency | `references/etag-concurrency.md` | ETag handling and conflict resolution patterns |
-
-## Example Files
-
-| Example | Path | Content |
-|---------|------|---------|
-| Sprint Board Setup | `examples/sprint-board.md` | Create a full sprint board with buckets, tasks, and assignments |
-| Task Migration | `examples/task-migration.md` | Bulk import tasks from CSV into Planner |
-| Personal Workflow | `examples/personal-workflow.md` | To Do lists with recurrence and reminders |
+- For sprint/iteration planning in Classic Planner, create one plan per sprint with buckets for Backlog, In Progress, Review, Done.
+- For Premium Planner sprints and Gantt views, use the Dataverse `msdyn_projectsprint` and PSS OperationSet API.
+- Use `completionRequirements: "checklistCompletion"` to enforce all checklist items are ticked before closing a task.
+- Use nested plans (`container.type = "plannerTask"`) to decompose large epics into a full sub-board.
+- Use roster plans when you need Planner without an M365 Group (e.g., cross-department or external collaborators).
 
 ## Progressive Disclosure — Reference Files
 
@@ -422,3 +486,7 @@ Link tasks across Microsoft 365 tools:
 | Plan CRUD, bucket management, plan details, labels, copying, conversation thread integration | [`references/planner-plans-buckets.md`](./references/planner-plans-buckets.md) |
 | Task CRUD, assignments, due dates, progress, checklist items, attachments, bulk import | [`references/task-management.md`](./references/task-management.md) |
 | To Do list CRUD, recurrence, steps (checklistItems), linked resources, importance, reminders, delta sync | [`references/todo-lists-steps.md`](./references/todo-lists-steps.md) |
+| All 6 container types with code examples, access rules, and lifecycle | [`references/container-types.md`](./references/container-types.md) |
+| Advanced task fields: notes, completionRequirements, startDateTime, previewType, board formats | [`references/task-advanced-fields.md`](./references/task-advanced-fields.md) |
+| Planner Premium: Dataverse Web API, PSS OperationSet, dependencies, sprints, goals | [`references/planner-premium-dataverse.md`](./references/planner-premium-dataverse.md) |
+| Business Scenarios API: isolated app-owned task containers with access policies | [`references/business-scenarios.md`](./references/business-scenarios.md) |

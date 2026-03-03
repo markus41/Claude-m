@@ -8,19 +8,24 @@ Canvas apps give makers full pixel-level control over UI layout. Screens, contro
 
 ## PAC CLI — App Lifecycle Commands
 
+> **Format deprecation notice**: The `.fx.yaml` source format produced by `pac canvas unpack` is **retired**. Microsoft's current active format is **`.pa.yaml`** (Source Code v3.0), used with Power Platform Git Integration. For the current format reference, see [`references/canvas-app-source.md`](./canvas-app-source.md). The commands below still work for legacy `.fx.yaml` projects but new apps should use `.pa.yaml` with Git Integration.
+
 | Command | Purpose |
 |---|---|
 | `pac auth create --environment <env-url>` | Authenticate against a Power Platform environment |
 | `pac solution init --publisher-name <name> --publisher-prefix <prefix>` | Initialize a new solution folder |
 | `pac solution add-reference --path <project.cdsproj>` | Add a project reference to the solution |
-| `pac canvas pack --msapp <output.msapp> --sources <src-dir>` | Pack source files into an `.msapp` binary |
-| `pac canvas unpack --msapp <input.msapp> --sources <src-dir>` | Unpack an `.msapp` into YAML source files for version control |
+| `pac canvas pack --msapp <output.msapp> --sources <src-dir>` | Pack `.fx.yaml` source files into an `.msapp` binary (legacy workflow) |
+| `pac canvas unpack --msapp <input.msapp> --sources <src-dir>` | Unpack an `.msapp` into `.fx.yaml` source files (legacy workflow) |
+| `pac canvas download --environment <env-url> --name "AppName" --outputDirectory <dir>` | Download a canvas app's source files from an environment |
+| `pac canvas validate --path <src-dir>` | Validate `.pa.yaml` or `.fx.yaml` source files for errors |
+| `pac canvas validate --msapp <file.msapp>` | Validate a packed `.msapp` file |
 | `pac solution export --path <solution.zip> --name <SolutionName> --managed false` | Export an unmanaged solution |
 | `pac solution import --path <solution.zip>` | Import a solution into the connected environment |
 | `pac solution publish` | Publish all customizations in the environment |
 | `pac canvas create --msapp <output.msapp> --name "MyApp" --environment <env-url>` | Create a new blank canvas app |
 
-**Unpack directory structure** (after `pac canvas unpack`):
+**Unpack directory structure — `.fx.yaml` (legacy, from `pac canvas unpack`):**
 ```
 src/
   App.fx.yaml         # App-level formulas, OnStart, Formulas
@@ -32,6 +37,21 @@ src/
   Assets/
     Images/
 ```
+
+**Source directory structure — `.pa.yaml` (current, for Git Integration):**
+```
+src/
+  App.pa.yaml         # App-level properties, StartScreen, named formulas
+  Screens/
+    HomeScreen.pa.yaml
+    DetailScreen.pa.yaml
+  DataSources/        # Data source connection metadata
+  Components/         # Custom component definitions
+  Assets/
+    Images/
+```
+
+For full `.pa.yaml` schema documentation, control type catalog, and examples, see [`references/canvas-app-source.md`](./canvas-app-source.md).
 
 ---
 

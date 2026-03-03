@@ -1,5 +1,5 @@
 ---
-name: Planner & To Do Reviewer
+name: planner-todo-reviewer
 description: >
   Reviews Planner and To Do integration code for correct Graph API usage, ETag concurrency
   handling, proper task creation patterns, and assignment workflows.

@@ -1,7 +1,7 @@
 {
   "name": "powerapps",
-  "version": "1.0.0",
-  "description": "Microsoft Power Apps development — canvas app formulas, model-driven app configuration, custom connectors, component libraries, and PCF controls",
+  "version": "1.1.0",
+  "description": "Microsoft Power Apps development — canvas app creation, model-driven app scaffolding, deployment, formulas, custom connectors, component libraries, and PCF controls",
   "author": {
     "name": "Markus Ahling"
   },
@@ -12,7 +12,11 @@
     "model-driven",
     "power-fx",
     "connectors",
-    "component-library"
+    "component-library",
+    "app-creation",
+    "pac-cli",
+    "deployment",
+    "git-integration"
   ],
   "skills": [
     "./skills/powerapps-dev/SKILL.md"
@@ -27,6 +31,10 @@
     "./commands/pa-component-create.md",
     "./commands/pa-model-driven-form.md",
     "./commands/pa-solution-checker.md",
-    "./commands/pa-setup.md"
+    "./commands/pa-setup.md",
+    "./commands/pa-app-create.md",
+    "./commands/pa-mda-create.md",
+    "./commands/pa-app-from-data.md",
+    "./commands/pa-deploy.md"
   ]
 }

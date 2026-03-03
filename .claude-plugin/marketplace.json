@@ -231,6 +231,23 @@
       "strict": true
     },
     {
+      "name": "entra-id-admin",
+      "source": "./entra-id-admin",
+      "description": "Microsoft Entra ID administration — full user/group lifecycle, directory roles, PIM, authentication methods, admin units, B2B guest invitations, license assignment, named locations, and entitlement management via Graph API.",
+      "category": "security",
+      "tags": [
+        "microsoft",
+        "entra-id",
+        "identity",
+        "user-management",
+        "pim",
+        "mfa",
+        "entitlement-management",
+        "admin"
+      ],
+      "strict": true
+    },
+    {
       "name": "entra-id-security",
       "source": "./entra-id-security",
       "description": "Microsoft Entra ID identity governance \u00e2\u20ac\u201d app registrations, service principals, conditional access policies, sign-in log analysis, and risk detection.",

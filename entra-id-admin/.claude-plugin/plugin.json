@@ -1,0 +1,62 @@
+{
+  "name": "entra-id-admin",
+  "version": "1.0.0",
+  "description": "Microsoft Entra ID administration via Graph API — full user/group lifecycle, directory roles, PIM, authentication methods, admin units, B2B guest management, license assignment, named locations, and entitlement management",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "entra-id",
+    "azure-ad",
+    "identity",
+    "administration",
+    "users",
+    "groups",
+    "pim",
+    "privileged-identity-management",
+    "entitlement-management",
+    "licenses",
+    "b2b",
+    "graph-api"
+  ],
+  "skills": [
+    "./skills/entra-admin/SKILL.md"
+  ],
+  "agents": [
+    "./agents/user-lifecycle-agent.md",
+    "./agents/pim-guardian.md",
+    "./agents/entra-compliance-auditor.md"
+  ],
+  "commands": [
+    "./commands/entra-admin-setup.md",
+    "./commands/entra-user-create.md",
+    "./commands/entra-user-update.md",
+    "./commands/entra-user-disable.md",
+    "./commands/entra-user-bulk-import.md",
+    "./commands/entra-user-get.md",
+    "./commands/entra-user-password-reset.md",
+    "./commands/entra-group-create.md",
+    "./commands/entra-group-update.md",
+    "./commands/entra-group-member-add.md",
+    "./commands/entra-group-member-remove.md",
+    "./commands/entra-group-list.md",
+    "./commands/entra-role-assign.md",
+    "./commands/entra-role-remove.md",
+    "./commands/entra-role-list.md",
+    "./commands/entra-pim-assign.md",
+    "./commands/entra-pim-activate.md",
+    "./commands/entra-pim-list.md",
+    "./commands/entra-auth-methods-get.md",
+    "./commands/entra-auth-mfa-require.md",
+    "./commands/entra-admin-unit-create.md",
+    "./commands/entra-admin-unit-add.md",
+    "./commands/entra-guest-invite.md",
+    "./commands/entra-collab-settings.md",
+    "./commands/entra-license-assign.md",
+    "./commands/entra-license-report.md",
+    "./commands/entra-named-location-create.md",
+    "./commands/entra-access-package-create.md",
+    "./commands/entra-access-review-create.md"
+  ]
+}

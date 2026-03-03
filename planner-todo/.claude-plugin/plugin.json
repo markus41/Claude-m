@@ -1,7 +1,7 @@
 {
   "name": "planner-todo",
   "version": "1.0.0",
-  "description": "Microsoft Planner and To Do task management via Graph API — plans, buckets, tasks, assignments, and checklists",
+  "description": "Microsoft Planner and To Do task management via Graph API — classic plans, Premium Dataverse projects, buckets, tasks, assignments, checklists, nested plans, roster plans, sprints, goals, and Business Scenarios",
   "author": {
     "name": "Markus Ahling"
   },
@@ -11,7 +11,12 @@
     "to-do",
     "tasks",
     "project-management",
-    "graph-api"
+    "graph-api",
+    "dataverse",
+    "planner-premium",
+    "task-dependencies",
+    "sprints",
+    "business-scenarios"
   ],
   "skills": [
     "./skills/planner-todo/SKILL.md"
@@ -31,6 +36,14 @@
     "./commands/planner-task-list.md",
     "./commands/planner-task-details.md",
     "./commands/todo-task-create-recurring.md",
-    "./commands/todo-tasks-list.md"
+    "./commands/todo-tasks-list.md",
+    "./commands/planner-nested-plan.md",
+    "./commands/planner-roster-create.md",
+    "./commands/planner-task-notes.md",
+    "./commands/planner-task-completion.md",
+    "./commands/planner-task-dependency.md",
+    "./commands/planner-sprint.md",
+    "./commands/planner-goals.md",
+    "./commands/planner-business-scenario.md"
   ]
 }
