@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "azure": {
+      "command": "npx",
+      "args": ["-y", "@azure/mcp@latest"],
+      "env": {}
+    },
+    "markitdown": {
+      "command": "uvx",
+      "args": ["markitdown[mcp]"],
+      "env": {}
+    }
+  }
+}

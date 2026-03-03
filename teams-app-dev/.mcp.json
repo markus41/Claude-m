@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "azure": {
+      "command": "npx",
+      "args": ["-y", "@azure/mcp@latest"],
+      "env": {}
+    },
+    "m365-toolkit": {
+      "command": "npx",
+      "args": ["-y", "@microsoft/m365agentstoolkit-mcp@latest", "server", "start"],
+      "env": {}
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"],
+      "env": {}
+    }
+  }
+}

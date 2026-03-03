@@ -26,6 +26,11 @@
     "./commands/planner-bucket-create.md",
     "./commands/todo-list-create.md",
     "./commands/todo-task-create.md",
-    "./commands/planner-setup.md"
+    "./commands/planner-setup.md",
+    "./commands/planner-task-update.md",
+    "./commands/planner-task-list.md",
+    "./commands/planner-task-details.md",
+    "./commands/todo-task-create-recurring.md",
+    "./commands/todo-tasks-list.md"
   ]
 }

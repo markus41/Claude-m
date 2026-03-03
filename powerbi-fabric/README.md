@@ -1,6 +1,6 @@
 # Power BI & Fabric Analytics Plugin
 
-A Claude Code knowledge plugin for Power BI development, DAX authoring, Power Query M transformations, workspace management, PBIP project scaffolding, and Microsoft Fabric integration.
+A Claude Code knowledge plugin for Power BI development, DAX authoring, Power Query M transformations, workspace management, PBIP project scaffolding, Power BI Embedded, deployment pipeline automation, performance optimization, and Microsoft Fabric integration.
 
 ## What This Plugin Provides
 
@@ -24,8 +24,10 @@ Run `/setup` to configure authentication and verify Power BI access:
 | **DAX Measures** | Generate, review, and optimize DAX measures with correct filter context, time intelligence, and KPI patterns |
 | **Power Query M** | Generate M code for data source connections, transformations, pagination, and custom functions |
 | **PBIP Projects** | Scaffold complete Power BI Project structures with TMDL files, model definitions, and report layouts |
-| **REST API** | Generate TypeScript code for workspace management, dataset refresh, report export, and embedding |
-| **Fabric** | Generate PySpark notebooks for Lakehouse data pipelines, Direct Lake models, and medallion architecture |
+| **REST API** | Generate TypeScript code for workspace management, dataset refresh, report export, embedding, and deployment pipelines |
+| **Fabric** | Generate PySpark notebooks for Lakehouse data pipelines, Direct Lake models, Dataflow Gen2, and medallion architecture |
+| **Embedded** | Generate server-side embed token services and client-side powerbi-client SDK code with React component support |
+| **Performance** | Diagnose VertiPaq memory issues, SE/FE bottlenecks, Direct Lake fallback, and composite model inefficiencies |
 | **Review** | Analyze existing DAX, M code, and PBIP structures for correctness, performance, and best practices |
 
 ## Output Formats
@@ -47,13 +49,16 @@ Run `/setup` to configure authentication and verify Power BI access:
 | `/pbi-dataset-refresh` | Generate code to trigger and monitor a dataset refresh |
 | `/pbi-scaffold` | Generate a complete PBIP project structure |
 | `/pbi-fabric-notebook` | Generate a Fabric PySpark notebook for data pipelines |
+| `/pbi-embed` | Generate Power BI Embedded token service and client-side SDK code (App/User Owns Data, optional React wrapper) |
+| `/pbi-deploy-pipeline` | Generate TypeScript to automate deployment pipeline stages (Dev→Test or Test→Prod) with polling |
 | `/setup` | Set up Azure auth, verify workspace access, and optionally configure Fabric |
 
-## Agent
+## Agents
 
 | Agent | Description |
 |-------|-------------|
 | **DAX & Power BI Reviewer** | Reviews DAX measures, M code, PBIP structure, semantic model design, and REST API usage |
+| **PBI Performance Advisor** | Diagnoses slow reports, VertiPaq memory bloat, Direct Lake fallback, and DAX Formula Engine bottlenecks |
 
 ## Plugin Structure
 
@@ -63,18 +68,21 @@ powerbi-fabric/
 │   └── plugin.json
 ├── skills/
 │   └── powerbi-analytics/
-│       ├── SKILL.md                          # Core knowledge (triggers on DAX, Power Query, PBIP, etc.)
+│       ├── SKILL.md                              # Core knowledge (triggers on DAX, Power Query, PBIP, etc.)
 │       ├── references/
-│       │   ├── dax-patterns.md               # DAX functions, time intelligence, KPI patterns
-│       │   ├── power-query-m.md              # M language, source connections, transforms, folding
-│       │   ├── pbi-rest-api.md               # REST API endpoints with TypeScript examples
-│       │   ├── pbip-format.md                # PBIP structure, TMDL, model.bim, Git workflow
-│       │   └── fabric-integration.md         # Lakehouse, notebooks, Direct Lake, pipelines
+│       │   ├── dax-patterns.md                   # DAX functions, time intelligence, KPI patterns
+│       │   ├── power-query-m.md                  # M language, source connections, transforms, folding
+│       │   ├── pbi-rest-api.md                   # REST API endpoints with TypeScript examples
+│       │   ├── pbip-format.md                    # PBIP structure, TMDL, model.bim, Git workflow
+│       │   ├── fabric-integration.md             # Lakehouse, notebooks, Direct Lake, pipelines
+│       │   ├── performance-optimization.md       # VertiPaq, SE/FE, aggregations, Direct Lake framing
+│       │   └── troubleshooting.md                # DAX errors, refresh failures, Direct Lake, M errors, REST API
 │       └── examples/
-│           ├── dax-measures.md               # 10+ complete DAX measures
-│           ├── power-query-transformations.md # 6 complete M code examples
-│           ├── workspace-management.md       # 5 TypeScript REST API examples
-│           └── pbip-scaffolding.md           # 3 complete PBIP project examples
+│           ├── dax-measures.md                   # 10+ complete DAX measures
+│           ├── power-query-transformations.md    # 6 complete M code examples
+│           ├── workspace-management.md           # 5 TypeScript REST API examples
+│           ├── pbip-scaffolding.md               # 3 complete PBIP project examples
+│           └── dataflow-gen2.md                  # SQL folding, REST pagination, incremental refresh M code
 ├── commands/
 │   ├── pbi-measure.md
 │   ├── pbi-query.md
@@ -82,15 +90,20 @@ powerbi-fabric/
 │   ├── pbi-dataset-refresh.md
 │   ├── pbi-scaffold.md
 │   ├── pbi-fabric-notebook.md
-│   └── setup.md
+│   ├── pbi-fabric-pipeline.md
+│   ├── pbi-direct-lake-model.md
+│   ├── pbi-embed.md
+│   ├── pbi-deploy-pipeline.md
+│   └── pbi-setup.md
 ├── agents/
-│   └── dax-reviewer.md
+│   ├── dax-reviewer.md
+│   └── pbi-performance-advisor.md
 └── README.md
 ```
 
 ## Trigger Keywords
 
-The skill activates automatically when conversations mention: `dax`, `DAX measure`, `power query`, `M code`, `power bi`, `pbip`, `pbix`, `semantic model`, `fabric`, `lakehouse`, `pbi workspace`, `dataset refresh`, `power query M`, `calculated column`, `measure`.
+The skill activates automatically when conversations mention: `dax`, `DAX measure`, `power query`, `M code`, `power bi`, `pbip`, `pbix`, `semantic model`, `fabric`, `lakehouse`, `pbi workspace`, `dataset refresh`, `power query M`, `calculated column`, `measure`, `embed token`, `deployment pipeline`, `performance`, `VertiPaq`, `direct lake fallback`, `dataflow gen2`.
 
 ## Author
 

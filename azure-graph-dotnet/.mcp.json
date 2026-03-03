@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "azure": {
+      "command": "npx",
+      "args": ["-y", "@azure/mcp@latest"],
+      "env": {}
+    },
+    "microsoft-learn": {
+      "url": "https://learn.microsoft.com/api/mcp"
+    }
+  }
+}

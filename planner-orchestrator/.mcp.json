@@ -1,0 +1,44 @@
+{
+  "mcpServers": {
+    "azure": {
+      "command": "npx",
+      "args": ["-y", "@azure/mcp@latest"],
+      "env": {}
+    },
+    "azure-devops": {
+      "command": "npx",
+      "args": ["-y", "@microsoft/azure-devops-mcp@latest"],
+      "env": {
+        "AZURE_DEVOPS_ORG_URL": "${AZURE_DEVOPS_ORG_URL}"
+      }
+    },
+    "powerbi-modeling": {
+      "command": "npx",
+      "args": ["-y", "@microsoft/powerbi-modeling-mcp@latest"],
+      "env": {}
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"],
+      "env": {}
+    },
+    "devbox": {
+      "command": "npx",
+      "args": ["-y", "@microsoft/devbox-mcp@latest"],
+      "env": {}
+    },
+    "m365-toolkit": {
+      "command": "npx",
+      "args": ["-y", "@microsoft/m365agentstoolkit-mcp@latest", "server", "start"],
+      "env": {}
+    },
+    "markitdown": {
+      "command": "uvx",
+      "args": ["markitdown[mcp]"],
+      "env": {}
+    },
+    "microsoft-learn": {
+      "url": "https://learn.microsoft.com/api/mcp"
+    }
+  }
+}

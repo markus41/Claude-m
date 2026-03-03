@@ -1,0 +1,42 @@
+{
+  "name": "planner-orchestrator",
+  "version": "1.0.0",
+  "description": "Intelligent orchestration for Microsoft Planner — ship tasks with Claude Code, triage backlogs, plan sprint buckets, monitor deadlines, and balance workloads across plans. Integrates with microsoft-teams-mcp, microsoft-outlook-mcp, and powerbi-fabric when installed.",
+  "author": {
+    "name": "Markus Ahling",
+    "email": "markus@lobbi.io"
+  },
+  "keywords": [
+    "microsoft",
+    "planner",
+    "orchestration",
+    "tasks",
+    "sprint",
+    "triage",
+    "ship",
+    "graph-api",
+    "teams",
+    "m365"
+  ],
+  "license": "MIT",
+  "repository": "https://github.com/markus41/claude-m",
+  "skills": [
+    "./skills/planner-orchestration/SKILL.md"
+  ],
+  "agents": [
+    "./agents/ship-orchestrator.md",
+    "./agents/bucket-planner.md",
+    "./agents/task-triage.md",
+    "./agents/deadline-monitor.md",
+    "./agents/portfolio-manager.md",
+    "./agents/workload-balancer.md",
+    "./agents/teams-notifier.md"
+  ],
+  "commands": [
+    "./commands/ship.md",
+    "./commands/triage.md",
+    "./commands/sprint.md",
+    "./commands/status.md",
+    "./commands/orchestrate.md"
+  ]
+}

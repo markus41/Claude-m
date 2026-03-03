@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "azure": {
+      "command": "npx",
+      "args": ["-y", "@azure/mcp@latest"],
+      "env": {}
+    },
+    "powerbi-modeling": {
+      "command": "npx",
+      "args": ["-y", "@microsoft/powerbi-modeling-mcp@latest"],
+      "env": {}
+    }
+  }
+}

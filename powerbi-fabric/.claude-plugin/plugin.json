@@ -1,7 +1,7 @@
 {
   "name": "powerbi-fabric",
   "version": "1.0.0",
-  "description": "DAX measures, Power Query M code, Power BI workspace management, PBIP scaffolding, and Fabric integration",
+  "description": "DAX measures, Power Query M, Power BI Embedded, deployment pipelines, PBIP scaffolding, Fabric Lakehouse, Direct Lake, performance optimization",
   "author": {
     "name": "Markus Ahling"
   },
@@ -12,13 +12,17 @@
     "fabric",
     "pbip",
     "analytics",
-    "lakehouse"
+    "lakehouse",
+    "embedded",
+    "deployment-pipeline",
+    "performance"
   ],
   "skills": [
     "./skills/powerbi-analytics/SKILL.md"
   ],
   "agents": [
-    "./agents/dax-reviewer.md"
+    "./agents/dax-reviewer.md",
+    "./agents/pbi-performance-advisor.md"
   ],
   "commands": [
     "./commands/pbi-measure.md",
@@ -29,6 +33,11 @@
     "./commands/pbi-fabric-notebook.md",
     "./commands/pbi-fabric-pipeline.md",
     "./commands/pbi-direct-lake-model.md",
-    "./commands/pbi-setup.md"
+    "./commands/pbi-setup.md",
+    "./commands/pbi-rls-role.md",
+    "./commands/pbi-dataflow.md",
+    "./commands/pbi-model-validate.md",
+    "./commands/pbi-embed.md",
+    "./commands/pbi-deploy-pipeline.md"
   ]
 }

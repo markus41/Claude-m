@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "azure": {
+      "command": "npx",
+      "args": ["-y", "@azure/mcp@latest"],
+      "env": {}
+    },
+    "azure-ai-foundry": {
+      "command": "uvx",
+      "args": ["azure-ai-mcp>=0.1.0"],
+      "env": {
+        "PROJECT_CONNECTION_STRING": "${AZURE_AI_FOUNDRY_CONNECTION_STRING}",
+        "AZURE_CLIENT_ID": "${AZURE_CLIENT_ID}",
+        "AZURE_CLIENT_SECRET": "${AZURE_CLIENT_SECRET}",
+        "AZURE_TENANT_ID": "${AZURE_TENANT_ID}"
+      }
+    },
+    "microsoft-learn": {
+      "url": "https://learn.microsoft.com/api/mcp"
+    }
+  }
+}
