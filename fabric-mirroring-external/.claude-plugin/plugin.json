@@ -1,0 +1,33 @@
+{
+  "name": "fabric-mirroring-external",
+  "version": "1.0.0",
+  "description": "Microsoft Fabric mirroring for external sources - generic databases, BigQuery, Oracle, SAP, Snowflake, and SQL Server with preview caveats where applicable.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "fabric",
+    "mirroring",
+    "external",
+    "bigquery",
+    "oracle",
+    "snowflake",
+    "sql-server"
+  ],
+  "skills": [
+    "./skills/fabric-mirroring-external/SKILL.md"
+  ],
+  "agents": [
+    "./agents/fabric-mirroring-external-reviewer.md"
+  ],
+  "commands": [
+    "./commands/mirror-external-setup.md",
+    "./commands/mirror-external-generic-database.md",
+    "./commands/mirror-external-bigquery.md",
+    "./commands/mirror-external-oracle.md",
+    "./commands/mirror-external-sap.md",
+    "./commands/mirror-external-snowflake.md",
+    "./commands/mirror-external-sql-server.md"
+  ]
+}

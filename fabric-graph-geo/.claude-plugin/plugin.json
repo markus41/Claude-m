@@ -1,0 +1,32 @@
+{
+  "name": "fabric-graph-geo",
+  "version": "1.0.0",
+  "description": "Microsoft Fabric graph and geospatial analytics - graph model, graph queryset, map, and exploration workflows with preview guardrails.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "fabric",
+    "graph",
+    "geospatial",
+    "map",
+    "analytics",
+    "queryset",
+    "exploration",
+    "preview"
+  ],
+  "skills": [
+    "./skills/fabric-graph-geo/SKILL.md"
+  ],
+  "agents": [
+    "./agents/fabric-graph-geo-reviewer.md"
+  ],
+  "commands": [
+    "./commands/graph-geo-setup.md",
+    "./commands/graph-model-manage.md",
+    "./commands/graph-queryset-manage.md",
+    "./commands/map-manage.md",
+    "./commands/exploration-manage.md"
+  ]
+}

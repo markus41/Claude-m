@@ -645,6 +645,14 @@ Data Activator provides built-in tools to monitor trigger health, investigate is
 
 **Result**: The two-tier alerting provides immediate visibility for the on-call team and automatic escalation if the issue persists. Each Azure service is tracked independently, so a degradation in `Azure SQL` does not affect the monitoring of `Azure App Service`. The Power Automate flow ensures a formal incident is created for prolonged outages.
 
+## OneLake Desktop Sync — Local Trigger Source Inspection
+
+If trigger source data is persisted to a lakehouse (e.g., via eventstream-to-lakehouse), OneLake desktop sync allows local inspection of the data that feeds Data Activator triggers.
+
+**Use case**: Read the source Delta table locally to verify data values, check event timestamps, and debug why a trigger did or did not fire. This is a read-only diagnostic aid — Data Activator trigger configuration remains in the Fabric portal.
+
+Triggers: `onelake activator local`, `local trigger data`
+
 ## Progressive Disclosure — Reference Files
 
 | Topic | File |

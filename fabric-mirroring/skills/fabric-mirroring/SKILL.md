@@ -544,6 +544,31 @@ def deep_reconcile_table(
 
 ---
 
+## OneLake Desktop Sync — Local CDC Inspection
+
+If OneLake desktop sync is installed, mirrored Delta tables can be inspected locally to debug CDC replication issues.
+
+**Inspect replicated tables locally**:
+```python
+import deltalake
+
+path = r"C:\Users\<user>\OneLake - <tenant>\<workspace>\<lakehouse>.Lakehouse\Tables\mirrored_orders"
+dt = deltalake.DeltaTable(path)
+print(f"Version: {dt.version()}")
+print(dt.history(10))  # Check CDC commit frequency and operation types
+
+# Verify row count matches source
+import polars as pl
+df = pl.read_delta(path)
+print(f"Replicated rows: {len(df)}")
+```
+
+**Debug `_delta_log/`**: Read transaction log JSON files to inspect CDC operations, check for schema drift, and verify replication latency by comparing commit timestamps with source change times.
+
+**Critical rule**: Mirrored tables are **read-only** — never write locally. Mirroring manages the Delta log automatically.
+
+Triggers: `onelake mirroring local`, `local cdc debug`
+
 ## Progressive Disclosure — Reference Files
 
 | Topic | File |

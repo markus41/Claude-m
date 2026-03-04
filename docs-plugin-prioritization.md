@@ -1,59 +1,83 @@
-# Plugin Prioritization Backlog
+# Plugin Prioritization Roadmap (Fabric Expansion)
 
-This backlog scores candidate plugins for Claude-m using a simple framework:
+This roadmap replaces prior backlog scoring for the current Fabric marketplace expansion.
 
-- **Impact (1-5):** Expected user value / frequency of use.
-- **Build Complexity (1-5):** Engineering difficulty (higher = harder).
-- **Scope Friction (1-5):** OAuth/admin-consent friction and permission sensitivity (higher = harder).
-- **Priority Score:** `Impact*2 - Build Complexity - Scope Friction` (higher = better).
+## Goals
 
-## Scored candidates
+1. Cover all listed Fabric item types with explicit ownership.
+2. Extend existing Fabric plugins before introducing new plugin bundles.
+3. Include preview items with explicit guardrails and deterministic runbooks.
+4. Keep marketplace metadata, docs, and validation gates consistent.
 
-| Rank | Plugin idea | Impact | Build Complexity | Scope Friction | Priority Score | Why now |
-|---:|---|---:|---:|---:|---:|---|
-| 1 | **Planner + To Do MCP** | 5 | 2 | 2 | **6** | Strong day-to-day value; complements Teams + Outlook task coordination. |
-| 2 | **Power BI / Fabric MCP** | 5 | 3 | 2 | **5** | Already on roadmap; high analytics value with existing Excel/SharePoint data flows. |
-| 3 | **Azure Cost Governance MCP** | 5 | 3 | 2 | **5** | Extends current Azure inventory into direct cost outcomes. |
-| 4 | **Microsoft OneDrive MCP** | 4 | 2 | 2 | **4** | Natural extension of SharePoint/Excel file workflows. |
-| 5 | **Entra ID (Identity) MCP** | 5 | 3 | 3 | **4** | High enterprise need; identity insights unlock admin/security workflows. |
-| 6 | **Power Automate MCP** | 4 | 3 | 2 | **3** | Strong operational automation value; moderate implementation depth. |
-| 7 | **Microsoft 365 Admin MCP** | 4 | 3 | 3 | **2** | Useful for tenant ops; broader API surface and permissions. |
-| 8 | **Dataverse MCP** | 4 | 4 | 3 | **1** | Valuable for enterprise app teams; heavier schema/platform complexity. |
-| 9 | **Purview Compliance MCP** | 4 | 4 | 4 | **0** | Important but governance/compliance scopes increase rollout friction. |
-| 10 | **Azure Policy & Security Posture MCP** | 4 | 4 | 4 | **0** | Strong security outcomes but deeper policy surface and permission complexity. |
+## Scope Strategy
 
-## Recommended next 3 to build
+- Domain-bundle packaging (not one plugin per Fabric item).
+- Hybrid mirroring ownership:
+  - Azure sources: `fabric-mirroring-azure`
+  - External sources: `fabric-mirroring-external`
+- Existing Fabric plugins remain and are extended where already aligned.
 
-1. **Planner + To Do MCP**
-   - Best speed-to-value ratio with low friction and broad user appeal.
-2. **Power BI / Fabric MCP**
-   - Matches roadmap and creates a clear data/BI story with existing plugins.
-3. **Azure Cost Governance MCP**
-   - Converts Azure data collection into actionable savings and governance workflows.
+## Phase A - Coverage Baseline (Existing Plugin Parity)
 
-## Suggested MVP tool sets
+1. Add `docs/fabric-item-coverage-matrix.md`.
+2. Extend existing plugins with explicit missing commands:
+   - `fabric-data-factory`: `copy-job-manage`, `dataflow-gen2-manage`
+   - `fabric-data-engineering`: `spark-job-definition-manage`
+   - `fabric-data-warehouse`: `sample-warehouse-bootstrap`
+   - `fabric-real-time-analytics`: `kql-queryset-manage`
+   - `powerbi-fabric`: `pbi-dashboard-create`, `pbi-report-create`, `pbi-scorecard-manage`
+3. Document overlap routing in broad plugins.
 
-### 1) Planner + To Do MCP (MVP)
-- `planner_list_plans`
-- `planner_list_tasks`
-- `planner_create_task`
-- `planner_update_task`
-- `todo_list_lists`
-- `todo_list_tasks`
+## Phase B - Mirroring Split + Store/Prep Foundations
 
-### 2) Power BI / Fabric MCP (MVP)
-- `powerbi_list_workspaces`
-- `powerbi_list_datasets`
-- `powerbi_list_reports`
-- `powerbi_get_refresh_history`
-- `powerbi_trigger_refresh`
+1. `fabric-mirroring-azure`
+2. `fabric-mirroring-external`
+3. `fabric-data-store`
+4. `fabric-data-prep-jobs`
 
-### 3) Azure Cost Governance MCP (MVP)
-- `azure_cost_query`
-- `azure_list_budgets`
-- `azure_get_budget`
-- `azure_recommend_idle_resources`
+## Phase C - AI, Graph/Geo, Runtime
 
-## Re-scoring cadence
+1. `fabric-ai-agents`
+2. `fabric-graph-geo`
+3. `fabric-developer-runtime`
 
-Re-score quarterly or after major platform shifts. Adjust weights when GTM priorities change (e.g., enterprise compliance focus vs. SMB productivity focus).
+## Phase D - Distribution + Final Catalog Pass
+
+1. `fabric-distribution-apps`
+2. Finalize `CLAUDE.md`, `.claude-plugin/marketplace.json`, and coverage docs.
+3. Run validations and publish final coverage report.
+
+## New Slugs in This Roadmap
+
+1. `fabric-data-prep-jobs` (`analytics`)
+2. `fabric-data-store` (`analytics`)
+3. `fabric-ai-agents` (`analytics`)
+4. `fabric-graph-geo` (`analytics`)
+5. `fabric-developer-runtime` (`devops`)
+6. `fabric-distribution-apps` (`productivity`)
+7. `fabric-mirroring-azure` (`analytics`)
+8. `fabric-mirroring-external` (`analytics`)
+
+## Canonical Files Updated in Relevant PRs
+
+1. `CLAUDE.md`
+2. `.claude-plugin/marketplace.json`
+3. `docs-plugin-prioritization.md`
+4. `docs/fabric-item-coverage-matrix.md`
+
+## Validation Gates
+
+1. `npm run validate:marketplace`
+2. `npm run validate:knowledge-plugins`
+3. `npm run validate:command-frontmatter`
+4. `npm run validate:capability-graph`
+5. `npm run validate:all` (informational when pre-existing global failures exist)
+
+## Acceptance Criteria
+
+1. Slug consistency across folder name, plugin manifest, marketplace entry, and `CLAUDE.md`.
+2. Category and description alignment between marketplace and `CLAUDE.md`.
+3. At least one skill with trigger phrases per plugin.
+4. Deterministic command docs with required YAML frontmatter.
+5. Reviewer agents include explicit `## Output Format`.
+6. Overlap routing exists in `fabric-mirroring`, `fabric-data-factory`, `powerbi-fabric`, and related focused plugin READMEs.

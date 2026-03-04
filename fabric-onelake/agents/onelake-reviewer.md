@@ -56,6 +56,13 @@ You are an expert Microsoft Fabric OneLake reviewer. Analyze the provided OneLak
 - **Delta log compaction**: Flag Delta tables with more than 500 uncommitted log files (checkpoint needed).
 - **Caching**: Note whether OneLake caching is enabled for frequently accessed shortcuts — improves read performance for external data.
 
+### 6. OneLake Desktop Sync
+
+- **Tables/ write protection**: Flag any code, script, or documentation that writes directly to a `Tables/` path via local filesystem (e.g., `shutil.copy` to `Tables/`, `pandas.to_parquet` to a Tables path). Only `Files/` should receive local writes.
+- **Path hardcoding**: Flag hardcoded local OneLake paths that include a specific username or tenant name. Paths should use variables or `os.path.expanduser()`.
+- **Sync awareness**: If the project references OneLake desktop sync or local file access, verify that documentation notes the sync delay (seconds to minutes) and that workflows account for eventual consistency.
+- **Offline risk**: Flag workflows that depend on local OneLake files being always up-to-date without checking sync status or handling stale data.
+
 ## Output Format
 
 ```

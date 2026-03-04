@@ -38,6 +38,9 @@
     "./commands/pbi-dataflow.md",
     "./commands/pbi-model-validate.md",
     "./commands/pbi-embed.md",
-    "./commands/pbi-deploy-pipeline.md"
+    "./commands/pbi-deploy-pipeline.md",
+    "./commands/pbi-dashboard-create.md",
+    "./commands/pbi-report-create.md",
+    "./commands/pbi-scorecard-manage.md"
   ]
 }

@@ -1,0 +1,30 @@
+{
+  "name": "fabric-developer-runtime",
+  "version": "1.0.0",
+  "description": "Microsoft Fabric developer runtime operations - GraphQL API, environments, user data functions, and variable library governance.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "fabric",
+    "runtime",
+    "graphql",
+    "environment",
+    "variable-library",
+    "devops"
+  ],
+  "skills": [
+    "./skills/fabric-developer-runtime/SKILL.md"
+  ],
+  "agents": [
+    "./agents/fabric-developer-runtime-reviewer.md"
+  ],
+  "commands": [
+    "./commands/runtime-setup.md",
+    "./commands/graphql-api-manage.md",
+    "./commands/environment-manage.md",
+    "./commands/user-data-function-manage.md",
+    "./commands/variable-library-manage.md"
+  ]
+}

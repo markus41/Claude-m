@@ -196,6 +196,12 @@ curl -X POST "https://api.fabric.microsoft.com/v1/workspaces/$WORKSPACE_ID/noteb
   -d '{"displayName": "<notebook-name>", "definition": {"format": "ipynb", "parts": [...]}}'
 ```
 
+**Tip — upload files via OneLake desktop sync**: Instead of uploading files through the Fabric portal or REST API, copy them directly to the local OneLake sync folder:
+```
+C:\Users\<user>\OneLake - <tenant>\<workspace>\<lakehouse>.Lakehouse\Files\landing\
+```
+Files sync to OneLake in seconds to minutes and become available to the notebook via `Files/landing/`. This is the fastest way to stage test data during local development.
+
 ### 5. Display Summary
 
 Show the user:

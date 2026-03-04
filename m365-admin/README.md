@@ -57,6 +57,14 @@ All operations use delegated authentication with interactive browser login (MSAL
 | `/m365-sharepoint-site` | Site creation, permissions, sharing, hub sites |
 | `/m365-audit` | Sign-in logs, directory audits, license reports |
 
+## Focused Plugin Routing
+
+Use `m365-admin` for broad tenant administration, then route deep specialized workflows to focused plugins:
+
+- `microsoft-intune`: endpoint lifecycle and compliance operations (non-compliant device triage, lost device actions, compliance policy rollout, app protection review).
+- `entra-access-reviews`: repeatable access review lifecycle automation and remediation tracking.
+- `m365-meeting-intelligence`: transcript-to-action workflows and Planner or To Do handoff from meetings.
+
 ## Agent
 
 | Agent | Description |

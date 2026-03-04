@@ -27,6 +27,8 @@
     "./commands/dataflow-create.md",
     "./commands/copy-activity-config.md",
     "./commands/pipeline-schedule.md",
-    "./commands/pipeline-monitor.md"
+    "./commands/pipeline-monitor.md",
+    "./commands/copy-job-manage.md",
+    "./commands/dataflow-gen2-manage.md"
   ]
 }

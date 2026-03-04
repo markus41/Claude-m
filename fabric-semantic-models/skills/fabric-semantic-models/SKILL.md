@@ -804,6 +804,24 @@ tabularEditor deploy "model/database.tmdl" \
 
 ---
 
+## OneLake Desktop Sync — Local Source Table Inspection
+
+If OneLake desktop sync is installed, Direct Lake source tables can be inspected locally to validate data before semantic model refresh.
+
+**Inspect Direct Lake source tables**:
+```python
+import polars as pl
+
+path = r"C:\Users\<user>\OneLake - <tenant>\<workspace>\<lakehouse>.Lakehouse\Tables\dim_product"
+df = pl.read_delta(path)
+print(f"Rows: {len(df)}, Columns: {df.columns}")
+print(df.null_count())  # Check for nulls that may cause blank rows in reports
+```
+
+**Use case**: Before refreshing a Direct Lake semantic model, verify source tables locally — check row counts, null patterns, and data types match the expected model schema.
+
+Triggers: `onelake semantic model source`, `local direct lake table`
+
 ## Progressive Disclosure — Reference Files
 
 | Topic | File |

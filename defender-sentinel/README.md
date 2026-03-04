@@ -45,6 +45,12 @@ Validates workspace connectivity, RBAC, data connector status, and Defender XDR 
 | `/sentinel-analytics-rule` | Create, update, tune, or list analytics rules |
 | `/defender-alert-investigate` | Pivot on a Defender XDR alert — device, user, process tree |
 
+## Focused Plugin Routing
+
+Use `defender-sentinel` for SIEM and SOAR workflows across Sentinel and Defender XDR. For endpoint-specific host response runbooks, use:
+
+- `defender-endpoint`: endpoint triage, machine isolation workflows, live response metadata checks, and endpoint evidence summaries.
+
 ## Example prompts
 
 - "Use `defender-sentinel` to triage all High severity New incidents in the workspace"

@@ -1,0 +1,31 @@
+{
+  "name": "fabric-data-prep-jobs",
+  "version": "1.0.0",
+  "description": "Microsoft Fabric data preparation jobs - Dataflow Gen1, Apache Airflow jobs, mounted Azure Data Factory pipelines, and dbt job governance for deterministic prep workflows.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "fabric",
+    "data-prep",
+    "dataflow-gen1",
+    "airflow",
+    "azure-data-factory",
+    "dbt",
+    "governance"
+  ],
+  "skills": [
+    "./skills/fabric-data-prep-jobs/SKILL.md"
+  ],
+  "agents": [
+    "./agents/fabric-data-prep-jobs-reviewer.md"
+  ],
+  "commands": [
+    "./commands/prep-setup.md",
+    "./commands/airflow-job-manage.md",
+    "./commands/adf-mount-manage.md",
+    "./commands/dataflow-gen1-manage.md",
+    "./commands/dbt-job-manage.md"
+  ]
+}

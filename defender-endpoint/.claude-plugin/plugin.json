@@ -1,0 +1,25 @@
+{
+  "name": "defender-endpoint",
+  "version": "1.0.0",
+  "description": "Microsoft Defender for Endpoint operations - incident triage, machine isolation, live response package metadata checks, and evidence summary generation.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "defender",
+    "endpoint"
+  ],
+  "skills": [
+    "./skills/defender-endpoint/SKILL.md"
+  ],
+  "agents": [
+    "./agents/defender-endpoint-reviewer.md"
+  ],
+  "commands": [
+    "./commands/defender-endpoint-setup.md",
+    "./commands/defender-endpoint-triage.md",
+    "./commands/defender-endpoint-isolate-machine.md",
+    "./commands/defender-endpoint-live-response-metadata.md",
+    "./commands/defender-endpoint-evidence-summary.md"
+  ]
+}

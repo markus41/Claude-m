@@ -1,0 +1,25 @@
+{
+  "name": "azure-kubernetes",
+  "version": "1.0.0",
+  "description": "Azure Kubernetes Service operations - cluster inventory, pod failure diagnostics, node pool scaling, and policy posture checks.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "azure",
+    "kubernetes"
+  ],
+  "skills": [
+    "./skills/azure-kubernetes/SKILL.md"
+  ],
+  "agents": [
+    "./agents/azure-kubernetes-reviewer.md"
+  ],
+  "commands": [
+    "./commands/aks-setup.md",
+    "./commands/aks-cluster-inventory.md",
+    "./commands/aks-pod-failure-scan.md",
+    "./commands/aks-nodepool-scale.md",
+    "./commands/aks-policy-status.md"
+  ]
+}

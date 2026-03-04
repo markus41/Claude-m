@@ -1,0 +1,26 @@
+{
+  "name": "azure-service-bus",
+  "version": "1.0.0",
+  "description": "Azure messaging operations for Service Bus and event-driven workloads - lag scans, dead-letter replay planning, stale subscription cleanup, and namespace quota checks.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "azure",
+    "service",
+    "bus"
+  ],
+  "skills": [
+    "./skills/azure-service-bus/SKILL.md"
+  ],
+  "agents": [
+    "./agents/azure-service-bus-reviewer.md"
+  ],
+  "commands": [
+    "./commands/service-bus-setup.md",
+    "./commands/service-bus-lag-scan.md",
+    "./commands/service-bus-deadletter-replay-plan.md",
+    "./commands/service-bus-stale-subscription-cleanup.md",
+    "./commands/service-bus-namespace-quota-check.md"
+  ]
+}

@@ -1164,6 +1164,24 @@ predictions_spark.write.format("delta").mode("overwrite").save("Tables/sales_pre
 print(f"Predictions written. RMSE: {rmse:.2f}, R2: {r2:.4f}")
 ```
 
+## OneLake Desktop Sync — Local ML Data Access
+
+If OneLake desktop sync is installed, data scientists can load lakehouse feature tables directly into local Python environments without Spark.
+
+**Load Delta tables locally for ML**:
+```python
+import polars as pl
+
+features_path = r"C:\Users\<user>\OneLake - <tenant>\<workspace>\<lakehouse>.Lakehouse\Tables\ml_features"
+df = pl.read_delta(features_path).to_pandas()  # Ready for scikit-learn, XGBoost, etc.
+```
+
+**Local workflow**: Read feature tables locally → train/evaluate models in local Jupyter → deploy trained model to Fabric via MLflow. This avoids Spark cluster spin-up for iterative experimentation.
+
+**Critical rule**: Only write to `Files/` (e.g., model artifacts, evaluation reports). Never write to `Tables/` — Delta transaction logs must be managed by Spark.
+
+Triggers: `onelake local ml`, `local feature table`, `onelake data science`
+
 ## Progressive Disclosure — Reference Files
 
 | Topic | File |

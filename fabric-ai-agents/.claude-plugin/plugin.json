@@ -1,0 +1,33 @@
+{
+  "name": "fabric-ai-agents",
+  "version": "1.0.0",
+  "description": "Microsoft Fabric AI and operations agents - anomaly detector, data agent, operations agent, ontology, and digital twin builder workflows with preview guardrails.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "fabric",
+    "ai",
+    "agents",
+    "anomaly detector",
+    "operations",
+    "ontology",
+    "digital twin",
+    "preview"
+  ],
+  "skills": [
+    "./skills/fabric-ai-agents/SKILL.md"
+  ],
+  "agents": [
+    "./agents/fabric-ai-agents-reviewer.md"
+  ],
+  "commands": [
+    "./commands/ai-agents-setup.md",
+    "./commands/anomaly-detector-manage.md",
+    "./commands/data-agent-manage.md",
+    "./commands/operations-agent-manage.md",
+    "./commands/ontology-manage.md",
+    "./commands/digital-twin-builder-manage.md"
+  ]
+}

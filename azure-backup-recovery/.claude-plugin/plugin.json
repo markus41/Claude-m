@@ -1,0 +1,26 @@
+{
+  "name": "azure-backup-recovery",
+  "version": "1.0.0",
+  "description": "Azure Backup and Site Recovery operations - job health checks, restore drill readiness, recovery plan audits, and cross-region resilience checks.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "azure",
+    "backup",
+    "recovery"
+  ],
+  "skills": [
+    "./skills/azure-backup-recovery/SKILL.md"
+  ],
+  "agents": [
+    "./agents/azure-backup-recovery-reviewer.md"
+  ],
+  "commands": [
+    "./commands/backup-recovery-setup.md",
+    "./commands/backup-job-health.md",
+    "./commands/backup-restore-drill.md",
+    "./commands/backup-recovery-plan-audit.md",
+    "./commands/backup-cross-region-check.md"
+  ]
+}

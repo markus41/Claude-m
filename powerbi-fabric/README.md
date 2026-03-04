@@ -17,6 +17,12 @@ Run `/setup` to configure authentication and verify Power BI access:
 /setup --with-desktop-check   # Verify Power BI Desktop installation
 ```
 
+## Prerequisites
+
+- Power BI tenant with Fabric enabled and workspace access.
+- Permission to create and manage reports, dashboards, and scorecards in target workspaces.
+- API access configured for Power BI REST operations.
+
 ## Capabilities
 
 | Area | What Claude Can Do |
@@ -51,7 +57,16 @@ Run `/setup` to configure authentication and verify Power BI access:
 | `/pbi-fabric-notebook` | Generate a Fabric PySpark notebook for data pipelines |
 | `/pbi-embed` | Generate Power BI Embedded token service and client-side SDK code (App/User Owns Data, optional React wrapper) |
 | `/pbi-deploy-pipeline` | Generate TypeScript to automate deployment pipeline stages (Dev→Test or Test→Prod) with polling |
+| `/pbi-dashboard-create` | Create and validate Power BI dashboard assets in Fabric workspaces |
+| `/pbi-report-create` | Create and validate Power BI reports with deterministic dataset bindings |
+| `/pbi-scorecard-manage` | Manage scorecards, KPI ownership, and goal status governance |
 | `/setup` | Set up Azure auth, verify workspace access, and optionally configure Fabric |
+
+## Routing Boundaries
+
+- Use `fabric-graph-geo` for Graph model/queryset, Map, and Exploration preview workflows.
+- Use `fabric-data-store` for Event Schema Set and Datamart ownership workflows.
+- Keep `powerbi-fabric` focused on reports, dashboards, scorecards, semantic modeling, and BI delivery patterns.
 
 ## Agents
 

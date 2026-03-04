@@ -27,6 +27,7 @@ Requires an Azure subscription with Microsoft Fabric capacity enabled.
 | `/onelake-upload` | Upload local files or directories to a OneLake lakehouse |
 | `/onelake-access-audit` | Audit OneLake access roles, item permissions, and sharing |
 | `/onelake-file-api` | Generate OneLake REST or SDK code for file/directory operations |
+| `/onelake-local-browse` | Browse locally synced OneLake files — workspaces, items, tables, files (no API auth needed) |
 
 ## Agent
 
@@ -36,7 +37,7 @@ Requires an Azure subscription with Microsoft Fabric capacity enabled.
 
 ## Trigger Keywords
 
-The skill activates automatically when conversations mention: `onelake`, `fabric data lake`, `fabric shortcuts`, `onelake file`, `adls gen2 fabric`, `onelake api`, `lakehouse files`, `fabric file explorer`, `onelake shortcut`, `onelake storage`, `fabric unified lake`, `onelake endpoint`.
+The skill activates automatically when conversations mention: `onelake`, `fabric data lake`, `fabric shortcuts`, `onelake file`, `adls gen2 fabric`, `onelake api`, `lakehouse files`, `fabric file explorer`, `onelake shortcut`, `onelake storage`, `fabric unified lake`, `onelake endpoint`, `onelake desktop sync`, `onelake local`, `local file access onelake`.
 
 ## Author
 

@@ -1,7 +1,7 @@
 {
   "name": "onenote-knowledge-base",
-  "version": "1.0.0",
-  "description": "OneNote Knowledge Base — read, create, and search notebooks, sections, and pages via Graph API for team documentation",
+  "version": "2.0.0",
+  "description": "OneNote Knowledge Base - headless-first Graph automation for advanced page architecture, styling, and task workflows",
   "author": {
     "name": "Markus Ahling"
   },
@@ -12,7 +12,10 @@
     "knowledge-base",
     "wiki",
     "meeting-notes",
-    "graph-api"
+    "graph-api",
+    "headless",
+    "page-design",
+    "task-tracking"
   ],
   "skills": [
     "./skills/onenote-knowledge-base/SKILL.md"
@@ -21,9 +24,18 @@
     "./agents/onenote-reviewer.md"
   ],
   "commands": [
+    "./commands/onenote-setup.md",
     "./commands/onenote-search.md",
     "./commands/onenote-create-page.md",
     "./commands/onenote-meeting-notes.md",
-    "./commands/onenote-setup.md"
+    "./commands/onenote-hierarchy-manage.md",
+    "./commands/onenote-page-patch.md",
+    "./commands/onenote-task-tracker.md",
+    "./commands/onenote-style-apply.md",
+    "./commands/onenote-columns-layout.md",
+    "./commands/onenote-quality-audit.md",
+    "./commands/onenote-template-library.md",
+    "./commands/onenote-bulk-style-rollout.md",
+    "./commands/onenote-navigation-index.md"
   ]
 }

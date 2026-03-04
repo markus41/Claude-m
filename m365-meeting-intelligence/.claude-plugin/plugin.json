@@ -1,0 +1,26 @@
+{
+  "name": "m365-meeting-intelligence",
+  "version": "1.0.0",
+  "description": "Meeting transcript intelligence for Teams and Outlook - transcript fetch, commitment extraction, task handoff, and owner reminder workflows.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "m365",
+    "meeting",
+    "intelligence"
+  ],
+  "skills": [
+    "./skills/m365-meeting-intelligence/SKILL.md"
+  ],
+  "agents": [
+    "./agents/m365-meeting-intelligence-reviewer.md"
+  ],
+  "commands": [
+    "./commands/meeting-intelligence-setup.md",
+    "./commands/meeting-transcript-fetch.md",
+    "./commands/meeting-commitments-extract.md",
+    "./commands/meeting-tasks-sync.md",
+    "./commands/meeting-owner-reminders.md"
+  ]
+}

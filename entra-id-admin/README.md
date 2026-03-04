@@ -114,6 +114,12 @@ Verifies authentication, checks required permissions, and detects available feat
 | `/entra-id-admin:entra-access-package-create` | Create access package with policy |
 | `/entra-id-admin:entra-access-review-create` | Create recurring access review |
 
+## Focused Plugin Routing
+
+Use `entra-id-admin` for broad identity administration across users, groups, roles, and governance entities. For a focused access certification lifecycle, use:
+
+- `entra-access-reviews`: stale privileged access detection, review cycle drafting, remediation ticket generation, and status reporting.
+
 ## Agents
 
 | Agent | Description |

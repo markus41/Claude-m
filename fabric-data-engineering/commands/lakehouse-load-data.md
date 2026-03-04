@@ -187,7 +187,39 @@ df = df.withColumn("_ingested_at", current_timestamp())
 df.write.format("delta").mode("overwrite").saveAsTable(target_table)
 ```
 
-### 9. Merge Mode (upsert)
+### 9. Source: local-onelake-sync
+
+Load files that were staged via OneLake desktop sync. This workflow skips API uploads — just copy files to the local sync folder and Spark picks them up.
+
+**Prerequisites**: OneLake desktop sync installed and signed in.
+
+**Workflow**:
+1. Copy local files to the lakehouse `Files/` folder via the synced path:
+```python
+import shutil
+from pathlib import Path
+
+# Copy file to OneLake local sync folder
+source = Path("<local-file-path>")
+target = Path(r"C:\Users\<user>\OneLake - <tenant>\<workspace>\<lakehouse>.Lakehouse\Files\landing") / source.name
+target.parent.mkdir(parents=True, exist_ok=True)
+shutil.copy2(source, target)
+print(f"Copied {source.name} to OneLake sync folder. File will sync in seconds to minutes.")
+```
+
+2. After sync completes, load in Spark notebook:
+```python
+df = spark.read.format("csv") \
+    .option("header", "true") \
+    .schema(schema) \
+    .load("Files/landing/*.csv")
+
+df.write.format("delta").mode("overwrite").saveAsTable(target_table)
+```
+
+**Important**: Allow a few seconds to minutes for sync before running the notebook. Never copy files to the `Tables/` folder — only `Files/`.
+
+### 10. Merge Mode (upsert)
 
 When `--mode merge` is specified, use MERGE INTO for idempotent upserts:
 
@@ -208,7 +240,7 @@ else:
     df.write.format("delta").saveAsTable(target_table)
 ```
 
-### 10. Display Summary
+### 11. Display Summary
 
 Show the user:
 - Source type and file path / endpoint

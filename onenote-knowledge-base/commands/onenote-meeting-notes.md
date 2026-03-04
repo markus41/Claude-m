@@ -1,154 +1,79 @@
 ---
 name: onenote-meeting-notes
-description: "Create a structured meeting notes page from a template"
-argument-hint: "<section-id> --title <meeting-title> --date <YYYY-MM-DD> --attendees <name1,name2> [--agenda <item1,item2>]"
+description: Create premium meeting pages with structured decisions, action tracking, and polished formatting
+argument-hint: "<section-id-or-name> --title <meeting-title> --date <YYYY-MM-DD> --attendees <a,b,c> [--agenda <item1,item2>] [--theme clean|executive|contrast]"
 allowed-tools:
   - Read
   - Write
+  - Edit
   - Bash
   - Glob
+  - Grep
 ---
 
-# Create Meeting Notes Page
+# Create Premium Meeting Notes
 
-Create a structured meeting notes page in a OneNote section using a standard template. Designed for recurring team meetings, standups, project syncs, and retrospectives.
+Generate a polished meeting page with deterministic structure and actionable follow-up tracking.
 
-## Instructions
+## Step 1: Parse and Validate Inputs
 
-### 1. Parse Arguments
+1. Resolve target section.
+2. Validate date format `YYYY-MM-DD`.
+3. Parse attendees into ordered list.
+4. Parse agenda into ordered list; if empty, inject placeholder topic.
 
-| Argument | Required | Description |
-|----------|----------|-------------|
-| `<section-id>` | Yes | Target section ID (or section name to resolve) |
-| `--title` | Yes | Meeting title (e.g., "Sprint 14 Planning") |
-| `--date` | Yes | Meeting date in YYYY-MM-DD format |
-| `--attendees` | Yes | Comma-separated list of attendee names |
-| `--agenda` | No | Comma-separated list of agenda items |
+## Step 2: Build High-Quality Template
 
-If the user provides a section name instead of an ID, resolve it:
+Required sections:
 
-```
-GET /me/onenote/sections?$filter=displayName eq '{section-name}'&$select=id,displayName
-```
+1. Meeting Summary (short paragraph)
+2. Meeting Info table
+3. Agenda (ordered list)
+4. Discussion Notes by agenda item
+5. Decisions (`#decision` tags)
+6. Action Items table (`Action`, `Owner`, `Due`, `Status`)
+7. Risks and Blockers (`#risk` tags)
+8. Next Checkpoint
 
-### 2. Build the Meeting Notes XHTML
+Use patch anchors:
 
-Use this complete template, replacing all `{placeholders}`:
+1. `data-id="meeting-summary"`
+2. `data-id="decisions"`
+3. `data-id="action-items"`
+4. `data-id="risks"`
 
-```html
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:oes="http://schemas.microsoft.com/office/onenote/2013/onenote">
-<head>
-  <title>{meeting-title} — {date}</title>
-  <meta name="created" content="{date}T09:00:00Z" />
-</head>
-<body>
-  <h1>{meeting-title}</h1>
+## Step 3: Apply Theme Styling
 
-  <h2>Meeting Info</h2>
-  <table>
-    <tr><td><b>Date</b></td><td>{date}</td></tr>
-    <tr><td><b>Attendees</b></td><td>{attendee1}, {attendee2}, ...</td></tr>
-    <tr><td><b>Facilitator</b></td><td>{first-attendee}</td></tr>
-    <tr><td><b>Note Taker</b></td><td>(to be assigned)</td></tr>
-  </table>
+Use consistent inline style tokens for:
 
-  <h2>Agenda</h2>
-  <ol>
-    <li>{agenda-item-1}</li>
-    <li>{agenda-item-2}</li>
-    <!-- one <li> per --agenda item; if no agenda provided, include a single placeholder -->
-  </ol>
+1. Header and subtitle text
+2. Section heading color
+3. Status chips (Open, In Progress, Blocked, Done)
+4. Callout rows for urgent actions
 
-  <h2>Discussion Notes</h2>
-  <p><i>Record key points, decisions, and context for each agenda item.</i></p>
-  <h3>{agenda-item-1}</h3>
-  <ul>
-    <li>(notes here)</li>
-  </ul>
-  <h3>{agenda-item-2}</h3>
-  <ul>
-    <li>(notes here)</li>
-  </ul>
+## Step 4: Insert To-do Markers and Tags
 
-  <h2>Action Items</h2>
-  <table>
-    <tr>
-      <th>Action</th>
-      <th>Owner</th>
-      <th>Due Date</th>
-      <th>Status</th>
-    </tr>
-    <tr>
-      <td>(describe the task)</td>
-      <td>(name)</td>
-      <td>(YYYY-MM-DD)</td>
-      <td>Open</td>
-    </tr>
-  </table>
+1. Add checklist lines using `[ ]` markers.
+2. Add searchable tags: `#todo`, `#decision`, `#risk`, `#owner/<name>`.
+3. Ensure every action item has owner and due date placeholder.
 
-  <h2>Next Steps</h2>
-  <ul>
-    <li>Next meeting: (date and time)</li>
-    <li>Follow-up items to prepare before next meeting</li>
-  </ul>
+## Step 5: Create the Page
 
-  <h2>Parking Lot</h2>
-  <p><i>Topics raised but deferred to a future discussion.</i></p>
-  <ul>
-    <li>(none yet)</li>
-  </ul>
-</body>
-</html>
-```
+1. Send XHTML to `POST /me/onenote/sections/{section-id}/pages`.
+2. Verify HTTP 201 and capture page metadata.
 
-### 3. Template Population Rules
+## Step 6: Return Operational Summary
 
-- **Title**: Combine `--title` and `--date` as `"{title} -- {date}"`.
-- **Attendees**: Split the comma-separated `--attendees` string and join with commas in the table cell.
-- **Facilitator**: Default to the first attendee unless the user specifies otherwise.
-- **Agenda**: If `--agenda` is provided, create one `<li>` per item in the Agenda section and one `<h3>` per item in the Discussion Notes section. If no agenda is provided, include a single placeholder item: "Agenda to be determined".
-- **Action Items**: Start with one empty template row. The user fills these in during or after the meeting.
-- **Created timestamp**: Use the `--date` value with a default time of `T09:00:00Z`.
+Return:
 
-### 4. Send the Request
+1. Page URL
+2. Attendee count
+3. Agenda item count
+4. Action item rows initialized
+5. Tags emitted
 
-```
-POST https://graph.microsoft.com/v1.0/me/onenote/sections/{section-id}/pages
-Content-Type: application/xhtml+xml
+## Safety Rules
 
-{xhtml-payload}
-```
-
-### 5. Display the Result
-
-On success (HTTP 201), display:
-
-```
-Meeting notes page created.
-  Title:      {meeting-title} — {date}
-  Section:    {section-name}
-  Attendees:  {attendee-count} people
-  Agenda:     {agenda-count} items
-  Page ID:    {page-id}
-  URL:        {links.oneNoteWebUrl.href}
-```
-
-### 6. Post-Creation Tips
-
-After creating the page, remind the user:
-
-```
-Tips:
-  - Open the URL above to edit the page in OneNote during the meeting.
-  - Fill in Discussion Notes under each agenda heading.
-  - Add action items with an owner and due date in the Action Items table.
-  - Use /onenote-search to find this page later by title or keywords.
-```
-
-### 7. Error Handling
-
-- **400**: Malformed XHTML. Verify all tags are properly closed and no unsupported elements are present.
-- **401/403**: Missing `Notes.ReadWrite` permission. Suggest running `/setup`.
-- **404**: Section not found. List available sections to help the user pick the right target.
+- Fail fast on unsupported XHTML.
+- Redact IDs and sensitive user identifiers.
+- Keep output deterministic and reusable for recurring meetings.

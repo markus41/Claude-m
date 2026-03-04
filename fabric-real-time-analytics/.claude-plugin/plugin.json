@@ -27,6 +27,7 @@
     "./commands/kql-query.md",
     "./commands/eventstream-create.md",
     "./commands/rt-dashboard-create.md",
-    "./commands/data-activator-trigger.md"
+    "./commands/data-activator-trigger.md",
+    "./commands/kql-queryset-manage.md"
   ]
 }

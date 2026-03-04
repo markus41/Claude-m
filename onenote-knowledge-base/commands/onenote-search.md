@@ -1,78 +1,73 @@
 ---
 name: onenote-search
-description: "Search OneNote pages by keyword across notebooks"
-argument-hint: "<query> [--notebook <notebook-name>] [--section <section-name>] [--top <count>]"
+description: Advanced OneNote search across notebooks with scope control, tag slicing, and recency ranking
+argument-hint: "<query> [--notebook <name>] [--section <name>] [--top <count>] [--since <YYYY-MM-DD>] [--tag <#tag>]"
 allowed-tools:
   - Read
   - Bash
   - Glob
+  - Grep
 ---
 
-# Search OneNote Pages
+# Advanced OneNote Search
 
-Search for pages across the user's OneNote notebooks by keyword. Optionally filter by notebook or section name.
+Search OneNote pages with structured scope, ranking, and tag-aware slicing for large knowledge bases.
 
-## Instructions
+## Step 1: Resolve Scope
 
-### 1. Build the Search Request
+1. If `--notebook` is provided, resolve notebook ID from display name.
+2. If `--section` is provided, resolve section ID from display name.
+3. If both are provided, verify section belongs to notebook before searching.
 
-Base endpoint:
+## Step 2: Build Query Strategy
 
-```
-GET https://graph.microsoft.com/v1.0/me/onenote/pages?$search={query}&$select=title,createdDateTime,lastModifiedDateTime,links,parentSection&$expand=parentSection($select=displayName,parentNotebook)&$top={count}&$orderby=lastModifiedDateTime desc
-```
+Use one of these strategies:
 
-- Replace `{query}` with the user's search term, URL-encoded.
-- Replace `{count}` with the `--top` value (default: 10).
+1. Full-text search: `GET /me/onenote/pages?$search={query}`
+2. Section-scoped search: `GET /me/onenote/sections/{section-id}/pages?$search={query}`
+3. Recency filter only (no `$search`): `GET /me/onenote/pages?$filter=lastModifiedDateTime ge {isoDate}`
 
-### 2. Filter by Notebook or Section
+Do not combine `$search` with `$filter` in one request.
 
-If `--notebook` is specified, first resolve the notebook ID:
+## Step 3: Fetch and Normalize Results
 
-```
-GET /me/onenote/notebooks?$filter=displayName eq '{notebook-name}'
-```
+1. Request fields: `id,title,lastModifiedDateTime,createdDateTime,links,parentSection,parentNotebook`.
+2. Sort by `lastModifiedDateTime desc`.
+3. Apply `--top` limit (default 20).
 
-Then scope the page search to that notebook:
+## Step 4: Apply Tag and Recency Slicing
 
-```
-GET /me/onenote/notebooks/{notebook-id}/pages?$search={query}&$select=title,createdDateTime,lastModifiedDateTime,links&$top={count}
-```
+1. If `--tag` is provided, retain pages where title or snippet contains that tag (`#todo`, `#decision`, `#risk`, etc.).
+2. If `--since` is provided, keep only pages modified on or after the given date.
+3. Provide counts before and after slicing.
 
-If `--section` is specified, first resolve the section ID:
+## Step 5: Return Result Table
 
-```
-GET /me/onenote/sections?$filter=displayName eq '{section-name}'
-```
+Return table columns:
 
-Then scope the search to that section:
+1. Rank
+2. Title
+3. Notebook
+4. Section
+5. Last Modified
+6. Tags detected
+7. Web URL
 
-```
-GET /me/onenote/sections/{section-id}/pages?$search={query}&$select=title,createdDateTime,lastModifiedDateTime,links&$top={count}
-```
+## Step 6: Provide Follow-up Actions
 
-### 3. Display Results
+Based on the result set, recommend one next command:
 
-Present results as a table sorted by last modified date (most recent first):
+1. `/onenote-page-patch` when pages need updates.
+2. `/onenote-style-apply` when style consistency is weak.
+3. `/onenote-task-tracker` when unresolved to-do density is high.
 
-| # | Title | Notebook | Section | Last Modified | Link |
-|---|-------|----------|---------|---------------|------|
-| 1 | Deployment Runbook | Engineering | SOPs | 2025-12-15 | [Open](https://...) |
-| 2 | Sprint Planning Notes | Engineering | Meetings | 2025-12-10 | [Open](https://...) |
+## Error Handling
 
-- The **Link** column should use the `links.oneNoteWebUrl.href` value from the response.
-- If no results are found, suggest broadening the search or checking the notebook/section filter spelling.
+- 401/403: missing auth or Notes read scopes.
+- 404: notebook/section resolution failed.
+- 429: honor `Retry-After`, then retry once.
 
-### 4. Pagination
+## Safety Rules
 
-If more results exist beyond `$top`, inform the user:
-
-```
-Showing 10 of 47 results. Use --top 25 to see more.
-```
-
-### 5. Error Handling
-
-- **401/403**: Authentication failed or missing `Notes.Read` permission. Suggest running `/setup`.
-- **404**: Notebook or section name not found. List available notebooks/sections to help the user.
-- **429**: Throttled. Report the `Retry-After` header value and suggest waiting.
+- Fail fast on invalid scope resolution.
+- Redact object IDs in logs and user-facing output.

@@ -1,0 +1,25 @@
+{
+  "name": "microsoft-intune",
+  "version": "1.0.0",
+  "description": "Device lifecycle and compliance management for Microsoft Intune and Endpoint Manager - non-compliant device detection, lost device actions, compliance policy rollout, and app protection policy review.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "intune"
+  ],
+  "skills": [
+    "./skills/microsoft-intune/SKILL.md"
+  ],
+  "agents": [
+    "./agents/microsoft-intune-reviewer.md"
+  ],
+  "commands": [
+    "./commands/intune-setup.md",
+    "./commands/intune-noncompliant-devices.md",
+    "./commands/intune-lost-device-action.md",
+    "./commands/intune-compliance-policy-deploy.md",
+    "./commands/intune-app-protection-review.md"
+  ]
+}

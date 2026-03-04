@@ -1,0 +1,32 @@
+{
+  "name": "fabric-mirroring-azure",
+  "version": "1.0.0",
+  "description": "Microsoft Fabric mirroring for Azure-native sources - Cosmos DB, PostgreSQL, Databricks catalog, Azure SQL Database, and SQL Managed Instance.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "fabric",
+    "mirroring",
+    "azure",
+    "cosmosdb",
+    "postgresql",
+    "databricks",
+    "azure-sql"
+  ],
+  "skills": [
+    "./skills/fabric-mirroring-azure/SKILL.md"
+  ],
+  "agents": [
+    "./agents/fabric-mirroring-azure-reviewer.md"
+  ],
+  "commands": [
+    "./commands/mirror-azure-setup.md",
+    "./commands/mirror-azure-cosmosdb.md",
+    "./commands/mirror-azure-postgresql.md",
+    "./commands/mirror-azure-databricks-catalog.md",
+    "./commands/mirror-azure-sql-database.md",
+    "./commands/mirror-azure-sql-managed-instance.md"
+  ]
+}

@@ -1,7 +1,7 @@
 ---
 name: onenote-setup
-description: Set up the OneNote Knowledge Base plugin — configure Azure auth, install dependencies, and verify notebook access
-argument-hint: "[--minimal]"
+description: Headless-first OneNote setup with non-interactive auth, permission checks, and readiness validation
+argument-hint: "[--headless-only] [--tenant <tenant-id>] [--client-id <client-id>] [--client-secret-env <env-var>] [--use-managed-identity]"
 allowed-tools:
   - Read
   - Write
@@ -9,94 +9,79 @@ allowed-tools:
   - Bash
   - Glob
   - Grep
-  - AskUserQuestion
 ---
 
-# OneNote Knowledge Base Setup
+# OneNote Headless-First Setup
 
-Guide the user through setting up OneNote API access via Microsoft Graph for knowledge base operations.
+Configure OneNote Graph automation to run headlessly whenever possible.
 
-## Step 1: Check Prerequisites
+## Execution Policy
 
-Verify Node.js 18+ is installed:
+1. Prefer Managed Identity in hosted Azure environments.
+2. Otherwise use service principal credentials.
+3. Use delegated device code only as fallback if headless credentials are unavailable.
+4. If `--headless-only` is set, fail when a non-headless path is required.
 
-```bash
-node --version
-```
+## Step 1: Validate Runtime Prerequisites
 
-Report the detected version. If below 18, instruct the user to upgrade before continuing.
+1. Verify Node.js 18+ (`node --version`).
+2. Verify Graph tooling dependencies are available (`@azure/identity`, `@microsoft/microsoft-graph-client`).
+3. Verify required environment values exist for selected auth mode.
 
-## Step 2: Install Dependencies
+Required variables for service principal mode:
 
-```bash
-npm init -y && npm install @microsoft/microsoft-graph-client @azure/identity
-```
+- `AZURE_TENANT_ID`
+- `AZURE_CLIENT_ID`
+- `AZURE_CLIENT_SECRET` (or certificate-based equivalent)
 
-If `--minimal` is passed, stop after this step.
+## Step 2: Select Headless Auth Mode
 
-## Step 3: Configure Azure App Registration
+Choose exactly one mode in this order:
 
-Walk the user through registering an app in Microsoft Entra ID (portal.azure.com > App registrations > New registration).
+1. Managed Identity
+2. Service principal with certificate
+3. Service principal with secret
+4. Device code fallback (only when headless is not possible)
 
-**Required Graph API permissions:**
+If user passes `--use-managed-identity`, force mode 1 and fail if unavailable.
 
-| Permission | Type | Purpose |
-|------------|------|---------|
-| `Notes.Read` | Delegated | Read the user's notebooks, sections, and pages |
-| `Notes.ReadWrite` | Delegated | Create and update pages in the user's notebooks |
-| `Notes.Read.All` | Application | Read shared/team notebooks across the organization |
-| `Notes.ReadWrite.All` | Application | Write to shared/team notebooks across the organization |
+## Step 3: Verify Token Acquisition
 
-Application permissions require admin consent. For small teams where one person manages the knowledge base, delegated permissions (`Notes.Read` + `Notes.ReadWrite`) are sufficient.
+1. Acquire a Graph token for `https://graph.microsoft.com/.default`.
+2. Fail fast on auth errors; do not proceed to API checks.
+3. Record selected mode and token audience (redacted).
 
-Collect from the user:
-- **Tenant ID** — from Azure Entra > App registrations > Overview
-- **Client ID** — from the same page
-- **Client Secret** — from Certificates & Secrets > New client secret
+## Step 4: Verify OneNote API Reachability
 
-## Step 4: Configure Environment
+Run read checks in order:
 
-Create a `.env` file in the project root:
+1. `GET /me/onenote/notebooks` for delegated mode.
+2. `GET /users/{target-user-id}/onenote/notebooks` for app mode.
+3. `GET /me/onenote/sections?$top=5` (or user-scoped equivalent).
 
-```
-AZURE_TENANT_ID=<tenant-id>
-AZURE_CLIENT_ID=<client-id>
-AZURE_CLIENT_SECRET=<client-secret>
-```
+If 403 or 401 occurs, stop and report missing scopes:
 
-Verify `.gitignore` includes `.env` to prevent accidental credential commits. If `.gitignore` does not exist or does not contain `.env`, add it.
+- Read: `Notes.Read` or `Notes.Read.All`
+- Write: `Notes.ReadWrite` or `Notes.ReadWrite.All`
 
-## Step 5: Verify OneNote Access
+## Step 5: Validate Write Readiness (Dry Probe)
 
-Authenticate using the configured credentials and call:
+1. Resolve a target section ID without writing.
+2. Validate that create-page endpoint path is valid for the chosen principal.
+3. Confirm write scopes and notebook permissions before any mutation command is used.
 
-```
-GET https://graph.microsoft.com/v1.0/me/onenote/notebooks
-```
+## Step 6: Output Setup Summary
 
-Display the response as a table:
+Return a deterministic setup report:
 
-| Notebook Name | Created | Last Modified | Sections Count |
-|---------------|---------|---------------|----------------|
-| ... | ... | ... | ... |
+1. Selected auth mode
+2. Required scopes present/missing
+3. Read checks pass/fail
+4. Write readiness pass/fail
+5. Recommended next command (`/onenote-create-page` or `/onenote-hierarchy-manage`)
 
-If the response is empty, confirm the user has at least one OneNote notebook. If the call fails with 403, the permissions have not been granted or admin consent is missing.
+## Safety Rules
 
-## Step 6: Output Summary
-
-Display a summary:
-
-```
-Setup Status
---------------------------------------------
-Node.js:          v20.x.x (OK)
-Dependencies:     @microsoft/microsoft-graph-client, @azure/identity (OK)
-Azure App:        Configured (Tenant: xxxx...xxxx)
-Permissions:      Notes.Read, Notes.ReadWrite (Delegated)
-Notebook Access:  3 notebooks found
---------------------------------------------
-Next steps:
-  /onenote-search <query>         — Search pages across notebooks
-  /onenote-create-page <id> ...   — Create a new page
-  /onenote-meeting-notes <id> ... — Create meeting notes from template
-```
+- Fail fast on missing context or permissions.
+- Redact tenant IDs, client IDs, secrets, and token material in output.
+- Never suggest browser auth unless headless options are exhausted.

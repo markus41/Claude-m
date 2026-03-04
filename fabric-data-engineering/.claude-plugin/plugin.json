@@ -27,6 +27,7 @@
     "./commands/notebook-create.md",
     "./commands/pipeline-create.md",
     "./commands/delta-table-manage.md",
-    "./commands/lakehouse-load-data.md"
+    "./commands/lakehouse-load-data.md",
+    "./commands/spark-job-definition-manage.md"
   ]
 }

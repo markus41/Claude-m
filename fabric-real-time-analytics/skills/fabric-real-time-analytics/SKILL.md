@@ -1274,6 +1274,23 @@ ClickEvents
           CheckoutToConfirm = round(100.0 * Step5_Confirm / Step4_Checkout, 1)
 ```
 
+## OneLake Desktop Sync — Local Access to Persisted Eventstream Data
+
+If OneLake desktop sync is installed and eventstream data is persisted to a lakehouse, the output Delta tables can be read locally.
+
+**Read eventstream output locally**:
+```python
+import polars as pl
+
+path = r"C:\Users\<user>\OneLake - <tenant>\<workspace>\<lakehouse>.Lakehouse\Tables\eventstream_output"
+df = pl.read_delta(path)
+print(f"Events: {len(df)}, Latest: {df['EventProcessedUtcTime'].max()}")
+```
+
+**Use case**: Verify eventstream-to-lakehouse routing is working by checking row counts and latest timestamps locally, without opening the Fabric portal.
+
+Triggers: `onelake eventstream local`, `local eventstream data`
+
 ## Progressive Disclosure — Reference Files
 
 | Topic | File |

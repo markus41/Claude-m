@@ -1,16 +1,10 @@
-# Fabric Mirroring Plugin
+# fabric-mirroring
 
-`fabric-mirroring` is an advanced Microsoft Fabric knowledge plugin for operationally safe mirrored data pipelines with CDC health and reconciliation controls.
+Microsoft Fabric Mirroring — source onboarding, CDC replication, latency monitoring, schema drift handling, and reconciliation workflows.
 
-## What This Plugin Provides
+## Purpose
 
-This is a **knowledge plugin**. It provides implementation guidance, deterministic command workflows, and reviewer checks. It does not include runtime binaries or MCP servers.
-
-Install with:
-
-```bash
-/plugin install fabric-mirroring@claude-m-microsoft-marketplace
-```
+`fabric-mirroring` remains the broad runbook layer for mirrored data operations and incident triage.
 
 ## Prerequisites
 
@@ -30,18 +24,16 @@ Run `/mirroring-setup` first to baseline environment, permissions, and rollout c
 | `/mirroring-setup` | Prepare Fabric Mirroring by validating source readiness, connectivity, identity, and target workspace controls. |
 | `/source-onboarding` | Onboard a new source to Fabric Mirroring with controlled table scope and replication guardrails. |
 | `/latency-health-check` | Assess mirroring latency and replication health against defined freshness targets. |
-| `/cdc-reconciliation` | Reconcile mirrored datasets with source-of-truth systems to validate CDC completeness and integrity. |
+| `/cdc-reconciliation` | Reconcile mirrored datasets with source-of-truth systems for CDC completeness and integrity. |
+
+## Routing Boundaries
+
+- Use `fabric-mirroring-azure` for Azure-native mirrored sources: Azure Cosmos DB, Azure PostgreSQL, Azure Databricks catalog, Azure SQL Database, and Azure SQL Managed Instance.
+- Use `fabric-mirroring-external` for non-Azure mirrored sources: generic mirrored database, BigQuery (preview), Oracle (preview), SAP, Snowflake, and SQL Server.
+- Keep `fabric-mirroring` focused on cross-source reliability, latency, drift, and reconciliation runbooks.
 
 ## Agent
 
 | Agent | Description |
 |---|---|
-| **Mirroring Reviewer** | Reviews Fabric Mirroring implementations for source onboarding safety, CDC integrity, latency controls, and reconciliation rigor. |
-
-## Trigger Keywords
-
-The skill activates when conversations mention: `fabric mirroring`, `mirrored database`, `cdc lag`, `replication health`, `schema drift mirroring`, `fabric reconciliation`, `source onboarding fabric`, `mirroring incident`.
-
-## Author
-
-Markus Ahling
+| **Mirroring Reviewer** | Reviews onboarding safety, CDC integrity, latency controls, and reconciliation rigor. |

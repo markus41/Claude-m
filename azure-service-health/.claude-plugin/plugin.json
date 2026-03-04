@@ -1,0 +1,26 @@
+{
+  "name": "azure-service-health",
+  "version": "1.0.0",
+  "description": "Azure Service Health operations - active incident watchlists, impact scoring, runbook mapping, and communications-ready outage summaries.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "azure",
+    "service",
+    "health"
+  ],
+  "skills": [
+    "./skills/azure-service-health/SKILL.md"
+  ],
+  "agents": [
+    "./agents/azure-service-health-reviewer.md"
+  ],
+  "commands": [
+    "./commands/service-health-setup.md",
+    "./commands/service-health-watchlist.md",
+    "./commands/service-health-runbook-map.md",
+    "./commands/service-health-impact-score.md",
+    "./commands/service-health-comms-summary.md"
+  ]
+}

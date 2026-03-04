@@ -27,6 +27,7 @@
     "./commands/shortcut-create.md",
     "./commands/onelake-upload.md",
     "./commands/onelake-access-audit.md",
-    "./commands/onelake-file-api.md"
+    "./commands/onelake-file-api.md",
+    "./commands/onelake-local-browse.md"
   ]
 }

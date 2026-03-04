@@ -1223,6 +1223,24 @@ BEGIN
 END;
 ```
 
+## OneLake Desktop Sync — Local Warehouse Inspection
+
+If OneLake desktop sync is installed, warehouse Delta tables can be inspected locally for file size diagnostics and schema verification.
+
+**Local inspection**:
+```python
+from pathlib import Path
+
+warehouse_path = Path(r"C:\Users\<user>\OneLake - <tenant>\<workspace>\<warehouse>.Warehouse\Tables\fact_sales")
+parquet_files = list(warehouse_path.glob("*.parquet"))
+total_size_mb = sum(f.stat().st_size for f in parquet_files) / (1024 * 1024)
+print(f"Files: {len(parquet_files)}, Total size: {total_size_mb:.1f} MB")
+```
+
+**Use cases**: Check file count and sizes after table maintenance, verify partition layout, read schema from `_delta_log/`. Warehouse tables are **read-only** via local sync — all writes must go through T-SQL DDL/DML.
+
+Triggers: `onelake warehouse local`, `local warehouse inspection`
+
 ## Progressive Disclosure — Reference Files
 
 | Topic | File |

@@ -27,6 +27,7 @@
     "./commands/warehouse-table-create.md",
     "./commands/warehouse-query.md",
     "./commands/warehouse-load.md",
-    "./commands/warehouse-monitor.md"
+    "./commands/warehouse-monitor.md",
+    "./commands/sample-warehouse-bootstrap.md"
   ]
 }

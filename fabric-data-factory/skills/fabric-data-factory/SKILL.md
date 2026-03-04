@@ -1242,6 +1242,28 @@ This pattern ensures that:
 4. An email notification is sent to the data team via a Logic App webhook.
 5. The pipeline explicitly fails with a clear error message for the Monitoring Hub.
 
+## OneLake Desktop Sync — Local Pipeline Debugging
+
+If OneLake desktop sync is installed, data engineers can inspect pipeline output files locally after pipeline runs complete.
+
+**Debug pipeline outputs locally**:
+- Browse `Tables/<table>/` to check Parquet file count and sizes after a Copy or Notebook activity writes
+- Read `_delta_log/` transaction entries to verify the last commit operation and row counts
+- Inspect `Files/` for staging data written by Copy activities
+
+```python
+import deltalake
+
+path = r"C:\Users\<user>\OneLake - <tenant>\<workspace>\<lakehouse>.Lakehouse\Tables\pipeline_output"
+dt = deltalake.DeltaTable(path)
+print(f"Version: {dt.version()}, Files: {len(dt.files())}")
+print(dt.history(5))  # Last 5 commits — check pipeline activity names
+```
+
+**Critical rule**: Never write to `Tables/` locally. Use the pipeline to re-run and fix outputs.
+
+Triggers: `onelake pipeline debug`, `local pipeline output`
+
 ## Progressive Disclosure — Reference Files
 
 | Topic | File |

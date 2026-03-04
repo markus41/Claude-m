@@ -1415,6 +1415,26 @@ This pattern ensures:
 - **Error handling**: Every activity has a failure path to the notification activity.
 - **Parameterization**: No hardcoded values — everything is driven by pipeline parameters.
 
+## OneLake Desktop Sync — Local Data Access
+
+If OneLake desktop sync is installed, data engineers can access lakehouse data directly from the local filesystem without Spark or API authentication.
+
+**Local path**: `C:\Users\<user>\OneLake - <tenant>\<workspace>\<lakehouse>.Lakehouse\{Files,Tables}\`
+
+**What you can do locally**:
+- **Inspect Delta tables**: Read schema, row counts, and history with `deltalake`, `polars`, or `DuckDB` — no Spark cluster spin-up needed
+- **Profile data**: Run `df.describe()`, null counts, and distribution checks on local Delta table snapshots
+- **Stage files for ingestion**: Copy CSV/Parquet/JSON to `Files/landing/` — files sync to OneLake and Spark reads them via `Files/landing/*.csv`
+- **Debug pipeline output**: Inspect Parquet files in `Tables/` after a pipeline run to verify data quality locally
+
+**Critical rule**: Only write to `Files/`. Never write to `Tables/` — direct writes corrupt Delta transaction logs.
+
+**Development workflow**: Profile locally → prototype with polars/pandas → convert to PySpark → deploy to Fabric → validate output locally.
+
+Triggers: `onelake desktop sync`, `onelake local`, `local delta`, `local lakehouse`
+
+→ Full reference: [`references/onelake-desktop-sync.md`](./references/onelake-desktop-sync.md)
+
 ## Progressive Disclosure — Reference Files
 
 | Topic | File |
@@ -1424,4 +1444,5 @@ This pattern ensures:
 | Pipeline REST API, Copy activity, activity dependencies, parallel execution, retry, monitoring | [`references/data-pipelines.md`](./references/data-pipelines.md) |
 | Bronze/Silver/Gold patterns, incremental load, CDC, schema enforcement, data quality | [`references/medallion-architecture.md`](./references/medallion-architecture.md) |
 | Spark tuning, partition strategies, Delta optimization, V-Order, CU consumption, caching | [`references/performance-optimization.md`](./references/performance-optimization.md) |
+| OneLake desktop sync, local path convention, Delta table local reads, file staging workflow | [`references/onelake-desktop-sync.md`](./references/onelake-desktop-sync.md) |
 - **Monitoring**: Failure alerts sent via webhook to Teams/Slack/PagerDuty.

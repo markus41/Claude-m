@@ -1,0 +1,32 @@
+{
+  "name": "fabric-data-store",
+  "version": "1.0.0",
+  "description": "Microsoft Fabric data store operations - Cosmos DB database, SQL database, Snowflake database links, datamarts, and Event Schema Set governance.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "fabric",
+    "data-store",
+    "cosmos-db",
+    "sql-database",
+    "snowflake-link",
+    "datamart",
+    "event-schema-set"
+  ],
+  "skills": [
+    "./skills/fabric-data-store/SKILL.md"
+  ],
+  "agents": [
+    "./agents/fabric-data-store-reviewer.md"
+  ],
+  "commands": [
+    "./commands/store-setup.md",
+    "./commands/fabric-cosmos-db-database-manage.md",
+    "./commands/datamart-manage.md",
+    "./commands/event-schema-set-manage.md",
+    "./commands/fabric-snowflake-database-link.md",
+    "./commands/fabric-sql-database-manage.md"
+  ]
+}

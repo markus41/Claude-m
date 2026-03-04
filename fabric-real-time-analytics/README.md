@@ -1,43 +1,35 @@
-# Fabric Real-Time Analytics Plugin
+# fabric-real-time-analytics
 
-Microsoft Fabric Real-Time Analytics — create Eventhouses and KQL databases, build eventstreams for streaming ingestion, write KQL queries with time series analysis and anomaly detection, design Real-Time Dashboards with auto-refresh tiles, and configure Data Activator triggers for automated alerting.
+Microsoft Fabric Real-Time Analytics — Eventhouse, KQL databases, eventstreams, KQL querysets, and real-time dashboards.
 
-## What This Plugin Provides
+## Purpose
 
-This is a **knowledge plugin** — it gives Claude deep expertise in Fabric Real-Time Analytics so it can design streaming pipelines, write KQL queries, configure eventstreams, build dashboards, and set up data-driven alerts. It does not contain runtime code, MCP servers, or executable scripts.
+`fabric-real-time-analytics` delivers deterministic workflows for streaming ingestion, KQL authoring, and real-time observability.
+
+## Prerequisites
+
+- Fabric workspace with Eventhouse permissions.
+- KQL database and eventstream creation rights.
+- Workspace role: Admin, Member, or Contributor with analytics item permissions.
 
 ## Setup
 
-Run `/setup` to install Kusto SDKs and configure Fabric workspace access:
-
-```
-/setup              # Full guided setup
-/setup --minimal    # SDKs only
-```
-
-Requires a Fabric workspace with an Eventhouse or permissions to create one.
+Run `/setup` to configure workspace authentication and KQL tooling.
 
 ## Commands
 
 | Command | Description |
-|---------|-------------|
-| `/setup` | Install Kusto SDKs, authenticate to Fabric, configure workspace access |
-| `/eventhouse-create` | Create an Eventhouse with KQL database, table schema, and policies |
-| `/kql-query` | Generate and run KQL queries from natural-language descriptions |
-| `/eventstream-create` | Design an Eventstream pipeline with sources, transforms, and destinations |
-| `/rt-dashboard-create` | Create a Real-Time Dashboard with KQL tiles, parameters, and auto-refresh |
-| `/data-activator-trigger` | Create Data Activator triggers for automated alerting on data conditions |
+|---|---|
+| `/setup` | Configure Fabric workspace and KQL dependencies. |
+| `/eventhouse-create` | Create Eventhouse with KQL database and table schema baselines. |
+| `/kql-query` | Generate and run KQL queries from natural-language requests. |
+| `/eventstream-create` | Design eventstream source-transform-destination pipelines. |
+| `/rt-dashboard-create` | Create a real-time dashboard with KQL-powered tiles. |
+| `/data-activator-trigger` | Configure Data Activator triggers for alerting. |
+| `/kql-queryset-manage` | Manage KQL Queryset item lifecycle and governance checks. |
 
 ## Agent
 
 | Agent | Description |
-|-------|-------------|
-| **Real-Time Analytics Reviewer** | Reviews KQL databases, eventstreams, dashboards, and Data Activator configs for schema design, query efficiency, pipeline correctness, and security |
-
-## Trigger Keywords
-
-The skill activates automatically when conversations mention: `real time analytics`, `kql`, `kusto`, `eventhouse`, `eventstream`, `kql database`, `streaming ingestion`, `real time dashboard`, `fabric kql`, `data activator`, `reflex`, `event processing`, `time series fabric`.
-
-## Author
-
-Markus Ahling
+|---|---|
+| **Real-Time Analytics Reviewer** | Reviews KQL, eventstream, dashboard, and alerting configurations for reliability and security. |

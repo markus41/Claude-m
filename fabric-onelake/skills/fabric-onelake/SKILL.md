@@ -539,12 +539,32 @@ Any tool that supports ADLS Gen2 can connect to OneLake:
 - Azure Data Factory — use ADLS Gen2 linked service with OneLake endpoint
 - Custom applications — use `@azure/storage-file-datalake` or REST API
 
-**OneLake file explorer** (Windows):
-Microsoft provides a OneLake file explorer application for Windows that mounts OneLake as a drive:
-1. Install from Microsoft Store or download from Microsoft
-2. Sign in with Azure AD
-3. OneLake appears as a mounted drive with workspace > item > folder hierarchy
-4. Drag and drop files, use standard file operations
+**OneLake desktop sync** (Windows):
+Microsoft provides the OneLake desktop sync app (formerly "OneLake file explorer") for Windows that mirrors OneLake to the local filesystem, enabling direct file access without API calls.
+
+Setup: Install from Microsoft Store → sign in with Entra ID → files appear at `C:\Users\<user>\OneLake - <tenant>\`.
+
+Local path structure:
+```
+C:\Users\<user>\OneLake - <tenant>\<workspace>\<item>.Lakehouse\
+  ├── Files\       ← unmanaged files (CSV, Parquet, JSON)
+  └── Tables\      ← managed Delta tables (read locally, never write here)
+```
+
+**Key capabilities**:
+- Browse workspaces, lakehouses, and tables as regular folders
+- Read Delta tables locally with `deltalake`, `polars`, or `DuckDB` — no Spark cluster needed
+- Copy files to `Files/landing/` to upload data for Spark ingestion
+- Inspect `_delta_log/` for schema metadata and transaction history
+- Near-real-time bidirectional sync (seconds to minutes)
+- Offline access for pinned files
+
+**Critical rule**: Only write to `Files/`. Never write to `Tables/` — direct writes bypass Delta transaction logs and corrupt managed tables. All Delta table writes must go through Spark or pipeline activities.
+
+Triggers: `onelake desktop sync`, `onelake local`, `local file access onelake`, `onelake file explorer`, `local delta table`, `onelake sync`
+
+→ For full details: [`references/onelake-desktop-sync.md`](./references/onelake-desktop-sync.md)
+→ To browse locally synced files: `/onelake-local-browse`
 
 ## 8. Security & Access Control
 
@@ -903,3 +923,4 @@ analytics-workspace
 | DFS API reference, authentication, list/upload/download/delete files, ABFSS URI scheme, Storage Explorer | [`references/file-explorer-api.md`](./references/file-explorer-api.md) |
 | Workspace identity, cross-workspace shortcut creation, access control layers, lineage across workspaces | [`references/cross-workspace-access.md`](./references/cross-workspace-access.md) |
 | Data access roles, sensitivity labels, audit logs (KQL), data residency, Purview integration, retention | [`references/governance.md`](./references/governance.md) |
+| OneLake desktop sync, local path convention, Delta table local reads, Files/ write patterns, sync behavior | [`references/onelake-desktop-sync.md`](./references/onelake-desktop-sync.md) |

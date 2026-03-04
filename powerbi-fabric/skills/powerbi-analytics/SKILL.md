@@ -100,6 +100,25 @@ Microsoft Power BI spans Desktop (authoring DAX measures, Power Query M transfor
 - Scaffold PBIP projects with correct folder structure (.pbip, .Dataset/definition/, .Report/definition/) and TMDL files.
 - Consult `references/pbip-format.md` for TMDL syntax, model.bim schema, and Git workflow conventions.
 
+## OneLake Desktop Sync — Local Data Profiling
+
+If OneLake desktop sync is installed, Power BI report developers can profile lakehouse source tables locally before building visuals.
+
+**Profile source data locally**:
+```python
+import polars as pl
+
+path = r"C:\Users\<user>\OneLake - <tenant>\<workspace>\<lakehouse>.Lakehouse\Tables\fact_sales"
+df = pl.read_delta(path)
+print(f"Rows: {len(df)}")
+print(df.describe())          # Summary statistics for measure columns
+print(df.n_unique("region"))  # Cardinality check for slicer columns
+```
+
+**Use case**: Understand data volumes, cardinality, and distributions before designing DAX measures and Power BI visuals. Local profiling avoids consuming Fabric CU capacity for exploratory queries.
+
+Triggers: `onelake powerbi local`, `local data profiling powerbi`
+
 ## Reference Files
 
 | Reference | Path | Content |

@@ -1,0 +1,26 @@
+{
+  "name": "entra-access-reviews",
+  "version": "1.0.0",
+  "description": "Microsoft Entra access review automation - stale privileged access detection, review cycle drafting, remediation ticket generation, and status reporting.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "entra",
+    "access",
+    "reviews"
+  ],
+  "skills": [
+    "./skills/entra-access-reviews/SKILL.md"
+  ],
+  "agents": [
+    "./agents/entra-access-reviews-reviewer.md"
+  ],
+  "commands": [
+    "./commands/access-reviews-setup.md",
+    "./commands/access-reviews-stale-privileged.md",
+    "./commands/access-reviews-cycle-draft.md",
+    "./commands/access-reviews-remediation-tickets.md",
+    "./commands/access-reviews-status-report.md"
+  ]
+}
