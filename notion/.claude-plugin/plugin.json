@@ -1,0 +1,38 @@
+{
+  "name": "notion",
+  "version": "1.0.0",
+  "description": "Comprehensive Notion mastery — page design and styling, every block type, databases and formulas, AI features, MCP integration, REST API automation, and professional page templates",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "notion",
+    "notion-api",
+    "page-design",
+    "databases",
+    "formulas",
+    "blocks",
+    "columns",
+    "callouts",
+    "ai-blocks",
+    "notion-mcp",
+    "templates",
+    "synced-blocks",
+    "workspace"
+  ],
+  "skills": [
+    "./skills/notion-mastery/SKILL.md"
+  ],
+  "agents": [
+    "./agents/notion-page-designer.md",
+    "./agents/notion-database-architect.md"
+  ],
+  "commands": [
+    "./commands/notion-page.md",
+    "./commands/notion-db.md",
+    "./commands/notion-style.md",
+    "./commands/notion-search.md",
+    "./commands/notion-template.md",
+    "./commands/notion-formula.md"
+  ]
+}

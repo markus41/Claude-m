@@ -1,0 +1,38 @@
+{
+  "name": "powerbi-paginated-reports",
+  "version": "1.0.0",
+  "description": "Power BI paginated reports through Fabric — RDL authoring, VB.NET expressions, data source configuration, rendering/export, REST API automation, SSRS-to-Fabric migration, performance tuning, and troubleshooting",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "power-bi",
+    "paginated-reports",
+    "rdl",
+    "ssrs",
+    "report-builder",
+    "fabric",
+    "vb-expressions",
+    "report-definition-language",
+    "sql-server-reporting-services",
+    "rendering",
+    "subscriptions"
+  ],
+  "skills": [
+    "./skills/paginated-reports/SKILL.md"
+  ],
+  "agents": [
+    "./agents/rdl-reviewer.md",
+    "./agents/paginated-performance-advisor.md"
+  ],
+  "commands": [
+    "./commands/pr-setup.md",
+    "./commands/pr-scaffold.md",
+    "./commands/pr-validate.md",
+    "./commands/pr-deploy.md",
+    "./commands/pr-migrate.md",
+    "./commands/pr-datasource.md",
+    "./commands/pr-subscription.md",
+    "./commands/pr-expression.md"
+  ]
+}

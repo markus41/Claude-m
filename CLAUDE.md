@@ -37,6 +37,7 @@ Then re-run `/plugin marketplace add markus41/Claude-m`.
 | `m365-admin` | cloud | Tenant admin: users, groups, licenses, Exchange, SharePoint |
 | `dataverse-schema` | cloud | Dataverse tables, columns, relationships, FetchXML |
 | `powerbi-fabric` | analytics | DAX, Power Query M, Fabric workspaces, PBIP projects |
+| `powerbi-paginated-reports` | analytics | Paginated reports through Fabric — RDL, expressions, data sources, export, SSRS migration |
 | `powerplatform-alm` | devops | Solution transport, CI/CD pipelines, PCF scaffolding |
 | `onedrive` | productivity | Upload, download, share, delta sync via Graph |
 | `planner-todo` | productivity | Planner plans, buckets, tasks, and To Do lists |
@@ -99,6 +100,17 @@ Then re-run `/plugin marketplace add markus41/Claude-m`.
 | `dynamics-365-field-service` | productivity | Dynamics 365 Field Service — work orders, bookings, resource scheduling, service accounts, assets, and IoT-triggered service events |
 | `dynamics-365-project-ops` | productivity | Dynamics 365 Project Operations — projects, WBS, time and expense tracking, resource assignments, project contracts, and billing |
 | `business-central` | productivity | Dynamics 365 Business Central ERP — finance (GL, journal entries, AP/AR), supply chain (sales invoices, purchase orders), and inventory management |
+| `microsoft-intune` | security | Device lifecycle and compliance management for Microsoft Intune and Endpoint Manager - non-compliant device detection, lost device actions, compliance policy rollout, and app protection policy review. |
+| `defender-endpoint` | security | Microsoft Defender for Endpoint operations - incident triage, machine isolation, live response package metadata checks, and evidence summary generation. |
+| `azure-kubernetes` | cloud | Azure Kubernetes Service operations - cluster inventory, pod failure diagnostics, node pool scaling, and policy posture checks. |
+| `azure-backup-recovery` | cloud | Azure Backup and Site Recovery operations - job health checks, restore drill readiness, recovery plan audits, and cross-region resilience checks. |
+| `azure-api-management` | cloud | Azure API Management operations - API inventory, policy drift detection, key rotation workflows, and contract diff checks across revisions. |
+| `azure-service-bus` | cloud | Azure messaging operations for Service Bus and event-driven workloads - lag scans, dead-letter replay planning, stale subscription cleanup, and namespace quota checks. |
+| `azure-service-health` | cloud | Azure Service Health operations - active incident watchlists, impact scoring, runbook mapping, and communications-ready outage summaries. |
+| `m365-meeting-intelligence` | productivity | Meeting transcript intelligence for Teams and Outlook - transcript fetch, commitment extraction, task handoff, and owner reminder workflows. |
+| `entra-access-reviews` | security | Microsoft Entra access review automation - stale privileged access detection, review cycle drafting, remediation ticket generation, and status reporting. |
+| `planner-orchestrator` | productivity | Intelligent orchestration for Microsoft Planner — ship tasks with Claude Code, triage backlogs, plan sprint buckets, monitor deadlines, and balance workloads across plans. Integrates with microsoft-teams-mcp, microsoft-outlook-mcp, and powerbi-fabric when installed. |
+| `notion` | productivity | Comprehensive Notion mastery — page design, every block type, databases, formulas, AI features, MCP integration, REST API, and professional templates |
 
 Install any plugin with:
 ```bash
@@ -142,4 +154,5 @@ npm run validate:all
 4. **MSP multi-tenant health**
    Install: `lighthouse-health` + `license-optimizer` + `servicedesk-runbooks`
    Prompt: "Score all tenants for security posture and generate a monthly customer-ready report."
+
 
