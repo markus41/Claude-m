@@ -41,7 +41,7 @@ Then re-run `/plugin marketplace add markus41/Claude-m`.
 | `powerplatform-alm` | devops | Solution transport, CI/CD pipelines, PCF scaffolding |
 | `onedrive` | productivity | Upload, download, share, delta sync via Graph |
 | `planner-todo` | productivity | Planner plans, buckets, tasks, and To Do lists |
-| `azure-devops` | devops | Git repos, YAML pipelines, work items, pull requests |
+| `azure-devops` | devops | Comprehensive Azure DevOps — Git repos with passwordless auth (GCM, WIF, SSH), YAML and Classic pipelines, environments, agents, work items, boards, test plans, security, dashboards, wikis, service hooks, Analytics OData, CLI, and extensions |
 | `entra-id-admin` | security | Users, groups, PIM, MFA, admin units, licenses, B2B, entitlement management |
 | `entra-id-security` | security | App registrations, conditional access, sign-in risk |
 | `powerapps` | productivity | Canvas Power Fx, model-driven apps, custom connectors |
@@ -59,7 +59,7 @@ Then re-run `/plugin marketplace add markus41/Claude-m`.
 | `microsoft-forms-surveys` | productivity | Create surveys, collect responses, summarize results |
 | `microsoft-lists-tracker` | productivity | Lists for process tracking, issue logs, project trackers |
 | `copilot-studio-bots` | productivity | Bot topics, trigger phrases, generative AI orchestration |
-| `onenote-knowledge-base` | productivity | Notebooks, sections, pages — team wiki and meeting notes |
+| `onenote-knowledge-base` | productivity | Headless-first OneNote automation for advanced notebooks, rich page design, task boards, and patchable knowledge workflows. |
 | `microsoft-loop` | productivity | Microsoft Loop workspaces, pages, and portable Loop components — collaborative spaces with real-time sync across Teams, Outlook, and OneNote via Graph API |
 | `power-pages` | productivity | Power Pages sites, Liquid templates, web forms, table permissions |
 | `azure-web-apps` | cloud | App Service web apps, deployment slots, custom domains, CI/CD |
@@ -83,6 +83,14 @@ Then re-run `/plugin marketplace add markus41/Claude-m`.
 | `fabric-gitops-cicd` | devops | Microsoft Fabric GitOps CI/CD — workspace Git integration, deployment pipelines, artifact promotion, branch strategy, and release validation |
 | `fabric-capacity-ops` | analytics | Microsoft Fabric Capacity Operations — CU monitoring, throttling diagnostics, workload tuning, autoscale planning, and cost-performance optimization |
 | `fabric-mirroring` | analytics | Microsoft Fabric Mirroring — source onboarding, CDC replication, latency monitoring, schema drift handling, and reconciliation workflows |
+| `fabric-data-prep-jobs` | analytics | Microsoft Fabric data preparation jobs - Dataflow Gen1, Apache Airflow jobs, mounted Azure Data Factory pipelines, and dbt job governance for deterministic prep workflows. |
+| `fabric-data-store` | analytics | Microsoft Fabric data store operations - Cosmos DB database, SQL database, Snowflake database links, datamarts, and Event Schema Set governance. |
+| `fabric-ai-agents` | analytics | Microsoft Fabric AI and operations agents - anomaly detector, data agent, operations agent, ontology, and digital twin builder workflows with preview guardrails. |
+| `fabric-graph-geo` | analytics | Microsoft Fabric graph and geospatial analytics - graph model, graph queryset, map, and exploration workflows with preview guardrails. |
+| `fabric-developer-runtime` | devops | Microsoft Fabric developer runtime operations - GraphQL API, environments, user data functions, and variable library governance. |
+| `fabric-distribution-apps` | productivity | Microsoft Fabric org app distribution - package, permission model, release, and adoption workflows for organizational app rollout. |
+| `fabric-mirroring-azure` | analytics | Microsoft Fabric mirroring for Azure-native sources - Cosmos DB, PostgreSQL, Databricks catalog, Azure SQL Database, and SQL Managed Instance. |
+| `fabric-mirroring-external` | analytics | Microsoft Fabric mirroring for external sources - generic databases, BigQuery, Oracle, SAP, Snowflake, and SQL Server with preview caveats where applicable. |
 | `fabric-security-governance` | security | Microsoft Fabric Security Governance — workspace RBAC, RLS/OLS patterns, sensitivity labels, lineage controls, and audit readiness |
 | `fabric-observability` | analytics | Microsoft Fabric Observability — Monitor Hub triage, notebook/pipeline reliability runbooks, SLA tracking, alert design, and incident diagnostics |
 | `azure-graph-dotnet` | devops | Scaffold and build Microsoft Graph C# / .NET solutions on Azure — Functions, Container Jobs, Azure Identity, Polly resilience, and SharePoint file intelligence implementations |
@@ -154,5 +162,3 @@ npm run validate:all
 4. **MSP multi-tenant health**
    Install: `lighthouse-health` + `license-optimizer` + `servicedesk-runbooks`
    Prompt: "Score all tenants for security posture and generate a monthly customer-ready report."
-
-

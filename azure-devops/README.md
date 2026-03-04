@@ -1,50 +1,103 @@
 # Azure DevOps Plugin
 
-A Claude Code knowledge plugin for Azure DevOps — Git repositories, YAML pipelines, work items, pull requests, WIQL queries, and artifact management via the Azure DevOps REST API.
+A comprehensive Claude Code knowledge plugin for Azure DevOps — covering the entire platform: Git repositories with passwordless authentication, YAML and Classic pipelines, deployment environments, work items and boards, test plans, security and permissions, dashboards, wikis, service hooks, Analytics OData, CLI, and marketplace extensions.
 
 ## What This Plugin Provides
 
-This is a **knowledge plugin** -- it gives Claude deep expertise in Azure DevOps so it can generate correct REST API integration code, YAML pipeline definitions, WIQL queries, and work item management workflows. It does not contain runtime code, MCP servers, or executable scripts.
+This is a **knowledge plugin** — it gives Claude deep expertise across all Azure DevOps services so it can generate correct REST API integration code, YAML pipeline definitions, WIQL queries, Git authentication configurations, security policies, and administrative workflows. It does not contain runtime code, MCP servers, or executable scripts.
 
 ## Setup
 
-Run `/setup` to configure authentication and verify Azure DevOps access:
+Run `/ado-setup` to configure authentication and verify Azure DevOps access:
 
 ```
-/setup                                    # Full guided setup
-/setup --minimal                          # Node.js dependencies only
-/setup --org myorg --project myproject    # Specify org and project
+/ado-setup                                    # Full guided setup with GCM, PAT, or OAuth
+/ado-setup --minimal                          # Dependencies only
+/ado-setup --org myorg --project myproject    # Specify org and project
 ```
 
-## Capabilities
+For passwordless Git authentication:
+```
+/ado-git-auth --method gcm                    # Git Credential Manager with Entra OAuth
+/ado-git-auth --method ssh                    # SSH key setup
+/ado-git-auth --method wif                    # Workload Identity Federation for CI/CD
+```
 
-| Area | What Claude Can Do |
-|------|-------------------|
-| **Repositories** | Create repos, manage branches, configure branch policies |
-| **Pipelines** | Generate multi-stage YAML pipelines for any language/framework |
-| **Work Items** | Create, update, and query work items (User Stories, Bugs, Tasks, Features) |
-| **Pull Requests** | Create PRs, add reviewers, manage comments and auto-complete |
-| **WIQL** | Write and execute Work Item Query Language queries |
-| **Artifacts** | Manage package feeds for NuGet, npm, Maven, and Python |
-| **Review** | Analyze pipeline YAML, API code, and WIQL for correctness and security |
+## Skills (5)
 
-## Commands
+| Skill | Focus Areas |
+|-------|-------------|
+| **Azure DevOps Repos** | Git repositories, pull requests, branch policies, code search, passwordless Git auth (GCM, SSH, WIF) |
+| **Azure DevOps Pipelines** | YAML pipelines, Classic releases, deployment environments, agent pools, variable groups, service connections |
+| **Azure DevOps Boards** | Work items, WIQL queries, Kanban boards, sprint planning, process customization, delivery plans |
+| **Azure DevOps Testing** | Test plans, test suites, test cases, test runs, test configurations, test analytics |
+| **Azure DevOps Admin** | Security namespaces, dashboards, wikis, service hooks, Analytics OData, CLI, extensions, artifact feeds |
 
+## Commands (25)
+
+### Repos & Git
 | Command | Description |
 |---------|-------------|
-| `/ado-repo-create` | Create a Git repository in an Azure DevOps project |
-| `/ado-pipeline-create` | Generate a YAML pipeline for Node, .NET, Python, or Docker |
-| `/ado-workitem-create` | Create a work item (User Story, Bug, Task, Feature) |
-| `/ado-pr-create` | Create a pull request with reviewers |
-| `/ado-build-status` | Check recent pipeline build status |
-| `/ado-query-workitems` | Query work items with WIQL or preset queries |
-| `/setup` | Configure PAT or OAuth and verify project access |
+| `/ado-setup` | Configure authentication (GCM, PAT, OAuth, SSH) and verify access |
+| `/ado-repo-create` | Create a Git repository with init options and branch config |
+| `/ado-pr-create` | Create pull requests with auto-complete, draft mode, and merge strategy |
+| `/ado-branch-policy` | Configure branch policies (reviewers, build validation, status checks) |
+| `/ado-git-auth` | Set up passwordless Git auth — GCM, SSH, WIF, managed identity |
 
-## Agent
+### Pipelines
+| Command | Description |
+|---------|-------------|
+| `/ado-pipeline-create` | Generate YAML pipelines with multi-stage templates and service connections |
+| `/ado-build-status` | Check build status with log inspection and failure analysis |
+| `/ado-pipeline-run` | Trigger pipeline runs with parameters and variable overrides |
+| `/ado-environment-create` | Create deployment environments with approval checks and gates |
+| `/ado-variable-group` | Manage variable groups with Key Vault linking |
+| `/ado-agent-status` | Check agent pool health and diagnose offline agents |
+| `/ado-service-connection` | Create WIF, managed identity, or SP service connections |
+
+### Boards
+| Command | Description |
+|---------|-------------|
+| `/ado-workitem-create` | Create work items with relations, custom fields, and bulk creation |
+| `/ado-query-workitems` | Query work items with WIQL, pagination, and tree queries |
+| `/ado-sprint-plan` | Manage iterations, assign work, and view sprint burndown |
+| `/ado-delivery-plan` | Create cross-team delivery plans with timeline management |
+
+### Testing
+| Command | Description |
+|---------|-------------|
+| `/ado-test-plan` | Create test plans, suites, and test cases with configurations |
+| `/ado-test-run` | Execute test runs and view test analytics and trends |
+
+### Administration
+| Command | Description |
+|---------|-------------|
+| `/ado-wiki` | Create and manage project and code wikis |
+| `/ado-dashboard` | Create dashboards and configure widgets |
+| `/ado-permissions` | View and set security namespace ACLs and permissions |
+| `/ado-service-hook` | Create webhook subscriptions for DevOps events |
+| `/ado-process` | Manage inherited processes, custom WITs, fields, and rules |
+| `/ado-extensions` | Search, install, and manage marketplace extensions |
+| `/ado-analytics` | Run OData analytics queries for work items, pipelines, and tests |
+
+## Agents (4)
 
 | Agent | Description |
 |-------|-------------|
-| **Azure DevOps Reviewer** | Reviews REST API usage, YAML pipeline syntax, WIQL queries, and credential security |
+| **Azure DevOps Reviewer** | Reviews REST API usage, YAML pipeline syntax, WIQL queries, service connection security, and credential handling |
+| **Pipeline Debugger** | Diagnoses pipeline failures — analyzes logs, identifies flaky tests, checks agent capabilities, suggests fixes |
+| **Security Auditor** | Audits security posture — overprivileged connections, branch policy gaps, credential exposure, permission sprawl |
+| **Migration Planner** | Plans Classic-to-YAML migration — maps stages to environments, converts tasks, preserves approval gates |
+
+## Examples (5)
+
+| Example | Content |
+|---------|---------|
+| `pipeline-templates.md` | 6+ ready-to-use YAML templates: Node.js, .NET, Python, Docker, Terraform, multi-stage |
+| `automation-scripts.md` | TypeScript/CLI scripts for bulk work items, pipeline triggers, PR automation |
+| `git-auth-recipes.md` | Step-by-step passwordless Git setup for workstations, CI/CD, containers |
+| `security-recipes.md` | Branch protection matrix, least-privilege connections, PAT rotation, audit queries |
+| `integration-patterns.md` | Service hooks to Teams/Slack, webhooks to Azure Functions, OData to Power BI |
 
 ## Plugin Structure
 
@@ -53,24 +106,20 @@ azure-devops/
 ├── .claude-plugin/
 │   └── plugin.json
 ├── skills/
-│   └── azure-devops/
-│       └── SKILL.md
-├── commands/
-│   ├── ado-repo-create.md
-│   ├── ado-pipeline-create.md
-│   ├── ado-workitem-create.md
-│   ├── ado-pr-create.md
-│   ├── ado-build-status.md
-│   ├── ado-query-workitems.md
-│   └── setup.md
-├── agents/
-│   └── devops-reviewer.md
+│   ├── azure-devops-repos/        # Git repos, PRs, branch policies, auth
+│   ├── azure-devops-pipelines/    # YAML, Classic, environments, agents, variables
+│   ├── azure-devops-boards/       # Work items, WIQL, sprints, process customization
+│   ├── azure-devops-testing/      # Test plans, suites, runs, analytics
+│   └── azure-devops-admin/        # Security, dashboards, wiki, hooks, CLI, extensions
+├── commands/                      # 25 command files
+├── agents/                        # 4 agent files
+├── examples/                      # 5 example files
 └── README.md
 ```
 
 ## Trigger Keywords
 
-The skill activates automatically when conversations mention: `azure devops`, `ado`, `devops pipeline`, `work item`, `pull request`, `azure repos`, `yaml pipeline`, `build pipeline`, `release pipeline`, `sprint board`, `devops board`, `artifact feed`.
+The plugin activates automatically for: `azure devops`, `ado`, `yaml pipeline`, `azure repos`, `pull request`, `branch policy`, `git credential manager`, `passwordless git`, `work item`, `wiql`, `sprint`, `kanban`, `test plan`, `test case`, `ado security`, `ado permissions`, `ado wiki`, `service hook`, `ado dashboard`, `ado analytics`, `az devops cli`, `deployment environment`, `agent pool`, `variable group`, `service connection`, `classic release`.
 
 ## Author
 

@@ -232,17 +232,21 @@
       "strict": true
     },
     {
-      "name": "azure-devops",
-      "source": "./azure-devops",
-      "description": "Azure DevOps project management â€” Git repos, YAML pipelines, work items, pull requests, WIQL queries, and artifact feeds via REST API.",
-      "category": "devops",
-      "tags": [
-        "microsoft",
-        "azure-devops",
-        "pipelines",
-        "repos",
-        "work-items",
-        "cicd"
+      “name”: “azure-devops”,
+      “source”: “./azure-devops”,
+      “description”: “Comprehensive Azure DevOps expertise — Git repos with passwordless auth (GCM, WIF, SSH), YAML and Classic pipelines, deployment environments, agent pools, work items, boards, sprints, test plans, security namespaces, dashboards, wikis, service hooks, Analytics OData, CLI, and extensions.”,
+      “category”: “devops”,
+      “tags”: [
+        “microsoft”,
+        “azure-devops”,
+        “pipelines”,
+        “repos”,
+        “work-items”,
+        “cicd”,
+        “git”,
+        “test-plans”,
+        “security”,
+        “analytics”
       ],
       "strict": true
     },
@@ -501,7 +505,7 @@
     {
       "name": "onenote-knowledge-base",
       "source": "./onenote-knowledge-base",
-      "description": "OneNote Knowledge Base â€” read, create, and search notebooks, sections, and pages via Graph API for team documentation.",
+      "description": "Headless-first OneNote automation for advanced notebooks, rich page design, task boards, and patchable knowledge workflows.",
       "category": "productivity",
       "tags": [
         "microsoft",
@@ -1327,6 +1331,133 @@
         "notion-api",
         "notion-mcp",
         "templates"
+      ],
+      "strict": true
+    },
+    {
+      "name": "fabric-data-prep-jobs",
+      "source": "./fabric-data-prep-jobs",
+      "description": "Microsoft Fabric data preparation jobs - Dataflow Gen1, Apache Airflow jobs, mounted Azure Data Factory pipelines, and dbt job governance for deterministic prep workflows.",
+      "category": "analytics",
+      "tags": [
+        "microsoft",
+        "fabric",
+        "data-prep",
+        "airflow",
+        "dataflow-gen1",
+        "dbt",
+        "adf"
+      ],
+      "strict": true
+    },
+    {
+      "name": "fabric-data-store",
+      "source": "./fabric-data-store",
+      "description": "Microsoft Fabric data store operations - Cosmos DB database, SQL database, Snowflake database links, datamarts, and Event Schema Set governance.",
+      "category": "analytics",
+      "tags": [
+        "microsoft",
+        "fabric",
+        "data-store",
+        "sql-database",
+        "cosmos-db",
+        "datamart",
+        "event-schema"
+      ],
+      "strict": true
+    },
+    {
+      "name": "fabric-ai-agents",
+      "source": "./fabric-ai-agents",
+      "description": "Microsoft Fabric AI and operations agents - anomaly detector, data agent, operations agent, ontology, and digital twin builder workflows with preview guardrails.",
+      "category": "analytics",
+      "tags": [
+        "microsoft",
+        "fabric",
+        "ai-agents",
+        "anomaly-detector",
+        "ontology",
+        "digital-twin"
+      ],
+      "strict": true
+    },
+    {
+      "name": "fabric-graph-geo",
+      "source": "./fabric-graph-geo",
+      "description": "Microsoft Fabric graph and geospatial analytics - graph model, graph queryset, map, and exploration workflows with preview guardrails.",
+      "category": "analytics",
+      "tags": [
+        "microsoft",
+        "fabric",
+        "graph",
+        "queryset",
+        "map",
+        "exploration"
+      ],
+      "strict": true
+    },
+    {
+      "name": "fabric-developer-runtime",
+      "source": "./fabric-developer-runtime",
+      "description": "Microsoft Fabric developer runtime operations - GraphQL API, environments, user data functions, and variable library governance.",
+      "category": "devops",
+      "tags": [
+        "microsoft",
+        "fabric",
+        "runtime",
+        "graphql",
+        "environment",
+        "udf",
+        "variable-library"
+      ],
+      "strict": true
+    },
+    {
+      "name": "fabric-distribution-apps",
+      "source": "./fabric-distribution-apps",
+      "description": "Microsoft Fabric org app distribution - package, permission model, release, and adoption workflows for organizational app rollout.",
+      "category": "productivity",
+      "tags": [
+        "microsoft",
+        "fabric",
+        "org-app",
+        "distribution",
+        "release",
+        "adoption"
+      ],
+      "strict": true
+    },
+    {
+      "name": "fabric-mirroring-azure",
+      "source": "./fabric-mirroring-azure",
+      "description": "Microsoft Fabric mirroring for Azure-native sources - Cosmos DB, PostgreSQL, Databricks catalog, Azure SQL Database, and SQL Managed Instance.",
+      "category": "analytics",
+      "tags": [
+        "microsoft",
+        "fabric",
+        "mirroring",
+        "azure",
+        "cosmos",
+        "postgresql",
+        "azure-sql"
+      ],
+      "strict": true
+    },
+    {
+      "name": "fabric-mirroring-external",
+      "source": "./fabric-mirroring-external",
+      "description": "Microsoft Fabric mirroring for external sources - generic databases, BigQuery, Oracle, SAP, Snowflake, and SQL Server with preview caveats where applicable.",
+      "category": "analytics",
+      "tags": [
+        "microsoft",
+        "fabric",
+        "mirroring",
+        "external",
+        "bigquery",
+        "oracle",
+        "sap",
+        "snowflake",
+        "sql-server"
       ],
       "strict": true
     }

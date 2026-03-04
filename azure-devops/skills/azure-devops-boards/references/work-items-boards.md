@@ -143,8 +143,8 @@ await updateWorkItem(42, {
 
 | Relation Reference Name | Display Name | Notes |
 |------------------------|--------------|-------|
-| `System.LinkTypes.Hierarchy-Forward` | Child | Parent → Child direction |
-| `System.LinkTypes.Hierarchy-Reverse` | Parent | Child → Parent direction |
+| `System.LinkTypes.Hierarchy-Forward` | Child | Parent -> Child direction |
+| `System.LinkTypes.Hierarchy-Reverse` | Parent | Child -> Parent direction |
 | `System.LinkTypes.Related` | Related | Bidirectional |
 | `System.LinkTypes.Dependency-Forward` | Successor | Depends on |
 | `System.LinkTypes.Dependency-Reverse` | Predecessor | Is depended upon by |
@@ -339,13 +339,13 @@ async function updateColumnWipLimits(
 
 | Type | Default States | Notes |
 |------|---------------|-------|
-| Epic | New → Active → Resolved → Closed | Top-level feature grouping |
-| Feature | New → Active → Resolved → Closed | Groups user stories |
-| User Story | New → Active → Resolved → Closed | End-user facing capability |
-| Task | New → Active → Closed | Concrete implementation unit |
-| Bug | New → Active → Resolved → Closed | Defect tracking |
-| Issue | New → Active → Closed | Impediment or risk |
-| Test Case | Design → Ready → Closed | Testing artifact |
+| Epic | New -> Active -> Resolved -> Closed | Top-level feature grouping |
+| Feature | New -> Active -> Resolved -> Closed | Groups user stories |
+| User Story | New -> Active -> Resolved -> Closed | End-user facing capability |
+| Task | New -> Active -> Closed | Concrete implementation unit |
+| Bug | New -> Active -> Resolved -> Closed | Defect tracking |
+| Issue | New -> Active -> Closed | Impediment or risk |
+| Test Case | Design -> Ready -> Closed | Testing artifact |
 
 ---
 

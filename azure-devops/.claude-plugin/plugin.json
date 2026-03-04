@@ -1,7 +1,7 @@
 {
   "name": "azure-devops",
-  "version": "1.0.0",
-  "description": "Azure DevOps project management — repos, pipelines, work items, pull requests, and build/release automation",
+  "version": "2.0.0",
+  "description": "Comprehensive Azure DevOps expertise — Git repos with passwordless auth (GCM, WIF, SSH), YAML and Classic pipelines, deployment environments, agent pools, work items, boards, sprints, test plans, security namespaces, dashboards, wikis, service hooks, Analytics OData, CLI, and extensions",
   "author": {
     "name": "Markus Ahling"
   },
@@ -12,21 +12,53 @@
     "pipelines",
     "work-items",
     "pull-requests",
-    "cicd"
+    "cicd",
+    "git",
+    "yaml",
+    "test-plans",
+    "security",
+    "dashboards",
+    "wiki",
+    "analytics"
   ],
   "skills": [
-    "./skills/azure-devops/SKILL.md"
+    "./skills/azure-devops-repos/SKILL.md",
+    "./skills/azure-devops-pipelines/SKILL.md",
+    "./skills/azure-devops-boards/SKILL.md",
+    "./skills/azure-devops-testing/SKILL.md",
+    "./skills/azure-devops-admin/SKILL.md"
   ],
   "agents": [
-    "./agents/devops-reviewer.md"
+    "./agents/devops-reviewer.md",
+    "./agents/devops-pipeline-debugger.md",
+    "./agents/devops-security-auditor.md",
+    "./agents/devops-migration-planner.md"
   ],
   "commands": [
+    "./commands/ado-setup.md",
     "./commands/ado-repo-create.md",
-    "./commands/ado-pipeline-create.md",
-    "./commands/ado-workitem-create.md",
     "./commands/ado-pr-create.md",
+    "./commands/ado-branch-policy.md",
+    "./commands/ado-git-auth.md",
+    "./commands/ado-pipeline-create.md",
     "./commands/ado-build-status.md",
+    "./commands/ado-pipeline-run.md",
+    "./commands/ado-environment-create.md",
+    "./commands/ado-variable-group.md",
+    "./commands/ado-agent-status.md",
+    "./commands/ado-service-connection.md",
+    "./commands/ado-workitem-create.md",
     "./commands/ado-query-workitems.md",
-    "./commands/ado-setup.md"
+    "./commands/ado-sprint-plan.md",
+    "./commands/ado-delivery-plan.md",
+    "./commands/ado-test-plan.md",
+    "./commands/ado-test-run.md",
+    "./commands/ado-wiki.md",
+    "./commands/ado-dashboard.md",
+    "./commands/ado-permissions.md",
+    "./commands/ado-service-hook.md",
+    "./commands/ado-process.md",
+    "./commands/ado-extensions.md",
+    "./commands/ado-analytics.md"
   ]
 }
