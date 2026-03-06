@@ -30,8 +30,27 @@ const schema = {
                 required: ['source', 'repo'],
                 additionalProperties: true,
                 properties: {
-                  source: { type: 'string', minLength: 1 },
+                  source: { const: 'github' },
                   repo: { type: 'string', minLength: 1 }
+                }
+              },
+              {
+                type: 'object',
+                required: ['source', 'url', 'path'],
+                additionalProperties: true,
+                properties: {
+                  source: { const: 'git-subdir' },
+                  url: { type: 'string', minLength: 1 },
+                  path: { type: 'string', minLength: 1 }
+                }
+              },
+              {
+                type: 'object',
+                required: ['source', 'package'],
+                additionalProperties: true,
+                properties: {
+                  source: { const: 'npm' },
+                  package: { type: 'string', minLength: 1 }
                 }
               }
             ]
