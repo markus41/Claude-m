@@ -10,6 +10,14 @@ export type MicrosoftProduct =
   | "azure"
   | "sharepoint";
 
+/** Plugin category used in the marketplace definition. */
+export type PluginCategory =
+  | "productivity"
+  | "cloud"
+  | "analytics"
+  | "devops"
+  | "security";
+
 /** Authentication configuration for a plugin. */
 export interface PluginAuth {
   /** OAuth 2.0 client ID (Microsoft Entra / Azure AD app registration). */
@@ -33,13 +41,35 @@ export interface PluginManifest {
   /** Semver version string. */
   version: string;
   /** Microsoft product this plugin targets. */
-  product: MicrosoftProduct;
+  product?: MicrosoftProduct;
+  /** Plugin category from the marketplace definition. */
+  category?: PluginCategory;
+  /** Discovery tags. */
+  tags?: string[];
   /** Microsoft Graph / REST API scopes required by the plugin. */
-  requiredScopes: string[];
+  requiredScopes?: string[];
   /** Names of the MCP tools exposed by the plugin. */
-  tools: string[];
+  tools?: string[];
   /** Plugin author. */
-  author: string;
+  author?: string;
+}
+
+/** Shape of a plugin entry inside .claude-plugin/marketplace.json. */
+export interface MarketplacePluginEntry {
+  name: string;
+  source: string | { source: string; repo: string };
+  description: string;
+  category: PluginCategory;
+  tags: string[];
+  strict?: boolean;
+}
+
+/** Top-level shape of .claude-plugin/marketplace.json. */
+export interface MarketplaceDefinition {
+  name: string;
+  description: string;
+  owner?: { name: string };
+  plugins: MarketplacePluginEntry[];
 }
 
 /** Result returned by every plugin tool invocation. */
