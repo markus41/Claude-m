@@ -140,7 +140,9 @@ export async function createServer(): Promise<McpServer> {
           p.name.toLowerCase().includes(keyword) ||
           p.description.toLowerCase().includes(keyword) ||
           p.id.toLowerCase().includes(keyword) ||
-          p.tools.some((t) => t.toLowerCase().includes(keyword))
+          (p.tools ?? []).some((t) => t.toLowerCase().includes(keyword)) ||
+          (p.tags ?? []).some((t) => t.toLowerCase().includes(keyword)) ||
+          (p.category ?? "").toLowerCase().includes(keyword)
       );
 
       if (matches.length === 0) {
@@ -148,7 +150,7 @@ export async function createServer(): Promise<McpServer> {
           content: [
             {
               type: "text",
-              text: `No plugins found matching '${args.keyword}'. Try searching for: teams, excel, outlook, azure, sharepoint, email, calendar, files, or resources.`,
+              text: `No plugins found matching '${args.keyword}'. Try searching for: teams, excel, outlook, azure, sharepoint, fabric, security, analytics, devops, cloud, or productivity.`,
             },
           ],
         };
@@ -166,7 +168,8 @@ export async function createServer(): Promise<McpServer> {
                   id: p.id,
                   name: p.name,
                   description: p.description,
-                  toolCount: p.tools.length,
+                  category: p.category,
+                  toolCount: (p.tools ?? []).length,
                 })),
               },
               null,
@@ -204,7 +207,7 @@ export async function createServer(): Promise<McpServer> {
       }
 
       const toolsList = plugins.flatMap((p) =>
-        p.tools.map((toolName) => ({
+        (p.tools ?? []).map((toolName) => ({
           tool: toolName,
           plugin: p.id,
           pluginName: p.name,
