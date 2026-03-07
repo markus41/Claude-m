@@ -1,0 +1,11 @@
+{
+  "name": "domain-business-name-finder",
+  "version": "0.1.0",
+  "description": "Brainstorm business names and check domain availability across popular TLDs using web search",
+  "author": {
+    "name": "markus41",
+    "url": "https://github.com/markus41/Claude-m"
+  },
+  "license": "MIT",
+  "keywords": ["domain", "business", "naming", "branding", "startup"]
+}
