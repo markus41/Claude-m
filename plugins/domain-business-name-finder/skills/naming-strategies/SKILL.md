@@ -8,7 +8,7 @@ version: 0.1.0
 
 ## Purpose
 
-Provide structured naming methodology for businesses, products, apps, and projects — combining creative brainstorming with real-time domain availability checking via web search.
+Provide structured naming methodology for businesses, products, apps, and projects — combining creative brainstorming with real-time domain availability checking via MCP-powered tools (WHOIS, Domain Search, Perplexity, Firecrawl).
 
 ## When to Use
 
@@ -77,8 +77,16 @@ For each shortlisted name, check availability across these TLDs:
 - `.ai` — AI/ML companies
 - `.co` — Startup-friendly alternative to .com
 
-**Checking method:**
-Use the WebSearch tool to search for `"domainname.tld" site:instantdomainsearch.com OR site:namecheap.com OR whois` to determine availability. Alternatively, search `domainname.tld availability` or `whois domainname.tld`.
+**Checking method (prefer MCP tools):**
+
+This plugin bundles 4 MCP servers for domain research:
+
+1. **Domain Search MCP** — Bulk-check availability across multiple TLDs using RDAP/WHOIS fallback. No API key needed. Check up to 100 names at once.
+2. **WHOIS MCP** (`whois_lookup`) — Direct WHOIS protocol lookups against authoritative servers. Returns registrar, expiration, nameservers, DNSSEC. Supports 877+ TLDs.
+3. **Perplexity MCP** (`perplexity_search`, `perplexity_chat`) — AI-powered search for competitor research, naming trends, and brand landscape analysis.
+4. **Firecrawl MCP** (`firecrawl_scrape`, `firecrawl_search`) — Scrape registrar pages for pricing, scrape competitor sites for brand analysis.
+
+**Fallback:** Use WebSearch if MCP tools are unavailable.
 
 Present results in a clear table:
 
