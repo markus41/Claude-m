@@ -1,0 +1,11 @@
+{
+  "name": "domain-business-name-finder",
+  "version": "0.2.0",
+  "description": "Brainstorm business names and check domain availability across popular TLDs using Firecrawl, Perplexity, WHOIS, and Domain Search MCP servers",
+  "author": {
+    "name": "markus41",
+    "url": "https://github.com/markus41/Claude-m"
+  },
+  "license": "MIT",
+  "keywords": ["domain", "business", "naming", "branding", "startup"]
+}
