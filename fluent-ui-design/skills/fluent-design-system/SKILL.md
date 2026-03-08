@@ -8,12 +8,19 @@ description: >
   principles from the Fluent 2 ecosystem.
 
   Covers: design tokens (color, spacing, typography, border-radius, shadow, motion), the complete
-  component library (@fluentui/react-components), Teams app theming (FluentProvider, teamsLightTheme,
-  teamsDarkTheme, teamsHighContrastTheme), Griffel CSS-in-JS (makeStyles, mergeClasses, shorthands),
-  layout system (4px base unit, 12-column grid, 6 breakpoint size classes), responsive techniques
-  (reposition, resize, reflow, show/hide, re-architect), accessibility (WCAG 2.1 AA, high contrast,
-  reduced motion, ARIA patterns), brand ramp generation, custom token creation, Figma design kits
-  (Web, iOS, Android, Copilot, Labs), and advanced compound component / slot patterns.
+  component library (@fluentui/react-components), Teams-native multi-surface architecture (tabs,
+  meeting side panel, meeting stage, message extensions, bots/Adaptive Cards, dialogs, SurfaceRouter,
+  TeamsJS context, Live Share collaboration), Teams app theming (FluentProvider, teamsLightTheme,
+  teamsDarkTheme, teamsHighContrastTheme), Griffel CSS-in-JS (makeStyles, mergeClasses, shorthands,
+  makeResetStyles, AOT compilation, selector performance, RTL), deep slot composition and custom
+  component authoring, positioning API, overflow API, motion system (Fluent native + Framer Motion
+  integration, staggered animations, layout animations, springs, gestures, scroll-linked animations),
+  virtualization patterns, layout system (4px base unit, 6 breakpoint size classes), responsive
+  techniques (reposition, resize, reflow, show/hide, re-architect), accessibility (WCAG 2.1 AA,
+  high contrast, reduced motion, ARIA patterns, focus management), token pipeline (brand ramp,
+  custom themes, scoped providers), tree shaking and bundle optimization, Figma design kits
+  (Web, iOS, Android, Copilot, Labs), and Teams-specific component layer (TeamsAppShell,
+  TeamsCommandBar, MeetingSidePanelLayout, MeetingStageCanvasFrame).
 
   Example user requests: "build a Teams tab with Fluent UI", "create a custom Fluent theme",
   "what are the Fluent 2 spacing tokens", "make this component accessible", "set up Fluent UI
@@ -82,6 +89,25 @@ triggers:
   - teams app design
   - teams ui
   - teams theming
+  - teams tab
+  - teams meeting
+  - teams meeting side panel
+  - teams meeting stage
+  - teams surface router
+  - teams dialog
+  - teams message extension
+  - teams bot
+  - teams adaptive cards
+  - teams app shell
+  - teams command bar
+  - teams live share
+  - teams manifest
+  - teams toolkit
+  - teams agents sdk
+  - teams web components
+  - teams collaborative
+  - teams iframe
+  - teamsjs
   - fluentui react-components
   - makeStyles
   - css-in-js fluent
@@ -938,73 +964,110 @@ Icon sizing with Fluent components:
 
 ---
 
-## Teams App Integration
+## Teams App Integration — Multi-Surface Architecture
 
-### Setting Up a Teams Tab with Fluent
+### Architectural Position
+
+Fluent UI v9 is the semantic shell; Teams capabilities are the surface map. Use Teams capabilities
+as **surface selectors**, not as your UI framework.
+
+### Surface Tiers
+
+**Tier 1 — Primary UI Surfaces** (full React + Fluent UI v9):
+- Personal tabs, team/channel tabs, group chat tabs
+- Meeting chat/details tabs, meeting side panel, meeting stage
+- All advanced Fluent patterns apply: slots, composition, Griffel, overflow, motion, virtualization
+
+**Tier 2 — Activation Surfaces** (Teams-native, NOT for full Fluent shell):
+- Message extensions: search/share/action entry points → route to tabs
+- Bots + Adaptive Cards: notifications, approvals, summaries, launch-back-into-tab
+- Dialogs: focused creation flows, settings, short-form editors
+
+### Surface-Aware Architecture
 
 ```tsx
-import React, { useState, useEffect } from 'react';
+import { app } from '@microsoft/teams-js';
+
+function SurfaceRouter() {
+  const context = useTeamsContext();
+  switch (context?.frameContext) {
+    case 'content':      return <TabShell context={context} />;
+    case 'sidePanel':    return <MeetingSidePanelLayout context={context} />;
+    case 'meetingStage': return <MeetingStageCanvas context={context} />;
+    default:             return <TabShell context={context} />;
+  }
+}
+```
+
+### Theme Integration
+
+```tsx
 import { FluentProvider, teamsLightTheme, teamsDarkTheme, teamsHighContrastTheme } from '@fluentui/react-components';
 import { app } from '@microsoft/teams-js';
 
-const getTheme = (themeName: string) => {
-  switch (themeName) {
-    case 'dark': return teamsDarkTheme;
-    case 'contrast': return teamsHighContrastTheme;
-    default: return teamsLightTheme;
-  }
-};
+const themeMap = { default: teamsLightTheme, dark: teamsDarkTheme, contrast: teamsHighContrastTheme };
 
-function TeamsApp() {
+function TeamsApp({ children }) {
   const [theme, setTheme] = useState(teamsLightTheme);
-
   useEffect(() => {
     app.initialize().then(() => {
-      app.getContext().then((context) => {
-        setTheme(getTheme(context.app.theme));
-      });
-      app.registerOnThemeChangeHandler((themeName) => {
-        setTheme(getTheme(themeName));
-      });
+      app.getContext().then((ctx) => setTheme(themeMap[ctx.app.theme] ?? teamsLightTheme));
+      app.registerOnThemeChangeHandler((name) => setTheme(themeMap[name] ?? teamsLightTheme));
     });
   }, []);
-
-  return (
-    <FluentProvider theme={theme}>
-      <TabContent />
-    </FluentProvider>
-  );
+  return <FluentProvider theme={theme}>{children}</FluentProvider>;
 }
 ```
 
 ### Teams-Specific Design Patterns
 
-**Conversation UI:**
-- Use `Chat` / `ChatMessage` components (from `@fluentui/react-components` or `@fluentui/react-northstar` migration)
-- Follow left-aligned incoming, right-aligned outgoing message pattern
-- Use `Avatar` + `PresenceBadge` for user identity
+**Meeting Side Panel** (280-320px):
+- Single-column layout, vertical scroll only
+- Use `Accordion` for collapsible sections; critical actions at top
+- Focus on dark theme — meetings optimized for dark mode
+- Switch to overlay behavior around 640px
 
-**Meeting Panel / Side Panel:**
-- Constrained width (280–320px)
-- Use `Accordion` for collapsible sections
-- Keep critical actions at top
-- Use `Skeleton` for loading states
+**Meeting Stage** (shared collaborative canvas):
+- Without side panel: 994x678px default, min 792x382px
+- With side panel: 918x540px default, min 472x382px
+- Best for: dashboards, whiteboards, synchronized review, co-presence
 
-**Task Module / Dialog:**
-- Use Fluent `Dialog` component
-- Standard sizes: small (400px), medium (600px), large (800px)
-- Always provide close button and keyboard escape
+**Meeting Mode Compositions**: Prep mode → Collaboration mode → Presentation mode
 
-**Adaptive Cards:**
-- Use `hostConfig` to align Adaptive Card styling with Fluent tokens
-- Map Fluent colors to Adaptive Card color scheme
-- Use Fluent spacing values for card padding
+**Dialogs**: Single-column; width 280-460px; right-align primary action; brief, task-oriented
 
-**Stage View:**
-- Full-width content area
-- Use responsive layout patterns
-- Leverage `Toolbar` for actions
-- Consider `Drawer` for supplementary panels
+**Adaptive Cards**: Keep thin — summarize, alert, confirm, route. Don't mimic Fluent React capabilities.
+
+**Message Extensions**: Entry points, not destinations. Search → share card → route to tab.
+
+### Platform Tooling
+
+Microsoft recommends **M365 Agents SDK** + **Teams SDK** + **Agents Toolkit** (VS Code).
+TeamsFx is deprecated for modern scenarios. Treat the app manifest as a first-class artifact.
+
+### Host Constraints
+
+1. **Sandboxed iframe** — tabs run in iframes; avoid unrestricted browser API assumptions
+2. **No auto-open** — meeting side panel/stage are user-invoked, not auto-launch
+3. **Cards are thin** — orchestration surfaces, not full app replicas
+
+### Teams-Specific Component Layer
+
+Build product-level primitives: `TeamsAppShell`, `TeamsCommandBar`, `MeetingSidePanelLayout`,
+`MeetingStageCanvasFrame`, `TeamsEntityCard`, `ContextualTaskDialog`
+
+### Motion in Teams
+
+Use Motion/Framer Motion in tabs and meeting surfaces only (not cards/message extensions):
+- **Fluent owns semantics** (tokens, components, accessibility)
+- **Motion owns choreography** (stagger, presence, layout transitions)
+
+### Advanced Widget Boundary
+
+For advanced widgets beyond standard Fluent DOM (Canvas, WebGL, Web Components, Wasm):
+- Only for dense visualizations, graph explorers, collaborative canvases
+- Test in actual Teams desktop/web clients
+- Keep DOM fallback mode for sandboxed environments
 
 ---
 
@@ -1282,7 +1345,7 @@ const renderer = createDOMRenderer();
 For detailed information on specific topics, consult:
 - `${CLAUDE_PLUGIN_ROOT}/skills/fluent-design-system/references/design-tokens-reference.md` — Complete token catalog
 - `${CLAUDE_PLUGIN_ROOT}/skills/fluent-design-system/references/component-catalog.md` — All components with props
-- `${CLAUDE_PLUGIN_ROOT}/skills/fluent-design-system/references/teams-integration.md` — Teams-specific patterns
+- `${CLAUDE_PLUGIN_ROOT}/skills/fluent-design-system/references/teams-integration.md` — Teams-native multi-surface architecture (surface tiers, SurfaceRouter, tab shells, meeting side panel/stage, message extensions, bots/Adaptive Cards, dialogs, TeamsAppShell/TeamsCommandBar/MeetingSidePanelLayout/MeetingStageCanvasFrame components, motion in Teams, advanced widget boundary, Live Share collaboration, host constraints, implementation phases)
 - `${CLAUDE_PLUGIN_ROOT}/skills/fluent-design-system/references/advanced-patterns.md` — Advanced UI architecture (slots, composition, Griffel deep patterns, positioning API, overflow, motion system, virtualization, drawer, carousel, tree shaking, shell/layout, community insights, extending Fluent)
 - `${CLAUDE_PLUGIN_ROOT}/skills/fluent-design-system/references/motion-framer-reference.md` — Motion system deep dive (Fluent v9 native motion, Framer Motion integration, staggered animations, layout animations, springs, gestures, scroll-linked animations, choreography patterns, token pipeline mapping)
 - `${CLAUDE_PLUGIN_ROOT}/skills/fluent-design-system/examples/theme-examples.md` — Theme creation walkthroughs
