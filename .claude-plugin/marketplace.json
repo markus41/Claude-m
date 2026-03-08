@@ -1815,6 +1815,24 @@
         "sql-server"
       ],
       "strict": true
+    },
+    {
+      "name": "domain-business-name-finder",
+      "source": {
+        "source": "git-subdir",
+        "url": "markus41/Claude-m",
+        "path": "plugins/domain-business-name-finder"
+      },
+      "description": "Brainstorm business names and check domain availability across popular TLDs using Firecrawl, Perplexity, WHOIS, and Domain Search MCP servers.",
+      "category": "productivity",
+      "tags": [
+        "domain",
+        "business",
+        "naming",
+        "branding",
+        "startup"
+      ],
+      "strict": true
     }
   ]
 }
