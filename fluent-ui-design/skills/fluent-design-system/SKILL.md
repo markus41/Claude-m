@@ -56,6 +56,27 @@ triggers:
   - fluent icon
   - fluent elevation
   - fluent shadow
+  - fluent slots
+  - fluent composition
+  - fluent positioning
+  - fluent overflow
+  - fluent motion
+  - fluent drawer
+  - fluent carousel
+  - fluent virtualization
+  - fluent tree shaking
+  - fluent bundle
+  - fluent rtl
+  - fluent ssr
+  - fluent nav
+  - fluent command bar
+  - fluent custom component
+  - fluent variant
+  - fluent wrapper
+  - fluent token pipeline
+  - fluent app shell
+  - fluent framer motion
+  - fluent stagger
   - design tokens
   - design system microsoft
   - teams app design
@@ -549,26 +570,41 @@ The `@fluentui/react-components` package provides the full Fluent UI React v9 co
 **Media:**
 - `Image` — Image with fit, shape, shadow, border support
 
-### Compound Component Pattern
+### Compound Component Pattern (Slots)
 
-Fluent UI v9 uses a **compound component pattern** with slots:
+Fluent UI v9 uses a **compound component pattern** with named **slots**. Every component declares
+its anatomy as slots (`root`, `icon`, `contentBefore`, `contentAfter`, etc.) — each slot is a
+"mini component" with its own element type, props, classes, and children:
 
 ```tsx
 import { Button, makeStyles, tokens } from '@fluentui/react-components';
 import { CalendarRegular } from '@fluentui/react-icons';
 
-// Each component exposes named slots
-<Button
-  appearance="primary"
-  size="medium"
-  icon={<CalendarRegular />}            // icon slot
-  iconPosition="before"
->
-  Schedule Meeting                       {/* children slot */}
-</Button>
+// Slot as JSX element (shorthand)
+<Button icon={<CalendarRegular />} appearance="primary">Schedule</Button>
+
+// Slot as props object (for customization)
+<Button icon={{ children: <CalendarRegular />, className: customIconClass }}>Schedule</Button>
+
+// Slot retag via `as` — turns the icon wrapper into a link
+<Button icon={{ as: 'a', href: '#foo', children: '🚀' }}>Navigate</Button>
+
+// Slot as null (hide the slot)
+<CardHeader action={null} header={<Text>Title</Text>} />
 ```
 
-**Slot customization:**
+**Best slot styling approach** (Tiger Oakes): Pass `className` directly via the slot object — no
+child selector needed, most performant. Icons use `fill="currentColor"`, so style with `color`.
+
+**Authoring custom slot-based components** follows a three-part pattern:
+1. `useComponent_unstable(props, ref)` — state hook
+2. `renderComponent_unstable(state)` — render function
+3. `Slots` type definition for strong typing
+
+**Triggers pattern**: `PopoverTrigger`, `MenuTrigger` etc. use `React.cloneElement` to inject
+event handlers and ARIA generically. You can create custom trigger utilities.
+
+**Slot customization example:**
 ```tsx
 <Card>
   <CardHeader
@@ -634,6 +670,18 @@ const MyComponent = ({ highlighted }: { highlighted?: boolean }) => {
   );
 };
 ```
+
+### Critical Griffel Rules
+
+1. **Never concatenate** Griffel classes with string concatenation; always use `mergeClasses()`
+2. **Avoid `!important`**: The atomic system makes it unnecessary
+3. **Use tokens over direct colors**: `tokens.colorBrandForeground1` instead of `'red'`
+4. **Avoid rule duplication**: Don't repeat base styles in permutation styles
+5. **Use `mergeClasses` only once** per element for performance
+6. **No CSS shorthands**: Use Griffel's `shorthands.*` functions instead
+7. **Selector performance**: Tag selectors (`> div`) are slow; class selectors or direct `className` props are fast
+8. **RTL auto-flip**: `makeStyles`/`makeResetStyles` automatically flip CSS for RTL; use `FluentProvider dir="rtl"`
+9. **AOT compilation**: Griffel supports ahead-of-time CSS extraction to eliminate runtime overhead
 
 ### Shorthands
 
@@ -795,6 +843,28 @@ const customTokens = {
 </FluentProvider>
 ```
 
+### Token Pipeline
+
+The `microsoft/fluentui-token-pipeline` generates platform-specific artifacts from JSON design tokens:
+- Source: JSON design tokens in W3C format
+- Outputs: TypeScript themes, CSS variables, design tool exports
+- Extend with custom brand tokens, modes (dark/light, compact/comfortable), and densities
+- Manage multiple brands as code, not ad-hoc overrides
+
+### Scoped Providers for Mixed Themes
+
+```tsx
+// Dark left nav, light content area
+<FluentProvider theme={webDarkTheme}>
+  <NavSidebar />
+</FluentProvider>
+<FluentProvider theme={webLightTheme}>
+  <MainContent />
+</FluentProvider>
+```
+
+Portals and overlays need the correct provider to inherit theme variables.
+
 ---
 
 ## Accessibility
@@ -955,10 +1025,21 @@ const [checked, setChecked] = useState(true);
 <Checkbox checked={checked} onChange={(e, data) => setChecked(data.checked)} />
 ```
 
+### Custom Variants and Wrapper Components
+
+Build product-specific variants as wrapper components:
+```tsx
+const DangerButton = (props: ButtonProps) => {
+  const styles = useStyles();
+  return <Button {...props} className={mergeClasses(styles.danger, props.className)} />;
+};
+```
+Use `mergeClasses` to layer base + variant styles. Over time this becomes a "pattern library."
+
 ### Overflow Pattern
 
 ```tsx
-import { Overflow, OverflowItem, OverflowItemProps } from '@fluentui/react-components';
+import { Overflow, OverflowItem } from '@fluentui/react-components';
 
 <Overflow>
   <div style={{ display: 'flex', gap: '4px' }}>
@@ -971,6 +1052,46 @@ import { Overflow, OverflowItem, OverflowItemProps } from '@fluentui/react-compo
   </div>
 </Overflow>
 ```
+
+Items can be grouped with `groupId`; entire groups overflow together.
+Use `useOverflowMenu()` for overflow count and `useIsOverflowItemVisible()` to hide visible items from the menu.
+
+### Positioning API
+
+```tsx
+<Popover positioning={{
+  position: 'below', align: 'start',
+  overflowBoundary: containerRef.current,
+  flipBoundary: containerRef.current,
+  autoSize: 'always',
+  offset: 8,
+}}>
+```
+
+- Positions: `above`, `below`, `before`, `after`
+- Aligns: `start`, `center`, `end`, `top`, `bottom`
+- `overflowBoundary` constrains; `flipBoundary` flips when no space
+- `positionFixed` for fixed positioning; `autoSize` for auto-sizing
+- Custom target via ref; offset function for dynamic offsets
+
+### Drawer Component
+
+v9 ships `OverlayDrawer` (covers content with scrim) and `InlineDrawer` (pushes content):
+```tsx
+<Drawer type="overlay" position="start" open={open} onOpenChange={(_, { open }) => setOpen(open)}>
+  <DrawerHeader><DrawerHeaderTitle>Panel</DrawerHeaderTitle></DrawerHeader>
+  <DrawerBody>Content</DrawerBody>
+</Drawer>
+```
+- `@fluentui/react-nav-preview`: `Nav`, `NavItem`, `NavSectionHeader`, `NavSubItem`
+- Switch to overlay behavior around 640px width
+
+### Carousel Component
+
+- `CarouselSlider` + `CarouselCard` for slides
+- `CarouselNavContainer` with prev/next + `CarouselNav` pagination dots
+- `CarouselAnnouncer` for accessibility
+- Supports `groupSize`, `circular`, `autoplay` with `autoplayInterval`
 
 ### Virtual Scrolling with DataGrid
 
@@ -988,6 +1109,10 @@ const columns = [
 </DataGrid>
 ```
 
+For virtualization: `@fluentui-contrib/react-data-grid-react-window` (vertical) or
+`@fluentui-contrib/react-data-grid-react-window-grid` (2D). DataGrid selection degrades at 250+ rows
+without virtualization.
+
 ### Portal and Mounting
 
 ```tsx
@@ -998,6 +1123,72 @@ import { Portal } from '@fluentui/react-components';
   <div className={styles.overlay}>Overlay content</div>
 </Portal>
 ```
+
+### Tree Shaking and Bundle Optimization
+
+- Set TypeScript `moduleResolution` to `"node16"` or `"bundler"` (not `"node"`)
+- Import from `@fluentui/react-components` (named ES modules — tree-shakeable)
+- Avoid `import *` patterns; without tree shaking bundles can balloon to 12-18MB
+- Griffel AOT compilation eliminates runtime CSS-in-JS overhead
+
+---
+
+## Motion System
+
+### v9 Motion APIs (`@fluentui/react-motion`)
+
+- **`createPresenceComponent()`**: Factory for enter/exit presence animations (Collapse, Fade, Scale)
+- **`createMotionComponent()`**: Factory for continuous/trigger-based motion
+- **`onMotionFinish`** callback for animation completion
+
+Built-in components from `@fluentui/react-motion-components-preview`:
+- `Collapse`: Height/width transition
+- `Fade`: Opacity transition
+- `Scale`: Scale transform
+
+### Fluent 2 Motion Principles
+
+- Functional, natural, subtle — clarify state changes, not decoration
+- Larger moves = longer durations; important elements animate first
+- Stagger preferred for groups; respect `prefers-reduced-motion`
+
+### Integration with Framer Motion
+
+Use Fluent motion tokens for timing; Framer Motion for rich animations:
+
+```tsx
+import { motion, AnimatePresence } from 'framer-motion';
+import { tokens } from '@fluentui/react-components';
+
+// Map Fluent tokens to Framer Motion
+const transition = {
+  duration: 0.2,              // tokens.durationNormal = 200ms
+  ease: [0.1, 0.9, 0.2, 1],  // tokens.curveDecelerateMid
+};
+
+// Staggered list animations
+const bodyVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.05, delayChildren: 0.02 } },
+};
+const rowVariants = {
+  hidden: { opacity: 0, y: 6 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.18, ease: [0.2, 0, 0, 1] } },
+};
+
+// Wrap Fluent components with motion()
+const MotionTableBody = motion(TableBody);
+const MotionTableRow = motion(TableRow);
+
+// Change key on MotionTableBody to retrigger stagger on filter/sort
+// Use AnimatePresence with exit variants for rows being removed
+```
+
+### Known Motion Gaps
+
+- RTL support for directional animations (e.g., "slide left" doesn't auto-flip)
+- Motion groups/sequences API still in development
+- Motion docs have had Storybook rendering issues
 
 ---
 
@@ -1092,6 +1283,7 @@ For detailed information on specific topics, consult:
 - `${CLAUDE_PLUGIN_ROOT}/skills/fluent-design-system/references/design-tokens-reference.md` — Complete token catalog
 - `${CLAUDE_PLUGIN_ROOT}/skills/fluent-design-system/references/component-catalog.md` — All components with props
 - `${CLAUDE_PLUGIN_ROOT}/skills/fluent-design-system/references/teams-integration.md` — Teams-specific patterns
-- `${CLAUDE_PLUGIN_ROOT}/skills/fluent-design-system/references/advanced-patterns.md` — Advanced UI architecture
+- `${CLAUDE_PLUGIN_ROOT}/skills/fluent-design-system/references/advanced-patterns.md` — Advanced UI architecture (slots, composition, Griffel deep patterns, positioning API, overflow, motion system, virtualization, drawer, carousel, tree shaking, shell/layout, community insights, extending Fluent)
+- `${CLAUDE_PLUGIN_ROOT}/skills/fluent-design-system/references/motion-framer-reference.md` — Motion system deep dive (Fluent v9 native motion, Framer Motion integration, staggered animations, layout animations, springs, gestures, scroll-linked animations, choreography patterns, token pipeline mapping)
 - `${CLAUDE_PLUGIN_ROOT}/skills/fluent-design-system/examples/theme-examples.md` — Theme creation walkthroughs
 - `${CLAUDE_PLUGIN_ROOT}/skills/fluent-design-system/examples/layout-patterns.md` — Responsive layout examples
