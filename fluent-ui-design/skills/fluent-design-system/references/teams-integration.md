@@ -484,3 +484,170 @@ npm install @fluentui/react-components @fluentui/react-icons
 4. **Don't mix Fluent v8 and v9** — Choose one version
 5. **Don't ignore loading states** — Empty content creates confusion
 6. **Don't use inline styles for theming** — Use `makeStyles` with tokens
+
+---
+
+## Meeting Extension Design Specifications
+
+### In-Meeting Tab (Side Panel)
+
+- **Width**: 280px iframe with 20px padding on each side
+- **Layout**: Single-column strongly recommended
+- **Scrolling**: Vertical only
+- **Navigation**: Back button required for multi-layer navigation
+- **Avoid**: Modals/dialogs within the narrow panel
+- **Focus on dark theme** — meetings are optimized for dark theme to reduce visual noise
+
+```tsx
+const useSidePanelStyles = makeStyles({
+  panel: {
+    width: '100%',
+    maxWidth: '280px',
+    padding: tokens.spacingHorizontalL,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: tokens.spacingVerticalM,
+    backgroundColor: tokens.colorNeutralBackground1,
+    overflowY: 'auto',
+    overflowX: 'hidden',
+  },
+});
+```
+
+### In-Meeting Dialog
+
+- **Width**: min 280px (248px iframe) to max 460px (428px iframe)
+- **Height**: 300px iframe (scrollable if content exceeds)
+- **Layout**: Single-column; right-align primary action
+- **Usage**: Sparingly — for brief, task-oriented interactions
+- **Headers**: Two variants (with/without avatar)
+
+### Shared Meeting Stage
+
+- **Without side panel**: 994×678px default, min 792×382px
+- **With side panel**: 918×540px default, min 472×382px
+- **API**: Use `shareAppContentToStage` to share from side panel
+- **Must be responsive** — content should not scroll horizontally
+
+### Collaborative Stageview
+
+- Opens app content in a new Teams window with accompanying side panel conversation
+- Best for collaboration scenarios
+- Fallback hierarchy: `popoutWithChat > popout > modal`
+
+---
+
+## Adaptive Cards 2.0 + Fluent 2 (2025+)
+
+### 10 New Fluent-Aligned Features
+
+1. **Fluent Icons** — Use `iconUrl: "icon:<icon-name>[,regular|filled]"` on action buttons
+2. **Rounded Corners & Borders** — Modern container styling with Fluent-aligned corner radius
+3. **Charts** — Data visualization directly in cards
+4. **Responsive Layout** — Container layouts that adapt to any device
+5. **Star Ratings** — Read-only or interactive star ratings
+6. **Scrollable Containers** — Container scroll bars for lengthy cards
+7. **Conditionally-Enabled Actions** — Buttons activate only after required inputs
+8. **Compound Buttons** — Prompt-starter look and feel
+9. **Inline Video Playback** — YouTube, Vimeo, Dailymotion embedded
+10. **Carousel** — Sliding page presentations
+
+### Adaptive Card Host Config Aligned with Fluent 2
+
+```json
+{
+  "$schema": "http://adaptivecards.io/schemas/host-config.json",
+  "spacing": {
+    "small": 4,
+    "default": 8,
+    "medium": 12,
+    "large": 16,
+    "extraLarge": 24,
+    "padding": 16
+  },
+  "separator": { "lineThickness": 1, "lineColor": "#D1D1D1" },
+  "fontFamily": "Segoe UI Variable, Segoe UI, system-ui, sans-serif",
+  "fontSizes": { "small": 12, "default": 14, "medium": 16, "large": 20, "extraLarge": 24 },
+  "fontWeights": { "lighter": 400, "default": 400, "bolder": 600 },
+  "containerStyles": {
+    "default": {
+      "backgroundColor": "#FFFFFF",
+      "foregroundColors": {
+        "default": { "default": "#242424", "subtle": "#616161" },
+        "accent": { "default": "#5B5FC7", "subtle": "#7F83DB" },
+        "attention": { "default": "#C4314B", "subtle": "#D13438" },
+        "good": { "default": "#0E7A0D", "subtle": "#107C10" },
+        "warning": { "default": "#C87C0A", "subtle": "#CA5010" }
+      }
+    },
+    "emphasis": { "backgroundColor": "#F5F5F5" }
+  }
+}
+```
+
+---
+
+## Fluent UI MCP Servers
+
+### mcp-fluent-ui (npm)
+
+50+ tools for component generation, theming, layout, forms, data, and accessibility.
+
+```json
+{
+  "mcpServers": {
+    "fluentui": {
+      "command": "npx",
+      "args": ["-y", "mcp-fluent-ui"]
+    }
+  }
+}
+```
+
+### fluentui-mcp-server (aminvishvam)
+
+12 tools across 4 categories:
+
+| Category | Tools |
+|---|---|
+| Component Knowledge | `get_component_info`, `search_components`, `get_component_props`, `get_component_examples` |
+| Design System | `get_design_tokens`, `validate_design_tokens` |
+| Code Generation | `generate_component`, `generate_component_hook`, `generate_component_styles` |
+| Validation | `validate_component_design` (scores 0-100), `check_accessibility`, `analyze_component_patterns` |
+
+```json
+{
+  "mcpServers": {
+    "fluentui": {
+      "command": "node",
+      "args": ["/path/to/fluentui-mcp-server/dist/server.js"]
+    }
+  }
+}
+```
+
+---
+
+## Teams Figma Design Kits
+
+| Kit | URL |
+|---|---|
+| **Teams UI Kit** | `figma.com/community/file/916836509871353159/microsoft-teams-ui-kit` |
+| **Meeting Extensions Guidelines** | `figma.com/community/file/888593778835180533` |
+| **Teams App Templates** | `figma.com/community/file/1090688705806687625` |
+| **Fluent 2 Web UI Kit** | `aka.ms/Fluent2Toolkits/Web/Figma` |
+| **Fluent 2 iOS UI Kit** | `aka.ms/Fluent2Toolkits/iOS/Figma` |
+| **Fluent 2 Android UI Kit** | `aka.ms/Fluent2Toolkits/Android/Figma` |
+
+---
+
+## Key Package References
+
+| Package | Purpose |
+|---|---|
+| `@fluentui/react-components` | Primary Fluent UI React v9 (recommended for all new Teams apps) |
+| `@fluentui/react-icons` | 20,000+ icons in Regular and Filled styles |
+| `@fluentui/react-theme` | Theme definitions including Teams themes |
+| `@fluentui/react-teams` | Teams-specific components (Board, Dashboard, Form, List, Chart) |
+| `@microsoft/teams-js` | Teams JavaScript SDK for context, theming, deep links |
+| `@fluentui/react-northstar` | Legacy Teams library (superseded by react-components) |
