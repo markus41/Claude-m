@@ -1,0 +1,45 @@
+{
+  "name": "fluent-ui-design",
+  "version": "1.0.0",
+  "description": "Microsoft Fluent 2 design system mastery — design tokens, color system, typography, layout, components, Teams theming, advanced UI patterns, Griffel styling, accessibility, responsive design, and Figma design kits",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "fluent",
+    "fluent-ui",
+    "fluent-2",
+    "design-system",
+    "design-tokens",
+    "react-components",
+    "teams",
+    "teams-theming",
+    "griffel",
+    "makeStyles",
+    "figma",
+    "accessibility",
+    "responsive",
+    "typography",
+    "color-tokens",
+    "layout",
+    "adaptive-cards",
+    "copilot"
+  ],
+  "skills": [
+    "./skills/fluent-design-system/SKILL.md"
+  ],
+  "agents": [
+    "./agents/fluent-ui-designer.md",
+    "./agents/fluent-component-builder.md",
+    "./agents/fluent-theme-engineer.md"
+  ],
+  "commands": [
+    "./commands/fluent-setup.md",
+    "./commands/fluent-component.md",
+    "./commands/fluent-theme.md",
+    "./commands/fluent-tokens.md",
+    "./commands/fluent-layout.md",
+    "./commands/fluent-audit.md"
+  ]
+}

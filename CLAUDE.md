@@ -118,6 +118,7 @@ Then re-run `/plugin marketplace add markus41/Claude-m`.
 | `m365-meeting-intelligence` | productivity | Meeting transcript intelligence for Teams and Outlook - transcript fetch, commitment extraction, task handoff, and owner reminder workflows. |
 | `entra-access-reviews` | security | Microsoft Entra access review automation - stale privileged access detection, review cycle drafting, remediation ticket generation, and status reporting. |
 | `planner-orchestrator` | productivity | Intelligent orchestration for Microsoft Planner — ship tasks with Claude Code, triage backlogs, plan sprint buckets, monitor deadlines, and balance workloads across plans. Integrates with microsoft-teams-mcp, microsoft-outlook-mcp, and powerbi-fabric when installed. |
+| `fluent-ui-design` | devops | Microsoft Fluent 2 design system mastery — design tokens, color system, typography, layout, components, Teams theming, Griffel styling, accessibility, responsive design, and Figma design kits |
 | `notion` | productivity | Comprehensive Notion mastery — page design, every block type, databases, formulas, AI features, MCP integration, REST API, and professional templates |
 
 Install any plugin with:
