@@ -1833,6 +1833,29 @@
         "startup"
       ],
       "strict": true
+    },
+    {
+      "name": "fluent-ui-design",
+      "source": {
+        "source": "git-subdir",
+        "url": "markus41/Claude-m",
+        "path": "fluent-ui-design"
+      },
+      "description": "Microsoft Fluent 2 design system mastery — design tokens, color system, typography, layout, components, Teams theming, Griffel styling, accessibility, responsive design, and Figma design kits.",
+      "category": "devops",
+      "tags": [
+        "microsoft",
+        "fluent",
+        "fluent-ui",
+        "design-system",
+        "react",
+        "teams",
+        "tokens",
+        "accessibility",
+        "theming",
+        "figma"
+      ],
+      "strict": true
     }
   ]
 }
