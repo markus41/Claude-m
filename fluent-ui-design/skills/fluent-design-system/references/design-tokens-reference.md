@@ -289,6 +289,40 @@ Each palette provides:
 Brand shadows use the brand color instead of black:
 - `shadow2Brand`, `shadow4Brand`, `shadow8Brand`, `shadow16Brand`, `shadow28Brand`, `shadow64Brand`
 
+### Shadow Color Tokens
+
+| Token | Light | Dark |
+|---|---|---|
+| `colorNeutralShadowAmbient` | `rgba(0,0,0,0.12)` | `rgba(0,0,0,0.24)` |
+| `colorNeutralShadowKey` | `rgba(0,0,0,0.14)` | `rgba(0,0,0,0.28)` |
+| `colorNeutralShadowAmbientLighter` | `rgba(0,0,0,0.06)` | `rgba(0,0,0,0.12)` |
+| `colorNeutralShadowKeyLighter` | `rgba(0,0,0,0.07)` | `rgba(0,0,0,0.14)` |
+| `colorNeutralShadowAmbientDarker` | `rgba(0,0,0,0.20)` | `rgba(0,0,0,0.40)` |
+| `colorNeutralShadowKeyDarker` | `rgba(0,0,0,0.24)` | `rgba(0,0,0,0.48)` |
+| `colorBrandShadowAmbient` | `rgba(0,0,0,0.30)` | `rgba(0,0,0,0.30)` |
+| `colorBrandShadowKey` | `rgba(0,0,0,0.25)` | `rgba(0,0,0,0.25)` |
+
+Brand shadows on colored surfaces use a luminosity equation:
+- Luminosity = 0.2126 × R + 0.7152 × G + 0.0722 × B
+- Shadow 1 opacity = Round(42 - 0.116 × luminosity)
+- Shadow 2 opacity = Round(34 - 0.09 × luminosity)
+
+### Stencil / Skeleton Tokens
+
+| Token | Light | Dark | Usage |
+|---|---|---|---|
+| `colorNeutralStencil1` | grey[90] | grey[34] | Primary skeleton placeholder |
+| `colorNeutralStencil2` | grey[98] | grey[20] | Secondary skeleton placeholder |
+| `colorNeutralStencil1Alpha` | blackAlpha[10] | whiteAlpha[10] | Semi-transparent skeleton |
+| `colorNeutralStencil2Alpha` | blackAlpha[5] | whiteAlpha[5] | Subtle skeleton |
+
+### Interaction State Pattern
+
+Components get **darker** on interaction in light theme:
+- rest (lightest) → hover → pressed/selected (darkest)
+- Focus does not change color — adds a thicker stroke instead
+- Windows reverses this: controls get **lighter** on interaction
+
 ---
 
 ## Motion Tokens — Full Reference

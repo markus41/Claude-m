@@ -232,19 +232,35 @@ Font weights:
 | `fontWeightSemibold` | 600 |
 | `fontWeightBold` | 700 |
 
-Typography presets (composite tokens):
-- `typographyStyles.caption1` — 12px/16px regular
-- `typographyStyles.caption1Strong` — 12px/16px semibold
-- `typographyStyles.body1` — 14px/20px regular
-- `typographyStyles.body1Strong` — 14px/20px semibold
-- `typographyStyles.body2` — 16px/22px regular
-- `typographyStyles.subtitle1` — 20px/28px semibold
-- `typographyStyles.subtitle2` — 16px/22px semibold
-- `typographyStyles.title1` — 28px/36px semibold (Hero 700)
-- `typographyStyles.title2` — 24px/32px semibold (Base 600)
-- `typographyStyles.title3` — 20px/28px semibold (Base 500)
-- `typographyStyles.largeTitle` — 40px/52px semibold (Hero 900)
-- `typographyStyles.display` — 68px/92px semibold (Hero 1000)
+Typography presets (composite tokens — `typographyStyles.*`):
+
+| Preset | Weight | Size | Line Height |
+|---|---|---|---|
+| `caption2` | Regular (400) | 10px | 14px |
+| `caption2Strong` | Semibold (600) | 10px | 14px |
+| `caption1` | Regular (400) | 12px | 16px |
+| `caption1Strong` | Semibold (600) | 12px | 16px |
+| `caption1Stronger` | Bold (700) | 12px | 16px |
+| `body1` | Regular (400) | 14px | 20px |
+| `body1Strong` | Semibold (600) | 14px | 20px |
+| `body1Stronger` | Bold (700) | 14px | 20px |
+| `subtitle2` | Semibold (600) | 16px | 22px |
+| `subtitle2Stronger` | Bold (700) | 16px | 22px |
+| `subtitle1` | Semibold (600) | 20px | 26px |
+| `title3` | Semibold (600) | 24px | 32px |
+| `title2` | Semibold (600) | 28px | 36px |
+| `title1` | Semibold (600) | 32px | 40px |
+| `largeTitle` | Semibold (600) | 40px | 52px |
+| `display` | Semibold (600) | 68px | 92px |
+
+Platform font families:
+
+| Platform | Font |
+|---|---|
+| Web | Segoe UI |
+| Windows | Segoe UI Variable |
+| macOS / iOS | San Francisco Pro |
+| Android | Roboto |
 
 ### Motion Tokens
 
