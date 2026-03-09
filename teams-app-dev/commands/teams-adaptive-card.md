@@ -1,7 +1,7 @@
 ---
 name: teams-adaptive-card
 description: "Generate an Adaptive Card JSON payload from a description, with optional data templating"
-argument-hint: "<description> [--template] [--version <1.4|1.5>]"
+argument-hint: "<description> [--template] [--version <1.4|1.5|1.6>] [--meeting]"
 allowed-tools:
   - Read
   - Write
@@ -18,58 +18,49 @@ Create an Adaptive Card JSON payload based on a natural-language description.
 
 ### 1. Parse the Request
 
-- `<description>` — What the card should display (e.g., "approval form with requester name, amount, and approve/reject buttons").
-- `--template` — When set, use Adaptive Card Templating syntax (`${field}`, `$data`, `$when`) so the card can be bound to dynamic data.
-- `--version` — Target schema version: `1.4` (broader compatibility) or `1.5` (Teams default, supports `Table`). Default: `1.5`.
+- `<description>` — What the card should display.
+- `--template` — Use Adaptive Card Templating syntax (`${field}`, `$data`, `$when`).
+- `--version` — Target schema version: `1.4` (Outlook), `1.5` (Teams mobile + desktop), or `1.6` (Teams desktop/web). Default: `1.5`.
+- `--meeting` — Optimize for meeting surfaces (content bubble, side panel). Uses compact layout.
 
 ### 2. Design the Card
-
-Based on the description, select appropriate elements:
 
 **Layout selection**:
 - Key-value data → `FactSet`
 - Side-by-side content → `ColumnSet` with `Column`s
 - Tabular data → `Table` (v1.5+) with `fallback` for older clients
 - Lists of items → `Container` with repeated elements (or `$data` loop if `--template`)
-- Images → `Image` or `ImageSet`
-
-**Input selection** (when the card collects data):
-- Free text → `Input.Text` (set `isMultiline` for long text)
-- Choices → `Input.ChoiceSet` (dropdown or radio)
-- Date/time → `Input.Date` / `Input.Time`
-- Yes/no → `Input.Toggle`
-- Numbers → `Input.Number`
 
 **Action selection**:
 - Submit data to a bot → `Action.Execute` with a `verb` (preferred for Teams)
 - Open a URL → `Action.OpenUrl`
 - Show additional content → `Action.ShowCard`
 
+**Meeting card optimizations** (when `--meeting`):
+- Use compact layout for content bubbles
+- Include `Action.Execute` for in-meeting voting or acknowledgment
+- Avoid large images or complex tables in content bubbles
+
 ### 3. Apply Templating (when --template)
 
-Wrap dynamic values in `${expression}` syntax:
 - Simple binding: `"text": "Hello, ${name}!"`
-- Array iteration: `"$data": "${items}"` on a `Container`
+- Array iteration: `"$data": "${items}"`
 - Conditional rendering: `"$when": "${status == 'active'}"`
-
-Generate a matching data schema that shows the expected shape of the `$root` object.
 
 ### 4. Validate the Card
 
-Check the generated card against these rules:
-- `type` is `"AdaptiveCard"` at root level.
-- `version` matches the requested version.
-- Every `Input.*` has a unique `id`.
-- Every `Action.Execute` has a `verb`.
-- Card JSON is under 28 KB.
-- All image URLs use HTTPS or are template placeholders.
-- Include `fallbackText` when using v1.5+ elements.
+- `type` is `"AdaptiveCard"` at root level
+- `version` matches the requested version
+- Every `Input.*` has a unique `id`
+- Every `Action.Execute` has a `verb`
+- Card JSON is under 28 KB
+- All image URLs use HTTPS
+- Include `fallbackText` when using v1.5+ elements
 
 ### 5. Output
 
-Write the card JSON to a file (e.g., `cards/<name>.json`) or display it inline. If `--template` was used, also output an example data object and the rendered result.
-
-Show the user how to use the card:
+Write the card JSON to a file or display inline. Show usage:
 - In a bot: `CardFactory.adaptiveCard(cardPayload)`
 - With templating: `new Template(cardPayload).expand({ $root: data })`
-- Testing: Paste into https://adaptivecards.io/designer/ with Host App set to "Microsoft Teams"
+- In a meeting content bubble: include `channelData.notification.alertInMeeting: true`
+- Testing: Paste into the Adaptive Cards Designer with Host App set to "Microsoft Teams"
