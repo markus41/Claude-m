@@ -1,17 +1,17 @@
-# Teams Tabs — Personal, Channel, and Meeting Reference
+# Teams Tabs — Personal, Channel, Meeting, and NAA Reference
 
 ## Overview
 
-Teams tabs are web pages embedded inside Microsoft Teams using an iframe. There are three main tab types: personal (static), channel/group (configurable), and meeting tabs. This reference covers the manifest structure, Teams JS SDK v2, SSO authentication with MSAL, deep links, tab context objects, and Teams Toolkit scaffolding patterns.
+Teams tabs are web pages embedded inside Microsoft Teams using an iframe. Tab types include personal (static), channel/group (configurable), and meeting tabs. This reference covers the manifest structure, TeamsJS v2.24+, SSO authentication, Nested App Authentication (NAA), deep links, dialog invocation from tabs, and meeting surface patterns.
 
 ---
 
-## App Manifest Structure for Tabs
+## App Manifest Structure for Tabs (v1.25)
 
 ```json
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.17/MicrosoftTeams.schema.json",
-  "manifestVersion": "1.17",
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.25/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.25",
   "version": "1.0.0",
   "id": "{{AAD_APP_CLIENT_ID}}",
   "name": {
@@ -20,7 +20,7 @@ Teams tabs are web pages embedded inside Microsoft Teams using an iframe. There 
   },
   "description": {
     "short": "Short description (80 chars max)",
-    "full": "Full description of app capabilities (4000 chars max)"
+    "full": "Full description (4000 chars max)"
   },
   "developer": {
     "name": "Contoso",
@@ -33,7 +33,6 @@ Teams tabs are web pages embedded inside Microsoft Teams using an iframe. There 
     "outline": "outline.png"
   },
   "accentColor": "#FFFFFF",
-
   "staticTabs": [
     {
       "entityId": "homeTab",
@@ -41,46 +40,35 @@ Teams tabs are web pages embedded inside Microsoft Teams using an iframe. There 
       "contentUrl": "https://{{TAB_DOMAIN}}/tab/home",
       "websiteUrl": "https://{{TAB_DOMAIN}}/tab/home",
       "scopes": ["personal"]
-    },
-    {
-      "entityId": "settingsTab",
-      "name": "Settings",
-      "contentUrl": "https://{{TAB_DOMAIN}}/tab/settings",
-      "scopes": ["personal"]
     }
   ],
-
   "configurableTabs": [
     {
       "configurationUrl": "https://{{TAB_DOMAIN}}/tab/configure",
       "canUpdateConfiguration": true,
       "scopes": ["team", "groupChat"],
-      "context": [
-        "channelTab",
-        "privateChatTab",
-        "meetingChatTab",
-        "meetingDetailsTab",
-        "meetingSidePanel",
-        "meetingStage"
-      ],
-      "sharePointPreviewImage": "https://{{TAB_DOMAIN}}/preview.png",
-      "supportedSharePointHosts": ["sharePointFullPage", "sharePointWebPart"]
+      "context": ["channelTab", "privateChatTab", "meetingChatTab", "meetingDetailsTab", "meetingSidePanel", "meetingStage"],
+      "supportsChannelFeatures": "tier1"
     }
   ],
-
   "permissions": ["identity", "messageTeamMembers"],
   "validDomains": ["{{TAB_DOMAIN}}"],
-
   "webApplicationInfo": {
     "id": "{{AAD_APP_CLIENT_ID}}",
     "resource": "api://{{TAB_DOMAIN}}/{{AAD_APP_CLIENT_ID}}"
+  },
+  "nestedAppAuthInfo": {
+    "enableNAA": true
+  },
+  "backgroundLoadConfiguration": {
+    "contentUrl": "https://{{TAB_DOMAIN}}/tab/preload"
   }
 }
 ```
 
 ---
 
-## Teams JS SDK v2 — Core API
+## TeamsJS v2.24+ — Core API
 
 ```typescript
 import * as microsoftTeams from "@microsoft/teams-js";
@@ -88,84 +76,67 @@ import * as microsoftTeams from "@microsoft/teams-js";
 // MUST call app.initialize() before any other SDK call
 await microsoftTeams.app.initialize();
 
-// Get full context
 const context = await microsoftTeams.app.getContext();
 console.log({
   teamId: context.team?.internalId,
   channelId: context.channel?.id,
-  channelName: context.channel?.displayName,
-  userObjectId: context.user?.id,              // AAD Object ID
+  userObjectId: context.user?.id,
   userPrincipalName: context.user?.userPrincipalName,
   locale: context.app.locale,
-  theme: context.app.theme,                    // "default" | "dark" | "contrast"
-  entityId: context.page.id,                  // entityId from manifest
-  subPageId: context.page.subPageId,          // deep link sub-page
-  sessionId: context.app.sessionId,
-  hostName: context.app.host.name,            // "Teams" | "Outlook" | "Office"
-  frameContext: context.page.frameContext,    // "content" | "task" | "sidePanel" etc.
+  theme: context.app.theme,           // "default" | "dark" | "contrast"
+  entityId: context.page.id,
+  subPageId: context.page.subPageId,
+  hostName: context.app.host.name,    // "Teams" | "Outlook" | "Office"
+  frameContext: context.page.frameContext,
   meetingId: context.meeting?.id,
 });
 ```
 
+**Minimum version for Store submission**: TeamsJS v2.19.0
+
 ---
 
-## Tab Configuration Page (Configurable Tab)
+## Tab Configuration Page
 
 ```typescript
-import * as microsoftTeams from "@microsoft/teams-js";
-import { useEffect, useState } from "react";
+useEffect(() => {
+  (async () => {
+    await microsoftTeams.app.initialize();
 
-export const ConfigPage: React.FC = () => {
-  const [selectedOption, setSelectedOption] = useState("dashboard");
-
-  useEffect(() => {
-    (async () => {
-      await microsoftTeams.app.initialize();
-
-      // Tell Teams the configuration is valid/invalid
-      microsoftTeams.pages.config.registerOnSaveHandler(async (saveEvent) => {
-        await microsoftTeams.pages.config.setConfig({
-          entityId: `tab-${selectedOption}`,
-          configName: `My Tab - ${selectedOption}`,
-          contentUrl: `https://mytabdomain.com/tab/${selectedOption}?theme={theme}&locale={locale}`,
-          websiteUrl: `https://mytabdomain.com/tab/${selectedOption}`,
-          removeUrl: `https://mytabdomain.com/tab/remove`,
-        });
-        saveEvent.notifySuccess();
+    microsoftTeams.pages.config.registerOnSaveHandler(async (saveEvent) => {
+      await microsoftTeams.pages.config.setConfig({
+        entityId: `tab-${selectedOption}`,
+        configName: `My Tab - ${selectedOption}`,
+        contentUrl: `https://myapp.com/tab/${selectedOption}`,
+        websiteUrl: `https://myapp.com/tab/${selectedOption}`,
+        removeUrl: `https://myapp.com/tab/remove`,
       });
+      saveEvent.notifySuccess();
+    });
 
-      microsoftTeams.pages.config.registerOnRemoveHandler((removeEvent) => {
-        // Perform cleanup (delete data, etc.)
-        removeEvent.notifySuccess();
-      });
+    microsoftTeams.pages.config.registerOnRemoveHandler((removeEvent) => {
+      removeEvent.notifySuccess();
+    });
 
-      microsoftTeams.pages.config.setValidityState(true);
-    })();
-  }, [selectedOption]);
-
-  return (
-    <div>
-      <h1>Configure Tab</h1>
-      <select value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
-        <option value="dashboard">Dashboard</option>
-        <option value="reports">Reports</option>
-        <option value="settings">Settings</option>
-      </select>
-    </div>
-  );
-};
+    microsoftTeams.pages.config.setValidityState(true);
+  })();
+}, [selectedOption]);
 ```
 
 ---
 
-## SSO Authentication with MSAL
+## SSO Authentication
 
-### Step 1: Server-side token exchange
+### Client-side SSO token
 
 ```typescript
-// Server endpoint: exchange Teams SSO token for a Graph token
+const ssoToken = await microsoftTeams.authentication.getAuthToken();
+```
+
+### Server-side OBO exchange
+
+```typescript
 import { ConfidentialClientApplication } from "@azure/msal-node";
-import express from "express";
 
 const msalClient = new ConfidentialClientApplication({
   auth: {
@@ -175,89 +146,97 @@ const msalClient = new ConfidentialClientApplication({
   },
 });
 
-const router = express.Router();
-
-router.post("/auth/token", async (req, res) => {
-  const { ssoToken } = req.body as { ssoToken: string };
-
-  try {
-    const result = await msalClient.acquireTokenOnBehalfOf({
-      oboAssertion: ssoToken,
-      scopes: ["User.Read", "Files.Read"],
-    });
-
-    res.json({ accessToken: result!.accessToken });
-  } catch (err: unknown) {
-    const error = err as { errorCode?: string };
-    if (error.errorCode === "interaction_required") {
-      // Consent needed — client must trigger full auth flow
-      res.status(403).json({ error: "consent_required" });
-    } else {
-      res.status(500).json({ error: "token_exchange_failed" });
-    }
-  }
+const result = await msalClient.acquireTokenOnBehalfOf({
+  oboAssertion: ssoToken,
+  scopes: ["User.Read", "Files.Read"],
 });
 ```
 
-### Step 2: Client-side SSO token acquisition
+---
+
+## Nested App Authentication (NAA)
+
+NAA allows apps in iframes to authenticate without pop-ups by leveraging the parent host's auth context. Available since TeamsJS v2.24+.
+
+### Check NAA availability
 
 ```typescript
-import * as microsoftTeams from "@microsoft/teams-js";
+const isRecommended = await microsoftTeams.nestedAppAuth.isNAAChannelRecommended();
+```
 
-async function getGraphAccessToken(): Promise<string> {
-  await microsoftTeams.app.initialize();
+### Use MSAL with NAA
 
-  // Get the SSO token from Teams (silent, no popup)
-  const ssoToken = await microsoftTeams.authentication.getAuthToken();
+```typescript
+import { createNestablePublicClientApplication } from "@azure/msal-browser";
 
-  // Exchange SSO token for Graph token on your server
-  const response = await fetch("/auth/token", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ssoToken }),
-  });
+const msalInstance = await createNestablePublicClientApplication({
+  auth: {
+    clientId: "your-client-id",
+    authority: "https://login.microsoftonline.com/common",
+  },
+});
 
-  if (response.status === 403) {
-    // Consent required — trigger interactive auth
-    await microsoftTeams.authentication.authenticate({
-      url: `${window.location.origin}/auth/start`,
-      width: 600,
-      height: 535,
-    });
-    // Retry after consent
-    return getGraphAccessToken();
+const tokenResponse = await msalInstance.acquireTokenSilent({
+  scopes: ["User.Read"],
+});
+```
+
+### Manifest configuration
+
+```json
+{
+  "nestedAppAuthInfo": {
+    "enableNAA": true
   }
-
-  const data = await response.json() as { accessToken: string };
-  return data.accessToken;
 }
 ```
 
 ---
 
-## Deep Links
+## Dialog Invocation from Tabs
 
-Deep links navigate to specific content within Teams.
+The `dialog` namespace replaces the deprecated `tasks` namespace:
 
 ```typescript
-// Navigate to a tab with a sub-page
-const deepLink = `https://teams.microsoft.com/l/entity/${appId}/${entityId}?webUrl=${encodedWebUrl}&label=${encodedLabel}&context=${encodedContext}`;
+// Open HTML dialog
+microsoftTeams.dialog.url.open({
+  title: "Create Item",
+  url: `${window.location.origin}/dialog/create`,
+  size: { height: 450, width: 600 },
+}, (result) => {
+  console.log("Result:", result.result);
+});
 
-// Using TeamsJS SDK v2 (recommended)
+// Open Adaptive Card dialog
+microsoftTeams.dialog.adaptiveCard.open({
+  title: "Quick Form",
+  card: cardJson,
+  size: { height: 400, width: 500 },
+});
+
+// Submit from dialog page
+microsoftTeams.dialog.url.submit(resultData);
+```
+
+**Note**: `dialog.submit()` was removed in TeamsJS v2.18.0. Use `dialog.url.submit()` instead.
+
+---
+
+## Deep Links
+
+```typescript
+// Navigate to a tab (TeamsJS v2)
 await microsoftTeams.pages.navigateToApp({
   appId: "your-app-id",
   pageId: "homeTab",
   subPageId: "item-123",
 });
 
-// Open a channel in Teams
-const channelLink = `https://teams.microsoft.com/l/channel/${channelId}/${channelName}?groupId=${teamId}&tenantId=${tenantId}`;
+// URL format
+const deepLink = `https://teams.microsoft.com/l/entity/${appId}/${entityId}?webUrl=${encodedUrl}&context=${encodedContext}`;
 
 // Open a chat
 const chatLink = `https://teams.microsoft.com/l/chat/0/0?users=${userUPN}`;
-
-// Share to Teams
-const shareLink = `https://teams.microsoft.com/share?href=${encodeURIComponent(contentUrl)}&preview=true&referrer=myapp`;
 ```
 
 ---
@@ -265,13 +244,11 @@ const shareLink = `https://teams.microsoft.com/share?href=${encodeURIComponent(c
 ## Meeting Tab Patterns
 
 ```typescript
-// Detect meeting context
 const context = await microsoftTeams.app.getContext();
 const isMeeting = !!context.meeting;
 const frameContext = context.page.frameContext;
-// "sidePanel" | "meetingStage" | "content"
 
-// Share content to meeting stage
+// Share to meeting stage from side panel
 if (frameContext === "sidePanel") {
   await microsoftTeams.meeting.shareAppContentToStage(
     (err, result) => {
@@ -281,28 +258,20 @@ if (frameContext === "sidePanel") {
   );
 }
 
-// Get meeting participants (requires meeting organizer permissions)
 microsoftTeams.meeting.getMeetingDetails((err, details) => {
   if (details) {
     console.log("Meeting ID:", details.details.id);
-    console.log("Organizer:", details.organizer.id);
   }
 });
 ```
 
----
+### Meeting Surface Guide
 
-## Notification API (Tabs)
-
-```typescript
-// Show a notification in the Teams client (not a push notification)
-await microsoftTeams.app.openLink(
-  `https://teams.microsoft.com/l/entity/${appId}/homeTab`
-);
-
-// Send activity notification to user (via Graph API)
-// POST /teams/{teamId}/channels/{channelId}/members/{memberId}/sendActivityNotification
-```
+| Surface | Use | frameContext |
+|---------|-----|-------------|
+| Details tab | Pre/post meeting prep | `"content"` |
+| Side panel | During-meeting controls | `"sidePanel"` |
+| Stage | Shared synchronized workspace | `"meetingStage"` |
 
 ---
 
@@ -310,19 +279,16 @@ await microsoftTeams.app.openLink(
 
 | Field | Path | Description |
 |-------|------|-------------|
-| User AAD ID | `context.user?.id` | AAD Object ID of the current user |
+| User AAD ID | `context.user?.id` | AAD Object ID |
 | User UPN | `context.user?.userPrincipalName` | Email/UPN |
-| Tenant ID | `context.user?.tenant?.id` | Tenant where user is signed in |
+| Tenant ID | `context.user?.tenant?.id` | Tenant ID |
 | Team ID | `context.team?.internalId` | Internal Teams team ID |
-| Team AAD Group ID | `context.team?.groupId` | AAD Group ID for Graph calls |
 | Channel ID | `context.channel?.id` | Current channel ID |
-| Entity ID | `context.page.id` | `entityId` from manifest `staticTabs` |
-| Sub-page ID | `context.page.subPageId` | From deep link `subEntityId` |
-| Theme | `context.app.theme` | `"default"` \| `"dark"` \| `"contrast"` |
-| Locale | `context.app.locale` | BCP-47 locale string, e.g. `"en-us"` |
-| Frame context | `context.page.frameContext` | `"content"` \| `"sidePanel"` \| `"task"` |
-| Meeting ID | `context.meeting?.id` | Present only in meeting context |
-| Host name | `context.app.host.name` | `"Teams"` \| `"Outlook"` \| `"Office"` |
+| Entity ID | `context.page.id` | `entityId` from manifest |
+| Theme | `context.app.theme` | `"default"` / `"dark"` / `"contrast"` |
+| Host name | `context.app.host.name` | `"Teams"` / `"Outlook"` / `"Office"` |
+| Frame context | `context.page.frameContext` | `"content"` / `"sidePanel"` / `"task"` |
+| Meeting ID | `context.meeting?.id` | Present only in meetings |
 
 ---
 
@@ -330,27 +296,21 @@ await microsoftTeams.app.openLink(
 
 | Error | Meaning | Remediation |
 |-------|---------|-------------|
-| `resourceDisabled` | Tab not authorized in tenant | Admin must consent to the app in Teams admin center |
-| `FailedToOpenPage` | Tab URL not in `validDomains` | Add all domains (including auth redirect domains) to `validDomains` |
-| `notSupported` | SDK API not available in this host | Check `microsoftTeams.isAvailable()` before calling APIs |
-| `interaction_required` | SSO consent not granted | Trigger `authentication.authenticate()` for full consent flow |
-| `invalid_grant` | SSO OBO failed | Ensure `api://domain/clientId` resource is in manifest `webApplicationInfo` |
-| CORS error on token exchange | Server not accepting `Origin` header | Configure CORS to allow Teams domain origins |
-| Blank tab renders | `contentUrl` iframe blocked | Add `X-Frame-Options: ALLOWALL` or use `Content-Security-Policy: frame-ancestors` |
-| Config page save button disabled | `setValidityState(false)` not called | Call `setValidityState(true)` in configuration page `useEffect` |
+| `FailedToOpenPage` | Tab URL not in `validDomains` | Add domain to `validDomains` |
+| `notSupported` | API not available in host | Check `microsoftTeams.isAvailable()` |
+| `interaction_required` | SSO consent not granted | Trigger `authentication.authenticate()` |
+| `invalid_grant` | SSO OBO failed | Ensure `api://domain/clientId` in `webApplicationInfo` |
+| Config save disabled | `setValidityState(false)` | Call `setValidityState(true)` |
 
 ---
 
 ## Limits
 
-| Resource | Limit | Notes |
-|---|---|---|
-| Tab content URL | HTTPS only | HTTP blocked in Teams |
-| `validDomains` entries | 16 | Wildcards supported: `*.contoso.com` |
-| Static tabs per app | 16 | Shown in personal app side rail |
-| Configurable tabs per app | 1 | One `configurableTabs` entry in manifest |
-| `configurationUrl` query string | 1,024 characters | Avoid long query params |
-| iFrame allowed features | No camera/microphone by default | Request via manifest `devicePermissions` |
-| Meeting stage content URL | Must match `validDomains` | Same iframe restrictions apply |
-| Token expiry (SSO) | 1 hour | Cache access tokens; refresh before expiry |
-| `entityId` length | 64 characters | Used for deep links; keep short and URL-safe |
+| Resource | Limit |
+|---|---|
+| Tab content URL | HTTPS only |
+| `validDomains` entries | 16 |
+| Static tabs per app | 16 |
+| Configurable tabs per app | 1 |
+| `entityId` length | 64 characters |
+| Token expiry (SSO) | 1 hour |

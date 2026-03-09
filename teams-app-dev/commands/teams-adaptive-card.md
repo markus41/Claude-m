@@ -20,7 +20,7 @@ Create an Adaptive Card JSON payload based on a natural-language description.
 
 - `<description>` — What the card should display (e.g., "approval form with requester name, amount, and approve/reject buttons").
 - `--template` — When set, use Adaptive Card Templating syntax (`${field}`, `$data`, `$when`) so the card can be bound to dynamic data.
-- `--version` — Target schema version: `1.4` (broader compatibility) or `1.5` (Teams default, supports `Table`). Default: `1.5`.
+- `--version` — Target schema version: `1.4` (broader compatibility) or `1.5` (Teams desktop/web default, supports `Table`). Default: `1.5`.
 
 ### 2. Design the Card
 
@@ -29,7 +29,7 @@ Based on the description, select appropriate elements:
 **Layout selection**:
 - Key-value data → `FactSet`
 - Side-by-side content → `ColumnSet` with `Column`s
-- Tabular data → `Table` (v1.5+) with `fallback` for older clients
+- Tabular data → `Table` (v1.5) with `fallback` for older clients
 - Lists of items → `Container` with repeated elements (or `$data` loop if `--template`)
 - Images → `Image` or `ImageSet`
 
@@ -44,6 +44,14 @@ Based on the description, select appropriate elements:
 - Submit data to a bot → `Action.Execute` with a `verb` (preferred for Teams)
 - Open a URL → `Action.OpenUrl`
 - Show additional content → `Action.ShowCard`
+
+**Teams-specific gotchas to follow**:
+- `Action.Submit` `isEnabled` property is NOT supported in Teams
+- File/image uploads are NOT supported in Adaptive Cards in Teams
+- Positive/destructive action styling is NOT supported in Teams
+- Always design for narrow screens first (mobile, meeting side panels)
+- Mobile supports max v1.2 — include `fallbackText` for v1.5 elements
+- Cards are truncated at ~28 KB
 
 ### 3. Apply Templating (when --template)
 
@@ -63,13 +71,13 @@ Check the generated card against these rules:
 - Every `Action.Execute` has a `verb`.
 - Card JSON is under 28 KB.
 - All image URLs use HTTPS or are template placeholders.
-- Include `fallbackText` when using v1.5+ elements.
+- Include `fallbackText` when using v1.5 elements.
 
 ### 5. Output
 
 Write the card JSON to a file (e.g., `cards/<name>.json`) or display it inline. If `--template` was used, also output an example data object and the rendered result.
 
 Show the user how to use the card:
-- In a bot: `CardFactory.adaptiveCard(cardPayload)`
-- With templating: `new Template(cardPayload).expand({ $root: data })`
-- Testing: Paste into https://adaptivecards.io/designer/ with Host App set to "Microsoft Teams"
+- In a bot (Teams SDK v2): `CardFactory.adaptiveCard(cardPayload)`
+- With templating: `new AdaptiveCardTemplate(cardPayload).expand({ $root: data })`
+- Testing: Paste into the Microsoft Adaptive Cards documentation hub or the Adaptive Cards Designer with Host App set to "Microsoft Teams"

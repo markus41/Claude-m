@@ -1,11 +1,12 @@
 ---
 name: Teams App Dev
 description: >
-  Deep expertise in custom Microsoft Teams app development — build bots with Bot Framework
-  and TeamsActivityHandler, design Adaptive Cards with schema 1.5+, create search/action/link-unfurling
-  message extensions, develop tab apps with Teams JS SDK v2 and SSO, author app manifests v1.17+,
-  and manage the full dev lifecycle with Teams Toolkit CLI. Targets professional TypeScript developers
-  building production Teams apps.
+  Deep expertise in custom Microsoft Teams app development — build apps with Teams SDK v2
+  and M365 Agents SDK, design Adaptive Cards with schema 1.5, create search/action/link-unfurling
+  message extensions, develop tab apps with TeamsJS v2.24+ and SSO/NAA, scaffold Custom Engine Agents,
+  author Microsoft 365 app manifests v1.25, orchestrate dialogs, and manage the full dev lifecycle
+  with the Microsoft 365 Agents Toolkit CLI. Targets professional TypeScript developers building
+  production Teams apps.
 allowed-tools:
   - Read
   - Write
@@ -15,16 +16,27 @@ allowed-tools:
   - Bash
 triggers:
   - teams app
-  - teams toolkit
+  - teams sdk
+  - agents toolkit
   - adaptive card
   - message extension
-  - bot framework
   - teams bot
   - teams tab
   - teams manifest
   - sideload
   - teams sso
   - link unfurling
+  - dialog
+  - custom engine agent
+  - agent 365
+  - blueprint
+  - agents sdk
+  - agents playground
+  - nested app auth
+  - NAA
+  - copilot plugin
+  - declarative agent
+  - single tenant bot
   - task module
 ---
 
@@ -32,935 +44,531 @@ triggers:
 
 ## 1. Teams App Architecture Overview
 
-Microsoft Teams apps extend Teams with custom functionality through several surface areas:
+Microsoft Teams apps extend Teams (and other Microsoft 365 hosts) with custom functionality through several surface areas. The correct mental model is a **bundle of Teams capabilities** described by a single Microsoft 365 app manifest and packaged as a Microsoft 365 app.
 
-**App types**:
+### The Three-SDK Stack (March 2026)
+
+Three SDKs now coexist for Teams development:
+
+| SDK | Repo | Use When | Languages |
+|-----|------|----------|-----------|
+| **Teams SDK v2** (formerly Teams AI Library v2) | `microsoft/teams-sdk` | Teams-only apps: tabs, bots, message extensions, meeting apps, AI agents | TypeScript, .NET, Python |
+| **M365 Agents SDK** | `microsoft/Agents` | Multi-channel agents: Teams + Web + Slack + SMS + email via Azure AI Bot Service | TypeScript, .NET |
+| **Agent 365 SDK** | MS Learn docs | Enterprise agent layer: Entra agent identity, governed MCP servers, OpenTelemetry, blueprints | .NET (currently) |
+
+**SDK Decision Matrix**:
+
+| Scenario | Recommended SDK |
+|----------|----------------|
+| Tabs, personal apps, meeting extensions | Teams SDK v2 |
+| Bots + message extensions (Teams-only) | Teams SDK v2 |
+| AI agent (Teams-only) | Teams SDK v2 |
+| AI agent (multi-channel: Teams + Web + Slack + SMS) | M365 Agents SDK |
+| Enterprise agent with own identity, audit trail, governed tools | Agent 365 SDK (wraps either of the above) |
+| Declarative Copilot agent | M365 Agents SDK + Copilot manifest |
+
+### Deprecations and Breaking Changes
+
+| Item | Status | Action |
+|------|--------|--------|
+| **TeamsFx SDK** | Community-only until Sep 2026; full deprecation Jul 2026 | All new projects must use Teams SDK v2 or M365 Agents SDK |
+| **Bot Framework SDK** | Repository archived; LTS retired | Use M365 Agents SDK (multi-channel) or Teams SDK v2 (Teams-only) |
+| **Multi-tenant bot registration** | Retiring; new registrations blocked | All new bots must use single-tenant config with `APP_TENANTID` |
+| **LUIS** | Fully retired Mar 2026 | Use Azure AI Language or LLM-based intent |
+| **TeamsJS v1** | Submission blocked | Minimum v2.19.0 for Store submission |
+| **`tasks` namespace** | Fully replaced by `dialog` namespace in TeamsJS v2 | Use `dialog.url.open()`, `dialog.adaptiveCard.open()` |
+
+### App Types and Surfaces
+
 | Type | Surface | Technology |
 |------|---------|-----------|
-| Bot | Chat, channels, group chats | Bot Framework SDK + `TeamsActivityHandler` |
-| Message extension | Compose box, message actions | Bot Framework search/action handlers |
-| Tab (static) | Personal app, channel tab | React/HTML + Teams JS SDK v2 |
+| Bot | Chat, channels, group chats | Teams SDK v2 activity handlers or M365 Agents SDK ActivityHandler |
+| Message extension | Compose box, message actions | Bot-based search/action handlers (shares bot endpoint) |
+| Tab (static) | Personal app | React/HTML + TeamsJS v2.24+ |
 | Tab (configurable) | Channel/group chat tab | React/HTML + configuration page |
-| Connector | Channel notifications | Incoming/outgoing webhooks or O365 connectors |
-| Meeting extension | Pre/in/post meeting | Tabs + bots + content bubble |
+| Meeting extension | Side panel, stage, chat, details | Tabs + bots + content bubble |
+| Dialog | Modal overlay from tab/bot/extension | `dialog.url.open()` or `dialog.adaptiveCard.open()` |
 
-**Development stack**:
+### Development Stack
+
 - **Language**: TypeScript (recommended) or C#/.NET
-- **Bot runtime**: `botbuilder` + `botbuilder-teams` npm packages (Bot Framework SDK v4)
-- **Frontend**: React with `@microsoft/teams-js` SDK v2
-- **Auth**: MSAL.js + Azure AD app registration (SSO via `getAuthToken`)
-- **Tooling**: Teams Toolkit CLI (`teamsapp`) or VS Code Teams Toolkit extension
-- **Hosting**: Azure App Service, Azure Functions, or any HTTPS endpoint
+- **Bot/agent runtime**: Teams SDK v2 (`@microsoft/teams-sdk`) or M365 Agents SDK (`@microsoft/agents-*`)
+- **Client library**: TeamsJS v2.24+ (`@microsoft/teams-js`)
+- **Adaptive Cards**: Schema v1.5 (Teams desktop/web), v1.2 (mobile)
+- **Manifest**: Microsoft 365 app manifest v1.25
+- **Tooling**: Microsoft 365 Agents Toolkit CLI (`@microsoft/m365agentstoolkit-cli`)
+- **Config**: `m365agents.yml` (lifecycle), `.env` (local dev), Bicep (Azure)
 
-**Teams Toolkit vs manual setup**:
-| Aspect | Teams Toolkit | Manual |
-|--------|--------------|--------|
-| Project scaffold | `teamsapp new` generates full project | Create files from scratch |
-| Azure provisioning | `teamsapp provision` creates resources | ARM/Bicep templates or portal |
-| Manifest management | Template variables `{{BOT_ID}}` auto-resolved | Hardcoded GUIDs |
-| Local debug | `teamsapp preview --local` with dev tunnel | ngrok + manual sideload |
-| Deployment | `teamsapp deploy` to Azure | CI/CD pipeline or manual |
+---
 
-## 2. Teams Toolkit CLI
+## 2. Microsoft 365 Agents Toolkit (ATK)
 
-Teams Toolkit CLI (`teamsapp`) manages the full app lifecycle.
+The Microsoft 365 Agents Toolkit (formerly Teams Toolkit) is the primary tooling for Teams app development.
 
-**Install**:
+### Installation
+
 ```bash
-npm install -g @microsoft/teamsapp-cli
+# Install globally
+npm install -g @microsoft/m365agentstoolkit-cli
+
+# Verify
+m365agents --version
+
+# Login to M365
+m365agents auth login m365
+
+# Login to Azure
+m365agents auth login azure
 ```
 
-**Core commands**:
-| Command | Description |
-|---------|-------------|
-| `teamsapp new` | Scaffold a new Teams app project |
-| `teamsapp provision` | Create Azure resources defined in `teamsapp.yml` |
-| `teamsapp deploy` | Deploy code to provisioned Azure resources |
-| `teamsapp preview --local` | Start local debug with dev tunnel and sideload |
-| `teamsapp preview --remote` | Preview deployed app in Teams |
-| `teamsapp validate` | Validate manifest against schema |
-| `teamsapp package` | Build the app package (ZIP with manifest + icons) |
-| `teamsapp publish` | Publish to org app catalog |
-| `teamsapp env list` | List configured environments |
-| `teamsapp env add <name>` | Add a new environment |
+### Project Scaffolding
 
-**Project structure** (generated by `teamsapp new`):
-```
-my-teams-app/
-├── teamsapp.yml             # Lifecycle configuration
-├── teamsapp.local.yml       # Local debug overrides
-├── env/
-│   ├── .env.dev             # Dev environment variables
-│   └── .env.local           # Local debug variables
-├── appPackage/
-│   ├── manifest.json         # App manifest (with {{VAR}} placeholders)
-│   ├── color.png             # 192x192 color icon
-│   └── outline.png           # 32x32 outline icon
-├── src/
-│   ├── index.ts              # Entry point (bot adapter / Express server)
-│   └── teamsBot.ts           # TeamsActivityHandler implementation
-├── infra/
-│   └── azure.bicep           # Azure resource definitions
-└── package.json
+```bash
+# Interactive
+m365agents new
+
+# Non-interactive: Teams SDK v2 bot
+m365agents new --app-name MyBot --capability bot --programming-language typescript
+
+# Non-interactive: tab
+m365agents new --app-name MyTab --capability tab --programming-language typescript
+
+# Non-interactive: Custom Engine Agent (M365 Agents SDK path)
+m365agents new --app-name MyAgent --capability custom-engine-agent --programming-language typescript
 ```
 
-**`teamsapp.yml` lifecycle hooks**:
+**Template Categories in ATK**:
+
+| Category | SDK Path | Description |
+|----------|----------|-------------|
+| **Teams Agents and Apps** | Teams SDK v2 | Tabs, bots, message extensions, meeting apps |
+| **Custom Engine Agent** | M365 Agents SDK | Multi-channel agents |
+| **Declarative Agent** | Copilot stack | Declarative manifest for Copilot |
+
+### Teams SDK v2 CLI Alternative
+
+```bash
+# Teams SDK v2 also has its own scaffolding
+teams new typescript my-agent -t <template> --atk oauth
+```
+
+### Local Development
+
+```bash
+# Start local debug session (creates tunnel + sideloads app)
+m365agents preview --local
+
+# Preview with specific environment
+m365agents preview --env dev
+
+# Preview remote deployment
+m365agents preview --env production
+```
+
+**Agents Playground** (formerly Teams App Test Tool): Debug bots locally without a dev tenant, tunneling, or app/bot registration. Built into ATK.
+
+### Config File: m365agents.yml
+
 ```yaml
-version: v1.4
+# m365agents.yml (replaces teamsapp.yml)
+version: 1.0.0
+
 provision:
-  - uses: teamsApp/create
-    with:
-      name: my-teams-app-${{TEAMSFX_ENV}}
-    writeToEnvironmentFile:
-      teamsAppId: TEAMS_APP_ID
-
-  - uses: botAadApp/create
-    with:
-      name: my-teams-app-bot-${{TEAMSFX_ENV}}
-    writeToEnvironmentFile:
-      botId: BOT_ID
-      botPassword: SECRET_BOT_PASSWORD
-
   - uses: botFramework/create
     with:
       botId: ${{BOT_ID}}
-      name: my-teams-app-bot
+      name: MyBot
       messagingEndpoint: ${{BOT_ENDPOINT}}/api/messages
-
-  - uses: teamsApp/validateManifest
-    with:
-      manifestPath: ./appPackage/manifest.json
-
-  - uses: teamsApp/zipAppPackage
-    with:
-      manifestPath: ./appPackage/manifest.json
-      outputZipPath: ./appPackage/build/appPackage.${{TEAMSFX_ENV}}.zip
-
-  - uses: teamsApp/update
-    with:
-      appPackagePath: ./appPackage/build/appPackage.${{TEAMSFX_ENV}}.zip
+      channels:
+        - name: msteams
 
 deploy:
-  - uses: cli/runNpmCommand
+  - uses: file/createOrUpdateEnvironmentFile
     with:
-      args: install
-
-  - uses: cli/runNpmCommand
-    with:
-      args: run build
+      target: .env
+      envs:
+        MicrosoftAppId: ${{BOT_ID}}
+        MicrosoftAppPassword: ${{SECRET_BOT_PASSWORD}}
+        MicrosoftAppType: SingleTenant
+        MicrosoftAppTenantId: ${{APP_TENANTID}}
 ```
 
-## 3. Adaptive Card Schema
+### Provisioning and Deployment
 
-Adaptive Cards are platform-agnostic UI snippets rendered natively in Teams. Teams supports **schema version 1.5** (Designer preview supports 1.6).
-
-**Card structure**:
-```json
-{
-  "type": "AdaptiveCard",
-  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-  "version": "1.5",
-  "body": [],
-  "actions": []
-}
-```
-
-### Element Types
-
-**Containers**:
-| Type | Purpose | Key Properties |
-|------|---------|----------------|
-| `Container` | Group elements vertically | `items[]`, `style`, `bleed`, `minHeight` |
-| `ColumnSet` | Side-by-side columns | `columns[]` (each has `width`, `items[]`) |
-| `Column` | Single column in a ColumnSet | `width` ("auto"/"stretch"/weight), `items[]` |
-| `FactSet` | Key-value pairs | `facts[]` (`title`, `value`) |
-| `ImageSet` | Gallery of images | `images[]`, `imageSize` |
-| `Table` | Tabular data (v1.5+) | `columns[]`, `rows[]`, `gridStyle` |
-| `ActionSet` | Inline action buttons | `actions[]` |
-
-**Elements**:
-| Type | Purpose | Key Properties |
-|------|---------|----------------|
-| `TextBlock` | Display text | `text`, `size`, `weight`, `color`, `wrap`, `style` |
-| `Image` | Display an image | `url`, `size`, `style` ("default"/"person"), `altText` |
-| `RichTextBlock` | Formatted inline text | `inlines[]` (TextRun objects) |
-| `Media` | Embedded media (v1.1+) | `sources[]`, `poster` |
-| `Icon` | Fluent icon (v1.6+) | `name`, `size`, `color` |
-
-**Input elements**:
-| Type | Purpose | Key Properties |
-|------|---------|----------------|
-| `Input.Text` | Single/multi-line text | `id`, `placeholder`, `isMultiline`, `maxLength`, `regex` |
-| `Input.Number` | Numeric input | `id`, `min`, `max`, `placeholder` |
-| `Input.Date` | Date picker | `id`, `min`, `max`, `placeholder` |
-| `Input.Time` | Time picker | `id`, `min`, `max` |
-| `Input.Toggle` | On/off switch | `id`, `title`, `valueOn`, `valueOff` |
-| `Input.ChoiceSet` | Dropdown or radio/checkbox | `id`, `choices[]`, `isMultiSelect`, `style` |
-
-**Action types**:
-| Type | Purpose | Key Properties |
-|------|---------|----------------|
-| `Action.OpenUrl` | Open a URL | `url` |
-| `Action.Submit` | Submit input values | `data` (merged with input values) |
-| `Action.Execute` | Universal action (Teams) | `verb`, `data` — Teams-preferred over `Action.Submit` |
-| `Action.ShowCard` | Toggle an inline card | `card` |
-| `Action.ToggleVisibility` | Show/hide elements | `targetElements[]` |
-
-### Teams-Specific: Action.Execute
-
-Teams uses `Action.Execute` (Universal Actions) instead of `Action.Submit` for bot-powered cards. The bot receives an `adaptiveCard/action` invoke with the `verb` and `data`.
-
-```json
-{
-  "type": "Action.Execute",
-  "title": "Approve",
-  "verb": "approveRequest",
-  "data": {
-    "requestId": "REQ-001"
-  }
-}
-```
-
-**Bot handler for Action.Execute**:
-```typescript
-async onAdaptiveCardInvoke(
-  context: TurnContext,
-  invokeValue: AdaptiveCardInvokeValue
-): Promise<AdaptiveCardInvokeResponse> {
-  const verb = invokeValue.action.verb;
-  const data = invokeValue.action.data;
-
-  switch (verb) {
-    case "approveRequest":
-      await this.processApproval(data.requestId);
-      // Return updated card
-      return {
-        statusCode: 200,
-        type: "application/vnd.microsoft.card.adaptive",
-        value: this.buildApprovedCard(data.requestId),
-      };
-    default:
-      return { statusCode: 200, type: "application/vnd.microsoft.activity.message", value: "Unknown action" };
-  }
-}
-```
-
-### Templating
-
-Adaptive Card Templating separates data from layout using `$data` (data binding) and `$when` (conditional rendering).
-
-**Install**:
 ```bash
-npm install adaptivecards-templating
+# Provision Azure resources
+m365agents provision --env dev
+
+# Deploy app code
+m365agents deploy --env dev
+
+# Package the app zip
+m365agents package --env dev
+
+# Publish to org catalog
+m365agents publish --env dev
+
+# Validate manifest
+m365agents validate --manifest-path ./appPackage/manifest.json
 ```
 
-**Template**:
-```json
-{
-  "type": "AdaptiveCard",
-  "version": "1.5",
-  "body": [
-    {
-      "type": "TextBlock",
-      "text": "Hello, ${name}!",
-      "size": "Large",
-      "weight": "Bolder"
-    },
-    {
-      "type": "Container",
-      "$data": "${items}",
-      "items": [
-        {
-          "type": "TextBlock",
-          "text": "${title} — ${status}",
-          "$when": "${status != 'hidden'}"
-        }
-      ]
-    }
-  ]
-}
+### Environment Management
+
+```bash
+# .env.dev — commit to source control (no secrets)
+TEAMS_APP_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+BOT_ID=yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy
+APP_TENANTID=zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz
+TAB_DOMAIN=myapp.azurewebsites.net
+
+# .env.dev.user — NEVER commit (in .gitignore)
+SECRET_BOT_PASSWORD=<actual-secret>
+SECRET_AAD_APP_CLIENT_SECRET=<actual-secret>
 ```
 
-**Render with data**:
-```typescript
-import { Template } from "adaptivecards-templating";
+### CI/CD Integration
 
-const template = new Template(cardPayload);
-const card = template.expand({
-  $root: {
-    name: "Contoso",
-    items: [
-      { title: "Task A", status: "active" },
-      { title: "Task B", status: "hidden" },
-      { title: "Task C", status: "done" },
-    ],
-  },
-});
+```yaml
+# .github/workflows/teams-deploy.yml
+name: Deploy Teams App
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install -g @microsoft/m365agentstoolkit-cli
+      - run: npm ci
+      - name: Login to M365
+        run: |
+          m365agents auth login m365 \
+            --service-principal \
+            --tenant-id ${{ secrets.M365_TENANT_ID }} \
+            --client-id ${{ secrets.M365_CLIENT_ID }} \
+            --client-secret ${{ secrets.M365_CLIENT_SECRET }}
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - run: m365agents provision --env production --no-interactive
+        env:
+          SECRET_BOT_PASSWORD: ${{ secrets.BOT_PASSWORD }}
+      - run: m365agents deploy --env production --no-interactive
+      - run: m365agents publish --env production --no-interactive
 ```
 
-### Validation Rules
+---
 
-- `version` must be `"1.4"` or `"1.5"` for broad Teams client support.
-- Every `Input.*` element **must** have a unique `id` property.
-- `Action.Execute` **must** include a `verb` string.
-- Card payload size limit: **28 KB** (compressed).
-- Image URLs must be HTTPS.
-- `fallbackText` should be set for accessibility when elements use newer schema features.
+## 3. Teams SDK v2 — Bot and Agent Development
 
-## 4. Message Extensions
+Teams SDK v2 (formerly Teams AI Library v2) is the recommended SDK for Teams-native apps. It replaces the archived Bot Framework SDK.
 
-Message extensions let users search external services, take actions on messages, and unfurl links — all from the Teams compose box or message context menu.
+### Package Installation
 
-### Search-Based Message Extension
+```bash
+# Teams SDK v2
+npm install @microsoft/teams-sdk
 
-Users type a query in the compose box and receive results from an external service.
-
-**Manifest fragment** (`composeExtensions`):
-```json
-{
-  "composeExtensions": [
-    {
-      "botId": "{{BOT_ID}}",
-      "commands": [
-        {
-          "id": "searchProducts",
-          "type": "query",
-          "title": "Search Products",
-          "description": "Find products by name or SKU",
-          "initialRun": true,
-          "parameters": [
-            {
-              "name": "query",
-              "title": "Search",
-              "description": "Product name or SKU",
-              "inputType": "text"
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
+# For TypeScript
+npm install --save-dev typescript @types/node
 ```
 
-**Handler** (`TeamsActivityHandler`):
-```typescript
-async handleTeamsMessagingExtensionQuery(
-  context: TurnContext,
-  query: MessagingExtensionQuery
-): Promise<MessagingExtensionResponse> {
-  const searchText = query.parameters?.[0]?.value || "";
-  const products = await this.productService.search(searchText);
-
-  const attachments = products.map((product) => ({
-    contentType: "application/vnd.microsoft.card.adaptive",
-    content: {
-      type: "AdaptiveCard",
-      version: "1.5",
-      body: [
-        { type: "TextBlock", text: product.name, weight: "Bolder", size: "Medium" },
-        { type: "TextBlock", text: `SKU: ${product.sku}`, isSubtle: true },
-        { type: "TextBlock", text: product.description, wrap: true },
-      ],
-    },
-    preview: CardFactory.heroCard(product.name, product.description, [product.imageUrl]),
-  }));
-
-  return {
-    composeExtension: {
-      type: "result",
-      attachmentLayout: "list",
-      attachments,
-    },
-  };
-}
-```
-
-### Action-Based Message Extension
-
-Users fill out a form (task module) triggered from the compose box or a message context menu.
-
-**Manifest fragment**:
-```json
-{
-  "composeExtensions": [
-    {
-      "botId": "{{BOT_ID}}",
-      "commands": [
-        {
-          "id": "createTicket",
-          "type": "action",
-          "title": "Create Ticket",
-          "description": "Create a support ticket from this message",
-          "context": ["message", "compose"],
-          "fetchTask": true
-        }
-      ]
-    }
-  ]
-}
-```
-
-**Fetch task handler** (returns the form):
-```typescript
-async handleTeamsMessagingExtensionFetchTask(
-  context: TurnContext,
-  action: MessagingExtensionAction
-): Promise<MessagingExtensionActionResponse> {
-  // If triggered from a message, pre-populate with message text
-  const messageText = action.messagePayload?.body?.content || "";
-
-  return {
-    task: {
-      type: "continue",
-      value: {
-        title: "Create Support Ticket",
-        width: "medium",
-        height: "medium",
-        card: CardFactory.adaptiveCard({
-          type: "AdaptiveCard",
-          version: "1.5",
-          body: [
-            { type: "Input.Text", id: "title", label: "Title", placeholder: "Ticket title" },
-            {
-              type: "Input.Text",
-              id: "description",
-              label: "Description",
-              isMultiline: true,
-              value: messageText,
-            },
-            {
-              type: "Input.ChoiceSet",
-              id: "priority",
-              label: "Priority",
-              choices: [
-                { title: "Low", value: "low" },
-                { title: "Medium", value: "medium" },
-                { title: "High", value: "high" },
-              ],
-              value: "medium",
-            },
-          ],
-          actions: [{ type: "Action.Submit", title: "Create" }],
-        }),
-      },
-    },
-  };
-}
-```
-
-**Submit handler**:
-```typescript
-async handleTeamsMessagingExtensionSubmitAction(
-  context: TurnContext,
-  action: MessagingExtensionAction
-): Promise<MessagingExtensionActionResponse> {
-  const { title, description, priority } = action.data;
-  const ticket = await this.ticketService.create({ title, description, priority });
-
-  return {
-    composeExtension: {
-      type: "result",
-      attachmentLayout: "list",
-      attachments: [
-        CardFactory.adaptiveCard({
-          type: "AdaptiveCard",
-          version: "1.5",
-          body: [
-            { type: "TextBlock", text: `Ticket Created: ${ticket.id}`, weight: "Bolder" },
-            { type: "FactSet", facts: [
-              { title: "Title", value: title },
-              { title: "Priority", value: priority },
-              { title: "Status", value: "Open" },
-            ]},
-          ],
-        }),
-      ],
-    },
-  };
-}
-```
-
-### Link Unfurling
-
-When a user pastes a URL matching a registered domain, Teams invokes the bot to provide a preview card.
-
-**Manifest fragment**:
-```json
-{
-  "composeExtensions": [
-    {
-      "botId": "{{BOT_ID}}",
-      "messageHandlers": [
-        {
-          "type": "link",
-          "value": {
-            "domains": ["contoso.com", "*.contoso.com"]
-          }
-        }
-      ]
-    }
-  ]
-}
-```
-
-**Handler**:
-```typescript
-async handleTeamsAppBasedLinkQuery(
-  context: TurnContext,
-  query: AppBasedLinkQuery
-): Promise<MessagingExtensionResponse> {
-  const url = query.url;
-  const metadata = await this.fetchPageMetadata(url);
-
-  return {
-    composeExtension: {
-      type: "result",
-      attachmentLayout: "list",
-      attachments: [
-        {
-          contentType: "application/vnd.microsoft.card.thumbnail",
-          content: {
-            title: metadata.title,
-            text: metadata.description,
-            images: [{ url: metadata.imageUrl }],
-            buttons: [{ type: "openUrl", title: "View", value: url }],
-          },
-          preview: CardFactory.thumbnailCard(metadata.title, metadata.description, [metadata.imageUrl]),
-        },
-      ],
-    },
-  };
-}
-```
-
-## 5. Bot Framework for Teams
-
-Teams bots extend the Bot Framework `TeamsActivityHandler`, which provides Teams-specific method overrides on top of the standard `ActivityHandler`.
-
-### TeamsActivityHandler Methods
-
-| Method | Trigger | Use Case |
-|--------|---------|----------|
-| `onMessage` | User sends a text message | General conversation, command routing |
-| `onMembersAdded` | User/bot joins conversation | Welcome message |
-| `onTeamsMembersAdded` | Member added to a team | Team-specific welcome |
-| `onTeamsMembersRemoved` | Member removed from team | Cleanup, farewell |
-| `onTeamsChannelCreated` | Channel created | Notify team about new channel |
-| `onTeamsChannelDeleted` | Channel deleted | Audit logging |
-| `onTeamsChannelRenamed` | Channel renamed | Update references |
-| `onTeamsTeamRenamed` | Team renamed | Update references |
-| `onTeamsTeamArchived` | Team archived | Status update |
-| `onTeamsTeamUnarchived` | Team unarchived | Re-enable features |
-| `handleTeamsMessagingExtensionQuery` | Search message extension | Return search results |
-| `handleTeamsMessagingExtensionFetchTask` | Action extension form | Return task module card |
-| `handleTeamsMessagingExtensionSubmitAction` | Action extension submit | Process form data |
-| `handleTeamsAppBasedLinkQuery` | Link unfurling | Return preview card |
-| `onAdaptiveCardInvoke` | `Action.Execute` on card | Process universal action |
-| `handleTeamsTaskModuleFetch` | Task module requested | Return task module content |
-| `handleTeamsTaskModuleSubmit` | Task module submitted | Process task module data |
-| `onInstallationUpdate` | App installed/uninstalled | Setup or teardown per-user state |
-
-### Bot Scaffold
-
-```typescript
-import { TeamsActivityHandler, TurnContext, MessageFactory, CardFactory } from "botbuilder";
-
-export class TeamsBot extends TeamsActivityHandler {
-  constructor() {
-    super();
-
-    this.onMessage(async (context: TurnContext, next) => {
-      const text = context.activity.text?.trim().toLowerCase() || "";
-
-      if (text === "help") {
-        await context.sendActivity(
-          MessageFactory.text("I can help with:\n- **search** — Find items\n- **status** — Check status")
-        );
-      } else {
-        await context.sendActivity(
-          MessageFactory.text(`You said: "${context.activity.text}"`)
-        );
-      }
-
-      await next();
-    });
-
-    this.onMembersAdded(async (context, next) => {
-      for (const member of context.activity.membersAdded || []) {
-        if (member.id !== context.activity.recipient.id) {
-          await context.sendActivity(
-            MessageFactory.text("Welcome! Type **help** to see what I can do.")
-          );
-        }
-      }
-      await next();
-    });
-  }
-}
-```
-
-### TurnContext Key Methods
-
-| Method | Description |
-|--------|-------------|
-| `context.sendActivity(activity)` | Send a reply to the user |
-| `context.activity.text` | The user's message text |
-| `context.activity.from` | Sender info (`id`, `name`, `aadObjectId`) |
-| `context.activity.conversation` | Conversation info (`id`, `tenantId`, `conversationType`) |
-| `context.activity.channelData` | Teams-specific data (`team`, `channel`, `tenant`) |
-| `context.activity.value` | Data from card actions or task modules |
-
-### Proactive Messaging
-
-Send messages outside the normal request-response flow (e.g., notifications, scheduled updates).
-
-```typescript
-import { ConversationReference, TurnContext } from "botbuilder";
-
-// Store the conversation reference when user first interacts
-const conversationReferences: Record<string, Partial<ConversationReference>> = {};
-
-// In your message handler:
-const ref = TurnContext.getConversationReference(context.activity);
-conversationReferences[ref.conversation!.id] = ref;
-
-// Later, send a proactive message:
-async function sendProactiveMessage(adapter: BotFrameworkAdapter, ref: Partial<ConversationReference>, message: string) {
-  await adapter.continueConversation(ref, async (turnContext) => {
-    await turnContext.sendActivity(MessageFactory.text(message));
-  });
-}
-```
-
-### Conversation State
-
-Bot Framework provides state management via storage providers.
+### Activity Handler (Teams SDK v2)
 
 ```typescript
 import {
-  MemoryStorage,
-  ConversationState,
-  UserState,
-  StatePropertyAccessor,
-} from "botbuilder";
+  Application,
+  TurnContext,
+  MessageFactory,
+  CardFactory,
+  TeamsInfo,
+} from "@microsoft/teams-sdk";
 
-const memoryStorage = new MemoryStorage();
-const conversationState = new ConversationState(memoryStorage);
-const userState = new UserState(memoryStorage);
+const app = new Application({
+  auth: {
+    appId: process.env.BOT_ID!,
+    appPassword: process.env.BOT_PASSWORD!,
+    appType: "SingleTenant",
+    appTenantId: process.env.APP_TENANTID!,
+  },
+});
 
-// Create accessors
-const dialogStateAccessor: StatePropertyAccessor = conversationState.createProperty("DialogState");
-const userProfileAccessor: StatePropertyAccessor = userState.createProperty("UserProfile");
+// Message handler
+app.message("help", async (context: TurnContext) => {
+  await context.sendActivity(MessageFactory.text("Available commands: help, status"));
+});
 
-// In your bot, save state at end of turn:
-this.onTurn(async (context, next) => {
-  await next();
-  await conversationState.saveChanges(context, false);
-  await userState.saveChanges(context, false);
+// Default message handler
+app.message(async (context: TurnContext) => {
+  const text = TurnContext.removeRecipientMention(context.activity)?.trim() ?? "";
+  await context.sendActivity(MessageFactory.text(`Echo: ${text}`));
+});
+
+// Members added
+app.membersAdded(async (context: TurnContext, members) => {
+  for (const member of members) {
+    if (member.id !== context.activity.recipient.id) {
+      await context.sendActivity(MessageFactory.text(`Welcome, ${member.name}!`));
+    }
+  }
+});
+
+// Adaptive Card action
+app.adaptiveCardAction("approve", async (context: TurnContext, data) => {
+  return {
+    statusCode: 200,
+    type: "application/vnd.microsoft.card.adaptive",
+    value: {
+      type: "AdaptiveCard",
+      version: "1.5",
+      body: [{ type: "TextBlock", text: `Approved! Item: ${data.itemId}`, color: "Good" }],
+    },
+  };
+});
+
+// Start the server
+app.listen(process.env.PORT ?? 3978);
+```
+
+### Key v2 Additions
+
+- **Agent2Agent (A2A)**: Multi-agent collaboration protocol
+- **Model Context Protocol (MCP)**: Shared memory and tools across agents
+- **Action Planner**: Built-in orchestrator for AI-powered agents
+- **Simplified API**: Declarative routing instead of class inheritance
+
+### Getting Team and Member Information
+
+```typescript
+import { TeamsInfo } from "@microsoft/teams-sdk";
+
+const teamDetails = await TeamsInfo.getTeamDetails(context);
+const members = await TeamsInfo.getPagedMembers(context);
+const channels = await TeamsInfo.getTeamChannels(context);
+const member = await TeamsInfo.getMember(context, context.activity.from.id);
+```
+
+### Proactive Messaging
+
+```typescript
+// Store conversation reference during a turn
+const ref = TurnContext.getConversationReference(context.activity);
+// Persist ref to DB
+
+// Send proactive message later
+await app.continueConversation(ref, async (proactiveContext) => {
+  await proactiveContext.sendActivity(MessageFactory.text("Notification!"));
 });
 ```
 
-**Production storage**: Replace `MemoryStorage` with `BlobStorage` (`botbuilder-azure-blobs`) or `CosmosDbPartitionedStorage` (`botbuilder-azure`) for persistence.
-
-### Dialogs (WaterfallDialog)
-
-Multi-step conversation flows using the Dialogs library.
+### Express Server Setup (Teams SDK v2)
 
 ```typescript
-import { WaterfallDialog, WaterfallStepContext, TextPrompt, ChoicePrompt } from "botbuilder-dialogs";
+import express from "express";
+import { Application } from "@microsoft/teams-sdk";
 
-const ORDER_DIALOG = "orderDialog";
+const expressApp = express();
+expressApp.use(express.json());
 
-const orderDialog = new WaterfallDialog(ORDER_DIALOG, [
-  async (step: WaterfallStepContext) => {
-    return step.prompt("textPrompt", "What product are you looking for?");
+const bot = new Application({
+  auth: {
+    appId: process.env.BOT_ID!,
+    appPassword: process.env.BOT_PASSWORD!,
+    appType: "SingleTenant",
+    appTenantId: process.env.APP_TENANTID!,
   },
-  async (step: WaterfallStepContext) => {
-    step.values["product"] = step.result;
-    return step.prompt("choicePrompt", "Select quantity:", ["1", "5", "10"]);
-  },
-  async (step: WaterfallStepContext) => {
-    step.values["quantity"] = step.result.value;
-    await step.context.sendActivity(
-      `Order placed: ${step.values["quantity"]}x ${step.values["product"]}`
-    );
-    return step.endDialog();
-  },
-]);
+});
+
+expressApp.post("/api/messages", async (req, res) => {
+  await bot.processActivity(req, res);
+});
+
+const PORT = process.env.PORT ?? 3978;
+expressApp.listen(PORT, () => console.log(`Bot running on port ${PORT}`));
 ```
 
-## 6. Tab Apps
+---
 
-Tabs embed web content as personal apps or channel tabs inside Teams.
+## 4. M365 Agents SDK — Multi-Channel Agents
 
-### Tab Types
+The M365 Agents SDK is for building agent containers that work across Teams, Web, email, SMS, Slack, and more.
 
-| Type | Scope | Configuration |
-|------|-------|--------------|
-| Static (personal) tab | Personal app bar | No config page needed; define `contentUrl` in manifest |
-| Configurable tab | Channel or group chat | Requires a configuration page (`configurationUrl`) |
-
-### Teams JavaScript SDK v2
+### Package Installation
 
 ```bash
-npm install @microsoft/teams-js
+npm install @microsoft/agents-core @microsoft/agents-hosting-express
+# Node 20+ required (Node 22 recommended for --env-file support)
 ```
 
-**Initialize**:
-```typescript
-import { app, authentication } from "@microsoft/teams-js";
-
-async function initializeApp() {
-  await app.initialize();
-  const context = await app.getContext();
-
-  console.log("Theme:", context.app.theme);
-  console.log("Locale:", context.app.locale);
-  console.log("User ID:", context.user?.id);
-  console.log("Team ID:", context.team?.internalId);
-  console.log("Channel ID:", context.channel?.id);
-}
-```
-
-**Key `app.getContext()` properties**:
-| Property | Description |
-|----------|-------------|
-| `context.app.theme` | `"default"`, `"dark"`, or `"contrast"` |
-| `context.app.locale` | User's locale (e.g., `"en-us"`) |
-| `context.user.id` | Azure AD object ID |
-| `context.user.userPrincipalName` | UPN (email) |
-| `context.team.internalId` | Team ID (in channel tabs) |
-| `context.channel.id` | Channel ID (in channel tabs) |
-| `context.page.id` | Entity ID configured for the tab |
-| `context.page.subPageId` | Deep link sub-entity ID |
-
-### SSO Authentication Pattern
-
-Teams tab SSO provides a silent token for the signed-in user without a popup.
-
-**Client-side (tab)**:
-```typescript
-import { authentication } from "@microsoft/teams-js";
-
-async function getToken(): Promise<string> {
-  const token = await authentication.getAuthToken();
-  // This is an ID token scoped to your app's client ID.
-  // Exchange it server-side for a Graph token using OBO flow.
-  return token;
-}
-```
-
-**Server-side (On-Behalf-Of flow)**:
-```typescript
-import { ConfidentialClientApplication } from "@azure/msal-node";
-
-const msalClient = new ConfidentialClientApplication({
-  auth: {
-    clientId: process.env.AZURE_CLIENT_ID!,
-    clientSecret: process.env.AZURE_CLIENT_SECRET!,
-    authority: `https://login.microsoftonline.com/${process.env.AZURE_TENANT_ID}`,
-  },
-});
-
-async function exchangeToken(ssoToken: string): Promise<string> {
-  const result = await msalClient.acquireTokenOnBehalfOf({
-    oboAssertion: ssoToken,
-    scopes: ["https://graph.microsoft.com/.default"],
-  });
-  return result!.accessToken;
-}
-```
-
-### React Tab Starter
+### Basic Agent (M365 Agents SDK)
 
 ```typescript
-import React, { useEffect, useState } from "react";
-import { app } from "@microsoft/teams-js";
-import { FluentProvider, teamsLightTheme, teamsDarkTheme, teamsHighContrastTheme, Text } from "@fluentui/react-components";
+import { ActivityHandler, TurnContext, MessageFactory } from "@microsoft/agents-core";
+import { createExpressHost } from "@microsoft/agents-hosting-express";
 
-const themeMap = {
-  default: teamsLightTheme,
-  dark: teamsDarkTheme,
-  contrast: teamsHighContrastTheme,
-};
+class MyAgent extends ActivityHandler {
+  async onMessage(context: TurnContext) {
+    const text = context.activity.text?.trim() ?? "";
+    await context.sendActivity(MessageFactory.text(`Echo: ${text}`));
+  }
 
-export function Tab() {
-  const [theme, setTheme] = useState(teamsLightTheme);
-  const [userName, setUserName] = useState("");
-
-  useEffect(() => {
-    (async () => {
-      await app.initialize();
-      const ctx = await app.getContext();
-      setTheme(themeMap[ctx.app.theme as keyof typeof themeMap] || teamsLightTheme);
-      setUserName(ctx.user?.userPrincipalName || "Unknown");
-
-      app.registerOnThemeChangeHandler((newTheme) => {
-        setTheme(themeMap[newTheme as keyof typeof themeMap] || teamsLightTheme);
-      });
-    })();
-  }, []);
-
-  return (
-    <FluentProvider theme={theme}>
-      <Text size={500} weight="bold">Hello, {userName}!</Text>
-    </FluentProvider>
-  );
+  async onMembersAdded(context: TurnContext, membersAdded: any[]) {
+    for (const member of membersAdded) {
+      if (member.id !== context.activity.recipient.id) {
+        await context.sendActivity(MessageFactory.text(`Welcome!`));
+      }
+    }
+  }
 }
+
+const agent = new MyAgent();
+createExpressHost(agent, { port: process.env.PORT ?? 3978 });
 ```
 
-## 7. Teams App Manifest v1.17+
+### Key Concepts
 
-The manifest (`manifest.json`) is the app's contract with Teams. It declares capabilities, permissions, and entry points.
+- **AI-agnostic**: Works with OpenAI, Azure OpenAI, Anthropic, LangChain, CrewAI
+- **Channel-agnostic**: Same agent logic deploys to any supported channel
+- **Activity protocol**: Carries forward from Bot Framework (turn context, activities, adapters)
+- **State and storage**: Built-in state management with pluggable storage
 
-### Required Fields
+---
+
+## 5. Agent 365 SDK — Enterprise Agent Layer
+
+Agent 365 SDK adds enterprise-grade capabilities on top of any agent SDK.
+
+### Core Capabilities
+
+- **Entra Agent Identity**: Agents get their own Entra ID, mailbox, and user resources
+- **Notifications**: Agents receive and respond to notifications from Teams, Outlook, Word, and email
+- **Observability**: OpenTelemetry tracing for auditable agent interactions
+- **Governed MCP Servers**: Access M365 workloads (Mail, Calendar, SharePoint, Teams) under admin control
+- **Blueprints**: IT-approved, pre-configured agent type definitions with compliance policies
+
+### Agent 365 CLI
+
+```bash
+# Setup agent identity
+agent365 identity create --name "MyAgent" --blueprint "standard-assistant"
+
+# Configure MCP tools
+agent365 mcp add --tool "mail-read" --scope "user"
+
+# Publish agent
+agent365 publish --target "teams,outlook"
+
+# Deploy to Azure
+agent365 deploy --resource-group "rg-agents" --location "eastus"
+```
+
+### Manifest Integration
+
+Manifest v1.25 added `agenticUserTemplates` to reference an Agent 365 blueprint:
 
 ```json
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.17/MicrosoftTeams.schema.json",
-  "manifestVersion": "1.17",
+  "agenticUserTemplates": [
+    {
+      "id": "standard-assistant",
+      "blueprintId": "contoso.standard-assistant.v1"
+    }
+  ]
+}
+```
+
+---
+
+## 6. Microsoft 365 App Manifest v1.25
+
+### Schema
+
+```json
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.25/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.25",
+  "version": "1.0.0",
+  "id": "{{APP_ID}}"
+}
+```
+
+### Key v1.25 Properties
+
+| Property | Purpose | Notes |
+|----------|---------|-------|
+| `agenticUserTemplates` | Agent 365 blueprint reference | New in v1.25 |
+| `supportsChannelFeatures` | Required for team-scoped apps | Set to `"tier1"` |
+| `nestedAppAuthInfo` | Prefetch NAA token on tab load | v1.22+ |
+| `backgroundLoadConfiguration` | Tab precaching for faster load | v1.23+ |
+| `copilot` scope for bots | New bot scope value | v1.23+ |
+| `activityIcons` | Custom 32x32 PNGs for activity feed | v1.24+ |
+| `semanticDescription` | For Copilot for M365 integration | v1.22+ |
+| `webApplicationInfo` | SSO configuration (client ID + API URI) | Existing |
+
+### Full Manifest Example
+
+```json
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.25/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.25",
   "version": "1.0.0",
   "id": "{{APP_ID}}",
+  "name": {
+    "short": "My App",
+    "full": "My Application Full Name"
+  },
+  "description": {
+    "short": "Short description (80 chars max)",
+    "full": "Full description of app capabilities (4000 chars max)"
+  },
   "developer": {
     "name": "Contoso",
     "websiteUrl": "https://contoso.com",
     "privacyUrl": "https://contoso.com/privacy",
-    "termsOfUseUrl": "https://contoso.com/terms"
-  },
-  "name": {
-    "short": "My Teams App",
-    "full": "My Teams App — Full Description"
-  },
-  "description": {
-    "short": "Brief app description (max 80 chars)",
-    "full": "Detailed description of app capabilities (max 4000 chars)"
+    "termsOfUseUrl": "https://contoso.com/tos"
   },
   "icons": {
     "color": "color.png",
     "outline": "outline.png"
   },
-  "accentColor": "#4F6BED",
-  "validDomains": ["contoso.com", "*.contoso.com"]
-}
-```
-
-### Bot Registration
-
-```json
-{
+  "accentColor": "#FFFFFF",
+  "staticTabs": [
+    {
+      "entityId": "homeTab",
+      "name": "Home",
+      "contentUrl": "https://{{TAB_DOMAIN}}/tab/home",
+      "websiteUrl": "https://{{TAB_DOMAIN}}/tab/home",
+      "scopes": ["personal"]
+    }
+  ],
+  "configurableTabs": [
+    {
+      "configurationUrl": "https://{{TAB_DOMAIN}}/tab/configure",
+      "canUpdateConfiguration": true,
+      "scopes": ["team", "groupChat"],
+      "context": ["channelTab", "privateChatTab", "meetingChatTab", "meetingDetailsTab", "meetingSidePanel", "meetingStage"],
+      "supportsChannelFeatures": "tier1"
+    }
+  ],
   "bots": [
     {
       "botId": "{{BOT_ID}}",
       "scopes": ["personal", "team", "groupChat"],
       "supportsFiles": false,
-      "isNotificationOnly": false,
-      "commandLists": [
-        {
-          "scopes": ["personal"],
-          "commands": [
-            { "title": "help", "description": "Show available commands" },
-            { "title": "status", "description": "Check current status" }
-          ]
-        }
-      ]
-    }
-  ]
-}
-```
-
-### Static Tabs
-
-```json
-{
-  "staticTabs": [
-    {
-      "entityId": "dashboard",
-      "name": "Dashboard",
-      "contentUrl": "https://contoso.com/tabs/dashboard?theme={theme}",
-      "websiteUrl": "https://contoso.com/dashboard",
-      "scopes": ["personal"]
-    }
-  ]
-}
-```
-
-### Configurable Tabs
-
-```json
-{
-  "configurableTabs": [
-    {
-      "configurationUrl": "https://contoso.com/tabs/config",
-      "canUpdateConfiguration": true,
-      "scopes": ["team", "groupChat"],
-      "context": ["channelTab", "privateChatTab"]
-    }
-  ]
-}
-```
-
-### Web Application Info (SSO)
-
-```json
-{
-  "webApplicationInfo": {
-    "id": "{{AZURE_CLIENT_ID}}",
-    "resource": "api://contoso.com/{{AZURE_CLIENT_ID}}"
-  }
-}
-```
-
-### RSC (Resource-Specific Consent) Permissions
-
-```json
-{
-  "authorization": {
-    "permissions": {
-      "resourceSpecific": [
-        { "name": "ChannelMessage.Read.Group", "type": "Application" },
-        { "name": "TeamSettings.ReadWrite.Group", "type": "Application" },
-        { "name": "ChatMessage.Read.Chat", "type": "Application" }
-      ]
-    }
-  }
-}
-```
-
-### Complete Manifest Example
-
-```json
-{
-  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.17/MicrosoftTeams.schema.json",
-  "manifestVersion": "1.17",
-  "version": "1.0.0",
-  "id": "{{APP_ID}}",
-  "developer": {
-    "name": "Contoso",
-    "websiteUrl": "https://contoso.com",
-    "privacyUrl": "https://contoso.com/privacy",
-    "termsOfUseUrl": "https://contoso.com/terms"
-  },
-  "name": { "short": "Contoso Helper", "full": "Contoso Helper — Bot and Tabs" },
-  "description": {
-    "short": "Search products and manage tickets",
-    "full": "A Teams app with a conversational bot, product search message extension, and a dashboard tab."
-  },
-  "icons": { "color": "color.png", "outline": "outline.png" },
-  "accentColor": "#4F6BED",
-  "bots": [
-    {
-      "botId": "{{BOT_ID}}",
-      "scopes": ["personal", "team", "groupChat"],
-      "commandLists": [
-        {
-          "scopes": ["personal"],
-          "commands": [
-            { "title": "help", "description": "Show available commands" },
-            { "title": "search", "description": "Search for products" }
-          ]
-        }
-      ]
+      "isNotificationOnly": false
     }
   ],
   "composeExtensions": [
@@ -968,530 +576,697 @@ The manifest (`manifest.json`) is the app's contract with Teams. It declares cap
       "botId": "{{BOT_ID}}",
       "commands": [
         {
-          "id": "searchProducts",
+          "id": "searchItems",
           "type": "query",
-          "title": "Search Products",
-          "description": "Find products by name or SKU",
+          "title": "Search",
+          "description": "Search for items",
           "initialRun": true,
           "parameters": [
-            { "name": "query", "title": "Search", "description": "Product name or SKU" }
+            { "name": "query", "title": "Search", "description": "Search term" }
           ]
         }
       ]
     }
   ],
-  "staticTabs": [
-    {
-      "entityId": "dashboard",
-      "name": "Dashboard",
-      "contentUrl": "https://contoso.com/tabs/dashboard",
-      "scopes": ["personal"]
-    }
-  ],
-  "validDomains": ["contoso.com"],
+  "permissions": ["identity", "messageTeamMembers"],
+  "validDomains": ["{{TAB_DOMAIN}}"],
   "webApplicationInfo": {
-    "id": "{{AZURE_CLIENT_ID}}",
-    "resource": "api://contoso.com/{{AZURE_CLIENT_ID}}"
+    "id": "{{AAD_APP_CLIENT_ID}}",
+    "resource": "api://{{TAB_DOMAIN}}/{{AAD_APP_CLIENT_ID}}"
+  },
+  "nestedAppAuthInfo": {
+    "enableNAA": true
   }
 }
 ```
 
-## 8. Graph API for App Management
+### Known Issues (v1.25)
 
-Manage Teams apps in the organization catalog and per-team/user installations via Microsoft Graph.
+- Schema regex validation bug for `.xll` pattern — tracked in GitHub Issue #15340
+- Developer Portal has bugs saving `supportsChannelFeatures` — use manual ZIP packaging as workaround
 
-### App Catalog Operations
+---
 
-| Operation | Method | Endpoint | Permission |
-|-----------|--------|----------|------------|
-| List published apps | `GET` | `/appCatalogs/teamsApps?$filter=distributionMethod eq 'organization'` | `AppCatalog.Read.All` |
-| Publish app | `POST` | `/appCatalogs/teamsApps` (multipart ZIP) | `AppCatalog.Submit` |
-| Update published app | `POST` | `/appCatalogs/teamsApps/{id}/appDefinitions` | `AppCatalog.Submit` |
-| Delete published app | `DELETE` | `/appCatalogs/teamsApps/{id}` | `AppCatalog.Submit` |
+## 7. TeamsJS Client Library v2.24+
 
-### Per-Team Installation
+### Core API
 
-| Operation | Method | Endpoint | Permission |
-|-----------|--------|----------|------------|
-| List apps in team | `GET` | `/teams/{team-id}/installedApps?$expand=teamsAppDefinition` | `TeamsAppInstallation.ReadForTeam` |
-| Install app in team | `POST` | `/teams/{team-id}/installedApps` | `TeamsAppInstallation.ReadWriteForTeam` |
-| Remove from team | `DELETE` | `/teams/{team-id}/installedApps/{id}` | `TeamsAppInstallation.ReadWriteForTeam` |
+```typescript
+import * as microsoftTeams from "@microsoft/teams-js";
 
-**Install app in team**:
+// MUST call app.initialize() before any other SDK call
+await microsoftTeams.app.initialize();
+
+// Get full context
+const context = await microsoftTeams.app.getContext();
+console.log({
+  teamId: context.team?.internalId,
+  channelId: context.channel?.id,
+  userObjectId: context.user?.id,
+  userPrincipalName: context.user?.userPrincipalName,
+  theme: context.app.theme,          // "default" | "dark" | "contrast"
+  hostName: context.app.host.name,   // "Teams" | "Outlook" | "Office"
+  frameContext: context.page.frameContext,
+  meetingId: context.meeting?.id,
+});
 ```
-POST https://graph.microsoft.com/v1.0/teams/{team-id}/installedApps
-Content-Type: application/json
 
-{
-  "teamsApp@odata.bind": "https://graph.microsoft.com/v1.0/appCatalogs/teamsApps/{app-id}"
+### Key Namespaces
+
+| Namespace | Purpose | Status |
+|-----------|---------|--------|
+| `app` | Initialization, context, lifecycle | Stable |
+| `authentication` | SSO, auth flows | Stable |
+| `dialog` | Modal dialogs (HTML + Adaptive Card) | Stable (replaces `tasks`) |
+| `pages` | Tab navigation, config, back stack | Stable |
+| `chat` | Chat interactions | Preview |
+| `call` | Start calls | Stable |
+| `meeting` | Meeting lifecycle, raise hand | Stable |
+| `stageView` | Stage view interactions | Preview |
+| `nestedAppAuth` | Nested App Authentication (NAA) | Stable (v2.24+) |
+| `videoEffects` | In-meeting video effects | Preview |
+| `marketplace` | App install dialog | Stable |
+
+### Dialog Namespace (Replaces Task Modules)
+
+The `tasks` namespace is fully replaced by `dialog`:
+
+```typescript
+// Open HTML-based dialog
+microsoftTeams.dialog.url.open({
+  title: "Create Item",
+  url: `${window.location.origin}/dialog/create`,
+  size: { height: 450, width: 600 },
+});
+
+// Open Adaptive Card dialog
+microsoftTeams.dialog.adaptiveCard.open({
+  title: "Quick Form",
+  card: cardJson,
+  size: { height: 400, width: 500 },
+});
+
+// Bot-backed dialogs
+microsoftTeams.dialog.url.bot.open({ ... });
+microsoftTeams.dialog.adaptiveCard.bot.open({ ... });
+
+// Submit from HTML dialog
+microsoftTeams.dialog.url.submit(resultData);
+```
+
+Dialogs can be invoked from tabs, bots, message extensions, and deep links. Results return directly to the calling surface.
+
+### SSO Authentication
+
+```typescript
+// Get SSO token (silent, no popup)
+const ssoToken = await microsoftTeams.authentication.getAuthToken();
+
+// Exchange on server via OBO flow
+const response = await fetch("/auth/token", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ ssoToken }),
+});
+```
+
+### Nested App Authentication (NAA)
+
+NAA allows apps in iframes to authenticate without pop-ups by leveraging the parent host's auth context:
+
+```typescript
+// Check if NAA is recommended for the current channel
+const isRecommended = await microsoftTeams.nestedAppAuth.isNAAChannelRecommended();
+
+// Use MSAL with NAA
+import { createNestablePublicClientApplication } from "@azure/msal-browser";
+
+const msalInstance = await createNestablePublicClientApplication({
+  auth: {
+    clientId: "your-client-id",
+    authority: "https://login.microsoftonline.com/common",
+  },
+});
+```
+
+### Tab Configuration Page
+
+```typescript
+microsoftTeams.pages.config.registerOnSaveHandler(async (saveEvent) => {
+  await microsoftTeams.pages.config.setConfig({
+    entityId: "tab-dashboard",
+    configName: "Dashboard",
+    contentUrl: `https://myapp.com/tab/dashboard`,
+    websiteUrl: `https://myapp.com/tab/dashboard`,
+  });
+  saveEvent.notifySuccess();
+});
+microsoftTeams.pages.config.setValidityState(true);
+```
+
+### Deep Links
+
+```typescript
+// Navigate to a tab (TeamsJS v2)
+await microsoftTeams.pages.navigateToApp({
+  appId: "your-app-id",
+  pageId: "homeTab",
+  subPageId: "item-123",
+});
+
+// URL format
+const deepLink = `https://teams.microsoft.com/l/entity/${appId}/${entityId}?context=${encodedContext}`;
+```
+
+### Meeting APIs
+
+```typescript
+const context = await microsoftTeams.app.getContext();
+const isMeeting = !!context.meeting;
+const frameContext = context.page.frameContext;
+// "sidePanel" | "meetingStage" | "content"
+
+// Share to meeting stage from side panel
+if (frameContext === "sidePanel") {
+  await microsoftTeams.meeting.shareAppContentToStage(
+    (err) => { if (err) console.error("Share failed:", err); },
+    `${window.location.origin}/tab/stage`
+  );
 }
 ```
 
-### Per-User Installation
+---
 
-| Operation | Method | Endpoint | Permission |
-|-----------|--------|----------|------------|
-| List user apps | `GET` | `/users/{user-id}/teamwork/installedApps?$expand=teamsAppDefinition` | `TeamsAppInstallation.ReadForUser` |
-| Install for user | `POST` | `/users/{user-id}/teamwork/installedApps` | `TeamsAppInstallation.ReadWriteForUser` |
-| Remove for user | `DELETE` | `/users/{user-id}/teamwork/installedApps/{id}` | `TeamsAppInstallation.ReadWriteForUser` |
+## 8. Adaptive Cards in Teams
 
-## 9. Authentication Patterns
+### Version Support
 
-### Bot Authentication (OAuthPrompt)
+| Teams Client | Max Schema Version |
+|---|---|
+| Desktop (Windows/macOS) / Web | 1.5 |
+| Mobile (iOS/Android) | 1.2 |
+| Incoming Webhooks | 1.5 (except Action.Submit — use Action.Execute) |
 
-Bot Framework's `OAuthPrompt` handles sign-in flows for bots, including Teams SSO.
+**Important Teams-specific gotchas**:
+- `Action.Submit` `isEnabled` property is NOT supported
+- File/image uploads are NOT supported in Adaptive Cards
+- Positive/destructive action styling is NOT supported
+- Design for narrow screens first (mobile, meeting side panels)
 
-```typescript
-import { OAuthPrompt, OAuthPromptSettings } from "botbuilder-dialogs";
-
-const oauthSettings: OAuthPromptSettings = {
-  connectionName: process.env.OAUTH_CONNECTION_NAME!, // Configured in Azure Bot resource
-  text: "Please sign in to continue.",
-  title: "Sign In",
-  timeout: 300000, // 5 minutes
-};
-
-const oauthPrompt = new OAuthPrompt("oauthPrompt", oauthSettings);
-
-// In a WaterfallDialog:
-async (step) => {
-  return step.beginDialog("oauthPrompt");
-},
-async (step) => {
-  const tokenResponse = step.result;
-  if (tokenResponse?.token) {
-    // Use tokenResponse.token to call Graph API
-    const graphClient = Client.init({
-      authProvider: (done) => done(null, tokenResponse.token),
-    });
-    const me = await graphClient.api("/me").get();
-    await step.context.sendActivity(`Hello, ${me.displayName}!`);
-  } else {
-    await step.context.sendActivity("Sign-in failed. Please try again.");
-  }
-  return step.endDialog();
-},
-```
-
-**Azure Bot OAuth connection setup**:
-1. Azure Portal > Bot resource > Configuration > OAuth Connection Settings.
-2. Add a new connection with service provider `Azure Active Directory v2`.
-3. Set `Client ID`, `Client Secret`, `Tenant ID`.
-4. Scopes: `openid profile User.Read` (add more as needed).
-5. Use the connection name in `OAuthPromptSettings.connectionName`.
-
-### Tab SSO (getAuthToken + OBO)
-
-1. **Client**: Call `authentication.getAuthToken()` from Teams JS SDK — returns an ID token.
-2. **Server**: Exchange the ID token for an access token via the On-Behalf-Of (OBO) flow.
-3. **Graph calls**: Use the exchanged access token to call Microsoft Graph.
-
-**Azure AD app registration requirements for SSO**:
-- **Redirect URI**: `https://<domain>/auth-end` (SPA platform).
-- **Expose an API**: Add `api://<domain>/<client-id>` as Application ID URI.
-- **Add scope**: `access_as_user` delegated scope.
-- **Authorized client applications**: Add Teams client IDs:
-  - `1fec8e78-bce4-4aaf-ab1b-5451cc387264` (Teams desktop/mobile)
-  - `5e3ce6c0-2b1f-4285-8d4b-75ee78787346` (Teams web)
-
-## 10. Permissions and Scopes
-
-### Bot Scopes
-
-| Scope | Description |
-|-------|-------------|
-| `personal` | Bot available in 1:1 chat with user |
-| `team` | Bot available in team channels |
-| `groupChat` | Bot available in group chats |
-
-### RSC Permissions (Resource-Specific Consent)
-
-RSC allows apps to access data within a specific team or chat without tenant-wide admin consent.
-
-| Permission | Type | Scope |
-|-----------|------|-------|
-| `TeamSettings.Read.Group` | Application | Read team settings |
-| `TeamSettings.ReadWrite.Group` | Application | Read/write team settings |
-| `ChannelMessage.Read.Group` | Application | Read channel messages |
-| `ChatMessage.Read.Chat` | Application | Read chat messages |
-| `ChatSettings.Read.Chat` | Application | Read chat settings |
-| `ChatSettings.ReadWrite.Chat` | Application | Read/write chat settings |
-| `ChatMember.Read.Chat` | Application | Read chat membership |
-| `TeamsActivity.Send.Group` | Application | Send activity feed notifications |
-| `TeamsActivity.Send.Chat` | Application | Send activity feed in chats |
-| `TeamsActivity.Send.User` | Application | Send activity feed to users |
-
-### Graph Permissions for App Management
-
-| Permission | Type | Allows |
-|-----------|------|--------|
-| `AppCatalog.Read.All` | Application | List org-published apps |
-| `AppCatalog.Submit` | Delegated | Publish/update/delete apps in catalog |
-| `TeamsAppInstallation.ReadForTeam` | Delegated | List apps installed in a team |
-| `TeamsAppInstallation.ReadWriteForTeam` | Delegated | Install/remove apps in teams |
-| `TeamsAppInstallation.ReadForUser` | Delegated | List apps installed for a user |
-| `TeamsAppInstallation.ReadWriteForUser` | Delegated | Install/remove apps for users |
-| `TeamsAppInstallation.ReadWriteSelfForTeam` | Application | Self-manage in teams |
-
-## 11. Error Handling
-
-### Bot `onTurnError`
-
-Always configure a global error handler on the adapter to prevent silent failures.
-
-```typescript
-import { CloudAdapter, TurnContext } from "botbuilder";
-
-const adapter = new CloudAdapter();
-
-adapter.onTurnError = async (context: TurnContext, error: Error) => {
-  console.error(`[onTurnError] unhandled error: ${error.message}`, error.stack);
-
-  // Send a friendly message to the user
-  await context.sendActivity("Sorry, something went wrong. Please try again later.");
-
-  // Clear conversation state to prevent stuck dialogs
-  await conversationState.delete(context);
-};
-```
-
-### Manifest Validation Errors
-
-| Error | Cause | Fix |
-|-------|-------|-----|
-| `MissingRequiredProperty` | Required field not set in manifest | Add the missing field (`name`, `description`, `icons`, etc.) |
-| `InvalidGuid` | `id` or `botId` is not a valid GUID | Use `crypto.randomUUID()` or Azure-generated GUID |
-| `InvalidDomain` | `validDomains` entry is not a valid domain | Use FQDN without protocol (e.g., `contoso.com`, not `https://contoso.com`) |
-| `BotIdMismatch` | Bot ID in manifest doesn't match Azure Bot registration | Ensure `bots[].botId` matches the Azure Bot's Microsoft App ID |
-| `IconSizeMismatch` | `color.png` not 192x192 or `outline.png` not 32x32 | Resize icons to required dimensions |
-| `DescriptionTooLong` | Short description >80 chars or full >4000 chars | Shorten the description text |
-
-### Sideloading Errors
-
-| Error | Cause | Fix |
-|-------|-------|-----|
-| `SideloadingNotEnabled` | Org policy blocks custom app uploads | Admin must enable "Upload custom apps" in Teams admin center |
-| `AppPackageInvalid` | ZIP structure incorrect | ZIP must contain `manifest.json`, `color.png`, `outline.png` at root level |
-| `ManifestSchemaError` | Manifest doesn't match schema | Run `teamsapp validate` and fix reported issues |
-| `BotNotRegistered` | Bot ID not registered in Bot Framework | Create Azure Bot resource with matching App ID |
-
-### Adaptive Card Rendering Fallback
-
-When a card uses features newer than the client's supported schema version:
+### Card Layout
 
 ```json
 {
   "type": "AdaptiveCard",
   "version": "1.5",
-  "fallbackText": "This card requires a newer version of Teams to render.",
   "body": [
     {
-      "type": "Table",
-      "fallback": {
-        "type": "TextBlock",
-        "text": "Data table (update Teams to see the formatted table)"
-      },
+      "type": "ColumnSet",
       "columns": [
-        { "width": 1 },
-        { "width": 2 }
-      ],
-      "rows": [
         {
-          "type": "TableRow",
-          "cells": [
-            { "type": "TableCell", "items": [{ "type": "TextBlock", "text": "Name" }] },
-            { "type": "TableCell", "items": [{ "type": "TextBlock", "text": "Contoso" }] }
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            { "type": "Image", "url": "https://example.com/logo.png", "size": "Small", "style": "Person" }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            { "type": "TextBlock", "text": "John Smith", "weight": "Bolder" },
+            { "type": "TextBlock", "text": "Engineering", "isSubtle": true, "spacing": "None" }
           ]
         }
       ]
+    },
+    {
+      "type": "FactSet",
+      "facts": [
+        { "title": "Priority", "value": "${priority}" },
+        { "title": "Due Date", "value": "${dueDate}" }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Execute",
+      "title": "Approve",
+      "verb": "approve",
+      "data": { "itemId": "${itemId}" }
+    },
+    {
+      "type": "Action.OpenUrl",
+      "title": "View Details",
+      "url": "${detailUrl}"
     }
   ]
 }
 ```
 
-## 12. Common Patterns
+### Input Elements
 
-### Pattern 1: Conversational Bot with Card Actions
+| Element | Use |
+|---------|-----|
+| `Input.Text` | Free text, multiline |
+| `Input.ChoiceSet` | Dropdown, radio, multi-select |
+| `Input.Date` / `Input.Time` | Date/time pickers |
+| `Input.Toggle` | Boolean toggle |
+| `Input.Number` | Numeric input |
 
-A bot that responds to messages and presents Adaptive Cards with `Action.Execute` for interactive workflows.
-
-```typescript
-import { TeamsActivityHandler, TurnContext, CardFactory, AdaptiveCardInvokeResponse, AdaptiveCardInvokeValue } from "botbuilder";
-
-export class ApprovalBot extends TeamsActivityHandler {
-  constructor() {
-    super();
-    this.onMessage(async (context, next) => {
-      if (context.activity.text?.includes("request")) {
-        const card = CardFactory.adaptiveCard({
-          type: "AdaptiveCard",
-          version: "1.5",
-          body: [
-            { type: "TextBlock", text: "New Approval Request", weight: "Bolder", size: "Medium" },
-            { type: "TextBlock", text: `From: ${context.activity.from.name}`, wrap: true },
-            { type: "Input.Text", id: "reason", label: "Reason", isMultiline: true },
-          ],
-          actions: [
-            { type: "Action.Execute", title: "Approve", verb: "approve", data: { requestId: "REQ-001" } },
-            { type: "Action.Execute", title: "Reject", verb: "reject", data: { requestId: "REQ-001" } },
-          ],
-        });
-        await context.sendActivity({ attachments: [card] });
-      }
-      await next();
-    });
-  }
-
-  async onAdaptiveCardInvoke(context: TurnContext, invokeValue: AdaptiveCardInvokeValue): Promise<AdaptiveCardInvokeResponse> {
-    const { verb, data } = invokeValue.action;
-    const actor = context.activity.from.name;
-
-    const statusCard = {
-      type: "AdaptiveCard",
-      version: "1.5",
-      body: [
-        { type: "TextBlock", text: `Request ${data.requestId}`, weight: "Bolder" },
-        { type: "TextBlock", text: `**${verb === "approve" ? "Approved" : "Rejected"}** by ${actor}` },
-      ],
-    };
-
-    return { statusCode: 200, type: "application/vnd.microsoft.card.adaptive", value: statusCard };
-  }
-}
-```
-
-### Pattern 2: Search Message Extension
-
-A message extension that queries an external API and returns results as Adaptive Cards.
+### Templating SDK
 
 ```typescript
-import { TeamsActivityHandler, TurnContext, CardFactory, MessagingExtensionQuery, MessagingExtensionResponse } from "botbuilder";
+import { AdaptiveCardTemplate } from "adaptivecards-templating";
 
-interface SearchResult {
-  id: string;
-  title: string;
-  description: string;
-  imageUrl: string;
-}
-
-export class SearchExtensionBot extends TeamsActivityHandler {
-  async handleTeamsMessagingExtensionQuery(
-    context: TurnContext,
-    query: MessagingExtensionQuery
-  ): Promise<MessagingExtensionResponse> {
-    const searchText = query.parameters?.[0]?.value || "";
-    const results: SearchResult[] = await this.search(searchText);
-
-    const attachments = results.map((item) => ({
-      contentType: "application/vnd.microsoft.card.adaptive",
-      content: {
-        type: "AdaptiveCard",
-        version: "1.5",
-        body: [
-          { type: "TextBlock", text: item.title, weight: "Bolder", size: "Medium" },
-          { type: "Image", url: item.imageUrl, size: "Medium" },
-          { type: "TextBlock", text: item.description, wrap: true },
-        ],
-      },
-      preview: CardFactory.heroCard(item.title, item.description, [item.imageUrl]),
-    }));
-
-    return { composeExtension: { type: "result", attachmentLayout: "list", attachments } };
-  }
-
-  private async search(query: string): Promise<SearchResult[]> {
-    const response = await fetch(`https://api.contoso.com/search?q=${encodeURIComponent(query)}`);
-    return response.json();
-  }
-}
-```
-
-### Pattern 3: Action Extension with Task Module
-
-An action message extension that opens a form (task module), collects input, and posts a result card.
-
-```typescript
-import { TeamsActivityHandler, TurnContext, CardFactory, MessagingExtensionAction, MessagingExtensionActionResponse } from "botbuilder";
-
-export class ActionExtensionBot extends TeamsActivityHandler {
-  async handleTeamsMessagingExtensionFetchTask(
-    context: TurnContext,
-    action: MessagingExtensionAction
-  ): Promise<MessagingExtensionActionResponse> {
-    return {
-      task: {
-        type: "continue",
-        value: {
-          title: "Submit Feedback",
-          width: "medium",
-          height: "medium",
-          card: CardFactory.adaptiveCard({
-            type: "AdaptiveCard",
-            version: "1.5",
-            body: [
-              { type: "Input.Text", id: "feedback", label: "Your feedback", isMultiline: true },
-              {
-                type: "Input.ChoiceSet",
-                id: "rating",
-                label: "Rating",
-                choices: [
-                  { title: "Excellent", value: "5" },
-                  { title: "Good", value: "4" },
-                  { title: "Average", value: "3" },
-                  { title: "Poor", value: "2" },
-                  { title: "Terrible", value: "1" },
-                ],
-              },
-            ],
-            actions: [{ type: "Action.Submit", title: "Submit" }],
-          }),
-        },
-      },
-    };
-  }
-
-  async handleTeamsMessagingExtensionSubmitAction(
-    context: TurnContext,
-    action: MessagingExtensionAction
-  ): Promise<MessagingExtensionActionResponse> {
-    const { feedback, rating } = action.data;
-
-    return {
-      composeExtension: {
-        type: "result",
-        attachmentLayout: "list",
-        attachments: [
-          CardFactory.adaptiveCard({
-            type: "AdaptiveCard",
-            version: "1.5",
-            body: [
-              { type: "TextBlock", text: "Feedback Submitted", weight: "Bolder", size: "Medium" },
-              { type: "FactSet", facts: [
-                { title: "Rating", value: `${"★".repeat(Number(rating))}${"☆".repeat(5 - Number(rating))}` },
-                { title: "Feedback", value: feedback },
-                { title: "Submitted by", value: context.activity.from.name },
-              ]},
-            ],
-          }),
-        ],
-      },
-    };
-  }
-}
-```
-
-### Pattern 4: Tab App with SSO and Graph Data
-
-A React tab that authenticates via SSO and fetches the user's profile from Microsoft Graph.
-
-```typescript
-// src/components/ProfileTab.tsx
-import React, { useEffect, useState } from "react";
-import { app, authentication } from "@microsoft/teams-js";
-import { Spinner, Text, Avatar, Card, CardHeader } from "@fluentui/react-components";
-
-interface UserProfile {
-  displayName: string;
-  mail: string;
-  jobTitle: string;
-  officeLocation: string;
-}
-
-export function ProfileTab() {
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [error, setError] = useState<string>("");
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        await app.initialize();
-        const token = await authentication.getAuthToken();
-
-        // Send token to backend for OBO exchange
-        const response = await fetch("/api/profile", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (!response.ok) throw new Error(`API error: ${response.status}`);
-        const data: UserProfile = await response.json();
-        setProfile(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load profile");
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
-
-  if (loading) return <Spinner label="Loading profile..." />;
-  if (error) return <Text style={{ color: "red" }}>{error}</Text>;
-  if (!profile) return null;
-
-  return (
-    <Card>
-      <CardHeader
-        image={<Avatar name={profile.displayName} size={48} />}
-        header={<Text weight="bold">{profile.displayName}</Text>}
-        description={profile.jobTitle}
-      />
-      <Text>Email: {profile.mail}</Text>
-      <Text>Office: {profile.officeLocation}</Text>
-    </Card>
-  );
-}
-```
-
-```typescript
-// src/api/profile.ts (Express backend)
-import { Router } from "express";
-import { ConfidentialClientApplication } from "@azure/msal-node";
-import { Client } from "@microsoft/microsoft-graph-client";
-
-const router = Router();
-
-const msalClient = new ConfidentialClientApplication({
-  auth: {
-    clientId: process.env.AZURE_CLIENT_ID!,
-    clientSecret: process.env.AZURE_CLIENT_SECRET!,
-    authority: `https://login.microsoftonline.com/${process.env.AZURE_TENANT_ID}`,
+const template = new AdaptiveCardTemplate(cardJson);
+const rendered = template.expand({
+  $root: {
+    title: "Incident Report",
+    severity: "Critical",
+    owner: { displayName: "On-Call Engineer" },
   },
 });
-
-router.get("/api/profile", async (req, res) => {
-  const ssoToken = req.headers.authorization?.replace("Bearer ", "");
-  if (!ssoToken) return res.status(401).json({ error: "No token provided" });
-
-  try {
-    const result = await msalClient.acquireTokenOnBehalfOf({
-      oboAssertion: ssoToken,
-      scopes: ["https://graph.microsoft.com/User.Read"],
-    });
-
-    const graphClient = Client.init({
-      authProvider: (done) => done(null, result!.accessToken),
-    });
-
-    const profile = await graphClient
-      .api("/me")
-      .select("displayName,mail,jobTitle,officeLocation")
-      .get();
-
-    res.json(profile);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to fetch profile" });
-  }
-});
-
-export default router;
 ```
 
-## Progressive Disclosure — Reference Files
+Template expressions:
+- Simple binding: `"text": "Hello, ${name}!"`
+- Array iteration: `"$data": "${items}"`
+- Conditional rendering: `"$when": "${status == 'active'}"`
 
-| Topic | File |
+### Universal Actions — Refresh Pattern
+
+```json
+{
+  "type": "AdaptiveCard",
+  "version": "1.5",
+  "refresh": {
+    "action": {
+      "type": "Action.Execute",
+      "verb": "refresh",
+      "data": { "taskId": "123" }
+    },
+    "userIds": ["<user-aad-object-id>"]
+  },
+  "body": [...]
+}
+```
+
+### Card Size and Limits
+
+| Resource | Limit |
 |---|---|
-| Adaptive Cards schema 1.6, actions, templates, Universal Actions | [`references/adaptive-cards.md`](./references/adaptive-cards.md) |
-| Bot Framework SDK v4, TeamsActivityHandler, proactive messaging | [`references/bot-framework.md`](./references/bot-framework.md) |
-| Tab manifest, Teams JS SDK v2, SSO, configuration pages, deep links | [`references/tabs-personal-group.md`](./references/tabs-personal-group.md) |
-| Message extensions — search, action, link unfurling | [`references/message-extensions.md`](./references/message-extensions.md) |
-| Teams Toolkit CLI — scaffold, preview, provision, deploy, CI/CD | [`references/toolkit-cli.md`](./references/toolkit-cli.md) |
+| Card JSON size | 28 KB |
+| Actions per card | 6 visible; unlimited with ShowCard nesting |
+| Nested containers | 5 levels |
+| Input.ChoiceSet options | 100 |
+| Max schema version | 1.5 (Teams) |
+| Image URLs | HTTPS required |
+| Refresh userIds | 60 users |
+
+---
+
+## 9. Message Extensions
+
+Message extensions are implemented as bot-based handlers sharing the same `/api/messages` endpoint.
+
+### Types
+
+1. **Search commands** — Query-based, returns cards from your service
+2. **Action commands** — Collect input via dialog, process server-side, return card
+3. **Link unfurling** — Automatically preview URLs pasted in compose box
+
+### Search Extension (Teams SDK v2)
+
+```typescript
+app.messageExtension.query("searchItems", async (context, query) => {
+  const searchText = query.parameters?.[0]?.value ?? "";
+  const results = await searchService(searchText);
+
+  return {
+    composeExtension: {
+      type: "result",
+      attachmentLayout: "list",
+      attachments: results.map((item) => ({
+        content: buildAdaptiveCard(item),
+        contentType: "application/vnd.microsoft.card.adaptive",
+        preview: CardFactory.thumbnailCard(item.title, item.subtitle),
+      })),
+    },
+  };
+});
+```
+
+### Action Extension (Teams SDK v2)
+
+```typescript
+app.messageExtension.fetchTask("createItem", async (context, action) => {
+  return {
+    task: {
+      type: "continue",
+      value: {
+        title: "Create Item",
+        height: 450,
+        width: 500,
+        card: CardFactory.adaptiveCard(formCard),
+      },
+    },
+  };
+});
+
+app.messageExtension.submitAction("createItem", async (context, action) => {
+  const { title, description } = action.data;
+  const created = await createItem({ title, description });
+
+  return {
+    composeExtension: {
+      type: "result",
+      attachmentLayout: "list",
+      attachments: [{ content: buildResultCard(created), contentType: "application/vnd.microsoft.card.adaptive" }],
+    },
+  };
+});
+```
+
+### Link Unfurling
+
+```typescript
+app.messageExtension.linkQuery(async (context, query) => {
+  const url = query.url;
+  const metadata = await fetchMetadata(url);
+
+  return {
+    composeExtension: {
+      type: "result",
+      attachmentLayout: "list",
+      attachments: [{
+        content: buildUnfurlCard(metadata),
+        contentType: "application/vnd.microsoft.card.adaptive",
+        preview: CardFactory.thumbnailCard(metadata.title, metadata.description),
+      }],
+    },
+  };
+});
+```
+
+### Manifest Fragment
+
+```json
+{
+  "composeExtensions": [{
+    "botId": "{{BOT_ID}}",
+    "commands": [
+      {
+        "id": "searchItems",
+        "type": "query",
+        "title": "Search",
+        "description": "Search for items",
+        "initialRun": true,
+        "parameters": [{ "name": "query", "title": "Search", "description": "Search term" }]
+      },
+      {
+        "id": "createItem",
+        "type": "action",
+        "title": "Create",
+        "description": "Create a new item",
+        "context": ["message", "compose"],
+        "fetchTask": true
+      }
+    ],
+    "messageHandlers": [{
+      "type": "link",
+      "value": { "domains": ["myapp.com", "*.myapp.com"] }
+    }]
+  }]
+}
+```
+
+### Limits
+
+| Resource | Limit |
+|---|---|
+| Commands per extension | 10 |
+| Parameters per command | 5 |
+| Search results returned | 25 per query |
+| Query response timeout | 5 seconds |
+| Link unfurl domains | 10 |
+| Dialog dimensions | 16-720px height, 16-1000px width |
+
+---
+
+## 10. Tab Development
+
+### Personal Tabs (Static)
+
+Personal tabs host the full product shell: dashboards, search, settings, admin tools.
+
+```json
+{
+  "staticTabs": [{
+    "entityId": "homeTab",
+    "name": "Home",
+    "contentUrl": "https://{{TAB_DOMAIN}}/tab/home",
+    "websiteUrl": "https://{{TAB_DOMAIN}}/tab/home",
+    "scopes": ["personal"]
+  }]
+}
+```
+
+### Channel/Group Tabs (Configurable)
+
+Collaborative context surfaces that inherit team/channel/chat context.
+
+```json
+{
+  "configurableTabs": [{
+    "configurationUrl": "https://{{TAB_DOMAIN}}/tab/configure",
+    "canUpdateConfiguration": true,
+    "scopes": ["team", "groupChat"],
+    "context": ["channelTab", "privateChatTab", "meetingChatTab", "meetingDetailsTab", "meetingSidePanel", "meetingStage"],
+    "supportsChannelFeatures": "tier1"
+  }]
+}
+```
+
+### Meeting Tabs
+
+| Surface | Use | Context Value |
+|---------|-----|---------------|
+| Details tab | Pre/post meeting prep and follow-up | `meetingDetailsTab` |
+| Side panel | During-meeting operator workflows | `meetingSidePanel` |
+| Stage | Shared synchronized work surface | `meetingStage` |
+| Chat tab | Meeting chat context | `meetingChatTab` |
+
+### Tab Context Fields
+
+| Field | Path | Description |
+|-------|------|-------------|
+| User AAD ID | `context.user?.id` | AAD Object ID |
+| Tenant ID | `context.user?.tenant?.id` | Tenant ID |
+| Team ID | `context.team?.internalId` | Teams internal ID |
+| Channel ID | `context.channel?.id` | Current channel |
+| Entity ID | `context.page.id` | `entityId` from manifest |
+| Theme | `context.app.theme` | `"default"` / `"dark"` / `"contrast"` |
+| Host name | `context.app.host.name` | `"Teams"` / `"Outlook"` / `"Office"` |
+| Frame context | `context.page.frameContext` | `"content"` / `"sidePanel"` / `"task"` |
+| Meeting ID | `context.meeting?.id` | Present only in meetings |
+
+---
+
+## 11. Authentication Patterns
+
+### Tab SSO
+
+1. TeamsJS `authentication.getAuthToken()` gets SSO token (silent)
+2. Manifest `webApplicationInfo` configures client ID and API URI
+3. Server exchanges SSO token via OBO flow for Graph/API token
+4. `validDomains` must include all domains
+
+### Nested App Authentication (NAA)
+
+For iframe-based scenarios — no pop-ups required:
+1. Set `nestedAppAuthInfo.enableNAA: true` in manifest
+2. Use `createNestablePublicClientApplication` from MSAL
+3. Token flows through parent host's auth context
+
+### Bot Auth
+
+- Separate from tab SSO
+- Single-tenant: `MicrosoftAppType: 'SingleTenant'`, pass `APP_TENANTID`
+- OAuth connection configured in Azure Bot Service
+- Redirect URI: `https://token.botframework.com/.auth/web/redirect`
+
+### Agent Identity (Agent 365)
+
+- Agents get their own Entra ID via blueprints
+- Can have mailboxes, respond to @mentions
+- Admin-governed permissions and tool access
+
+---
+
+## 12. Dialog Orchestration
+
+Dialogs (formerly task modules) are focused modal surfaces launched from any Teams surface.
+
+### From Tabs
+
+```typescript
+microsoftTeams.dialog.url.open({
+  title: "Create Item",
+  url: `${window.location.origin}/dialog/create`,
+  size: { height: 450, width: 600 },
+});
+
+// Handle result
+microsoftTeams.dialog.url.open({
+  title: "Edit",
+  url: `${window.location.origin}/dialog/edit`,
+  size: { height: 400, width: 500 },
+}, (result) => {
+  console.log("Dialog result:", result);
+});
+```
+
+### From Bots
+
+```typescript
+// Bot returns dialog in response to invoke
+app.dialogFetch(async (context, request) => {
+  return {
+    task: {
+      type: "continue",
+      value: {
+        title: "Task Form",
+        height: 400,
+        width: 600,
+        card: CardFactory.adaptiveCard(formCard),
+      },
+    },
+  };
+});
+
+app.dialogSubmit(async (context, request) => {
+  const data = request.data;
+  await processSubmission(data);
+  return { task: { type: "message", value: "Done!" } };
+});
+```
+
+### From Deep Links
+
+```
+https://teams.microsoft.com/l/task/<appId>?url=<encodedUrl>&height=<h>&width=<w>&title=<title>
+```
+
+---
+
+## 13. Azure Bot Service Registration
+
+### Single-Tenant Configuration (Required)
+
+```bicep
+resource botService 'Microsoft.BotService/botServices@2022-09-15' = {
+  name: 'my-teams-bot'
+  location: 'global'
+  sku: { name: 'F0' }
+  kind: 'azurebot'
+  properties: {
+    displayName: 'My Teams Bot'
+    endpoint: 'https://${appService.properties.defaultHostName}/api/messages'
+    msaAppId: appRegistration.properties.appId
+    msaAppType: 'SingleTenant'
+    msaAppTenantId: subscription().tenantId
+  }
+}
+
+resource teamsChannel 'Microsoft.BotService/botServices/channels@2022-09-15' = {
+  parent: botService
+  name: 'MsTeamsChannel'
+  location: 'global'
+  properties: {
+    channelName: 'MsTeamsChannel'
+    properties: { isEnabled: true }
+  }
+}
+```
+
+### Environment Variables
+
+```
+BOT_ID=<microsoft-app-id>
+BOT_PASSWORD=<client-secret>
+APP_TENANTID=<your-tenant-id>
+MicrosoftAppType=SingleTenant
+```
+
+---
+
+## 14. Best Practices
+
+### Architecture
+
+- Treat the app as a **manifest-driven capability container**, not a single web app
+- Centralize auth — do not let each surface (tab, bot, extension) do auth differently
+- Use a shared domain API layer; tabs, bots, cards, and extensions should all call the same backend
+- Build a `SurfaceRouter` / `ContextResolver` as first-class runtime services
+- Keep bots/cards thin — route users into richer surfaces (tabs, dialogs) for complex tasks
+
+### Security
+
+- Never hardcode secrets; use `.env` + `.gitignore`
+- Exchange SSO tokens server-side via OBO flow — never use raw SSO tokens to call Graph from client
+- All `validDomains` must be HTTPS-capable
+- Configure CORS to allow only expected origins
+- Validate bot tokens and check tenant ID
+
+### Adaptive Cards
+
+- Always design for narrow screens first (mobile, meeting side panels)
+- Use `Action.Execute` with `verb` for Teams (not `Action.Submit` for new cards)
+- Keep cards under 28 KB
+- Include `fallbackText` for v1.5 elements
+- Test in Adaptive Cards Designer with Host App set to "Microsoft Teams"
+
+### Performance
+
+- Use `backgroundLoadConfiguration` in manifest for tab precaching
+- Use `nestedAppAuthInfo` for NAA to avoid auth popups
+- Cache auth tokens; refresh before expiry
+- Return fast results for message extension queries (5-second timeout)
+
+---
+
+## 15. Error Codes Reference
+
+### Bot/Agent Errors
+
+| Error | Meaning | Fix |
+|-------|---------|-----|
+| `401 Unauthorized` | App ID or password incorrect | Verify `BOT_ID`, `BOT_PASSWORD`, `APP_TENANTID` |
+| `403 Forbidden` | Bot not authorized for team/channel | Install bot in team; check admin policies |
+| `BotNotInConversationMembership` | Proactive message where bot not installed | Install bot first or use `createConversation` |
+| `429 Too Many Requests` | Rate limit | Implement exponential backoff |
+
+### Tab Errors
+
+| Error | Meaning | Fix |
+|-------|---------|-----|
+| `FailedToOpenPage` | Tab URL not in `validDomains` | Add domain to manifest `validDomains` |
+| `interaction_required` | SSO consent not granted | Trigger `authentication.authenticate()` |
+| `invalid_grant` | SSO OBO failed | Ensure `api://domain/clientId` in `webApplicationInfo` |
+
+### Adaptive Card Errors
+
+| Error | Meaning | Fix |
+|-------|---------|-----|
+| Card not rendering | Unsupported element for schema version | Use v1.5 max; add fallback |
+| `409` on card update | Activity ID mismatch | Use original message `id` for updates |
+| Input values not received | Reading `text` instead of `value` | Card submits have no text; check `context.activity.value` |
+
+### ATK CLI Errors
+
+| Error | Meaning | Fix |
+|-------|---------|-----|
+| `ERR_M365_NOT_SIGNED_IN` | Not authenticated | Run `m365agents auth login m365` |
+| `ERR_PROVISION_FAILED` | Bicep deployment failed | Check Azure resource quotas |
+| Manifest validation error | Schema violation | Run `m365agents validate --manifest-path` |

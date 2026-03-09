@@ -1,17 +1,20 @@
 {
   "name": "teams-app-dev",
-  "version": "1.0.0",
-  "description": "Custom Teams app development — Adaptive Cards, message extensions, bot handlers, tab apps, manifest authoring, and Teams Toolkit CLI workflows",
+  "version": "2.0.0",
+  "description": "Custom Teams app development — Teams SDK v2, M365 Agents SDK, Agent 365, Adaptive Cards, message extensions, bot handlers, tab apps, manifest v1.25, dialog orchestration, and Microsoft 365 Agents Toolkit workflows",
   "author": {
     "name": "Markus Ahling"
   },
   "keywords": [
     "microsoft",
     "teams",
-    "teams-toolkit",
+    "agents-toolkit",
+    "teams-sdk",
+    "agents-sdk",
+    "agent-365",
     "adaptive-cards",
-    "bot-framework",
     "message-extensions",
+    "single-tenant",
     "typescript"
   ],
   "skills": [
@@ -27,6 +30,10 @@
     "./commands/teams-message-extension.md",
     "./commands/teams-manifest.md",
     "./commands/teams-sideload.md",
-    "./commands/teams-bot-handler.md"
+    "./commands/teams-bot-handler.md",
+    "./commands/teams-agent.md",
+    "./commands/teams-dialog.md",
+    "./commands/teams-agent365.md",
+    "./commands/teams-migrate.md"
   ]
 }

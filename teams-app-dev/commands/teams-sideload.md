@@ -26,10 +26,10 @@ Verify all three files exist. If missing, tell the user which files are needed.
 
 ### 2. Resolve Template Variables
 
-If the manifest contains `{{VAR}}` placeholders (Teams Toolkit style):
+If the manifest contains `{{VAR}}` placeholders (ATK style):
 - Read the environment file (`env/.env.<env>` or `.env`) to get variable values
 - Replace all `{{VAR}}` with their values in a temporary copy of the manifest
-- Common variables: `APP_ID`, `BOT_ID`, `BOT_ENDPOINT`, `AZURE_CLIENT_ID`, `TAB_ENDPOINT`
+- Common variables: `APP_ID`, `BOT_ID`, `BOT_ENDPOINT`, `AAD_APP_CLIENT_ID`, `TAB_ENDPOINT`, `APP_TENANTID`
 
 If any variable is unresolved, warn the user and list the missing variables.
 
@@ -40,12 +40,13 @@ Run quick validation on the resolved manifest:
 - `botId` (if present) is a valid, non-placeholder GUID
 - `validDomains` does not contain `localhost` (unless explicitly developing locally)
 - All referenced icon files exist
+- `manifestVersion` is set (should be `"1.25"` for new apps)
 
 ### 4. Create the ZIP Package
 
-**Option A: Teams Toolkit (preferred)**:
+**Option A: M365 Agents Toolkit (preferred)**:
 ```bash
-teamsapp package --manifest-path <path>/manifest.json --output-zip-path ./appPackage/build/appPackage.zip
+m365agents package --manifest-path <path>/manifest.json --output-zip-path ./appPackage/build/appPackage.zip
 ```
 
 **Option B: Manual packaging**:
@@ -59,13 +60,16 @@ The ZIP must contain the three files at the **root level** (no subdirectories).
 
 ### 5. Sideload to Teams
 
-**Option A: Teams Toolkit**:
+**Option A: M365 Agents Toolkit**:
 ```bash
-teamsapp preview --local    # For local development
-teamsapp preview --remote   # For deployed app
+m365agents preview --local    # For local development
+m365agents preview --remote   # For deployed app
 ```
 
-**Option B: Manual sideload**:
+**Option B: Agents Playground** (for bot testing without sideloading):
+The Agents Playground built into ATK allows bot testing without a dev tenant, tunneling, or app/bot registration.
+
+**Option C: Manual sideload**:
 1. Open Microsoft Teams (desktop or web).
 2. Go to **Apps** (left sidebar) > **Manage your apps** > **Upload an app**.
 3. Select **Upload a custom app** (or **Upload for my org** if publishing to org).
@@ -81,8 +85,10 @@ After sideloading:
 - **Bot**: Send a message in the chat where the bot was added. Check for a response.
 - **Tab**: Open the tab and verify content loads.
 - **Message extension**: Open the compose box, click the `...` menu, and find the extension.
+- **Meeting app**: Add the app to a meeting and check side panel / stage.
 
 If the app fails to install, check:
 - The bot endpoint is reachable (use `curl <endpoint>/api/messages`)
 - The manifest passes validation (`/teams-manifest --validate`)
 - Sideloading is enabled in the tenant
+- Bot is registered as single-tenant with correct `APP_TENANTID`
