@@ -1,7 +1,7 @@
 ---
 name: teams-scaffold
-description: "Scaffold a new Teams app project by type (bot, tab, or message extension)"
-argument-hint: "<bot|tab|message-extension> --name <app-name>"
+description: "Scaffold a new Teams app project by type (bot, tab, message-extension, meeting-app, or custom-engine-agent)"
+argument-hint: "<bot|tab|message-extension|meeting-app|custom-engine-agent> --name <app-name>"
 allowed-tools:
   - Read
   - Write
@@ -13,47 +13,49 @@ allowed-tools:
 
 # Scaffold a Teams App Project
 
-Create a new Teams app project with all required files based on the app type.
+Create a new Teams app project with all required files based on the app type, using manifest v1.25 and M365 Agents Toolkit.
 
 ## Instructions
 
 ### 1. Validate Inputs
 
-- `<type>` — One of: `bot`, `tab`, `message-extension`. Ask if not provided.
+- `<type>` — One of: `bot`, `tab`, `message-extension`, `meeting-app`, `custom-engine-agent`. Ask if not provided.
 - `--name` — App name (used for directory, manifest, and package.json). Ask if not provided.
 
-### 2. Option A: Scaffold via Teams Toolkit (Recommended)
+### 2. Option A: Scaffold via M365 Agents Toolkit (Recommended)
 
-If Teams Toolkit CLI is installed, use it for scaffolding:
+If M365 Agents Toolkit CLI is installed, use it for scaffolding:
 
 ```bash
-teamsapp new --app-name <app-name> --capability <type>
+m365agents new --app-name <app-name> --capability <type>
 ```
 
 Capability mapping:
-| Input | Teams Toolkit capability |
-|-------|-------------------------|
+| Input | M365 Agents Toolkit capability |
+|-------|-------------------------------|
 | `bot` | `bot` |
 | `tab` | `tab-non-sso` or `tab` (with SSO) |
 | `message-extension` | `search-message-extension` or `action-message-extension` |
+| `meeting-app` | `tab` with meeting context scopes |
+| `custom-engine-agent` | `custom-engine-agent` |
 
 Ask the user which sub-type they want if relevant.
 
 ### 3. Option B: Manual Scaffold
 
-If Teams Toolkit is not installed, create the project manually.
+If M365 Agents Toolkit is not installed, create the project manually.
 
 **Common files (all types)**:
 - `package.json` — Dependencies for the chosen type
 - `tsconfig.json` — TypeScript configuration
-- `.env` — Environment variables template
+- `.env` — Environment variables template (includes `APP_TENANTID` for single-tenant)
 - `.gitignore` — Includes `.env`, `node_modules/`, `dist/`, `appPackage/build/`
-- `appPackage/manifest.json` — App manifest with placeholder GUIDs
+- `appPackage/manifest.json` — App manifest v1.25 with placeholder GUIDs
 - `appPackage/color.png` — Placeholder 192x192 icon (instruct user to replace)
 - `appPackage/outline.png` — Placeholder 32x32 icon (instruct user to replace)
 
 **Bot-specific files**:
-- `src/index.ts` — Express server with `CloudAdapter` and bot setup
+- `src/index.ts` — Express server with `CloudAdapter` and single-tenant auth
 - `src/teamsBot.ts` — `TeamsActivityHandler` with `onMessage` and `onMembersAdded`
 
 **Tab-specific files**:
@@ -62,16 +64,34 @@ If Teams Toolkit is not installed, create the project manually.
 - `public/index.html` — HTML shell
 
 **Message extension files**:
-- `src/index.ts` — Express server with adapter
+- `src/index.ts` — Express server with single-tenant adapter
 - `src/searchBot.ts` — Bot with `handleTeamsMessagingExtensionQuery`
 
-### 4. Generate Manifest
+**Meeting app files**:
+- `src/index.ts` — Express server with single-tenant adapter
+- `src/meetingBot.ts` — Bot with meeting notification handlers
+- `src/components/SidePanel.tsx` — Meeting side panel with stage sharing
+- `src/components/Stage.tsx` — Meeting stage content component
+
+**Custom Engine Agent files**:
+- `src/index.ts` — Express server with single-tenant adapter
+- `src/agent.ts` — Agent class with AI client integration
+- `src/aiClient.ts` — AI provider wrapper
+
+### 4. Generate Manifest v1.25
 
 Create `appPackage/manifest.json` with:
-- `id`: `"{{APP_ID}}"` (placeholder for Teams Toolkit) or a generated UUID
-- `botId`: `"{{BOT_ID}}"` for bot and message extension types
-- Appropriate `bots`, `composeExtensions`, `staticTabs`, or `configurableTabs` section
-- `validDomains` including the app's hosting domain
+- `$schema` pointing to v1.25: `https://developer.microsoft.com/json-schemas/teams/v1.25/MicrosoftTeams.schema.json`
+- `manifestVersion`: `"1.25"`
+- `id`: `"{{APP_ID}}"` (placeholder for M365 Agents Toolkit) or a generated UUID
+- `botId`: `"{{BOT_ID}}"` for bot, message extension, and meeting app types
+- Single-tenant bot configuration
+- Appropriate `bots`, `composeExtensions`, `staticTabs`, `configurableTabs` sections
+- For meeting apps: `configurableTabs` with `context` including `meetingSidePanel`, `meetingStage`, `meetingDetailsTab`
+- `validDomains` with the hosting domain
+- `webApplicationInfo` if SSO is requested
+- `nestedAppAuthInfo` for NAA support
+- `supportsChannelFeatures: true` on configurable tabs
 
 ### 5. Initialize and Install
 
@@ -84,5 +104,6 @@ npm install
 
 Show the user:
 - Created files and their purposes
-- Next steps (configure `.env`, run `/setup`, test with `/teams-sideload`)
+- Next steps (configure `.env` with `BOT_ID`, `BOT_PASSWORD`, `APP_TENANTID`)
+- How to test: `m365agents preview --local` (Agents Playground)
 - Relevant commands for their app type

@@ -1,8 +1,10 @@
-# Teams Toolkit CLI Reference
+# M365 Agents Toolkit CLI Reference
 
 ## Overview
 
-Teams Toolkit CLI (`teamsapp`) is the command-line companion to the VS Code Teams Toolkit extension. It provides commands for scaffolding new projects, local debugging, provisioning Azure/M365 resources, deploying apps, and publishing to the Teams App Store. This reference covers all major commands, environment management, Bicep template patterns, and CI/CD integration.
+M365 Agents Toolkit CLI (`m365agents`) is the official command-line tool for Microsoft Teams and Microsoft 365 app development. It replaces the legacy Teams Toolkit CLI (`teamsapp`). It provides commands for scaffolding new projects, local debugging with Agents Playground, provisioning Azure/M365 resources, deploying apps, and publishing to the Teams App Store.
+
+> **Migration note**: The package changed from `@microsoft/teamsapp-cli` to `@microsoft/m365agentstoolkit-cli`. The config file changed from `teamsapp.yml` to `m365agents.yml`. The previous `teamsapp` command is replaced by `m365agents`. TeamsFx SDK is in deprecation mode (community-only GitHub support until September 2026) — new projects must not use TeamsFx.
 
 ---
 
@@ -10,33 +12,36 @@ Teams Toolkit CLI (`teamsapp`) is the command-line companion to the VS Code Team
 
 ```bash
 # Install globally via npm
-npm install -g @microsoft/teamsapp-cli
+npm install -g @microsoft/m365agentstoolkit-cli
 
 # Verify installation
-teamsapp --version
+m365agents --version
+
+# Remove legacy CLI if installed
+npm uninstall -g @microsoft/teamsapp-cli
 
 # Login to M365 (opens browser for consent)
-teamsapp auth login m365
+m365agents auth login m365
 
 # Login to Azure
-teamsapp auth login azure
+m365agents auth login azure
 
 # Check login status
-teamsapp auth list
+m365agents auth list
 ```
 
 ---
 
 ## Project Scaffolding
 
-### `teamsapp new`
+### `m365agents new`
 
 ```bash
 # Interactive project creation
-teamsapp new
+m365agents new
 
 # Non-interactive: create a TypeScript bot project
-teamsapp new \
+m365agents new \
   --interactive false \
   --capabilities bot \
   --programming-language typescript \
@@ -44,7 +49,7 @@ teamsapp new \
   --folder ./projects
 
 # Create a tab app
-teamsapp new \
+m365agents new \
   --interactive false \
   --capabilities tab \
   --programming-language typescript \
@@ -52,19 +57,27 @@ teamsapp new \
   --folder ./projects
 
 # Create a message extension
-teamsapp new \
+m365agents new \
   --interactive false \
   --capabilities message-extension \
   --programming-language typescript \
   --app-name MyExtension \
   --folder ./projects
 
-# Create a bot + tab combination
-teamsapp new \
+# Create a Custom Engine Agent
+m365agents new \
   --interactive false \
-  --capabilities bot,tab \
+  --capabilities custom-engine-agent \
   --programming-language typescript \
-  --app-name MyCombinedApp \
+  --app-name MyAgent \
+  --folder ./projects
+
+# Create an API-based message extension (no bot registration needed)
+m365agents new \
+  --interactive false \
+  --capabilities api-message-extension \
+  --programming-language typescript \
+  --app-name MyApiExtension \
   --folder ./projects
 ```
 
@@ -72,48 +85,54 @@ teamsapp new \
 | Capability | Description |
 |------------|-------------|
 | `tab` | Static or configurable tab |
-| `bot` | Teams bot |
-| `message-extension` | Search or action message extension |
+| `bot` | Teams bot (single-tenant) |
+| `message-extension` | Bot-based search or action message extension |
+| `api-message-extension` | API-based message extension (OpenAPI, no bot needed) |
 | `notification` | Notification-only bot (webhook triggered) |
 | `command-bot` | Bot with command pattern |
 | `workflow-bot` | Bot with adaptive card workflow |
 | `dashboard-tab` | Dashboard tab with widgets |
-| `sso-tab` | Tab with SSO pre-configured |
-| `ai-bot` | Bot with Azure OpenAI integration |
+| `sso-tab` | Tab with SSO + NAA pre-configured |
+| `custom-engine-agent` | Custom Engine Agent with AI capabilities |
+| `declarative-agent` | Declarative agent (Agent 365) |
 
 ---
 
 ## Local Development
 
-### `teamsapp preview`
+### `m365agents preview`
 
 ```bash
-# Start local debug session (launches Teams in browser)
-teamsapp preview --local
+# Start local debug session with Agents Playground (no registration needed)
+m365agents preview --local
 
 # Preview with a specific environment
-teamsapp preview --env local
+m365agents preview --env local
 
 # Preview a remote environment (already deployed)
-teamsapp preview --env dev
+m365agents preview --env dev
 
 # Open in specific browser
-teamsapp preview --local --browser chrome
-
-# Preview without opening browser (headless)
-teamsapp preview --local --open-only-once
+m365agents preview --local --browser chrome
 ```
+
+### Agents Playground
+
+Agents Playground replaces the need for Dev Tunnels and ngrok during local development:
+- Opens at `http://localhost:56150` by default
+- Simulates Teams client environment without Azure Bot registration
+- Supports Adaptive Card rendering, invoke activities, and meeting context simulation
+- No bot registration or tunnel setup required
 
 ### Local dev prerequisites
 
-Teams Toolkit local debug expects:
+M365 Agents Toolkit local debug expects:
 1. A running local server (e.g., `node index.js` on port 3978)
-2. The Teams App Test Tool OR a public tunnel (Dev Tunnels, ngrok)
-3. `teamsapp.local.yml` configured with local environment settings
+2. `m365agents.local.yml` configured with local environment settings
 
 ```yaml
-# teamsapp.local.yml (auto-generated by toolkit)
-version: 1.0.0
+# m365agents.local.yml
+version: v1.6
 
 provision:
   - uses: botFramework/create
@@ -131,92 +150,74 @@ deploy:
       envs:
         MicrosoftAppId: ${{BOT_ID}}
         MicrosoftAppPassword: ${{SECRET_BOT_PASSWORD}}
+        MicrosoftAppTenantId: ${{APP_TENANTID}}
 ```
 
 ---
 
 ## Provisioning
 
-### `teamsapp provision`
-
-Creates or updates Azure and M365 resources defined in Bicep templates.
+### `m365agents provision`
 
 ```bash
 # Provision to dev environment
-teamsapp provision --env dev
+m365agents provision --env dev
 
-# Provision to production (confirm destructive changes)
-teamsapp provision --env production
+# Provision to production
+m365agents provision --env production
 
 # Provision with specific subscription
-teamsapp provision --env dev --subscription <subscription-id>
-
-# Preview what would be provisioned (dry run)
-teamsapp provision --env dev --dry-run
+m365agents provision --env dev --subscription <subscription-id>
 
 # Skip confirmation prompts (for CI/CD)
-teamsapp provision --env dev --no-interactive
+m365agents provision --env dev --no-interactive
 ```
 
 ---
 
 ## Deployment
 
-### `teamsapp deploy`
-
-Builds and deploys app code to Azure resources.
+### `m365agents deploy`
 
 ```bash
 # Deploy to dev
-teamsapp deploy --env dev
+m365agents deploy --env dev
 
 # Deploy specific components only
-teamsapp deploy --env dev --component bot
-teamsapp deploy --env dev --component tab
+m365agents deploy --env dev --component bot
+m365agents deploy --env dev --component tab
 
 # Deploy without asking for confirmation
-teamsapp deploy --env dev --no-interactive
+m365agents deploy --env dev --no-interactive
 ```
 
 ---
 
-## Publishing to Teams App Catalog
+## Publishing
 
-### `teamsapp publish`
+### `m365agents publish`
 
 ```bash
-# Publish to your organization's Teams App Catalog
-teamsapp publish --env dev
-
-# Publish to a specific environment
-teamsapp publish --env production
-
-# Update an existing published app
-teamsapp update --env production --manifest-path ./appPackage/manifest.json
+# Publish to organization's Teams App Catalog
+m365agents publish --env dev
 
 # Package the app zip (without publishing)
-teamsapp package --env dev
+m365agents package --env dev
 # Output: ./appPackage/build/appPackage.dev.zip
 ```
 
-**After `teamsapp publish`, an admin must approve the app in the Teams Admin Center** at `https://admin.teams.microsoft.com/policies/manage-apps`.
+**After `m365agents publish`, an admin must approve the app in the Teams Admin Center.**
 
 ---
 
 ## Environment Management
 
-Teams Toolkit uses `.env.{envName}` files to manage per-environment configuration.
-
 ```bash
 # Create a new environment
-teamsapp env add staging
+m365agents env add staging
 
 # List environments
-teamsapp env list
-
-# Set an environment variable
-# (edit .env.staging directly or use the CLI)
-teamsapp env set --env staging MY_VAR=myvalue
+m365agents env list
 ```
 
 ### Environment file structure
@@ -225,10 +226,8 @@ teamsapp env set --env staging MY_VAR=myvalue
 # .env.dev — auto-generated; commit to source control (no secrets)
 TEAMS_APP_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 BOT_ID=yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy
+APP_TENANTID=zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz
 TAB_DOMAIN=myapp.azurewebsites.net
-TAB_ENDPOINT=https://myapp.azurewebsites.net
-AZURE_SUBSCRIPTION_ID=zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz
-AZURE_RESOURCE_GROUP_NAME=rg-myapp-dev
 
 # .env.dev.user — local overrides; NEVER commit (in .gitignore)
 SECRET_BOT_PASSWORD=<actual-secret>
@@ -239,32 +238,25 @@ SECRET_AAD_APP_CLIENT_SECRET=<actual-secret>
 
 ## Bicep Templates for Teams Resources
 
-Teams Toolkit generates Bicep templates in `./infra/`. Common resource patterns:
-
 ```bicep
-// infra/botservice.bicep
+// infra/botservice.bicep — Single-tenant bot registration
 @description('Bot Service name')
 param botServiceName string
-
-@description('Bot endpoint URL')
 param botEndpoint string
-
-@description('AAD App Registration Client ID')
 param botAadAppClientId string
+param appTenantId string
 
 resource botService 'Microsoft.BotService/botServices@2022-09-15' = {
   name: botServiceName
   location: 'global'
-  sku: {
-    name: 'F0'
-  }
+  sku: { name: 'F0' }
   kind: 'azurebot'
   properties: {
     displayName: botServiceName
     endpoint: botEndpoint
     msaAppId: botAadAppClientId
-    msaAppType: 'MultiTenant'
-    isStreamingSupported: false
+    msaAppType: 'SingleTenant'
+    msaAppTenantId: appTenantId
   }
 }
 
@@ -280,47 +272,6 @@ resource teamsChannel 'Microsoft.BotService/botServices/channels@2022-09-15' = {
     }
   }
 }
-
-output botServiceId string = botService.id
-```
-
-```bicep
-// infra/webapp.bicep — App Service for tab/bot hosting
-param webAppName string
-param location string = resourceGroup().location
-param sku string = 'B1'
-
-resource appServicePlan 'Microsoft.Web/serverfarms@2022-09-01' = {
-  name: '${webAppName}-plan'
-  location: location
-  sku: {
-    name: sku
-  }
-  kind: 'linux'
-  properties: {
-    reserved: true
-  }
-}
-
-resource webApp 'Microsoft.Web/sites@2022-09-01' = {
-  name: webAppName
-  location: location
-  kind: 'app,linux'
-  properties: {
-    serverFarmId: appServicePlan.id
-    siteConfig: {
-      linuxFxVersion: 'NODE|20-lts'
-      appSettings: [
-        { name: 'WEBSITE_RUN_FROM_PACKAGE', value: '1' }
-        { name: 'SCM_DO_BUILD_DURING_DEPLOYMENT', value: 'false' }
-      ]
-    }
-    httpsOnly: true
-  }
-}
-
-output webAppHostName string = webApp.properties.defaultHostName
-output webAppId string = webApp.id
 ```
 
 ---
@@ -330,7 +281,6 @@ output webAppId string = webApp.id
 ### GitHub Actions
 
 ```yaml
-# .github/workflows/teams-deploy.yml
 name: Deploy Teams App
 
 on:
@@ -338,31 +288,28 @@ on:
     branches: [main]
 
 permissions:
-  id-token: write  # For OIDC login to Azure
+  id-token: write
   contents: read
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: production
-
     steps:
       - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Install Teams Toolkit CLI
-        run: npm install -g @microsoft/teamsapp-cli
+      - name: Install M365 Agents Toolkit CLI
+        run: npm install -g @microsoft/m365agentstoolkit-cli
 
       - name: Install dependencies
         run: npm ci
 
       - name: Login to M365
         run: |
-          teamsapp auth login m365 \
+          m365agents auth login m365 \
             --service-principal \
             --tenant-id ${{ secrets.M365_TENANT_ID }} \
             --client-id ${{ secrets.M365_CLIENT_ID }} \
@@ -375,73 +322,16 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Provision Azure resources
-        run: teamsapp provision --env production --no-interactive
+      - name: Provision and Deploy
+        run: |
+          m365agents provision --env production --no-interactive
+          m365agents deploy --env production --no-interactive
+          m365agents publish --env production --no-interactive
         env:
           TEAMS_APP_ID: ${{ vars.TEAMS_APP_ID }}
           BOT_ID: ${{ vars.BOT_ID }}
+          APP_TENANTID: ${{ secrets.APP_TENANTID }}
           SECRET_BOT_PASSWORD: ${{ secrets.BOT_PASSWORD }}
-          SECRET_AAD_APP_CLIENT_SECRET: ${{ secrets.AAD_CLIENT_SECRET }}
-
-      - name: Deploy app
-        run: teamsapp deploy --env production --no-interactive
-        env:
-          TEAMS_APP_ID: ${{ vars.TEAMS_APP_ID }}
-          BOT_ID: ${{ vars.BOT_ID }}
-
-      - name: Publish to Teams catalog
-        run: teamsapp publish --env production --no-interactive
-        env:
-          TEAMS_APP_ID: ${{ vars.TEAMS_APP_ID }}
-```
-
-### Azure Pipelines
-
-```yaml
-# azure-pipelines.yml
-trigger:
-  branches:
-    include: [main]
-
-pool:
-  vmImage: ubuntu-latest
-
-variables:
-  - group: teams-app-secrets
-
-steps:
-  - task: NodeTool@0
-    inputs:
-      versionSpec: '20.x'
-
-  - script: npm install -g @microsoft/teamsapp-cli
-    displayName: Install Teams Toolkit CLI
-
-  - script: npm ci
-    displayName: Install dependencies
-
-  - script: |
-      teamsapp auth login m365 \
-        --service-principal \
-        --tenant-id $(M365_TENANT_ID) \
-        --client-id $(M365_CLIENT_ID) \
-        --client-secret $(M365_CLIENT_SECRET)
-    displayName: Login to M365
-
-  - task: AzureCLI@2
-    displayName: Provision and Deploy
-    inputs:
-      azureSubscription: 'Teams App Service Connection'
-      scriptType: bash
-      scriptLocation: inlineScript
-      inlineScript: |
-        teamsapp provision --env production --no-interactive
-        teamsapp deploy --env production --no-interactive
-    env:
-      SECRET_BOT_PASSWORD: $(BOT_PASSWORD)
-      SECRET_AAD_APP_CLIENT_SECRET: $(AAD_CLIENT_SECRET)
-      TEAMS_APP_ID: $(TEAMS_APP_ID)
-      BOT_ID: $(BOT_ID)
 ```
 
 ---
@@ -450,30 +340,32 @@ steps:
 
 ```bash
 # Validate the app manifest
-teamsapp validate --manifest-path ./appPackage/manifest.json
+m365agents validate --manifest-path ./appPackage/manifest.json
 
 # Validate a packaged zip
-teamsapp validate --app-package-file ./appPackage/build/appPackage.dev.zip
-
-# Validate for Teams App Store submission
-teamsapp validate --env production --output-package-file ./submission.zip
+m365agents validate --app-package-file ./appPackage/build/appPackage.dev.zip
 ```
+
+### Known Validation Issues (v1.25)
+
+| Issue | Description | Workaround |
+|-------|-------------|-----------|
+| Regex validation bug | Schema validator rejects valid regex patterns (`.xll` regex error) | Skip `teamsApp/validateManifest` step; use manual packaging |
+| Dev Portal field persistence | Dev Portal may drop `nestedAppAuthInfo` and `agenticUserTemplates` on save | Always author manifests in codebase; upload zip directly |
+| `supportsChannelFeatures` dropped | Dev Portal may remove `supportsChannelFeatures` after editing | Edit manifest in code, not in portal |
 
 ---
 
-## Error Codes and Common Issues
+## Error Codes
 
 | Error | Meaning | Remediation |
 |-------|---------|-------------|
-| `ERR_M365_NOT_SIGNED_IN` | CLI not authenticated to M365 | Run `teamsapp auth login m365` |
-| `ERR_AZURE_NOT_SIGNED_IN` | CLI not authenticated to Azure | Run `teamsapp auth login azure` or use service principal |
-| `ERR_PROVISION_FAILED` | Bicep deployment failed | Check Azure resource quotas and Bicep template errors |
-| `ERR_DEPLOY_FAILED` | App deployment to Azure failed | Check App Service logs; verify deployment slot config |
-| Manifest validation error | Schema violation in `manifest.json` | Run `teamsapp validate --manifest-path`; check required fields |
-| `ERR_BOT_NOT_REGISTERED` | Bot ID not found in Bot Service | Re-run `teamsapp provision` to create bot registration |
-| OIDC auth error in CI | Federated identity not configured | Add GitHub/ADO as federated credential on Azure AD app registration |
-| `SECRET_*` vars not substituted | `.env.{env}.user` not present | Set secrets as environment variables in CI pipeline |
-| App not appearing in Teams | App not published or awaiting admin approval | Check Teams Admin Center > Manage apps |
+| `ERR_M365_NOT_SIGNED_IN` | CLI not authenticated | Run `m365agents auth login m365` |
+| `ERR_AZURE_NOT_SIGNED_IN` | Not authenticated to Azure | Run `m365agents auth login azure` |
+| `ERR_PROVISION_FAILED` | Bicep deployment failed | Check resource quotas and templates |
+| `ERR_DEPLOY_FAILED` | Deployment failed | Check App Service logs |
+| Manifest validation error | Schema violation | Run `m365agents validate`; check v1.25 bug list |
+| `ERR_BOT_NOT_REGISTERED` | Bot ID not found | Re-run `m365agents provision` |
 
 ---
 
@@ -481,10 +373,7 @@ teamsapp validate --env production --output-package-file ./submission.zip
 
 | Resource | Limit | Notes |
 |---|---|---|
-| Environments per project | No hard limit | Practical: dev, staging, production |
-| App package size (zip) | 1 MB | Manifest + icons only; not app code |
+| App package size (zip) | 1 MB | Manifest + icons only |
 | Manifest `validDomains` | 16 entries | Wildcards supported |
-| Teams App Store review | 5–7 business days | Submit early; resubmission resets queue |
-| Bot Service free tier | F0 (1,000 messages/month) | Upgrade to S1 for production |
-| App Service free tier (F1) | 60 CPU minutes/day | Use at least B1 for production bots |
-| Concurrent `teamsapp` runs | No CLI restriction | Azure resource locks may block concurrent provisions |
+| Bot Service free tier | F0 (1,000 messages/month) | Use S1 for production |
+| App Service free tier (F1) | 60 CPU minutes/day | Use at least B1 for bots |

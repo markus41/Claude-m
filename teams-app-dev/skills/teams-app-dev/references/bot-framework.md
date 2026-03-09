@@ -1,22 +1,62 @@
-# Bot Framework SDK v4 — Teams Bots Reference
+# Teams Bots Reference — Teams SDK & Bot Framework
 
 ## Overview
 
-Teams bots are built with Bot Framework SDK v4 using the `TeamsActivityHandler` base class. This reference covers the full handler lifecycle, proactive messaging, conversation references, invoke activities, Azure Bot Service registration, and production deployment patterns.
+Teams bots are built using the `TeamsActivityHandler` base class from the `botbuilder` package. The Bot Framework SDK is now archived (final LTS ended December 2025), but the `botbuilder` packages remain the runtime for Teams bots. For new projects, Microsoft recommends the **Teams SDK** (formerly Teams AI Library, GA in C#/JS, preview in Python) or the **Microsoft 365 Agents SDK** (multi-channel agents).
+
+> **Important**: Bot Framework SDK repos are archived on GitHub and support tickets are no longer serviced as of December 31, 2025. The `botbuilder` npm packages still work but receive no new features. New bots should use Teams SDK or Agents SDK.
 
 ---
 
 ## Package Installation
 
 ```bash
-npm install botbuilder botbuilder-teams @microsoft/botframework-connector
+# Core bot packages (still functional, but no new features)
+npm install botbuilder @microsoft/botframework-connector
+
+# Teams SDK (recommended for new projects)
+npm install @microsoft/teams-sdk
+
 # For TypeScript
 npm install --save-dev @types/node
 ```
 
 ---
 
-## TeamsActivityHandler — Full Handler Reference
+## Single-Tenant Bot Adapter (Required for v1.25)
+
+All new bot registrations must be single-tenant (multi-tenant creation blocked after July 31, 2025).
+
+```typescript
+import {
+  CloudAdapter,
+  ConfigurationServiceClientCredentialFactory,
+  ConfigurationBotFrameworkAuthentication,
+} from "botbuilder";
+
+const credentialsFactory = new ConfigurationServiceClientCredentialFactory({
+  MicrosoftAppId: process.env.BOT_ID!,
+  MicrosoftAppPassword: process.env.BOT_PASSWORD!,
+  MicrosoftAppType: "SingleTenant",
+  MicrosoftAppTenantId: process.env.APP_TENANTID!,
+});
+
+const botFrameworkAuthentication = new ConfigurationBotFrameworkAuthentication(
+  {},
+  credentialsFactory
+);
+
+const adapter = new CloudAdapter(botFrameworkAuthentication);
+
+adapter.onTurnError = async (context, error) => {
+  console.error(`Bot turn error: ${error.message}`, error);
+  await context.sendActivity("An error occurred. Please try again.");
+};
+```
+
+---
+
+## TeamsActivityHandler — Full Reference
 
 ```typescript
 import {
@@ -27,7 +67,6 @@ import {
   TeamsInfo,
   ConversationReference,
   Activity,
-  ActivityTypes,
 } from "botbuilder";
 
 export class MyTeamsBot extends TeamsActivityHandler {
@@ -36,130 +75,76 @@ export class MyTeamsBot extends TeamsActivityHandler {
   constructor() {
     super();
 
-    // ─── Message received ────────────────────────────────────────────────
     this.onMessage(async (context, next) => {
       const text = context.activity.text?.trim().toLowerCase() ?? "";
-
-      // Remove bot mention from text
       const removedMentionText = TurnContext.removeRecipientMention(context.activity);
       const cleanText = removedMentionText?.trim().toLowerCase() ?? text;
 
       if (context.activity.value) {
-        // Adaptive Card Action.Submit
         const data = context.activity.value as Record<string, string>;
         await context.sendActivity(`Received action: ${JSON.stringify(data)}`);
       } else if (cleanText === "help") {
-        await context.sendActivity(MessageFactory.text("Available commands: help, status, report"));
+        await context.sendActivity(MessageFactory.text("Available commands: help, status"));
       } else {
         await context.sendActivity(MessageFactory.text(`Echo: ${cleanText}`));
       }
 
-      // Save conversation reference for proactive messaging
       this.addConversationReference(context.activity);
-
       await next();
     });
 
-    // ─── Members added ────────────────────────────────────────────────────
     this.onTeamsMembersAdded(async (membersAdded, teamInfo, context, next) => {
       for (const member of membersAdded) {
         if (member.id !== context.activity.recipient.id) {
-          await context.sendActivity(
-            MessageFactory.text(`Welcome to the team, ${member.name}!`)
-          );
+          await context.sendActivity(MessageFactory.text(`Welcome, ${member.name}!`));
         }
       }
       await next();
     });
-
-    // ─── Members removed ─────────────────────────────────────────────────
-    this.onTeamsMembersRemoved(async (membersRemoved, teamInfo, context, next) => {
-      for (const member of membersRemoved) {
-        console.log(`Member left: ${member.name}`);
-      }
-      await next();
-    });
-
-    // ─── Channel created ─────────────────────────────────────────────────
-    this.onTeamsChannelCreated(async (channelInfo, teamInfo, context, next) => {
-      await context.sendActivity(
-        MessageFactory.text(`Channel created: ${channelInfo.name}`)
-      );
-      await next();
-    });
-
-    // ─── Channel deleted ─────────────────────────────────────────────────
-    this.onTeamsChannelDeleted(async (channelInfo, teamInfo, context, next) => {
-      console.log(`Channel deleted: ${channelInfo.name}`);
-      await next();
-    });
-
-    // ─── Team renamed ────────────────────────────────────────────────────
-    this.onTeamsTeamRenamedActivity(async (teamInfo, context, next) => {
-      await context.sendActivity(`Team renamed to: ${teamInfo.name}`);
-      await next();
-    });
   }
 
-  // ─── Adaptive Card invoke (Universal Actions) ─────────────────────────
-  protected async onAdaptiveCardInvoke(
-    context: TurnContext,
-    invokeValue: { action: { verb: string; data: Record<string, unknown> } }
-  ) {
+  // Universal Action handler
+  protected async onAdaptiveCardInvoke(context: TurnContext, invokeValue: any) {
     const { verb, data } = invokeValue.action;
-
     if (verb === "approve") {
       return {
         statusCode: 200,
         type: "application/vnd.microsoft.card.adaptive",
-        value: { type: "AdaptiveCard", version: "1.6", body: [
+        value: { type: "AdaptiveCard", version: "1.5", body: [
           { type: "TextBlock", text: `Approved! Item: ${data.itemId}`, color: "Good" }
         ]},
       };
     }
-
     return { statusCode: 400, type: "application/vnd.microsoft.error", value: {} };
   }
 
-  // ─── Task module fetch (message extensions / bots) ────────────────────
-  protected async handleTeamsTaskModuleFetch(
-    context: TurnContext,
-    taskModuleRequest: { data: Record<string, string> }
-  ) {
+  // Dialog handlers (replaces "task module" client-side, but method names unchanged)
+  protected async handleTeamsTaskModuleFetch(context: TurnContext, request: any) {
     return {
       task: {
         type: "continue",
         value: {
-          title: "Task Module",
+          title: "Dialog",
           height: 400,
           width: 600,
           card: CardFactory.adaptiveCard({
-            type: "AdaptiveCard",
-            version: "1.6",
-            body: [{ type: "TextBlock", text: "Task content" }],
-            actions: [{ type: "Action.Submit", title: "Submit", data: { taskAction: "submit" } }]
+            type: "AdaptiveCard", version: "1.5",
+            body: [{ type: "TextBlock", text: "Dialog content" }],
+            actions: [{ type: "Action.Submit", title: "Submit" }]
           }),
         },
       },
     };
   }
 
-  // ─── Task module submit ───────────────────────────────────────────────
-  protected async handleTeamsTaskModuleSubmit(
-    context: TurnContext,
-    taskModuleRequest: { data: Record<string, string> }
-  ) {
-    await context.sendActivity(`Task submitted: ${JSON.stringify(taskModuleRequest.data)}`);
-    return { task: { type: "message", value: "Task complete!" } };
+  protected async handleTeamsTaskModuleSubmit(context: TurnContext, request: any) {
+    await context.sendActivity(`Submitted: ${JSON.stringify(request.data)}`);
+    return { task: { type: "message", value: "Done!" } };
   }
 
   private addConversationReference(activity: Partial<Activity>) {
     const ref = TurnContext.getConversationReference(activity);
     this.conversationRefs.set(activity.from!.id, ref);
-  }
-
-  getConversationRefs() {
-    return this.conversationRefs;
   }
 }
 ```
@@ -168,169 +153,43 @@ export class MyTeamsBot extends TeamsActivityHandler {
 
 ## Proactive Messaging
 
-Proactive messages are sent outside of a user-initiated turn. You need a stored `ConversationReference`.
-
 ```typescript
-import { BotFrameworkAdapter, ConversationReference } from "botbuilder";
+import { ConversationReference, MessageFactory } from "botbuilder";
 
-// Set up adapter (Express example)
-const adapter = new BotFrameworkAdapter({
-  appId: process.env.MicrosoftAppId,
-  appPassword: process.env.MicrosoftAppPassword,
-});
-
-// Store a reference during a normal turn (in the bot handler):
-const ref = TurnContext.getConversationReference(context.activity);
-// Persist ref to DB or in-memory store
-
-// Later, send a proactive message:
 async function sendProactiveMessage(
-  adapter: BotFrameworkAdapter,
+  adapter: CloudAdapter,
   ref: Partial<ConversationReference>,
   text: string
 ) {
-  await adapter.continueConversation(ref, async (proactiveContext) => {
-    await proactiveContext.sendActivity(MessageFactory.text(text));
+  await adapter.continueConversation(ref, async (ctx) => {
+    await ctx.sendActivity(MessageFactory.text(text));
   });
 }
-
-// Start a NEW conversation proactively (in a team channel):
-async function startNewConversation(
-  adapter: BotFrameworkAdapter,
-  teamId: string,
-  channelId: string,
-  serviceUrl: string,
-  tenantId: string
-) {
-  const conversationParams = {
-    isGroup: true,
-    channelData: { channel: { id: channelId } },
-    activity: MessageFactory.text("Hello team!"),
-    bot: { id: process.env.MicrosoftAppId!, name: "MyBot" },
-    members: [],
-    tenantId,
-  };
-
-  const connector = adapter.createConnectorClient(serviceUrl);
-  const response = await connector.conversations.createConversation(conversationParams);
-
-  // Save the new conversation ID for future proactive messages
-  return response.id;
-}
 ```
 
 ---
 
-## Mentioning Users in Messages
+## Meeting Bot Patterns
 
 ```typescript
-import { Mention, MessageFactory } from "botbuilder";
+// Detect meeting context
+const meetingId = context.activity.channelData?.meeting?.id;
 
-async function mentionUser(context: TurnContext) {
-  const mention: Mention = {
-    mentioned: context.activity.from,
-    text: `<at>${context.activity.from.name}</at>`,
-    type: "mention",
-  };
-
-  const activity = MessageFactory.text(`Hi ${mention.text}, please review this.`);
-  activity.entities = [mention];
-
-  await context.sendActivity(activity);
-}
-```
-
----
-
-## Getting Team and Member Information
-
-```typescript
-import { TeamsInfo } from "botbuilder";
-
-// Get team details
-const teamDetails = await TeamsInfo.getTeamDetails(context);
-console.log(teamDetails.name, teamDetails.aadGroupId);
-
-// Get team members
-const members = await TeamsInfo.getTeamMembers(context);
-for (const member of members) {
-  console.log(member.name, member.email, member.aadObjectId);
-}
-
-// Get channels in a team
-const channels = await TeamsInfo.getTeamChannels(context);
-for (const channel of channels) {
-  console.log(channel.name, channel.id);
-}
-
-// Get a single member
-const member = await TeamsInfo.getMember(context, context.activity.from.id);
-```
-
----
-
-## Bot Middleware
-
-```typescript
-import { Middleware, TurnContext } from "botbuilder";
-
-// Logging middleware
-class LoggingMiddleware implements Middleware {
-  async onTurn(context: TurnContext, next: () => Promise<void>) {
-    const start = Date.now();
-    console.log(`[${new Date().toISOString()}] Incoming activity: ${context.activity.type}`);
-
-    await next();
-
-    const duration = Date.now() - start;
-    console.log(`[${new Date().toISOString()}] Turn completed in ${duration}ms`);
-  }
-}
-
-// Register middleware
-adapter.use(new LoggingMiddleware());
-```
-
----
-
-## Express Server Setup
-
-```typescript
-import express from "express";
-import { BotFrameworkAdapter } from "botbuilder";
-import { MyTeamsBot } from "./bot";
-
-const app = express();
-app.use(express.json());
-
-const adapter = new BotFrameworkAdapter({
-  appId: process.env.MicrosoftAppId ?? "",
-  appPassword: process.env.MicrosoftAppPassword ?? "",
+// Send content bubble during meeting
+await context.sendActivity({
+  type: "message",
+  attachments: [card],
+  channelData: {
+    notification: { alertInMeeting: true },
+  },
 });
-
-adapter.onTurnError = async (context, error) => {
-  console.error(`Bot turn error: ${error.message}`, error);
-  await context.sendActivity("An error occurred. Please try again.");
-};
-
-const bot = new MyTeamsBot();
-
-app.post("/api/messages", async (req, res) => {
-  await adapter.processActivity(req, res, async (context) => {
-    await bot.run(context);
-  });
-});
-
-const PORT = process.env.PORT ?? 3978;
-app.listen(PORT, () => console.log(`Bot running on port ${PORT}`));
 ```
 
 ---
 
-## Azure Bot Service Registration
+## Azure Bot Registration (Single-Tenant Bicep)
 
 ```bicep
-// Azure Bot Service + App Service Plan (Bicep)
 resource botService 'Microsoft.BotService/botServices@2022-09-15' = {
   name: 'my-teams-bot'
   location: 'global'
@@ -344,58 +203,43 @@ resource botService 'Microsoft.BotService/botServices@2022-09-15' = {
     msaAppTenantId: subscription().tenantId
   }
 }
-
-resource teamsChannel 'Microsoft.BotService/botServices/channels@2022-09-15' = {
-  parent: botService
-  name: 'MsTeamsChannel'
-  location: 'global'
-  properties: {
-    channelName: 'MsTeamsChannel'
-    properties: {
-      isEnabled: true
-    }
-  }
-}
 ```
 
 ---
 
-## Bot Framework Emulator Configuration
+## Express Server Setup
 
-```json
-// .env for local development
-MicrosoftAppId=
-MicrosoftAppPassword=
-MicrosoftAppType=MultiTenant
-PORT=3978
+```typescript
+import express from "express";
+import { CloudAdapter } from "botbuilder";
+import { MyTeamsBot } from "./bot";
 
-// Bot Framework Emulator connection
-// URL: http://localhost:3978/api/messages
-// AppId: (empty for local testing without auth)
-// AppPassword: (empty for local testing)
-```
+const app = express();
+app.use(express.json());
 
-For testing with real Teams auth locally, use `ngrok`:
-```bash
-ngrok http 3978
-# Then update Bot Service endpoint to: https://<ngrok-id>.ngrok-free.app/api/messages
+const bot = new MyTeamsBot();
+
+app.post("/api/messages", async (req, res) => {
+  await adapter.process(req, res, async (context) => {
+    await bot.run(context);
+  });
+});
+
+const PORT = process.env.PORT ?? 3978;
+app.listen(PORT, () => console.log(`Bot running on port ${PORT}`));
 ```
 
 ---
 
-## Invoke Activities Reference
+## SDK Decision Matrix
 
-| Invoke Name | When Triggered | Response Type |
-|---|---|---|
-| `adaptiveCard/action` | `Action.Execute` on an Adaptive Card | `AdaptiveCardInvokeResponse` |
-| `task/fetch` | Task module open request | `TaskModuleResponse` with `continue` |
-| `task/submit` | Task module form submit | `TaskModuleResponse` with `message` or `continue` |
-| `composeExtension/query` | Message extension search | `MessagingExtensionResponse` |
-| `composeExtension/selectItem` | User selects a search result | `MessagingExtensionResponse` |
-| `composeExtension/submitAction` | Action-based extension submit | `MessagingExtensionActionResponse` |
-| `composeExtension/fetchTask` | Action extension task module open | `TaskModuleResponse` |
-| `composeExtension/queryLink` | Link unfurling | `MessagingExtensionResponse` |
-| `signin/verifyState` | OAuth sign-in callback | No response body |
+| Scenario | Recommended SDK | Notes |
+|----------|----------------|-------|
+| Teams-only bot/tab/ME | **Teams SDK** | GA in C#/JS, preview in Python. Supports MCP and A2A. |
+| Multi-channel agent (Teams + Copilot + Slack) | **Microsoft 365 Agents SDK** | AI-agnostic agent container with multi-channel routing |
+| Existing Bot Framework bot | **Migrate to Teams SDK** | Bot Framework SDK archived Dec 2025 |
+| API-only message extension | **No SDK needed** | OpenAPI spec + manifest only |
+| Agent 365 declarative agent | **Agent 365 SDK** | JS, Python, .NET packages available |
 
 ---
 
@@ -403,14 +247,10 @@ ngrok http 3978
 
 | Error | Meaning | Remediation |
 |-------|---------|-------------|
-| `401 Unauthorized` | App ID or password incorrect | Verify `MicrosoftAppId` and `MicrosoftAppPassword` in env |
-| `403 Forbidden` | Bot not authorized for the team/channel | Ensure bot is installed in the team; check admin policies |
-| `BotNotInConversationMembership` | Proactive message to user where bot not installed | Install bot first or use `createConversation` with the team |
-| `ServiceUrl` mismatch | Proactive message to wrong service URL | Use exact `serviceUrl` from stored `ConversationReference` |
-| `Activity too large` | Message or card exceeds size limits | Split into multiple messages or compress card JSON |
-| `429 Too Many Requests` | Rate limit on Bot Connector | Implement exponential backoff; reduce message frequency |
-| `invoke` returns 500 | Bot threw exception in invoke handler | Wrap invoke handlers in try/catch; return proper error response |
-| Token expired in proactive | Connector client token expired | Use `refreshToken` pattern or short-lived token cache |
+| `401 Unauthorized` | App ID or password incorrect | Verify `BOT_ID`, `BOT_PASSWORD`, `APP_TENANTID` |
+| `403 Forbidden` | Bot not authorized | Ensure bot is installed and single-tenant matches |
+| `BotNotInConversationMembership` | Proactive message failed | Install bot first or use `createConversation` |
+| `429 Too Many Requests` | Rate limit | Implement exponential backoff |
 
 ---
 
@@ -418,10 +258,7 @@ ngrok http 3978
 
 | Resource | Limit | Notes |
 |---|---|---|
-| Message text length | 28,000 characters | Adaptive Card JSON also counts |
-| Proactive messages per second | 1 per second per conversation | Throttling enforced by Bot Connector |
-| Mentions per message | No hard limit | More than 10 degrades UX |
-| Conversation members returned | 10,000 | Use paged `getPagedMembers` for large teams |
-| Task module dimensions | 16px–720px height, 16px–1000px width | Height/width in `continue` response |
-| Bot channel registrations per subscription | 10 (free tier) | Unlimited for paid tier |
-| Simultaneous proactive messages | Throttled by Bot Service | Batch with queue; do not fan out in parallel loops |
+| Message text length | 28,000 characters | |
+| Proactive messages per second | 1 per conversation | Throttled by Bot Connector |
+| Conversation members returned | 10,000 | Use paged `getPagedMembers` |
+| Dialog dimensions | 16–720px height, 16–1000px width | |
