@@ -89,7 +89,20 @@ az acr task create \
   --git-access-token <pat>
 ```
 
-### 6. Display Summary
+### 6. ACR Diagnostics
+
+```bash
+# Check ACR health (validates DNS, login, and pull connectivity)
+az acr check-health --name <acr-name> --yes
+
+# Delete a repository from the registry
+az acr repository delete --name <acr-name> --repository <repo-name> --yes
+
+# Show manifest metadata for a repository
+az acr manifest list-metadata --registry <acr-name> --name <repo-name> --output table
+```
+
+### 7. Display Summary
 
 Show the user:
 - Full image URI: `<acr-name>.azurecr.io/<name:tag>`

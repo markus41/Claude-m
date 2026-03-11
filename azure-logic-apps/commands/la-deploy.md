@@ -267,7 +267,76 @@ az logicapp identity assign --resource-group <rg-name> --name <app-name>
 az logicapp identity show --resource-group <rg-name> --name <app-name>
 ```
 
-### 9. Post-Deployment: Configure Connections and Verify
+### 9. Deployment Slots (Standard)
+
+Standard Logic Apps support deployment slots for staged rollouts and zero-downtime deployments.
+
+```bash
+# Create deployment slot
+az logicapp deployment slot create \
+  --name <app-name> --resource-group <rg-name> --slot staging
+
+# List deployment slots
+az logicapp deployment slot list \
+  --name <app-name> --resource-group <rg-name> --output table
+
+# Swap slots (zero-downtime)
+az logicapp deployment slot swap \
+  --name <app-name> --resource-group <rg-name> \
+  --slot staging --target-slot production
+
+# Deploy to slot
+az logicapp deployment source config-zip \
+  --name <app-name> --resource-group <rg-name> \
+  --src deploy.zip --slot staging
+
+# Configure slot-specific settings
+az logicapp config appsettings set \
+  --name <app-name> --resource-group <rg-name> \
+  --slot staging --settings "Environment=Staging"
+```
+
+### 10. Custom Domains & SSL (Standard)
+
+Bind custom hostnames and SSL certificates to Standard Logic Apps.
+
+```bash
+# Add custom hostname
+az logicapp config hostname add \
+  --hostname api.contoso.com \
+  --webapp-name <app-name> --resource-group <rg-name>
+
+# List hostnames
+az logicapp config hostname list \
+  --webapp-name <app-name> --resource-group <rg-name> --output table
+
+# Bind SSL certificate
+az logicapp config ssl bind \
+  --certificate-thumbprint <thumb> --ssl-type SNI \
+  --name <app-name> --resource-group <rg-name>
+```
+
+### 11. Backup & Restore (Standard)
+
+Create and restore backups for Standard Logic Apps using Azure Storage.
+
+```bash
+# Create backup
+az logicapp config backup create \
+  --container-url <sas-url> \
+  --webapp-name <app-name> --resource-group <rg-name>
+
+# List backups
+az logicapp config backup list \
+  --webapp-name <app-name> --resource-group <rg-name> --output table
+
+# Restore from backup
+az logicapp config backup restore \
+  --container-url <sas-url> \
+  --webapp-name <app-name> --resource-group <rg-name>
+```
+
+### 12. Post-Deployment: Configure Connections and Verify
 
 After deployment, configure managed API connections:
 ```bash
@@ -279,6 +348,15 @@ az resource list --resource-group <rg-name> \
 az logicapp config appsettings set \
   --name <app-name> --resource-group <rg-name> \
   --settings "ServiceBusConnectionString=<connection-string>"
+
+# List app settings
+az logicapp config appsettings list \
+  --name <app-name> --resource-group <rg-name> --output table
+
+# Delete app settings
+az logicapp config appsettings delete \
+  --name <app-name> --resource-group <rg-name> \
+  --setting-names KEY1 KEY2
 ```
 
 Verify run history:
@@ -287,7 +365,7 @@ az rest --method GET \
   --url "https://management.azure.com/subscriptions/<sub-id>/resourceGroups/<rg-name>/providers/Microsoft.Web/sites/<app-name>/hostruntime/runtime/webhooks/workflow/api/management/workflows?api-version=2022-03-01"
 ```
 
-### 10. Display Summary
+### 13. Display Summary
 
 Show the user:
 - Deployment method used (CLI, Bicep, GitHub Actions, or Azure DevOps)

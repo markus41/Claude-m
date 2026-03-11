@@ -491,6 +491,93 @@ Set up a team review workflow with PR previews:
 | PR Preview Setup | `examples/pr-preview.md` | Team workflow with GitHub Actions and preview environments |
 | Full Config | `examples/full-config.md` | Complete staticwebapp.config.json for production |
 
+## Azure CLI Reference
+
+### Resource Management
+
+```bash
+# Show SWA details
+az staticwebapp show --name <app> --resource-group <rg>
+az staticwebapp show --name <app> --resource-group <rg> --query "{DefaultHostname:defaultHostname, SKU:sku.name, Branch:repositoryUrl}"
+
+# List SWA apps
+az staticwebapp list --resource-group <rg> --output table
+az staticwebapp list --output table  # all in subscription
+
+# Delete SWA
+az staticwebapp delete --name <app> --resource-group <rg> --yes
+```
+
+### Custom Domain Management
+
+```bash
+# Add custom domain
+az staticwebapp custom-domain create --name <app> --resource-group <rg> --hostname www.contoso.com
+az staticwebapp custom-domain create --name <app> --resource-group <rg> --hostname contoso.com --validation-method dns-txt-token
+
+# Show custom domain (check validation status)
+az staticwebapp custom-domain show --name <app> --resource-group <rg> --hostname www.contoso.com
+
+# List custom domains
+az staticwebapp custom-domain list --name <app> --resource-group <rg> --output table
+
+# Delete custom domain
+az staticwebapp custom-domain delete --name <app> --resource-group <rg> --hostname www.contoso.com --yes
+```
+
+### Functions Linking
+
+```bash
+# Link Azure Functions backend
+az staticwebapp functions link --name <app> --resource-group <rg> --function-resource-id <function-app-resource-id>
+
+# Show linked functions
+az staticwebapp functions show --name <app> --resource-group <rg>
+
+# Unlink functions
+az staticwebapp functions unlink --name <app> --resource-group <rg>
+```
+
+### App Settings
+
+```bash
+# Delete app setting
+az staticwebapp appsettings delete --name <app> --resource-group <rg> --setting-names KEY1 KEY2
+```
+
+### User Management
+
+```bash
+# List users and roles
+az staticwebapp users list --name <app> --resource-group <rg> --output table
+
+# Update user role
+az staticwebapp users update --name <app> --resource-group <rg> --user-id <user-id> --roles "reader,contributor"
+
+# Invite user
+az staticwebapp users invite --name <app> --resource-group <rg> --domain contoso.com --provider aad --user-details user@contoso.com --role admin --invitation-expiration-in-hours 72
+```
+
+### Deployment Tokens
+
+```bash
+# Get deployment token
+az staticwebapp secrets list --name <app> --resource-group <rg>
+
+# Reset deployment token
+az staticwebapp secrets reset-api-key --name <app> --resource-group <rg>
+```
+
+### SWA CLI
+
+```bash
+# Link local project to Azure resource
+swa link --resource-group <rg> --app-name <app>
+
+# Build with options
+swa build --app-location ./src --api-location ./api --output-location ./dist
+```
+
 ## Progressive Disclosure — Reference Files
 
 | Topic | File |

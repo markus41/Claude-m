@@ -134,7 +134,53 @@ az cognitiveservices account list-models \
 
 Cross-reference with current deployments to identify upgrade candidates.
 
-## Step 8: Generate CSV (if --output-csv)
+## Step 8: Diagnostic Settings Management
+
+Beyond checking whether diagnostic settings exist (Step 6), use these commands to create, list, and delete diagnostic settings:
+
+### Create Diagnostic Settings
+
+```bash
+RESOURCE_ID=$(az cognitiveservices account show --name {accountName} --resource-group {rg} --query id -o tsv)
+
+az monitor diagnostic-settings create \
+  --resource $RESOURCE_ID \
+  --name "ai-diag" \
+  --workspace {workspaceId} \
+  --logs '[{"categoryGroup":"allLogs","enabled":true}]' \
+  --metrics '[{"category":"AllMetrics","enabled":true}]'
+```
+
+This sends all log categories and metrics to the specified Log Analytics workspace.
+
+### List Diagnostic Settings
+
+```bash
+az monitor diagnostic-settings list \
+  --resource $(az cognitiveservices account show --name {accountName} --resource-group {rg} --query id -o tsv)
+```
+
+### Delete Diagnostic Settings
+
+```bash
+az monitor diagnostic-settings delete \
+  --resource $(az cognitiveservices account show --name {accountName} --resource-group {rg} --query id -o tsv) \
+  --name "ai-diag"
+```
+
+### List Metric Alerts
+
+```bash
+az monitor metrics alert list --resource-group {rg} --output table
+```
+
+### Delete Metric Alert
+
+```bash
+az monitor metrics alert delete --resource-group {rg} --name "{alertName}"
+```
+
+## Step 9: Generate CSV (if --output-csv)
 
 Write a CSV inventory file combining all discovered data:
 

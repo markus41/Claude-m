@@ -335,6 +335,35 @@ Response includes `invitationUrl` that the user visits to have roles assigned.
 
 ---
 
+## Azure CLI: User Management
+
+```bash
+# List users and roles
+az staticwebapp users list \
+  --name my-swa \
+  --resource-group rg-swa \
+  --output table
+
+# Update user role
+az staticwebapp users update \
+  --name my-swa \
+  --resource-group rg-swa \
+  --user-id <user-id> \
+  --roles "reader,contributor"
+
+# Invite user with role and expiration
+az staticwebapp users invite \
+  --name my-swa \
+  --resource-group rg-swa \
+  --domain contoso.com \
+  --provider aad \
+  --user-details user@contoso.com \
+  --role admin \
+  --invitation-expiration-in-hours 72
+```
+
+---
+
 ## Frontend: Auth Integration (React)
 
 ```typescript

@@ -36,6 +36,11 @@ az containerapp ingress enable \
   --target-port 8080 \
   --transport http
 
+# Show current ingress configuration
+az containerapp ingress show \
+  --name api-service \
+  --resource-group rg-containers
+
 # Disable ingress (for background workers)
 az containerapp ingress disable \
   --name worker-service \
@@ -85,11 +90,67 @@ az containerapp env certificate upload \
   --password "$CERT_PASSWORD"
 ```
 
-## CORS Configuration via Ingress Rules
+## CORS Configuration via CLI
 
 ```bash
-# Container Apps has no native CORS — configure at app level or use Azure API Management
-# Option 1: Middleware in Node.js/Express
+# Enable CORS on a Container App
+az containerapp ingress cors enable \
+  --name api-service \
+  --resource-group rg-containers \
+  --allowed-origins "https://contoso.com" \
+  --allowed-methods GET POST PUT DELETE \
+  --allow-credentials true
+
+# Show current CORS configuration
+az containerapp ingress cors show \
+  --name api-service \
+  --resource-group rg-containers
+```
+
+## IP Access Restrictions
+
+```bash
+# Set an IP access restriction rule
+az containerapp ingress access-restriction set \
+  --name api-service \
+  --resource-group rg-containers \
+  --rule-name "AllowOffice" \
+  --ip-address 203.0.113.0/24 \
+  --action Allow
+
+# List all access restriction rules
+az containerapp ingress access-restriction list \
+  --name api-service \
+  --resource-group rg-containers
+
+# Remove an access restriction rule
+az containerapp ingress access-restriction remove \
+  --name api-service \
+  --resource-group rg-containers \
+  --rule-name "AllowOffice"
+```
+
+## Revision Labels
+
+```bash
+# Add a label to a revision for traffic routing
+az containerapp revision label add \
+  --name api-service \
+  --resource-group rg-containers \
+  --label stable \
+  --revision api-service--v1
+
+# Remove a label
+az containerapp revision label remove \
+  --name api-service \
+  --resource-group rg-containers \
+  --label canary
+```
+
+## CORS Configuration via Application Middleware
+
+```bash
+# Option 1: Middleware in Node.js/Express (for fine-grained control)
 ```
 
 ```typescript

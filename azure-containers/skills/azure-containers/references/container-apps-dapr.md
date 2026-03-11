@@ -75,6 +75,24 @@ secrets:
     value: "<servicebus-connection-string>"
 EOF
 
+# List all Dapr components in the environment
+az containerapp env dapr-component list --name cae-prod --resource-group rg-containers --output table
+
+# Show details of a specific Dapr component
+az containerapp env dapr-component show --name cae-prod --resource-group rg-containers --dapr-component-name statestore
+
+# Remove a Dapr component from the environment
+az containerapp env dapr-component remove --name cae-prod --resource-group rg-containers --dapr-component-name statestore
+
+# Show environment details
+az containerapp env show --name cae-prod --resource-group rg-containers
+
+# List all environments in a resource group
+az containerapp env list --resource-group rg-containers --output table
+
+# Delete an environment
+az containerapp env delete --name cae-prod --resource-group rg-containers --yes
+
 # Deploy a Container App with Dapr enabled
 az containerapp create \
   --name api-service \
@@ -125,6 +143,15 @@ az containerapp update \
     queueName=work-items \
     messageCount=5 \
     namespace=sb-prod
+
+# Disable Dapr on a Container App
+az containerapp dapr disable --name api-service --resource-group rg-containers
+
+# Remove system-assigned managed identity
+az containerapp identity remove --name api-service --resource-group rg-containers --system-assigned
+
+# Remove user-assigned managed identity
+az containerapp identity remove --name api-service --resource-group rg-containers --user-assigned <identity-resource-id>
 
 # Set Key Vault reference for secrets
 az containerapp secret set \

@@ -134,7 +134,66 @@ az functionapp deployment slot swap \
   --slot staging --target-slot production
 ```
 
-### 6. Display Summary
+### 6. Resource Management
+
+After deployment, use these commands to manage the function app:
+
+```bash
+# Show function app details
+az functionapp show --name <app-name> --resource-group <rg-name>
+az functionapp show --name <app-name> --resource-group <rg-name> --query "{State:state, DefaultHostName:defaultHostName, Kind:kind, Runtime:siteConfig.linuxFxVersion}"
+
+# List function apps in a resource group
+az functionapp list --resource-group <rg-name> --output table
+az functionapp list --query "[?tags.environment=='production']" --output table
+
+# Delete function app
+az functionapp delete --name <app-name> --resource-group <rg-name>
+
+# Update function app properties
+az functionapp update --name <app-name> --resource-group <rg-name> --set siteConfig.minTlsVersion=1.2
+
+# Restart function app
+az functionapp restart --name <app-name> --resource-group <rg-name>
+
+# Start/stop function app
+az functionapp start --name <app-name> --resource-group <rg-name>
+az functionapp stop --name <app-name> --resource-group <rg-name>
+```
+
+### 7. Custom Domains (Optional)
+
+```bash
+# Add custom hostname
+az functionapp config hostname add --hostname www.contoso.com --webapp-name <app-name> --resource-group <rg-name>
+
+# List hostnames
+az functionapp config hostname list --webapp-name <app-name> --resource-group <rg-name> --output table
+
+# Delete hostname
+az functionapp config hostname delete --hostname www.contoso.com --webapp-name <app-name> --resource-group <rg-name>
+
+# Bind SSL certificate
+az functionapp config ssl bind --certificate-thumbprint <thumbprint> --ssl-type SNI --name <app-name> --resource-group <rg-name>
+```
+
+### 8. CORS Configuration (Optional)
+
+```bash
+# Add allowed origins
+az functionapp cors add --name <app-name> --resource-group <rg-name> --allowed-origins "https://www.contoso.com" "https://app.contoso.com"
+
+# Show CORS settings
+az functionapp cors show --name <app-name> --resource-group <rg-name>
+
+# Remove origin
+az functionapp cors remove --name <app-name> --resource-group <rg-name> --allowed-origins "https://old.contoso.com"
+
+# Enable credentials
+az functionapp cors credentials --name <app-name> --resource-group <rg-name> --enable true
+```
+
+### 9. Display Summary
 
 Show the user:
 - Deployment method used (CLI or GitHub Actions)

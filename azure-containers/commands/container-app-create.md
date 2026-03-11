@@ -120,7 +120,40 @@ az containerapp dapr enable \
   --dapr-app-protocol http
 ```
 
-### 7. Verify Deployment
+### 7. Configure CORS (Optional)
+
+```bash
+# Enable CORS for browser-based API access
+az containerapp ingress cors enable \
+  --name <app-name> \
+  --resource-group <rg-name> \
+  --allowed-origins "https://contoso.com" \
+  --allowed-methods GET POST PUT DELETE \
+  --allow-credentials true
+
+# Show current CORS configuration
+az containerapp ingress cors show --name <app-name> --resource-group <rg-name>
+```
+
+### 8. Set IP Access Restrictions (Optional)
+
+```bash
+# Allow access only from a specific IP range
+az containerapp ingress access-restriction set \
+  --name <app-name> \
+  --resource-group <rg-name> \
+  --rule-name "AllowOffice" \
+  --ip-address 203.0.113.0/24 \
+  --action Allow
+
+# List current restrictions
+az containerapp ingress access-restriction list --name <app-name> --resource-group <rg-name>
+
+# Remove a restriction rule
+az containerapp ingress access-restriction remove --name <app-name> --resource-group <rg-name> --rule-name "AllowOffice"
+```
+
+### 9. Verify Deployment
 
 ```bash
 # Show app details
@@ -133,7 +166,7 @@ az containerapp show --name <app-name> --resource-group <rg-name> --query proper
 az containerapp logs show --name <app-name> --resource-group <rg-name> --follow
 ```
 
-### 8. Display Summary
+### 10. Display Summary
 
 Show the user:
 - App URL (FQDN)

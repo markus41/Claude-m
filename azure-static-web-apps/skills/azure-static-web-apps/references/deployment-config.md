@@ -401,6 +401,104 @@ az staticwebapp hostname set \
 
 ---
 
+## Azure CLI: Resource Management
+
+```bash
+# Show SWA details
+az staticwebapp show --name my-swa --resource-group rg-swa
+az staticwebapp show --name my-swa --resource-group rg-swa \
+  --query "{DefaultHostname:defaultHostname, SKU:sku.name, Branch:repositoryUrl}"
+
+# List SWA apps in a resource group
+az staticwebapp list --resource-group rg-swa --output table
+
+# List all SWA apps in subscription
+az staticwebapp list --output table
+
+# Delete SWA
+az staticwebapp delete --name my-swa --resource-group rg-swa --yes
+```
+
+---
+
+## Azure CLI: Custom Domain Management
+
+```bash
+# Add custom domain (CNAME validation — for subdomains like www)
+az staticwebapp custom-domain create \
+  --name my-swa \
+  --resource-group rg-swa \
+  --hostname www.contoso.com
+
+# Add custom domain (DNS TXT token validation — for apex/root domains)
+az staticwebapp custom-domain create \
+  --name my-swa \
+  --resource-group rg-swa \
+  --hostname contoso.com \
+  --validation-method dns-txt-token
+
+# Show custom domain (check validation status)
+az staticwebapp custom-domain show \
+  --name my-swa \
+  --resource-group rg-swa \
+  --hostname www.contoso.com
+
+# List custom domains
+az staticwebapp custom-domain list \
+  --name my-swa \
+  --resource-group rg-swa \
+  --output table
+
+# Delete custom domain
+az staticwebapp custom-domain delete \
+  --name my-swa \
+  --resource-group rg-swa \
+  --hostname www.contoso.com \
+  --yes
+```
+
+---
+
+## Azure CLI: App Settings (Delete)
+
+```bash
+# Delete specific app settings
+az staticwebapp appsettings delete \
+  --name my-swa \
+  --resource-group rg-swa \
+  --setting-names KEY1 KEY2
+```
+
+---
+
+## Azure CLI: Deployment Tokens
+
+```bash
+# Get deployment token (returns token and other secrets)
+az staticwebapp secrets list \
+  --name my-swa \
+  --resource-group rg-swa
+
+# Reset deployment token (invalidates the old token)
+az staticwebapp secrets reset-api-key \
+  --name my-swa \
+  --resource-group rg-swa
+```
+
+---
+
+## SWA CLI: Additional Commands
+
+```bash
+# Link local project to Azure resource
+swa link --resource-group rg-swa --app-name my-swa
+
+# Build with explicit locations
+swa build --app-location ./src --api-location ./api --output-location ./dist
+```
+
+---
+
 ## GitHub Actions Workflow
 
 SWA auto-generates this workflow when linked to a GitHub repository. The deployment token is automatically stored as a repository secret.

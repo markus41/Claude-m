@@ -214,7 +214,29 @@ az rest --method POST \
 
 Ask the user for confirmation before resubmitting.
 
-### 9. Quick Diagnostics Setup
+### 9. Batch Operations (Standard)
+
+Bulk management operations for Standard Logic App workflows and runs.
+
+**Batch cancel stuck runs**:
+```bash
+RUNS=$(az rest --method GET \
+  --url "https://management.azure.com/subscriptions/<sub-id>/resourceGroups/<rg-name>/providers/Microsoft.Web/sites/<app-name>/hostruntime/runtime/webhooks/workflow/api/management/workflows/<workflow-name>/runs?api-version=2022-03-01&\$filter=status eq 'Running'" \
+  | jq -r '.value[].name')
+for RUN_ID in $RUNS; do
+  az rest --method POST \
+    --url "https://management.azure.com/subscriptions/<sub-id>/resourceGroups/<rg-name>/providers/Microsoft.Web/sites/<app-name>/hostruntime/runtime/webhooks/workflow/api/management/workflows/<workflow-name>/runs/$RUN_ID/cancel?api-version=2022-03-01"
+done
+```
+
+**List all workflows in Standard Logic App**:
+```bash
+az rest --method GET \
+  --url "https://management.azure.com/subscriptions/<sub-id>/resourceGroups/<rg-name>/providers/Microsoft.Web/sites/<app-name>/hostruntime/runtime/webhooks/workflow/api/management/workflows?api-version=2022-03-01" \
+  --query "value[].{Name:name,State:properties.state}" --output table
+```
+
+### 10. Quick Diagnostics Setup
 
 If monitoring is not yet configured, offer to set it up:
 

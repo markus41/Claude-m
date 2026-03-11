@@ -1255,6 +1255,19 @@ az logicapp config appsettings set \
   --resource-group myRg \
   --name my-standard-app \
   --settings "KEY=value"
+
+# List app settings
+az logicapp config appsettings list \
+  --name my-standard-app --resource-group myRg --output table
+
+# Delete app settings
+az logicapp config appsettings delete \
+  --name my-standard-app --resource-group myRg \
+  --setting-names KEY1 KEY2
+
+# Remove VNet integration
+az logicapp vnet-integration remove \
+  --name my-standard-app --resource-group myRg
 ```
 
 ### 9.4 GitHub Actions CI/CD
@@ -1400,6 +1413,96 @@ Separate connection details per environment using `parameters.json` and `connect
     }
   }
 }
+```
+
+
+### 9.8 Deployment Slots (Standard)
+
+Standard Logic Apps support deployment slots for staged rollouts and zero-downtime swaps.
+
+```bash
+# Create deployment slot
+az logicapp deployment slot create \
+  --name my-standard-app --resource-group myRg --slot staging
+
+# List deployment slots
+az logicapp deployment slot list \
+  --name my-standard-app --resource-group myRg --output table
+
+# Swap slots (zero-downtime)
+az logicapp deployment slot swap \
+  --name my-standard-app --resource-group myRg \
+  --slot staging --target-slot production
+
+# Deploy to slot
+az logicapp deployment source config-zip \
+  --name my-standard-app --resource-group myRg \
+  --src deploy.zip --slot staging
+
+# Configure slot-specific settings
+az logicapp config appsettings set \
+  --name my-standard-app --resource-group myRg \
+  --slot staging --settings "Environment=Staging"
+```
+
+### 9.9 Custom Domains & SSL (Standard)
+
+Bind custom hostnames and SSL certificates to Standard Logic Apps.
+
+```bash
+# Add custom hostname
+az logicapp config hostname add \
+  --hostname api.contoso.com \
+  --webapp-name my-standard-app --resource-group myRg
+
+# List hostnames
+az logicapp config hostname list \
+  --webapp-name my-standard-app --resource-group myRg --output table
+
+# Bind SSL certificate
+az logicapp config ssl bind \
+  --certificate-thumbprint <thumbprint> --ssl-type SNI \
+  --name my-standard-app --resource-group myRg
+```
+
+### 9.10 Backup & Restore (Standard)
+
+Create and restore backups for Standard Logic Apps using Azure Storage.
+
+```bash
+# Create backup
+az logicapp config backup create \
+  --container-url <sas-url> \
+  --webapp-name my-standard-app --resource-group myRg
+
+# List backups
+az logicapp config backup list \
+  --webapp-name my-standard-app --resource-group myRg --output table
+
+# Restore from backup
+az logicapp config backup restore \
+  --container-url <sas-url> \
+  --webapp-name my-standard-app --resource-group myRg
+```
+
+### 9.11 Batch Operations (Standard)
+
+Bulk management operations for Standard Logic App workflows and runs.
+
+```bash
+# Batch cancel stuck runs
+RUNS=$(az rest --method GET \
+  --url "https://management.azure.com/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Web/sites/<app>/hostruntime/runtime/webhooks/workflow/api/management/workflows/<workflow>/runs?api-version=2022-03-01&\$filter=status eq 'Running'" \
+  | jq -r '.value[].name')
+for RUN_ID in $RUNS; do
+  az rest --method POST \
+    --url "https://management.azure.com/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Web/sites/<app>/hostruntime/runtime/webhooks/workflow/api/management/workflows/<workflow>/runs/$RUN_ID/cancel?api-version=2022-03-01"
+done
+
+# List all workflows in Standard Logic App
+az rest --method GET \
+  --url "https://management.azure.com/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Web/sites/<app>/hostruntime/runtime/webhooks/workflow/api/management/workflows?api-version=2022-03-01" \
+  --query "value[].{Name:name,State:properties.state}" --output table
 ```
 
 

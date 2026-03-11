@@ -157,4 +157,16 @@ Test Container Apps access:
 az containerapp env show --name <env-name> --resource-group <rg-name>
 ```
 
+List all Container Apps environments:
+```bash
+az containerapp env list --resource-group <rg-name> --output table
+```
+
+## Step 10: Delete Environment (Cleanup)
+
+```bash
+# Delete a Container Apps environment (destroys all apps within it)
+az containerapp env delete --name <env-name> --resource-group <rg-name> --yes
+```
+
 If `--minimal` is passed, stop after Step 3 (dependencies only).

@@ -259,6 +259,57 @@ Write the file with the `Write` tool. Verify `.gitignore` contains `.env`.
 Setup completed at <timestamp>.
 ```
 
+## Account Lifecycle Management
+
+### Delete Azure OpenAI Resource
+
+```bash
+az cognitiveservices account delete --name {accountName} --resource-group {rg}
+```
+
+Deletes the Cognitive Services account and all its deployments. This is irreversible.
+
+### Update Azure OpenAI Resource
+
+```bash
+az cognitiveservices account update --name {accountName} --resource-group {rg} --custom-domain {domain} --public-network-access Disabled
+```
+
+Common updates: disable public network access, change custom domain, modify API properties.
+
+### Regenerate Keys
+
+```bash
+# Regenerate key1
+az cognitiveservices account keys regenerate --name {accountName} --resource-group {rg} --key-name key1
+
+# Regenerate key2
+az cognitiveservices account keys regenerate --name {accountName} --resource-group {rg} --key-name key2
+```
+
+Rotate keys regularly. Regenerate key2 first, update applications to use key2, then regenerate key1.
+
+### Network Security
+
+```bash
+# Add VNet rule
+az cognitiveservices account network-rule add --name {accountName} --resource-group {rg} --subnet {subnet-id}
+
+# Add IP rule
+az cognitiveservices account network-rule add --name {accountName} --resource-group {rg} --ip-address 203.0.113.0/24
+
+# List network rules
+az cognitiveservices account network-rule list --name {accountName} --resource-group {rg}
+
+# Remove network rule
+az cognitiveservices account network-rule remove --name {accountName} --resource-group {rg} --subnet {subnet-id}
+
+# Set default action to Deny
+az cognitiveservices account update --name {accountName} --resource-group {rg} --custom-domain {domain} --api-properties "{\"networkAcls\":{\"defaultAction\":\"Deny\"}}"
+```
+
+For production, set the default action to `Deny` and add explicit VNet or IP rules for allowed access.
+
 ## Important Notes
 
 - For production, assign the `Cognitive Services OpenAI User` role to a managed identity and remove API keys.

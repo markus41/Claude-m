@@ -306,6 +306,51 @@ curl -s "${AZURE_SEARCH_ENDPOINT}/indexers/{indexName}-indexer/status?api-versio
   --query "lastResult.{Status: status, Items: itemCount, Failed: failedItemCount}"
 ```
 
+## Search Service Lifecycle Management
+
+### Delete Search Service
+
+```bash
+az search service delete --name {serviceName} --resource-group {rg} --yes
+```
+
+Deletes the search service and all its indexes, indexers, skillsets, and data sources. This is irreversible.
+
+### Update Search Service (Scale)
+
+Scale replicas and partitions to adjust query throughput and storage capacity:
+
+```bash
+az search service update --name {serviceName} --resource-group {rg} --replica-count 3 --partition-count 2
+```
+
+Replicas improve query throughput and availability (3 replicas = read HA SLA). Partitions increase storage capacity.
+
+### Query Key Management
+
+Query keys provide read-only access to index data (search queries only):
+
+```bash
+# Create a query key
+az search query-key create --name "{keyName}" --resource-group {rg} --service-name {serviceName}
+
+# List query keys
+az search query-key list --resource-group {rg} --service-name {serviceName} --output table
+
+# Delete a query key
+az search query-key delete --key-value {key} --resource-group {rg} --service-name {serviceName}
+```
+
+### Admin Key Regeneration
+
+Regenerate the primary or secondary admin key:
+
+```bash
+az search admin-key renew --key-kind primary --resource-group {rg} --service-name {serviceName}
+```
+
+Use `--key-kind secondary` to regenerate the secondary key. Rotate keys by regenerating the unused key first, updating applications, then regenerating the other.
+
 ## Output Format
 
 ```markdown

@@ -436,6 +436,29 @@ Live Metrics provides real-time monitoring with < 1 second latency.
 
 ---
 
+## Azure CLI: Diagnostic Settings
+
+```bash
+# Create diagnostic settings for a function app (send all logs and metrics to Log Analytics)
+az monitor diagnostic-settings create \
+  --resource /subscriptions/{sub}/resourceGroups/rg-functions/providers/Microsoft.Web/sites/my-func-app \
+  --name "func-diag" \
+  --workspace /subscriptions/{sub}/resourceGroups/rg-functions/providers/Microsoft.OperationalInsights/workspaces/my-law \
+  --logs '[{"categoryGroup":"allLogs","enabled":true}]' \
+  --metrics '[{"category":"AllMetrics","enabled":true}]'
+
+# List diagnostic settings for a function app
+az monitor diagnostic-settings list \
+  --resource /subscriptions/{sub}/resourceGroups/rg-functions/providers/Microsoft.Web/sites/my-func-app
+
+# Delete a diagnostic setting
+az monitor diagnostic-settings delete \
+  --resource /subscriptions/{sub}/resourceGroups/rg-functions/providers/Microsoft.Web/sites/my-func-app \
+  --name "func-diag"
+```
+
+---
+
 ## PowerShell: Alert and Diagnostic Setup
 
 ```powershell

@@ -281,6 +281,100 @@ az functionapp identity assign \
   --resource-group rg-functions
 ```
 
+### Function App Management
+
+```bash
+# Show function app details
+az functionapp show --name my-func-app --resource-group rg-functions
+az functionapp show --name my-func-app --resource-group rg-functions \
+  --query "{State:state, DefaultHostName:defaultHostName, Kind:kind, Runtime:siteConfig.linuxFxVersion}"
+
+# List function apps in a resource group
+az functionapp list --resource-group rg-functions --output table
+az functionapp list --query "[?tags.environment=='production']" --output table
+
+# Delete function app
+az functionapp delete --name my-func-app --resource-group rg-functions
+
+# Update function app properties
+az functionapp update --name my-func-app --resource-group rg-functions \
+  --set siteConfig.minTlsVersion=1.2
+
+# Restart / start / stop
+az functionapp restart --name my-func-app --resource-group rg-functions
+az functionapp start --name my-func-app --resource-group rg-functions
+az functionapp stop --name my-func-app --resource-group rg-functions
+```
+
+### Identity Management
+
+```bash
+# Assign system-assigned managed identity
+az functionapp identity assign --name my-func-app --resource-group rg-functions
+
+# Show identity details
+az functionapp identity show --name my-func-app --resource-group rg-functions
+
+# Assign user-assigned identity
+az functionapp identity assign --name my-func-app --resource-group rg-functions \
+  --identities /subscriptions/{sub}/resourceGroups/rg-functions/providers/Microsoft.ManagedIdentity/userAssignedIdentities/my-identity
+
+# Remove identity
+az functionapp identity remove --name my-func-app --resource-group rg-functions \
+  --identities [system]
+```
+
+### Custom Domains
+
+```bash
+# Add custom hostname
+az functionapp config hostname add --hostname www.contoso.com \
+  --webapp-name my-func-app --resource-group rg-functions
+
+# List hostnames
+az functionapp config hostname list --webapp-name my-func-app \
+  --resource-group rg-functions --output table
+
+# Delete hostname
+az functionapp config hostname delete --hostname www.contoso.com \
+  --webapp-name my-func-app --resource-group rg-functions
+
+# Bind SSL certificate
+az functionapp config ssl bind --certificate-thumbprint <thumbprint> \
+  --ssl-type SNI --name my-func-app --resource-group rg-functions
+```
+
+### CORS Configuration
+
+```bash
+# Add allowed origins
+az functionapp cors add --name my-func-app --resource-group rg-functions \
+  --allowed-origins "https://www.contoso.com" "https://app.contoso.com"
+
+# Show CORS settings
+az functionapp cors show --name my-func-app --resource-group rg-functions
+
+# Remove origin
+az functionapp cors remove --name my-func-app --resource-group rg-functions \
+  --allowed-origins "https://old.contoso.com"
+
+# Enable credentials
+az functionapp cors credentials --name my-func-app --resource-group rg-functions \
+  --enable true
+```
+
+### Diagnostic Settings
+
+```bash
+# Create diagnostic settings (send logs and metrics to Log Analytics)
+az monitor diagnostic-settings create \
+  --resource /subscriptions/{sub}/resourceGroups/rg-functions/providers/Microsoft.Web/sites/my-func-app \
+  --name "func-diag" \
+  --workspace /subscriptions/{sub}/resourceGroups/rg-functions/providers/Microsoft.OperationalInsights/workspaces/my-law \
+  --logs '[{"categoryGroup":"allLogs","enabled":true}]' \
+  --metrics '[{"category":"AllMetrics","enabled":true}]'
+```
+
 ---
 
 ## GitHub Actions Deployment (OIDC)

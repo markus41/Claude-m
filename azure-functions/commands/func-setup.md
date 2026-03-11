@@ -125,7 +125,27 @@ az functionapp create --resource-group <rg-name> --consumption-plan-location <re
 4. Select or create a Storage Account.
 5. Optionally enable Application Insights for monitoring.
 
-## Step 7: Verify Local Development
+## Step 7: Configure Managed Identity (Optional)
+
+If the function app uses Azure services (Key Vault, Storage, Cosmos DB), configure managed identity:
+
+```bash
+# Assign system-assigned managed identity
+az functionapp identity assign --name <app-name> --resource-group <rg-name>
+
+# Show identity details
+az functionapp identity show --name <app-name> --resource-group <rg-name>
+
+# Assign user-assigned identity
+az functionapp identity assign --name <app-name> --resource-group <rg-name> --identities <identity-resource-id>
+
+# Remove identity
+az functionapp identity remove --name <app-name> --resource-group <rg-name> --identities [system]
+```
+
+After assigning an identity, grant the required RBAC roles on target resources (e.g., `Storage Blob Data Owner` on the storage account, `Key Vault Secrets User` on the vault).
+
+## Step 8: Verify Local Development
 
 ```bash
 func start

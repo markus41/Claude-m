@@ -296,6 +296,45 @@ stages:
                         --image "$(REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG)"
 ```
 
+## Revision Labels
+
+```bash
+# Add a label to a revision (useful for traffic routing and rollback)
+az containerapp revision label add \
+  --name api-service \
+  --resource-group rg-containers \
+  --label stable \
+  --revision api-service--v1
+
+# Remove a label
+az containerapp revision label remove \
+  --name api-service \
+  --resource-group rg-containers \
+  --label canary
+```
+
+## Monitoring and Diagnostics
+
+```bash
+# Create diagnostic settings to send Container App logs to Log Analytics
+az monitor diagnostic-settings create \
+  --resource <containerapp-resource-id> \
+  --name "ca-diag" \
+  --workspace <workspace-id> \
+  --logs '[{"categoryGroup":"allLogs","enabled":true}]'
+
+# Create a metric alert for high CPU usage
+az monitor metrics alert create \
+  --resource-group rg-containers \
+  --name "container-cpu-alert" \
+  --scopes <containerapp-resource-id> \
+  --condition "avg CpuPercentage > 80" \
+  --window-size PT5M \
+  --evaluation-frequency PT1M \
+  --severity 2 \
+  --action <action-group-id>
+```
+
 ## Rollback Procedures
 
 ```bash

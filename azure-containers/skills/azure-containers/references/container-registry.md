@@ -85,6 +85,15 @@ az role assignment create \
   --role AcrPull \
   --scope "$ACR_ID"
 
+# Check ACR health (validates DNS, login, and pull connectivity)
+az acr check-health --name acrprodeastus --yes
+
+# Delete a repository from the registry
+az acr repository delete --name acrprodeastus --repository myapp --yes
+
+# Show manifest metadata for a repository
+az acr manifest list-metadata --registry acrprodeastus --name myapp --output table
+
 # Build image using ACR Tasks (cloud build — no local Docker required)
 az acr build \
   --registry acrprodeastus \

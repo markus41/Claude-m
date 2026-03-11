@@ -73,6 +73,17 @@ az containerapp revision label add \
   --resource-group <rg-name> \
   --label staging \
   --revision <app-name>--v2
+
+# Remove a label when no longer needed
+az containerapp revision label remove \
+  --name <app-name> \
+  --resource-group <rg-name> \
+  --label canary
+```
+
+Check current ingress configuration:
+```bash
+az containerapp ingress show --name <app-name> --resource-group <rg-name>
 ```
 
 ### 4. Traffic Splitting

@@ -193,6 +193,26 @@ az staticwebapp backends link \
   --backend-region eastus
 ```
 
+### Azure CLI: Functions Linking
+
+```bash
+# Link Azure Functions backend
+az staticwebapp functions link \
+  --name my-swa \
+  --resource-group rg-swa \
+  --function-resource-id /subscriptions/{sub}/resourceGroups/{rg}/providers/Microsoft.Web/sites/my-functions-app
+
+# Show linked functions
+az staticwebapp functions show \
+  --name my-swa \
+  --resource-group rg-swa
+
+# Unlink functions
+az staticwebapp functions unlink \
+  --name my-swa \
+  --resource-group rg-swa
+```
+
 ### Link Azure Container App
 
 ```json

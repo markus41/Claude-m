@@ -151,6 +151,15 @@ az acr run --cmd "acr purge --filter 'myapp:.*' --ago 30d --keep 5 --untagged" -
 
 # Import from Docker Hub or another registry
 az acr import --name myregistry --source docker.io/library/nginx:alpine --image nginx:alpine
+
+# Check ACR health (validates DNS, login, and pull)
+az acr check-health --name myregistry --yes
+
+# Delete a repository from the registry
+az acr repository delete --name myregistry --repository myapp --yes
+
+# Show manifest metadata for a repository
+az acr manifest list-metadata --registry myregistry --name myapp --output table
 ```
 
 ## 3. Azure Container Apps Environment
@@ -188,6 +197,18 @@ az containerapp env create \
 ```
 
 The subnet must have a minimum size of `/23` (512 addresses) and must be delegated to `Microsoft.App/environments`.
+
+**Environment management**:
+```bash
+# Show environment details
+az containerapp env show --name my-environment --resource-group myResourceGroup
+
+# List all environments in a resource group
+az containerapp env list --resource-group myResourceGroup --output table
+
+# Delete an environment
+az containerapp env delete --name my-environment --resource-group myResourceGroup --yes
+```
 
 **Workload profiles**:
 | Profile | Description | Use case |
@@ -451,6 +472,23 @@ az containerapp env dapr-component set \
   --yaml statestore.yaml
 ```
 
+**Manage Dapr components**:
+```bash
+# List all Dapr components in an environment
+az containerapp env dapr-component list --name my-environment --resource-group myResourceGroup --output table
+
+# Show details of a specific Dapr component
+az containerapp env dapr-component show --name my-environment --resource-group myResourceGroup --dapr-component-name statestore
+
+# Remove a Dapr component
+az containerapp env dapr-component remove --name my-environment --resource-group myResourceGroup --dapr-component-name statestore
+```
+
+**Disable Dapr on a Container App**:
+```bash
+az containerapp dapr disable --name my-api --resource-group myResourceGroup
+```
+
 **Dapr pub/sub component** (Azure Service Bus):
 ```yaml
 componentType: pubsub.azure.servicebus.topics
@@ -604,6 +642,21 @@ az containerapp job create \
 | `replicaRetryLimit` | Number of retries on failure |
 | `replicaCompletionCount` | Number of replicas that must complete successfully |
 | `parallelism` | Number of replicas that can run concurrently |
+
+**Job management**:
+```bash
+# Show job details
+az containerapp job show --name my-batch-job --resource-group myResourceGroup
+
+# List all jobs in a resource group
+az containerapp job list --resource-group myResourceGroup --output table
+
+# Delete a job
+az containerapp job delete --name my-batch-job --resource-group myResourceGroup --yes
+
+# Stop a running job execution
+az containerapp job stop --name my-batch-job --resource-group myResourceGroup --job-execution-name <execution-name>
+```
 
 **Monitor job executions**:
 ```bash
@@ -775,6 +828,46 @@ az containerapp ingress enable \
   --target-port 8080
 ```
 
+**Ingress management**:
+```bash
+# Show current ingress configuration
+az containerapp ingress show --name my-api --resource-group myResourceGroup
+
+# Disable ingress (for background workers)
+az containerapp ingress disable --name my-api --resource-group myResourceGroup
+```
+
+**CORS management** (CLI):
+```bash
+# Enable CORS on a Container App
+az containerapp ingress cors enable \
+  --name my-api \
+  --resource-group myResourceGroup \
+  --allowed-origins "https://contoso.com" \
+  --allowed-methods GET POST \
+  --allow-credentials true
+
+# Show current CORS configuration
+az containerapp ingress cors show --name my-api --resource-group myResourceGroup
+```
+
+**IP access restrictions**:
+```bash
+# Set an IP access restriction rule
+az containerapp ingress access-restriction set \
+  --name my-api \
+  --resource-group myResourceGroup \
+  --rule-name "AllowOffice" \
+  --ip-address 203.0.113.0/24 \
+  --action Allow
+
+# List all access restriction rules
+az containerapp ingress access-restriction list --name my-api --resource-group myResourceGroup
+
+# Remove an access restriction rule
+az containerapp ingress access-restriction remove --name my-api --resource-group myResourceGroup --rule-name "AllowOffice"
+```
+
 Transport options:
 | Transport | Description |
 |-----------|-------------|
@@ -926,6 +1019,22 @@ az containerapp revision deactivate \
   --resource-group myResourceGroup
 ```
 
+**Revision labels**:
+```bash
+# Add a label to a revision (for traffic routing by label)
+az containerapp revision label add \
+  --name my-api \
+  --resource-group myResourceGroup \
+  --label stable \
+  --revision my-api--v1
+
+# Remove a label from a revision
+az containerapp revision label remove \
+  --name my-api \
+  --resource-group myResourceGroup \
+  --label canary
+```
+
 **Revision management**:
 ```bash
 # List all revisions
@@ -981,6 +1090,15 @@ az containerapp identity assign \
   --name my-api \
   --resource-group myResourceGroup \
   --user-assigned $(az identity show --name my-container-identity --resource-group myResourceGroup --query id -o tsv)
+```
+
+**Remove managed identity**:
+```bash
+# Remove system-assigned identity
+az containerapp identity remove --name my-api --resource-group myResourceGroup --system-assigned
+
+# Remove user-assigned identity
+az containerapp identity remove --name my-api --resource-group myResourceGroup --user-assigned <identity-resource-id>
 ```
 
 **Secrets management**:
@@ -1137,6 +1255,27 @@ Probe methods:
 |--------|-------------|
 | `httpGet` | HTTP GET request (success = 200-399 response) |
 | `tcpSocket` | TCP connection (success = port open) |
+
+**Diagnostic settings and alerts** (CLI):
+```bash
+# Create diagnostic settings to send logs to a Log Analytics workspace
+az monitor diagnostic-settings create \
+  --resource <containerapp-resource-id> \
+  --name "ca-diag" \
+  --workspace <workspace-id> \
+  --logs '[{"categoryGroup":"allLogs","enabled":true}]'
+
+# Create a metric alert for high CPU usage
+az monitor metrics alert create \
+  --resource-group myResourceGroup \
+  --name "container-cpu-alert" \
+  --scopes <containerapp-resource-id> \
+  --condition "avg CpuPercentage > 80" \
+  --window-size PT5M \
+  --evaluation-frequency PT1M \
+  --severity 2 \
+  --action <action-group-id>
+```
 
 **Metrics** (Azure Monitor):
 

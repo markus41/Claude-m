@@ -179,6 +179,35 @@ az cognitiveservices account deployment show \
   --query "{Name: name, Model: properties.model.name, Version: properties.model.version, Capacity: sku.capacity, SKU: sku.name, State: properties.provisioningState}"
 ```
 
+## Deployment Lifecycle Management
+
+### Delete Deployment
+
+Remove a deployment that is no longer needed:
+
+```bash
+az cognitiveservices account deployment delete \
+  --name ${AZURE_OPENAI_ACCOUNT_NAME} \
+  --resource-group ${AZURE_OPENAI_RESOURCE_GROUP} \
+  --deployment-name "{deploymentName}"
+```
+
+This frees the associated quota capacity immediately.
+
+### Update Deployment (Scale TPM)
+
+Scale a deployment's capacity up or down without redeploying:
+
+```bash
+az cognitiveservices account deployment update \
+  --name ${AZURE_OPENAI_ACCOUNT_NAME} \
+  --resource-group ${AZURE_OPENAI_RESOURCE_GROUP} \
+  --deployment-name "{deploymentName}" \
+  --capacity 120
+```
+
+Capacity is in kTPM (thousands of tokens per minute). Check quota availability before scaling up.
+
 ## Output Format
 
 ```markdown

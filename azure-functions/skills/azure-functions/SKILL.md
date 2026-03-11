@@ -1439,6 +1439,93 @@ app.timer("cleanupExpiredRecords", {
 });
 ```
 
+## 13. Azure CLI Quick Reference
+
+### Resource Management
+
+```bash
+# Show function app details
+az functionapp show --name <app> --resource-group <rg>
+az functionapp show --name <app> --resource-group <rg> --query "{State:state, DefaultHostName:defaultHostName, Kind:kind, Runtime:siteConfig.linuxFxVersion}"
+
+# List function apps in a resource group
+az functionapp list --resource-group <rg> --output table
+az functionapp list --query "[?tags.environment=='production']" --output table
+
+# Delete function app
+az functionapp delete --name <app> --resource-group <rg>
+
+# Update function app properties
+az functionapp update --name <app> --resource-group <rg> --set siteConfig.minTlsVersion=1.2
+
+# Restart function app
+az functionapp restart --name <app> --resource-group <rg>
+
+# Start/stop function app
+az functionapp start --name <app> --resource-group <rg>
+az functionapp stop --name <app> --resource-group <rg>
+```
+
+### Custom Domains
+
+```bash
+# Add custom hostname
+az functionapp config hostname add --hostname www.contoso.com --webapp-name <app> --resource-group <rg>
+
+# List hostnames
+az functionapp config hostname list --webapp-name <app> --resource-group <rg> --output table
+
+# Delete hostname
+az functionapp config hostname delete --hostname www.contoso.com --webapp-name <app> --resource-group <rg>
+
+# Bind SSL certificate
+az functionapp config ssl bind --certificate-thumbprint <thumbprint> --ssl-type SNI --name <app> --resource-group <rg>
+```
+
+### CORS Configuration
+
+```bash
+# Add allowed origins
+az functionapp cors add --name <app> --resource-group <rg> --allowed-origins "https://www.contoso.com" "https://app.contoso.com"
+
+# Show CORS settings
+az functionapp cors show --name <app> --resource-group <rg>
+
+# Remove origin
+az functionapp cors remove --name <app> --resource-group <rg> --allowed-origins "https://old.contoso.com"
+
+# Enable credentials
+az functionapp cors credentials --name <app> --resource-group <rg> --enable true
+```
+
+### Identity Management
+
+```bash
+# Assign system-assigned managed identity
+az functionapp identity assign --name <app> --resource-group <rg>
+
+# Show identity details
+az functionapp identity show --name <app> --resource-group <rg>
+
+# Assign user-assigned identity
+az functionapp identity assign --name <app> --resource-group <rg> --identities <identity-resource-id>
+
+# Remove identity
+az functionapp identity remove --name <app> --resource-group <rg> --identities [system]
+```
+
+### Diagnostic Settings
+
+```bash
+# Create diagnostic settings for a function app
+az monitor diagnostic-settings create \
+  --resource <functionapp-resource-id> \
+  --name "func-diag" \
+  --workspace <workspace-id> \
+  --logs '[{"categoryGroup":"allLogs","enabled":true}]' \
+  --metrics '[{"category":"AllMetrics","enabled":true}]'
+```
+
 ## Knowledge references
 
 - `references/operational-knowledge.md` — compact API surface map, prerequisite matrix, deterministic failure remediation, limits/throttling guidance, and safe-default read-first/apply-second pattern.

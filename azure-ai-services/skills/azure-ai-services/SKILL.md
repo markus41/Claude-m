@@ -417,6 +417,105 @@ Every operation produces a structured markdown report:
 4. **Quota table**: current usage / limit by model family
 5. **Recommendations**: quota headroom, governance gaps, cost observations
 
+## Azure CLI Quick Reference
+
+Common `az` commands for managing Azure AI resources. These complement the ARM REST API operations documented above.
+
+### Account Lifecycle
+
+```bash
+# Create Azure OpenAI resource (see Step 2 in setup command)
+az cognitiveservices account create --name <account> --resource-group <rg> --kind OpenAI --sku S0 --location eastus --custom-domain <account> --yes
+
+# Delete account
+az cognitiveservices account delete --name <account> --resource-group <rg>
+
+# Update account
+az cognitiveservices account update --name <account> --resource-group <rg> --custom-domain <domain> --public-network-access Disabled
+
+# List keys
+az cognitiveservices account keys list --name <account> --resource-group <rg>
+
+# Regenerate keys
+az cognitiveservices account keys regenerate --name <account> --resource-group <rg> --key-name key1
+az cognitiveservices account keys regenerate --name <account> --resource-group <rg> --key-name key2
+```
+
+### Deployment Lifecycle
+
+```bash
+# List deployments
+az cognitiveservices account deployment list --name <account> --resource-group <rg> -o table
+
+# Create deployment
+az cognitiveservices account deployment create --name <account> --resource-group <rg> --deployment-name <deployment> --model-name gpt-4o --model-version 2024-05-13 --model-format OpenAI --sku-capacity 30 --sku-name Standard
+
+# Delete deployment
+az cognitiveservices account deployment delete --name <account> --resource-group <rg> --deployment-name <deployment>
+
+# Update deployment (scale TPM)
+az cognitiveservices account deployment update --name <account> --resource-group <rg> --deployment-name <deployment> --capacity 120
+```
+
+### Network Security
+
+```bash
+# Add network rule (VNet)
+az cognitiveservices account network-rule add --name <account> --resource-group <rg> --subnet <subnet-id>
+
+# Add IP rule
+az cognitiveservices account network-rule add --name <account> --resource-group <rg> --ip-address 203.0.113.0/24
+
+# List network rules
+az cognitiveservices account network-rule list --name <account> --resource-group <rg>
+
+# Remove network rule
+az cognitiveservices account network-rule remove --name <account> --resource-group <rg> --subnet <subnet-id>
+
+# Set default action to Deny (restrict to allowed networks only)
+az cognitiveservices account update --name <account> --resource-group <rg> --custom-domain <domain> --api-properties "{\"networkAcls\":{\"defaultAction\":\"Deny\"}}"
+```
+
+### Azure AI Search CLI
+
+```bash
+# Create search service
+az search service create --name <search> --resource-group <rg> --sku Standard --location eastus --partition-count 1 --replica-count 1 --semantic-search standard
+
+# Delete search service
+az search service delete --name <search> --resource-group <rg> --yes
+
+# Update search service (scale)
+az search service update --name <search> --resource-group <rg> --replica-count 3 --partition-count 2
+
+# Query keys
+az search query-key create --name "<key-name>" --resource-group <rg> --service-name <search>
+az search query-key list --resource-group <rg> --service-name <search> --output table
+az search query-key delete --key-value <key> --resource-group <rg> --service-name <search>
+
+# Admin key regeneration
+az search admin-key renew --key-kind primary --resource-group <rg> --service-name <search>
+```
+
+### Monitoring and Diagnostics
+
+```bash
+# Create diagnostic settings for a Cognitive Services resource
+az monitor diagnostic-settings create --resource <cognitive-resource-id> --name "ai-diag" --workspace <workspace-id> --logs '[{"categoryGroup":"allLogs","enabled":true}]' --metrics '[{"category":"AllMetrics","enabled":true}]'
+
+# List diagnostic settings
+az monitor diagnostic-settings list --resource <cognitive-resource-id>
+
+# Delete diagnostic settings
+az monitor diagnostic-settings delete --resource <cognitive-resource-id> --name "ai-diag"
+
+# List metric alerts
+az monitor metrics alert list --resource-group <rg> --output table
+
+# Delete metric alert
+az monitor metrics alert delete --resource-group <rg> --name "<alert-name>"
+```
+
 ## Reference Files
 
 | Reference | Path | Topics |

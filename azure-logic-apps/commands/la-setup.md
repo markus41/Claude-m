@@ -194,6 +194,19 @@ az logicapp identity assign --name <app-name> --resource-group <rg-name>
 az logicapp vnet-integration add \
   --name <app-name> --resource-group <rg-name> \
   --vnet <vnet-name> --subnet <subnet-name>
+
+# Remove VNet integration
+az logicapp vnet-integration remove \
+  --name <app-name> --resource-group <rg-name>
+
+# List app settings
+az logicapp config appsettings list \
+  --name <app-name> --resource-group <rg-name> --output table
+
+# Delete app settings
+az logicapp config appsettings delete \
+  --name <app-name> --resource-group <rg-name> \
+  --setting-names KEY1 KEY2
 ```
 
 **Consumption Logic App** (no local dev — portal/ARM only):
