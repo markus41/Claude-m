@@ -1,0 +1,36 @@
+{
+  "name": "azure-logic-apps",
+  "version": "1.0.0",
+  "description": "Azure Logic Apps — enterprise integration workflows, Workflow Definition Language, Standard and Consumption hosting, connectors, B2B/EDI integration accounts, and CI/CD deployment",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "azure",
+    "logic-apps",
+    "integration",
+    "workflow",
+    "enterprise-integration",
+    "B2B",
+    "EDI",
+    "connectors",
+    "WDL"
+  ],
+  "skills": [
+    "./skills/azure-logic-apps/"
+  ],
+  "agents": [
+    "./agents/logic-apps-reviewer.md"
+  ],
+  "commands": [
+    "./commands/la-setup.md",
+    "./commands/la-create.md",
+    "./commands/la-deploy.md",
+    "./commands/la-troubleshoot.md",
+    "./commands/la-connector-config.md",
+    "./commands/la-integration-account.md",
+    "./commands/la-migrate-ise.md",
+    "./commands/la-expression-helper.md"
+  ]
+}

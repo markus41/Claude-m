@@ -110,6 +110,7 @@ Then re-run `/plugin marketplace add markus41/Claude-m`.
 | `business-central` | productivity | Dynamics 365 Business Central ERP — finance (GL, journal entries, AP/AR), supply chain (sales invoices, purchase orders), and inventory management |
 | `microsoft-intune` | security | Device lifecycle and compliance management for Microsoft Intune and Endpoint Manager - non-compliant device detection, lost device actions, compliance policy rollout, and app protection policy review. |
 | `defender-endpoint` | security | Microsoft Defender for Endpoint operations - incident triage, machine isolation, live response package metadata checks, and evidence summary generation. |
+| `azure-logic-apps` | cloud | Azure Logic Apps — enterprise integration workflows, Workflow Definition Language, Standard and Consumption hosting, connectors, B2B/EDI integration accounts, and CI/CD deployment |
 | `azure-kubernetes` | cloud | Azure Kubernetes Service operations - cluster inventory, pod failure diagnostics, node pool scaling, and policy posture checks. |
 | `azure-backup-recovery` | cloud | Azure Backup and Site Recovery operations - job health checks, restore drill readiness, recovery plan audits, and cross-region resilience checks. |
 | `azure-api-management` | cloud | Azure API Management operations - API inventory, policy drift detection, key rotation workflows, and contract diff checks across revisions. |

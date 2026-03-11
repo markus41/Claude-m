@@ -1523,6 +1523,26 @@
       "strict": true
     },
     {
+      "name": "azure-logic-apps",
+      "source": {
+        "source": "git-subdir",
+        "url": "markus41/Claude-m",
+        "path": "azure-logic-apps"
+      },
+      "description": "Azure Logic Apps — enterprise integration workflows, Workflow Definition Language, Standard and Consumption hosting, connectors, B2B/EDI integration accounts, and CI/CD deployment",
+      "category": "cloud",
+      "tags": [
+        "azure",
+        "logic-apps",
+        "integration",
+        "workflow",
+        "B2B",
+        "EDI",
+        "connectors"
+      ],
+      "strict": true
+    },
+    {
       "name": "azure-backup-recovery",
       "source": {
         "source": "git-subdir",
