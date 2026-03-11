@@ -18,7 +18,7 @@
     "fine-tuning"
   ],
   "skills": [
-    "./skills/azure-ai-services/SKILL.md"
+    "./skills/azure-ai-services/"
   ],
   "agents": [
     "./agents/azure-ai-services-reviewer.md"

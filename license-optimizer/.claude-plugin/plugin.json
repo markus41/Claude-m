@@ -15,7 +15,7 @@
     "sku-management"
   ],
   "skills": [
-    "./skills/license-optimizer/SKILL.md"
+    "./skills/license-optimizer/"
   ],
   "agents": [
     "./agents/license-optimizer-reviewer.md"

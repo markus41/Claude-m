@@ -22,11 +22,11 @@
     "analytics"
   ],
   "skills": [
-    "./skills/azure-devops-repos/SKILL.md",
-    "./skills/azure-devops-pipelines/SKILL.md",
-    "./skills/azure-devops-boards/SKILL.md",
-    "./skills/azure-devops-testing/SKILL.md",
-    "./skills/azure-devops-admin/SKILL.md"
+    "./skills/azure-devops-repos/",
+    "./skills/azure-devops-pipelines/",
+    "./skills/azure-devops-boards/",
+    "./skills/azure-devops-testing/",
+    "./skills/azure-devops-admin/"
   ],
   "agents": [
     "./agents/devops-reviewer.md",

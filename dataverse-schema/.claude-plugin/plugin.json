@@ -14,7 +14,7 @@
     "fetchxml"
   ],
   "skills": [
-    "./skills/dataverse-schema/SKILL.md"
+    "./skills/dataverse-schema/"
   ],
   "agents": [
     "./agents/schema-reviewer.md"

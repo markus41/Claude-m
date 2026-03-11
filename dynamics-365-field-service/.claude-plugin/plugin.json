@@ -18,7 +18,7 @@
     "assets"
   ],
   "skills": [
-    "./skills/dynamics-365-field-service/SKILL.md"
+    "./skills/dynamics-365-field-service/"
   ],
   "agents": [
     "./agents/dynamics-365-field-service-reviewer.md"

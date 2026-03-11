@@ -16,7 +16,7 @@
     "playbooks"
   ],
   "skills": [
-    "./skills/purview-compliance/SKILL.md"
+    "./skills/purview-compliance/"
   ],
   "agents": [
     "./agents/compliance-reviewer.md"

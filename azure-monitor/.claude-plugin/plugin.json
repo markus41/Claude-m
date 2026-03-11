@@ -16,7 +16,7 @@
     "metrics"
   ],
   "skills": [
-    "./skills/azure-monitor/SKILL.md"
+    "./skills/azure-monitor/"
   ],
   "agents": [
     "./agents/monitor-reviewer.md"

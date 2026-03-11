@@ -16,7 +16,7 @@
     "orchestration"
   ],
   "skills": [
-    "./skills/fabric-data-factory/SKILL.md"
+    "./skills/fabric-data-factory/"
   ],
   "agents": [
     "./agents/data-factory-reviewer.md"

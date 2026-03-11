@@ -11,7 +11,7 @@
     "health"
   ],
   "skills": [
-    "./skills/azure-service-health/SKILL.md"
+    "./skills/azure-service-health/"
   ],
   "agents": [
     "./agents/azure-service-health-reviewer.md"

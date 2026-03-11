@@ -15,7 +15,7 @@
     "conversation-ai"
   ],
   "skills": [
-    "./skills/copilot-studio-bots/SKILL.md"
+    "./skills/copilot-studio-bots/"
   ],
   "agents": [
     "./agents/copilot-studio-reviewer.md"

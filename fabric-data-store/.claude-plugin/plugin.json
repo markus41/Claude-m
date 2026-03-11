@@ -16,7 +16,7 @@
     "event-schema-set"
   ],
   "skills": [
-    "./skills/fabric-data-store/SKILL.md"
+    "./skills/fabric-data-store/"
   ],
   "agents": [
     "./agents/fabric-data-store-reviewer.md"

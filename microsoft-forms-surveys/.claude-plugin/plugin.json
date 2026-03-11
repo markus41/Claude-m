@@ -15,7 +15,7 @@
     "questionnaire"
   ],
   "skills": [
-    "./skills/microsoft-forms-surveys/SKILL.md"
+    "./skills/microsoft-forms-surveys/"
   ],
   "agents": [
     "./agents/forms-reviewer.md"

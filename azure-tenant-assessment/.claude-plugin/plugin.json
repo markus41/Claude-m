@@ -14,7 +14,7 @@
     "governance"
   ],
   "skills": [
-    "./skills/azure-tenant-assessment/SKILL.md"
+    "./skills/azure-tenant-assessment/"
   ],
   "agents": [
     "./agents/azure-tenant-assessment-reviewer.md"

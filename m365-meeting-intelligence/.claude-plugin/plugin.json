@@ -11,7 +11,7 @@
     "intelligence"
   ],
   "skills": [
-    "./skills/m365-meeting-intelligence/SKILL.md"
+    "./skills/m365-meeting-intelligence/"
   ],
   "agents": [
     "./agents/m365-meeting-intelligence-reviewer.md"

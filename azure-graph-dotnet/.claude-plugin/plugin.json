@@ -16,7 +16,7 @@
     "onedrive"
   ],
   "skills": [
-    "./skills/azure-graph-dotnet/SKILL.md"
+    "./skills/azure-graph-dotnet/"
   ],
   "agents": [
     "./agents/dotnet-graph-reviewer.md"

@@ -1,7 +1,7 @@
 {
   "name": "excel-office-scripts",
   "version": "1.0.0",
-  "description": "Deep knowledge of Excel Office Scripts \u2014 Microsoft's TypeScript-based automation platform for Excel on the web",
+  "description": "Deep knowledge of Excel Office Scripts — Microsoft's TypeScript-based automation platform for Excel on the web",
   "author": {
     "name": "Markus Ahling"
   },
@@ -14,8 +14,8 @@
     "microsoft-365"
   ],
   "skills": [
-    "./skills/office-scripts/SKILL.md",
-    "./skills/power-automate-flows/SKILL.md"
+    "./skills/office-scripts/",
+    "./skills/power-automate-flows/"
   ],
   "agents": [
     "./agents/office-script-reviewer.md",

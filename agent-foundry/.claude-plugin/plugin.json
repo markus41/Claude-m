@@ -17,7 +17,7 @@
     "agent-service"
   ],
   "skills": [
-    "./skills/agent-foundry/SKILL.md"
+    "./skills/agent-foundry/"
   ],
   "agents": [
     "./agents/agent-generator.md",

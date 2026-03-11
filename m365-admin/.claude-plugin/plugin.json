@@ -18,7 +18,7 @@
     "bulk-operations"
   ],
   "skills": [
-    "./skills/m365-admin/SKILL.md"
+    "./skills/m365-admin/"
   ],
   "agents": [
     "./agents/m365-admin-reviewer.md"

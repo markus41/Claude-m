@@ -16,7 +16,7 @@
     "dimensional"
   ],
   "skills": [
-    "./skills/fabric-data-warehouse/SKILL.md"
+    "./skills/fabric-data-warehouse/"
   ],
   "agents": [
     "./agents/warehouse-reviewer.md"

@@ -15,7 +15,7 @@
     "managed-identity"
   ],
   "skills": [
-    "./skills/azure-key-vault/SKILL.md"
+    "./skills/azure-key-vault/"
   ],
   "agents": [
     "./agents/keyvault-reviewer.md"

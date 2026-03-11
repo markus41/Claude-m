@@ -15,7 +15,7 @@
     "devops"
   ],
   "skills": [
-    "./skills/fabric-developer-runtime/SKILL.md"
+    "./skills/fabric-developer-runtime/"
   ],
   "agents": [
     "./agents/fabric-developer-runtime-reviewer.md"

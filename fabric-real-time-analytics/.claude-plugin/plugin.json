@@ -16,7 +16,7 @@
     "streaming"
   ],
   "skills": [
-    "./skills/fabric-real-time-analytics/SKILL.md"
+    "./skills/fabric-real-time-analytics/"
   ],
   "agents": [
     "./agents/realtime-reviewer.md"

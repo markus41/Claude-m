@@ -11,7 +11,7 @@
     "reviews"
   ],
   "skills": [
-    "./skills/entra-access-reviews/SKILL.md"
+    "./skills/entra-access-reviews/"
   ],
   "agents": [
     "./agents/entra-access-reviews-reviewer.md"

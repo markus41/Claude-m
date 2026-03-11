@@ -15,7 +15,7 @@
     "app-registrations"
   ],
   "skills": [
-    "./skills/entra-security/SKILL.md"
+    "./skills/entra-security/"
   ],
   "agents": [
     "./agents/entra-security-reviewer.md"

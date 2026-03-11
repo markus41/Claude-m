@@ -21,7 +21,7 @@
   "license": "MIT",
   "repository": "https://github.com/markus41/claude-m",
   "skills": [
-    "./skills/planner-orchestration/SKILL.md"
+    "./skills/planner-orchestration/"
   ],
   "agents": [
     "./agents/ship-orchestrator.md",

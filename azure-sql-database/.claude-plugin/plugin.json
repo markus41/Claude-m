@@ -16,7 +16,7 @@
     "elastic-pool"
   ],
   "skills": [
-    "./skills/azure-sql-database/SKILL.md"
+    "./skills/azure-sql-database/"
   ],
   "agents": [
     "./agents/database-reviewer.md"

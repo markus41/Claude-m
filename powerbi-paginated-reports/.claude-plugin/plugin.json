@@ -19,7 +19,7 @@
     "subscriptions"
   ],
   "skills": [
-    "./skills/paginated-reports/SKILL.md"
+    "./skills/paginated-reports/"
   ],
   "agents": [
     "./agents/rdl-reviewer.md",

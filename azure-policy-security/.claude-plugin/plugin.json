@@ -14,7 +14,7 @@
     "compliance"
   ],
   "skills": [
-    "./skills/azure-policy-security/SKILL.md"
+    "./skills/azure-policy-security/"
   ],
   "agents": [
     "./agents/azure-policy-security-reviewer.md"

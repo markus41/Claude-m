@@ -16,7 +16,7 @@
     "analytics"
   ],
   "skills": [
-    "./skills/fabric-semantic-models/SKILL.md"
+    "./skills/fabric-semantic-models/"
   ],
   "agents": [
     "./agents/semantic-model-reviewer.md"

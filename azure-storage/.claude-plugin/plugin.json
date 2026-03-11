@@ -16,7 +16,7 @@
     "data-lake"
   ],
   "skills": [
-    "./skills/azure-storage/SKILL.md"
+    "./skills/azure-storage/"
   ],
   "agents": [
     "./agents/storage-reviewer.md"

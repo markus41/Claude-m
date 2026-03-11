@@ -16,7 +16,7 @@
     "diagnostics"
   ],
   "skills": [
-    "./skills/fabric-observability/SKILL.md"
+    "./skills/fabric-observability/"
   ],
   "agents": [
     "./agents/observability-reviewer.md"

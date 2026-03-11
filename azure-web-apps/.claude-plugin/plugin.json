@@ -14,7 +14,7 @@
     "paas"
   ],
   "skills": [
-    "./skills/azure-web-apps/SKILL.md"
+    "./skills/azure-web-apps/"
   ],
   "agents": [
     "./agents/webapp-reviewer.md"

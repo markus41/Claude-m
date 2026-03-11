@@ -15,7 +15,7 @@
     "gdap"
   ],
   "skills": [
-    "./skills/lighthouse-health/SKILL.md"
+    "./skills/lighthouse-health/"
   ],
   "agents": [
     "./agents/lighthouse-health-reviewer.md"

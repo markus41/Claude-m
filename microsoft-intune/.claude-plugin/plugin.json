@@ -10,7 +10,7 @@
     "intune"
   ],
   "skills": [
-    "./skills/microsoft-intune/SKILL.md"
+    "./skills/microsoft-intune/"
   ],
   "agents": [
     "./agents/microsoft-intune-reviewer.md"

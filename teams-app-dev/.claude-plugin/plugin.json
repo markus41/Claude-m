@@ -19,7 +19,7 @@
     "typescript"
   ],
   "skills": [
-    "./skills/teams-app-dev/SKILL.md"
+    "./skills/teams-app-dev/"
   ],
   "agents": [
     "./agents/teams-app-reviewer.md"

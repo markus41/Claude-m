@@ -11,7 +11,7 @@
     "bus"
   ],
   "skills": [
-    "./skills/azure-service-bus/SKILL.md"
+    "./skills/azure-service-bus/"
   ],
   "agents": [
     "./agents/azure-service-bus-reviewer.md"

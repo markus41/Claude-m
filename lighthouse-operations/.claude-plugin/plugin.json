@@ -19,7 +19,7 @@
     "managed-services"
   ],
   "skills": [
-    "./skills/lighthouse-operations/SKILL.md"
+    "./skills/lighthouse-operations/"
   ],
   "agents": [
     "./agents/lighthouse-architect.md"

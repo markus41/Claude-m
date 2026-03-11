@@ -21,7 +21,7 @@
     "graph-api"
   ],
   "skills": [
-    "./skills/entra-admin/SKILL.md"
+    "./skills/entra-admin/"
   ],
   "agents": [
     "./agents/user-lifecycle-agent.md",

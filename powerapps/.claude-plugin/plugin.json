@@ -19,7 +19,7 @@
     "git-integration"
   ],
   "skills": [
-    "./skills/powerapps-dev/SKILL.md"
+    "./skills/powerapps-dev/"
   ],
   "agents": [
     "./agents/powerapps-reviewer.md"

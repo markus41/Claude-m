@@ -17,7 +17,7 @@
     "m365"
   ],
   "skills": [
-    "./skills/microsoft-loop/SKILL.md"
+    "./skills/microsoft-loop/"
   ],
   "commands": [
     "./commands/loop-workspace-setup.md",

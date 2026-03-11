@@ -16,7 +16,7 @@
     "sql-server"
   ],
   "skills": [
-    "./skills/fabric-mirroring-external/SKILL.md"
+    "./skills/fabric-mirroring-external/"
   ],
   "agents": [
     "./agents/fabric-mirroring-external-reviewer.md"

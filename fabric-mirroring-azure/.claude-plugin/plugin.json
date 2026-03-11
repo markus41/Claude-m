@@ -16,7 +16,7 @@
     "azure-sql"
   ],
   "skills": [
-    "./skills/fabric-mirroring-azure/SKILL.md"
+    "./skills/fabric-mirroring-azure/"
   ],
   "agents": [
     "./agents/fabric-mirroring-azure-reviewer.md"

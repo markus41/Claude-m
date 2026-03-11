@@ -14,7 +14,7 @@
     "dataverse"
   ],
   "skills": [
-    "./skills/power-pages/SKILL.md"
+    "./skills/power-pages/"
   ],
   "agents": [
     "./agents/pages-reviewer.md"

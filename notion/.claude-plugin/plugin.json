@@ -21,7 +21,7 @@
     "workspace"
   ],
   "skills": [
-    "./skills/notion-mastery/SKILL.md"
+    "./skills/notion-mastery/"
   ],
   "agents": [
     "./agents/notion-page-designer.md",

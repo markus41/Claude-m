@@ -15,7 +15,7 @@
     "self-service"
   ],
   "skills": [
-    "./skills/servicedesk-runbooks/SKILL.md"
+    "./skills/servicedesk-runbooks/"
   ],
   "agents": [
     "./agents/servicedesk-runbooks-reviewer.md"

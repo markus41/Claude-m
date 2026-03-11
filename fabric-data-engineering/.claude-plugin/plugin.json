@@ -16,7 +16,7 @@
     "pyspark"
   ],
   "skills": [
-    "./skills/fabric-data-engineering/SKILL.md"
+    "./skills/fabric-data-engineering/"
   ],
   "agents": [
     "./agents/data-engineering-reviewer.md"

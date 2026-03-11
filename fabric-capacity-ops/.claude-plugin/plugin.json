@@ -16,7 +16,7 @@
     "analytics"
   ],
   "skills": [
-    "./skills/fabric-capacity-ops/SKILL.md"
+    "./skills/fabric-capacity-ops/"
   ],
   "agents": [
     "./agents/capacity-ops-reviewer.md"

@@ -16,7 +16,7 @@
     "compliance"
   ],
   "skills": [
-    "./skills/fabric-security-governance/SKILL.md"
+    "./skills/fabric-security-governance/"
   ],
   "agents": [
     "./agents/security-governance-reviewer.md"

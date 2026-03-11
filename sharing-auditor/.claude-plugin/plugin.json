@@ -15,7 +15,7 @@
     "security-audit"
   ],
   "skills": [
-    "./skills/sharing-auditor/SKILL.md"
+    "./skills/sharing-auditor/"
   ],
   "agents": [
     "./agents/sharing-auditor-reviewer.md"

@@ -17,7 +17,7 @@
     "preview"
   ],
   "skills": [
-    "./skills/fabric-graph-geo/SKILL.md"
+    "./skills/fabric-graph-geo/"
   ],
   "agents": [
     "./agents/fabric-graph-geo-reviewer.md"

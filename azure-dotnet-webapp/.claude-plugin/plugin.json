@@ -16,7 +16,7 @@
     "app-service"
   ],
   "skills": [
-    "./skills/azure-dotnet-webapp/SKILL.md"
+    "./skills/azure-dotnet-webapp/"
   ],
   "agents": [
     "./agents/aspnetcore-reviewer.md"

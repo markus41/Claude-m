@@ -16,7 +16,7 @@
     "governance"
   ],
   "skills": [
-    "./skills/fabric-data-prep-jobs/SKILL.md"
+    "./skills/fabric-data-prep-jobs/"
   ],
   "agents": [
     "./agents/fabric-data-prep-jobs-reviewer.md"

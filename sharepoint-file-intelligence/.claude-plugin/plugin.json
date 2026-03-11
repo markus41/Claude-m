@@ -16,7 +16,7 @@
     "content-types"
   ],
   "skills": [
-    "./skills/sharepoint-file-intelligence/SKILL.md"
+    "./skills/sharepoint-file-intelligence/"
   ],
   "agents": [
     "./agents/file-analyst.md"

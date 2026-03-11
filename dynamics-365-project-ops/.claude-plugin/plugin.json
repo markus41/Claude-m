@@ -18,7 +18,7 @@
     "invoicing"
   ],
   "skills": [
-    "./skills/dynamics-365-project-ops/SKILL.md"
+    "./skills/dynamics-365-project-ops/"
   ],
   "agents": [
     "./agents/dynamics-365-project-ops-reviewer.md"

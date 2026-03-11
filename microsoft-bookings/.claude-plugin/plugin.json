@@ -14,7 +14,7 @@
     "calendar"
   ],
   "skills": [
-    "./skills/microsoft-bookings/SKILL.md"
+    "./skills/microsoft-bookings/"
   ],
   "agents": [
     "./agents/bookings-reviewer.md"

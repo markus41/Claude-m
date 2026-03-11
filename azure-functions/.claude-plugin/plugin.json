@@ -15,7 +15,7 @@
     "bindings"
   ],
   "skills": [
-    "./skills/azure-functions/SKILL.md"
+    "./skills/azure-functions/"
   ],
   "agents": [
     "./agents/functions-reviewer.md"

@@ -16,7 +16,7 @@
     "semantic-link"
   ],
   "skills": [
-    "./skills/fabric-data-science/SKILL.md"
+    "./skills/fabric-data-science/"
   ],
   "agents": [
     "./agents/data-science-reviewer.md"

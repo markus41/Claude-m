@@ -18,7 +18,7 @@
     "playbooks"
   ],
   "skills": [
-    "./skills/defender-sentinel/SKILL.md"
+    "./skills/defender-sentinel/"
   ],
   "agents": [
     "./agents/defender-sentinel-reviewer.md"

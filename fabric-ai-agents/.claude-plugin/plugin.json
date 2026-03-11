@@ -17,7 +17,7 @@
     "preview"
   ],
   "skills": [
-    "./skills/fabric-ai-agents/SKILL.md"
+    "./skills/fabric-ai-agents/"
   ],
   "agents": [
     "./agents/fabric-ai-agents-reviewer.md"

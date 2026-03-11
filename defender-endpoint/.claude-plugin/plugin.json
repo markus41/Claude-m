@@ -10,7 +10,7 @@
     "endpoint"
   ],
   "skills": [
-    "./skills/defender-endpoint/SKILL.md"
+    "./skills/defender-endpoint/"
   ],
   "agents": [
     "./agents/defender-endpoint-reviewer.md"

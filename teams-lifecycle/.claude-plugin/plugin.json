@@ -15,7 +15,7 @@
     "naming-policy"
   ],
   "skills": [
-    "./skills/teams-lifecycle/SKILL.md"
+    "./skills/teams-lifecycle/"
   ],
   "agents": [
     "./agents/teams-lifecycle-reviewer.md"

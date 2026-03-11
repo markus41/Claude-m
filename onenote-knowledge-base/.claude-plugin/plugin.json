@@ -18,7 +18,7 @@
     "task-tracking"
   ],
   "skills": [
-    "./skills/onenote-knowledge-base/SKILL.md"
+    "./skills/onenote-knowledge-base/"
   ],
   "agents": [
     "./agents/onenote-reviewer.md"

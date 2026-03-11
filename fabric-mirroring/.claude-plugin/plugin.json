@@ -16,7 +16,7 @@
     "analytics"
   ],
   "skills": [
-    "./skills/fabric-mirroring/SKILL.md"
+    "./skills/fabric-mirroring/"
   ],
   "agents": [
     "./agents/mirroring-reviewer.md"

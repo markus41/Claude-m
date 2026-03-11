@@ -10,7 +10,7 @@
     "kubernetes"
   ],
   "skills": [
-    "./skills/azure-kubernetes/SKILL.md"
+    "./skills/azure-kubernetes/"
   ],
   "agents": [
     "./agents/azure-kubernetes-reviewer.md"

@@ -14,7 +14,7 @@
     "power-platform"
   ],
   "skills": [
-    "./skills/power-automate/SKILL.md"
+    "./skills/power-automate/"
   ],
   "agents": [
     "./agents/power-automate-reviewer.md"

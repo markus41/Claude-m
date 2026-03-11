@@ -11,7 +11,7 @@
     "management"
   ],
   "skills": [
-    "./skills/azure-api-management/SKILL.md"
+    "./skills/azure-api-management/"
   ],
   "agents": [
     "./agents/azure-api-management-reviewer.md"

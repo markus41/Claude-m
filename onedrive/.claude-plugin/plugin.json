@@ -14,7 +14,7 @@
     "graph-api"
   ],
   "skills": [
-    "./skills/onedrive-files/SKILL.md"
+    "./skills/onedrive-files/"
   ],
   "agents": [
     "./agents/onedrive-reviewer.md"

@@ -16,7 +16,7 @@
     "automation"
   ],
   "skills": [
-    "./skills/fabric-data-activator/SKILL.md"
+    "./skills/fabric-data-activator/"
   ],
   "agents": [
     "./agents/activator-reviewer.md"

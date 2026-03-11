@@ -15,7 +15,7 @@
     "devops"
   ],
   "skills": [
-    "./skills/alm-lifecycle/SKILL.md"
+    "./skills/alm-lifecycle/"
   ],
   "agents": [
     "./agents/alm-reviewer.md"

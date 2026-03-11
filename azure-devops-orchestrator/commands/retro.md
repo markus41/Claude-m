@@ -1,9 +1,9 @@
 ---
 name: azure-devops-orchestrator:retro
 description: >
-  Sprint retrospective analysis for Azure DevOps. Analyze completed iterations for velocity
-  trends, completion rates, scope changes, escaped defects, and cycle time patterns.
-argument-hint: "<project> <team> [--iteration <path>] [--sprints <n>] [--format <table|json>]"
+  Sprint retrospective analysis: velocity trends, commitment accuracy, escaped defects, deployment
+  stats, and actionable insights. Produces a data-driven retrospective report for team review.
+argument-hint: "<projectName> [--team <team>] [--iteration <path>] [--last <N>]"
 allowed-tools:
   - Read
   - Glob
@@ -14,75 +14,157 @@ allowed-tools:
 
 # azure-devops-orchestrator:retro
 
-Sprint retrospective analysis for Azure DevOps — velocity trends, completion rates, and cycle time patterns.
+Data-driven sprint retrospective analysis for Azure DevOps — metrics, trends, and actionable insights.
 
 ## Arguments
 
-- `<project>` — Azure DevOps project name (required)
-- `<team>` — Team name (required)
-- `--iteration <path>` — Iteration path to analyze (default: `@CurrentIteration-1`, the last completed sprint)
-- `--sprints <n>` — Number of sprints to include in trend analysis (default: 6)
-- `--format <table|json>` — Output format (default: table)
+- `<projectName>` — Azure DevOps project name (required)
+- `--team <team>` — Team name (default: project's default team)
+- `--iteration <path>` — Specific iteration to analyze (default: most recently completed iteration)
+- `--last <N>` — Include trend data from last N sprints (default: 3)
+- `--compare` — Side-by-side comparison of last 2 sprints
+- `--format table` — Output as formatted tables (default)
+- `--format json` — Output as structured JSON
+- `--teams` — Post retro summary to Teams (requires `microsoft-teams-mcp`)
 
 ## Workflow
 
 Invoke the **retrospective-analyzer** agent to:
 
-1. **Query iterations** — Fetch the target iteration and previous N iterations for trending
-2. **Collect work items** — Query completed, carried-over, and added items per iteration
-3. **Compute metrics** — Calculate key retrospective metrics for each sprint
-4. **Trend analysis** — Identify patterns and anomalies across sprints
-5. **Generate insights** — Produce actionable observations and recommendations
+1. **Identify sprint** — Resolve the target iteration and its date boundaries
+2. **Collect data** — Query work items, pipeline runs, bugs, and PRs for the sprint period
+3. **Calculate metrics** — Velocity, commitment accuracy, scope creep, cycle time, escaped defects
+4. **Detect patterns** — Recurring blockers, estimation drift, burnout signals, carryover trends
+5. **Generate insights** — Data-driven "What went well", "What needs improvement", action items
+6. **Trend analysis** — Compare against last N sprints for trajectory
 
-### Metrics Computed
+## Metrics Calculated
 
 | Metric | Description |
 |--------|-------------|
-| **Velocity** | Total story points completed per sprint |
-| **Completion Rate** | Percentage of planned items completed vs. total committed |
-| **Scope Change** | Items added or removed after sprint start |
-| **Escaped Defects** | Bugs created in production traced to items shipped in the sprint |
-| **Cycle Time** | Median time from Active to Closed for completed items |
-| **Throughput** | Number of work items completed (count, regardless of size) |
-| **Carry-Over Rate** | Percentage of items carried from one sprint to the next |
-
-### Trend Analysis
-
-The agent analyzes trends across the requested number of sprints:
-- Velocity trend (increasing, stable, or declining)
-- Completion rate trend with standard deviation
-- Scope change patterns (chronic mid-sprint additions indicate planning issues)
-- Cycle time trends (increasing cycle time may signal complexity growth)
-- Carry-over patterns (repeated carry-overs on same items flagged)
+| Velocity | Story points completed in the sprint |
+| Commitment Accuracy | Completed / Committed points (target: > 80%) |
+| Scope Creep | Items added mid-sprint / original items (target: < 20%) |
+| Estimation Accuracy | Actual effort / estimated effort per item |
+| Escaped Defect Rate | Post-sprint bugs / completed items (target: < 10%) |
+| Cycle Time | Average days from Active to Closed |
+| Deployment Success Rate | Successful pipeline runs / total runs |
+| Carryover Rate | Incomplete items / committed items |
 
 ## Output
 
-A retrospective report with:
-- Single-sprint summary table (target iteration)
-- Multi-sprint trend table with sparkline indicators
-- Top insights and observations (e.g., "Velocity dropped 30% — 3 team members on PTO")
-- Recommended discussion topics for the retro meeting
+```
+## Sprint Retrospective — {iterationName}
+
+**Project**: {project} | **Team**: {team}
+**Sprint Period**: {startDate} — {endDate}
+**Team Size**: {n} contributors
+
+### Key Metrics
+
+| Metric | Value | Target | Trend | Status |
+|--------|-------|--------|-------|--------|
+| Velocity | {pts} | {avg} | {arrow} | OK/Below/Above |
+| Commitment Accuracy | {pct}% | > 80% | {arrow} | OK/Low |
+| Scope Creep | {pct}% | < 20% | {arrow} | OK/High |
+| Estimation Accuracy | {ratio} | 0.75-1.25 | {arrow} | OK/Off |
+| Escaped Defects | {pct}% | < 10% | {arrow} | OK/High |
+| Deploy Success Rate | {pct}% | > 95% | {arrow} | OK/Low |
+
+### Velocity Trend
+
+Sprint 12:  ========          16 pts
+Sprint 13:  ===========       22 pts
+Sprint 14:  ==========        20 pts  (current)
+Average:    19.3 pts
+
+### What Went Well
+1. {insight backed by data}
+2. {insight backed by data}
+3. {insight backed by data}
+
+### What Needs Improvement
+1. {concern backed by data}
+2. {concern backed by data}
+3. {concern backed by data}
+
+### Recommended Action Items
+1. **{action}** — {rationale from metrics}
+   Suggested owner: {person}
+2. **{action}** — {rationale}
+   Suggested owner: {person}
+3. **{action}** — {rationale}
+   Suggested owner: {person}
+
+### Detailed Breakdown
+
+#### Completed ({n} items, {pts} pts)
+{table of completed work items}
+
+#### Carried Over ({n} items, {pts} pts)
+{table with carryover reasons}
+
+#### Added Mid-Sprint ({n} items)
+{table of scope creep items}
+
+#### Escaped Defects ({n} bugs)
+{table with severity and related items}
+
+### Cross-Sprint Patterns
+- {multi-sprint pattern observation}
+- {multi-sprint pattern observation}
+```
+
+## Sprint Comparison (--compare)
+
+When `--compare` is passed, show a side-by-side comparison:
+
+```
+### Sprint Comparison
+
+| Metric | {Sprint N-1} | {Sprint N} | Delta |
+|--------|-------------|-----------|-------|
+| Velocity | 22 pts | 20 pts | -2 (-9%) |
+| Commitment | 85% | 75% | -10% |
+| Scope Creep | 12% | 28% | +16% |
+| ...    |     |     |       |
+```
+
+## Cross-Plugin Actions
+
+After generating the report:
+- **Teams** (if `--teams` and `microsoft-teams-mcp` installed): Post retro summary card
+- **Power BI** (if `powerbi-fabric` installed): Export metrics JSON for trend dashboards
 
 ## Examples
 
 ```bash
-# Analyze last completed sprint for Platform Team
-/azure-devops-orchestrator:retro MyProject "Platform Team"
+# Retro for most recent sprint
+/azure-devops-orchestrator:retro platform-api
 
-# Analyze a specific iteration
-/azure-devops-orchestrator:retro MyProject "Platform Team" --iteration "MyProject\Sprint 13"
+# Retro for a specific iteration
+/azure-devops-orchestrator:retro platform-api --iteration "platform-api\Sprint 14"
 
-# Trend over 12 sprints for API Team
-/azure-devops-orchestrator:retro MyProject "API Team" --sprints 12
+# Include 5 sprints of trend data
+/azure-devops-orchestrator:retro platform-api --last 5
 
-# JSON output for further analysis
-/azure-devops-orchestrator:retro MyProject "Platform Team" --format json
+# Compare last 2 sprints
+/azure-devops-orchestrator:retro platform-api --compare
+
+# Specific team
+/azure-devops-orchestrator:retro platform-api --team "Backend Team"
+
+# Post to Teams
+/azure-devops-orchestrator:retro platform-api --teams
+
+# Export as JSON
+/azure-devops-orchestrator:retro platform-api --format json
 ```
 
 ## Tips
 
-- Run before the sprint retrospective meeting to have data ready for discussion
-- Use `--sprints 12` for quarterly reviews to see longer-term trends
-- High carry-over rates often indicate estimation or scoping issues — discuss in retro
-- Pair with `/azure-devops-orchestrator:sprint` to apply retro learnings to next sprint planning
-- Escaped defects metric requires bugs to be linked to originating work items via Related links
+- Run before the retrospective meeting to prepare data-driven discussion topics
+- Use `--last 5` for meaningful trend analysis — 3 sprints may not show patterns clearly
+- `--compare` is great for before/after analysis when the team made process changes
+- Pair with `/azure-devops-orchestrator:sprint` to feed retro insights into the next sprint plan
+- Action items from the retro can be created as work items using `/azure-devops-orchestrator:ship`

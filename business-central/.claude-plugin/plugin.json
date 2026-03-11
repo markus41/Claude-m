@@ -19,7 +19,7 @@
     "sales-invoices"
   ],
   "skills": [
-    "./skills/business-central/SKILL.md"
+    "./skills/business-central/"
   ],
   "agents": [
     "./agents/business-central-reviewer.md"

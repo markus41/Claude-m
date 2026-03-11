@@ -6,11 +6,16 @@
     "name": "Markus Ahling"
   },
   "keywords": [
-    "microsoft", "marketplace", "scaffold", "research",
-    "graph-api", "plugin-dev", "coverage-audit"
+    "microsoft",
+    "marketplace",
+    "scaffold",
+    "research",
+    "graph-api",
+    "plugin-dev",
+    "coverage-audit"
   ],
   "skills": [
-    "./skills/marketplace-research/SKILL.md"
+    "./skills/marketplace-research/"
   ],
   "agents": [
     "./agents/research-reviewer.md"

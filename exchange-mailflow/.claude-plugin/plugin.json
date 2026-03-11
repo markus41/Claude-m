@@ -16,7 +16,7 @@
     "transport-rules"
   ],
   "skills": [
-    "./skills/exchange-mailflow/SKILL.md"
+    "./skills/exchange-mailflow/"
   ],
   "agents": [
     "./agents/mailflow-reviewer.md"

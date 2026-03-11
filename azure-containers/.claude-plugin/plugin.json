@@ -16,7 +16,7 @@
     "dapr"
   ],
   "skills": [
-    "./skills/azure-containers/SKILL.md"
+    "./skills/azure-containers/"
   ],
   "agents": [
     "./agents/container-reviewer.md"

@@ -16,7 +16,7 @@
     "devops"
   ],
   "skills": [
-    "./skills/fabric-gitops-cicd/SKILL.md"
+    "./skills/fabric-gitops-cicd/"
   ],
   "agents": [
     "./agents/gitops-reviewer.md"

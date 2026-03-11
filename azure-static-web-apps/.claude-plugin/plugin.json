@@ -14,7 +14,7 @@
     "serverless"
   ],
   "skills": [
-    "./skills/azure-static-web-apps/SKILL.md"
+    "./skills/azure-static-web-apps/"
   ],
   "agents": [
     "./agents/swa-reviewer.md"

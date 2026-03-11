@@ -15,7 +15,7 @@
     "productivity"
   ],
   "skills": [
-    "./skills/fabric-distribution-apps/SKILL.md"
+    "./skills/fabric-distribution-apps/"
   ],
   "agents": [
     "./agents/fabric-distribution-apps-reviewer.md"

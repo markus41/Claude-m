@@ -18,7 +18,7 @@
     "crm"
   ],
   "skills": [
-    "./skills/dynamics-365-crm/SKILL.md"
+    "./skills/dynamics-365-crm/"
   ],
   "agents": [
     "./agents/dynamics-365-crm-reviewer.md"

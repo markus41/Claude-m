@@ -11,7 +11,7 @@
     "recovery"
   ],
   "skills": [
-    "./skills/azure-backup-recovery/SKILL.md"
+    "./skills/azure-backup-recovery/"
   ],
   "agents": [
     "./agents/azure-backup-recovery-reviewer.md"

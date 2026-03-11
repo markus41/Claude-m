@@ -16,7 +16,7 @@
     "lakehouse-files"
   ],
   "skills": [
-    "./skills/fabric-onelake/SKILL.md"
+    "./skills/fabric-onelake/"
   ],
   "agents": [
     "./agents/onelake-reviewer.md"

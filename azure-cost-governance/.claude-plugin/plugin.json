@@ -14,7 +14,7 @@
     "governance"
   ],
   "skills": [
-    "./skills/azure-cost-governance/SKILL.md"
+    "./skills/azure-cost-governance/"
   ],
   "agents": [
     "./agents/azure-cost-governance-reviewer.md"

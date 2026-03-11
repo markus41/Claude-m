@@ -19,7 +19,7 @@
     "business-scenarios"
   ],
   "skills": [
-    "./skills/planner-todo/SKILL.md"
+    "./skills/planner-todo/"
   ],
   "agents": [
     "./agents/planner-reviewer.md"

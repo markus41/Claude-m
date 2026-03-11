@@ -18,7 +18,7 @@
     "gdap"
   ],
   "skills": [
-    "./skills/msp-tenant-provisioning/SKILL.md"
+    "./skills/msp-tenant-provisioning/"
   ],
   "agents": [
     "./agents/provisioning-auditor.md"

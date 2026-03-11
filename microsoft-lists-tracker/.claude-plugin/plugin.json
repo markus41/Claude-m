@@ -15,7 +15,7 @@
     "structured-data"
   ],
   "skills": [
-    "./skills/microsoft-lists-tracker/SKILL.md"
+    "./skills/microsoft-lists-tracker/"
   ],
   "agents": [
     "./agents/lists-reviewer.md"

@@ -16,7 +16,7 @@
     "conformance"
   ],
   "skills": [
-    "./skills/process-task-mining/SKILL.md"
+    "./skills/process-task-mining/"
   ],
   "agents": [
     "./agents/process-mining-reviewer.md"

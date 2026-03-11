@@ -15,9 +15,9 @@
     "vba"
   ],
   "skills": [
-    "./skills/pandas-cleaning/SKILL.md",
-    "./skills/office-scripts/SKILL.md",
-    "./skills/power-automate-flows/SKILL.md"
+    "./skills/pandas-cleaning/",
+    "./skills/office-scripts/",
+    "./skills/power-automate-flows/"
   ],
   "agents": [
     "./agents/excel-reviewer.md",
