@@ -105,6 +105,9 @@ Then re-run `/plugin marketplace add markus41/Claude-m`.
 | `agent-foundry` | cloud | Azure AI Foundry agent lifecycle — scaffold, deploy, test, and manage AI agents with Azure AI Foundry MCP integration |
 | `defender-sentinel` | security | Microsoft Sentinel SIEM/SOAR and Defender XDR — incident triage, KQL threat hunting, analytics rules, SOAR playbooks, and advanced hunting |
 | `azure-ai-services` | cloud | Azure OpenAI deployments, AI Search indexes and RAG pipelines, AI Studio/Foundry projects, Cognitive Services, content filtering, and responsible AI governance |
+| `azure-openai` | cloud | Azure OpenAI Service — model deployments, fine-tuning, content filtering, prompt engineering, batch API, and quota management |
+| `azure-document-intelligence` | cloud | Azure AI Document Intelligence — OCR, prebuilt models (invoices, receipts, IDs), custom models, layout analysis, and document classification |
+| `azure-organization` | cloud | Azure organization and governance — management groups, subscriptions, resource tagging, naming conventions, and landing zones |
 | `dynamics-365-crm` | productivity | Dynamics 365 Sales and Customer Service — leads, opportunities, cases, SLAs, queues, pipeline reporting, and CRM workflow automation |
 | `dynamics-365-field-service` | productivity | Dynamics 365 Field Service — work orders, bookings, resource scheduling, service accounts, assets, and IoT-triggered service events |
 | `dynamics-365-project-ops` | productivity | Dynamics 365 Project Operations — projects, WBS, time and expense tracking, resource assignments, project contracts, and billing |

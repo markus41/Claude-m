@@ -1352,6 +1352,68 @@
       "strict": true
     },
     {
+      "name": "azure-openai",
+      "source": {
+        "source": "git-subdir",
+        "url": "markus41/Claude-m",
+        "path": "azure-openai"
+      },
+      "description": "Azure OpenAI Service — model deployments, fine-tuning, content filtering, prompt engineering patterns, batch API, quota management, and SDK/REST integration.",
+      "category": "cloud",
+      "tags": [
+        "microsoft",
+        "azure",
+        "openai",
+        "gpt",
+        "embeddings",
+        "fine-tuning",
+        "content-filter",
+        "prompt-engineering"
+      ],
+      "strict": true
+    },
+    {
+      "name": "azure-document-intelligence",
+      "source": {
+        "source": "git-subdir",
+        "url": "markus41/Claude-m",
+        "path": "azure-document-intelligence"
+      },
+      "description": "Azure AI Document Intelligence — OCR, prebuilt models (invoices, receipts, IDs, tax forms), custom models, layout analysis, document classification, and batch processing.",
+      "category": "cloud",
+      "tags": [
+        "microsoft",
+        "azure",
+        "document-intelligence",
+        "ocr",
+        "invoices",
+        "form-recognizer",
+        "custom-models"
+      ],
+      "strict": true
+    },
+    {
+      "name": "azure-organization",
+      "source": {
+        "source": "git-subdir",
+        "url": "markus41/Claude-m",
+        "path": "azure-organization"
+      },
+      "description": "Azure organization and governance — management groups, subscription management, resource tagging, naming conventions, landing zones, and tenant-level hierarchy.",
+      "category": "cloud",
+      "tags": [
+        "microsoft",
+        "azure",
+        "organization",
+        "management-groups",
+        "subscriptions",
+        "tags",
+        "naming-conventions",
+        "landing-zones"
+      ],
+      "strict": true
+    },
+    {
       "name": "dynamics-365-crm",
       "source": {
         "source": "git-subdir",

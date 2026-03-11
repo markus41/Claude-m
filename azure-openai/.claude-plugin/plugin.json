@@ -1,0 +1,25 @@
+{
+  "name": "azure-openai",
+  "version": "1.0.0",
+  "description": "Azure OpenAI Service — model deployments, fine-tuning, content filtering, prompt engineering, batch API, and quota management with az cognitiveservices and REST API",
+  "author": {
+    "name": "Markus Ahling",
+    "email": "markus@lobbi.io"
+  },
+  "keywords": [
+    "microsoft", "azure", "openai", "gpt", "embeddings", "fine-tuning",
+    "content-filter", "prompt-engineering", "batch-api", "deployments"
+  ],
+  "license": "MIT",
+  "repository": "https://github.com/markus41/claude-m",
+  "skills": ["./skills/azure-openai/"],
+  "agents": ["./agents/openai-reviewer.md"],
+  "commands": [
+    "./commands/aoai-setup.md",
+    "./commands/aoai-deploy.md",
+    "./commands/aoai-fine-tune.md",
+    "./commands/aoai-content-filter.md",
+    "./commands/aoai-quota.md",
+    "./commands/aoai-batch.md"
+  ]
+}

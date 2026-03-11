@@ -1,0 +1,36 @@
+{
+  "name": "azure-organization",
+  "version": "1.0.0",
+  "description": "Azure organization and governance — management groups, subscription management, resource tagging, naming conventions, landing zones, and tenant-level hierarchy",
+  "author": {
+    "name": "Markus Ahling",
+    "email": "markus@lobbi.io"
+  },
+  "keywords": [
+    "microsoft",
+    "azure",
+    "organization",
+    "management-groups",
+    "subscriptions",
+    "resource-groups",
+    "tags",
+    "naming-conventions",
+    "landing-zones",
+    "governance"
+  ],
+  "license": "MIT",
+  "repository": "https://github.com/markus41/claude-m",
+  "skills": [
+    "./skills/azure-organization/"
+  ],
+  "agents": [
+    "./agents/org-reviewer.md"
+  ],
+  "commands": [
+    "./commands/org-setup.md",
+    "./commands/org-inventory.md",
+    "./commands/org-tag-audit.md",
+    "./commands/org-naming-check.md",
+    "./commands/org-landing-zone.md"
+  ]
+}
