@@ -3,23 +3,90 @@
 The ship workflow takes an Azure DevOps work item and orchestrates Claude Code to implement it,
 creating a git branch + PR, then transitioning the work item to Resolved.
 
+---
+
 ## State Machine
 
 ```
 INITIALIZED
-  → PREFLIGHT_PASSED
-  → WORK_ITEM_FETCHED
-  → BRANCH_CREATED
-  → EXPLORE_COMPLETE
-  → PLAN_COMPLETE       ← checkpoint: ask user approval
-  → CODE_COMPLETE       ← checkpoint: ask user to review diff
-  → TESTS_PASSING
-  → PR_CREATED
-  → DEVOPS_UPDATED
-  → SHIPPED
+  -> PREFLIGHT_PASSED
+  -> WORK_ITEM_FETCHED
+  -> BRANCH_CREATED
+  -> EXPLORE_COMPLETE
+  -> PLAN_COMPLETE       <- checkpoint: ask user approval
+  -> CODE_COMPLETE       <- checkpoint: ask user to review diff
+  -> TESTS_PASSING
+  -> PR_CREATED
+  -> DEVOPS_UPDATED
+  -> SHIPPED
 ```
 
 Save state to `sessions/ship/{workItemId}/state.json` after each transition.
+
+### State Machine Diagram
+
+```
+  +-------------+
+  | INITIALIZED |
+  +------+------+
+         |
+         v
+  +------+----------+     +-------------------+
+  | PREFLIGHT       +---->| ABORT (env issues) |
+  +------+----------+     +-------------------+
+         |
+         v
+  +------+----------+     +---------------------+
+  | FETCH           +---->| ABORT (WI not found) |
+  +------+----------+     +---------------------+
+         |
+         v
+  +------+----------+     +------------------------+
+  | BRANCH          +---->| PROMPT (branch exists?) |
+  +------+----------+     +------------------------+
+         |
+         v
+  +------+----------+
+  | EXPLORE         |
+  +------+----------+
+         |
+         v
+  +------+----------+     +-----------+
+  | PLAN            +---->| USER GATE |----> modify / abort
+  +------+----------+     +-----------+
+         |  (approved)
+         v
+  +------+----------+     +-----------+
+  | CODE            +---->| USER GATE |----> review diff
+  +------+----------+     +-----------+
+         |  (approved)
+         v
+  +------+----------+     +-----------------------+
+  | TEST            +---->| AUTO-FIX (1 attempt)  |
+  +------+----------+     +----------+------------+
+         |                           |
+         |  (tests pass)             v (still failing)
+         |                 +---------+---------+
+         |                 | USER GATE         |
+         |                 | fix / skip / abort |
+         |                 +-------------------+
+         v
+  +------+----------+
+  | COMMIT + PR     |
+  +------+----------+
+         |
+         v
+  +------+----------+
+  | UPDATE WI       |
+  +------+----------+
+         |
+         v
+  +------+----------+
+  | SHIPPED         |
+  +------+----------+
+```
+
+---
 
 ## State Transition Rules
 
@@ -36,109 +103,380 @@ Save state to `sessions/ship/{workItemId}/state.json` after each transition.
 | PR_CREATED | DEVOPS_UPDATED | Work item state updated | Revert state |
 | DEVOPS_UPDATED | SHIPPED | All notifications sent | N/A |
 
-## State File Schema
+---
+
+## State File JSON Schema
 
 ```json
 {
-  "workflow": "ship",
-  "workItemId": 4521,
-  "state": "INITIALIZED",
-  "org": "https://dev.azure.com/myorg",
-  "project": "MyProject",
-  "startedAt": "2026-03-11T10:00:00Z",
-  "updatedAt": "2026-03-11T10:00:00Z",
-  "checkpoints": [],
-  "data": {
-    "workItemTitle": "",
-    "workItemType": "",
-    "branchName": "",
-    "branchType": "",
-    "prUrl": "",
-    "prId": null,
-    "doneBranchTarget": "main",
-    "originalState": "",
-    "testResults": {
-      "total": 0,
-      "passed": 0,
-      "failed": 0,
-      "skipped": 0
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["workflow", "workItemId", "state", "org", "project", "startedAt"],
+  "properties": {
+    "workflow": {
+      "type": "string",
+      "const": "ship"
     },
-    "filesChanged": [],
-    "crossPlugin": {
-      "teams": { "status": "pending", "messageId": null },
-      "outlook": { "status": "pending", "messageId": null }
+    "workItemId": {
+      "type": "integer",
+      "description": "Azure DevOps work item ID"
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "INITIALIZED", "PREFLIGHT_PASSED", "WORK_ITEM_FETCHED",
+        "BRANCH_CREATED", "EXPLORE_COMPLETE", "PLAN_COMPLETE",
+        "CODE_COMPLETE", "TESTS_PASSING", "PR_CREATED",
+        "DEVOPS_UPDATED", "SHIPPED", "ABORTED"
+      ]
+    },
+    "org": {
+      "type": "string",
+      "description": "Azure DevOps organization URL"
+    },
+    "project": {
+      "type": "string",
+      "description": "Azure DevOps project name"
+    },
+    "startedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "checkpoints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "state": { "type": "string" },
+          "at": { "type": "string", "format": "date-time" },
+          "metadata": { "type": "object" }
+        }
+      }
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "workItemTitle": { "type": "string" },
+        "workItemType": {
+          "type": "string",
+          "enum": ["Bug", "User Story", "Task", "Feature", "Epic"]
+        },
+        "branchName": { "type": "string" },
+        "branchType": { "type": "string" },
+        "prUrl": { "type": ["string", "null"] },
+        "prId": { "type": ["integer", "null"] },
+        "doneBranchTarget": { "type": "string", "default": "main" },
+        "originalState": { "type": "string" },
+        "acceptanceCriteria": { "type": "array", "items": { "type": "string" } },
+        "reproSteps": { "type": ["string", "null"] },
+        "iterationPath": { "type": "string" },
+        "areaPath": { "type": "string" },
+        "assignedTo": { "type": ["string", "null"] },
+        "storyPoints": { "type": ["number", "null"] },
+        "priority": { "type": "integer" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "parentWorkItemId": { "type": ["integer", "null"] },
+        "childWorkItemIds": { "type": "array", "items": { "type": "integer" } },
+        "relatedFiles": { "type": "array", "items": { "type": "string" } },
+        "testResults": {
+          "type": "object",
+          "properties": {
+            "total": { "type": "integer" },
+            "passed": { "type": "integer" },
+            "failed": { "type": "integer" },
+            "skipped": { "type": "integer" },
+            "duration": { "type": "string" }
+          }
+        },
+        "filesChanged": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "crossPlugin": {
+          "type": "object",
+          "properties": {
+            "teams": { "type": "object", "properties": { "status": { "type": "string" }, "messageId": { "type": ["string", "null"] } } },
+            "outlook": { "type": "object", "properties": { "status": { "type": "string" }, "messageId": { "type": ["string", "null"] } } }
+          }
+        }
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "phase": { "type": "string" },
+          "message": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "retryable": { "type": "boolean" }
+        }
+      }
     }
   }
 }
 ```
 
-## Phase 0: Pre-Flight
+---
 
-Check before doing any work:
+## Branch Naming Conventions
 
-```bash
-# 1. Check Azure DevOps CLI is available
-az devops --help > /dev/null 2>&1
+### By Work Item Type
 
-# 2. Check org/project configuration
-az devops configure --list
+| Work Item Type | Priority | Branch Prefix | Example |
+|---|---|---|---|
+| Bug | 1 (Critical) | `hotfix/` | `hotfix/4524-critical-db-timeout` |
+| Bug | 2-4 | `bugfix/` | `bugfix/4567-null-reference-payment` |
+| User Story | Any | `feature/` | `feature/1234-implement-oauth-login` |
+| Task | Any | `feature/` | `feature/2345-add-logging-middleware` |
+| Feature | Any | `feature/` | `feature/3456-user-authentication` |
+| Epic | Any | `epic/` | `epic/100-platform-modernization` |
 
-# 3. Verify current directory is a git repo
-git rev-parse --git-dir
+### By Tag Override
 
-# 4. Verify working tree is clean
-git status --porcelain
-# Must return empty output
+| Tag | Prefix Override | Use Case |
+|---|---|---|
+| `hotfix` | `hotfix/` | Critical production fix, bypasses normal flow |
+| `spike` | `spike/` | Research/investigation, no PR expected |
+| `prototype` | `proto/` | Throwaway code, PR optional |
 
-# 5. Verify Azure DevOps authentication
-az account show --output json
+### Naming Rules
 
-# 6. Verify work item exists and is accessible
-az boards work-item show --id {workItemId} --output json
-```
-
-If any check fails, list all failures with remediation steps and abort:
-
-| Check | Failure | Remediation |
-|-------|---------|-------------|
-| CLI missing | `az devops` not found | `az extension add --name azure-devops` |
-| No defaults | Org/project not configured | `az devops configure --defaults organization=... project=...` |
-| Not a repo | `.git` not found | Navigate to a git repository |
-| Dirty tree | Uncommitted changes | Commit or stash changes first |
-| Auth failed | Not logged in | `az login` or set `AZURE_DEVOPS_EXT_PAT` |
-| Work item 404 | ID not found or no access | Verify ID and project permissions |
-
-## Phase 1: Fetch Work Item
+1. Format: `{prefix}{workItemId}-{slug}`
+2. Slug: title in kebab-case, first 50 characters, no trailing hyphens
+3. Allowed characters: `a-z`, `0-9`, `-`, `/`
+4. Replace spaces with `-`, strip special characters
+5. Max total length: 63 characters
 
 ```bash
-az boards work-item show --id {workItemId} --expand relations --output json
+# Generate slug from title
+SLUG=$(echo "{title}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g' | head -c 50)
+
+# Check if branch already exists
+git branch --list "{type}/{workItemId}-*"
+
+# Create new branch from main
+git checkout main && git pull origin main
+git checkout -b {type}/{workItemId}-{slug}
 ```
 
-Extract and store these fields:
+---
 
-| Field | JSON Path | Purpose |
-|-------|-----------|---------|
-| Title | `fields.System.Title` | Branch name, PR title |
-| Description | `fields.System.Description` | Requirements context |
-| Acceptance Criteria | `fields.Microsoft.VSTS.Common.AcceptanceCriteria` | Test validation |
-| Work Item Type | `fields.System.WorkItemType` | Branch prefix |
-| State | `fields.System.State` | Validate not already done |
-| Assigned To | `fields.System.AssignedTo.uniqueName` | PR reviewer |
-| Priority | `fields.Microsoft.VSTS.Common.Priority` | Urgency context |
-| Iteration Path | `fields.System.IterationPath` | Sprint context |
-| Area Path | `fields.System.AreaPath` | Team context |
-| Story Points | `fields.Microsoft.VSTS.Scheduling.StoryPoints` | Effort context |
-| Tags | `fields.System.Tags` | Classification |
-| Relations | `relations` | Parent/child hierarchy |
+## PR Template with Acceptance Criteria Mapping
 
-Also resolve:
-- **Parent work item** — for epic/feature context
-- **Child tasks** — for implementation sub-steps
-- **Related items** — for dependency awareness
+### Standard PR Body
 
-If work item is already in Resolved or Closed state, warn and ask whether to proceed.
+```markdown
+## Summary
 
-Display a summary to the user:
+**Work Item**: [#{workItemId} -- {title}](https://dev.azure.com/{org}/{project}/_workitems/edit/{workItemId})
+**Type**: {workItemType} | **Priority**: {priority} | **Points**: {storyPoints}
+
+{description from work item, converted from HTML to Markdown}
+
+## Changes
+
+### Files Modified
+| File | Change Type | Description |
+|------|------------|-------------|
+| `src/auth/login.ts` | Modified | Added PKCE flow implementation |
+| `src/auth/login.test.ts` | Added | Unit tests for PKCE flow |
+
+### Architecture Notes
+{Any significant design decisions or trade-offs}
+
+## Acceptance Criteria Verification
+
+- [x] **AC1**: User can log in with email/password -> Implemented in `LoginService.authenticate()`
+- [x] **AC2**: Invalid credentials show error message -> Error handling in `LoginController`
+- [ ] **AC3**: Rate limiting after 5 failed attempts -> Deferred to #{nextWorkItemId}
+
+## Test Results
+
+| Suite | Total | Passed | Failed | Skipped | Duration |
+|-------|-------|--------|--------|---------|----------|
+| Unit  | 24    | 24     | 0      | 0       | 3.2s     |
+| Integration | 8 | 8   | 0      | 0       | 12.1s    |
+
+## Checklist
+
+- [x] Code follows existing patterns and conventions
+- [x] Tests added/updated for new functionality
+- [x] No secrets or credentials in code
+- [x] Breaking changes documented (if any)
+
+---
+Resolves AB#{workItemId}
+```
+
+### Bug-Specific PR Template Additions
+
+```markdown
+## Root Cause
+
+{Analysis of why the bug occurred}
+
+## Repro Steps Verification
+
+1. [x] Step 1: {step} -> No longer reproduces
+2. [x] Step 2: {step} -> Verified fixed
+
+## Regression Risk
+
+{Assessment of whether the fix could cause regressions}
+```
+
+---
+
+## Commit Message Format
+
+### Conventional Commits with ADO Linking
+
+```
+{type}(#{workItemId}): {short description}
+
+{body -- what changed and why}
+
+Work Item: #{workItemId}
+AB#{workItemId}
+```
+
+### Type Mapping
+
+| Work Item Type | Commit Type | Example |
+|---|---|---|
+| Bug | `fix` | `fix(#4567): handle null payment reference` |
+| User Story | `feat` | `feat(#1234): implement OAuth 2.0 login` |
+| Task (new code) | `feat` | `feat(#2345): add logging middleware` |
+| Task (refactor) | `refactor` | `refactor(#2345): extract payment validation` |
+| Task (tests) | `test` | `test(#2345): add integration tests for auth` |
+| Task (docs) | `docs` | `docs(#2345): update API documentation` |
+| Task (config) | `chore` | `chore(#2345): update CI pipeline config` |
+
+### Commit Body Rules
+
+1. First line (subject): max 72 characters
+2. Blank line after subject
+3. Body: wrap at 80 characters
+4. Include `AB#{workItemId}` on its own line for auto-linking
+5. If fixing a bug, include the root cause in the body
+
+---
+
+## Cross-Plugin Actions After PR Creation
+
+### Teams Notification (if microsoft-teams-mcp installed)
+
+Post an adaptive card to the team's channel with work item details, PR link, branch name,
+test results, and action buttons to review the PR or view the work item.
+
+### Outlook Notification (if microsoft-outlook-mcp installed)
+
+Send email to the work item assignee and reviewer with PR URL, branch name, change summary,
+and test results.
+
+### Target Channel/Recipient Selection
+
+1. If user specifies channel/recipient, use it
+2. Look for a Teams channel matching the project or area path name
+3. Use the work item's AssignedTo for email recipients
+4. Fall back to asking the user
+
+---
+
+## Error Recovery for Each Phase
+
+| Phase | Error | Recovery Action |
+|---|---|---|
+| PREFLIGHT | Git repo not clean | Show uncommitted changes, ask user to stash or commit |
+| PREFLIGHT | Not authenticated | Run `az login` and `az devops configure` |
+| PREFLIGHT | azure-devops plugin missing | Show install command |
+| PREFLIGHT | az devops CLI not found | `az extension add --name azure-devops` |
+| FETCH | Work item not found (404) | Verify ID, check project/org, suggest WIQL search |
+| FETCH | Permission denied (403) | Check PAT scopes: Work Items (Read) required |
+| FETCH | Work item already Resolved/Closed | Warn user, ask to proceed or abort |
+| BRANCH | Branch name conflict | Check out existing branch, ask: continue or rename? |
+| BRANCH | Protected branch push rejected | Verify branch policies, use correct prefix |
+| EXPLORE | No matching files found | Broaden search, ask user for guidance |
+| PLAN | User rejects plan | Ask for modifications, regenerate plan |
+| CODE | Implementation blocked | Surface the issue, ask for guidance or skip |
+| TEST | Tests fail (1st attempt) | Auto-analyze failure, attempt fix |
+| TEST | Tests fail (2nd attempt) | Show failures, ask: fix manually / skip / abort |
+| TEST | Test runner not detected | Ask user for test command |
+| COMMIT_PR | Push rejected | Check remote, verify branch exists, force-push if user agrees |
+| COMMIT_PR | PR creation fails | Show error, provide manual `az repos pr create` command |
+| COMMIT_PR | PR requires reviewers | Use work item AssignedTo or ask user |
+| UPDATE | Work item update fails | Show error, provide manual `az boards work-item update` command |
+| UPDATE | State transition invalid | Check valid states for the work item type |
+| NOTIFY | Cross-plugin not available | Skip with message, never fail |
+
+---
+
+## Dry-Run Behavior
+
+When invoked with `--dry-run`:
+
+1. Execute PREFLIGHT normally (validate environment)
+2. Execute FETCH normally (retrieve work item)
+3. Execute EXPLORE normally (analyze codebase)
+4. Execute PLAN normally (create implementation plan)
+5. **STOP** -- do not execute CODE, TEST, COMMIT_PR, or UPDATE
+6. Output the complete plan with:
+   - Branch name that would be created
+   - Files that would be modified
+   - Implementation approach
+   - Estimated effort
+   - Risk assessment
+7. Save plan to `sessions/ship/{workItemId}/plan.md` for later use
+
+Resume from dry-run:
+```
+"Ship work item 1234 --resume"
+```
+This will load the saved plan and continue from the CODE phase.
+
+---
+
+## Resume Examples
+
+```
+# Resume from last checkpoint
+"Ship work item 1234 --resume"
+
+# Check current status without executing
+"Ship work item 1234 --status"
+
+# Restart from a specific phase (discards later state)
+"Ship work item 1234 --from=CODE"
+
+# Abort and clean up (delete branch, remove session)
+"Ship work item 1234 --abort"
+```
+
+### Resume Decision Logic
+
+```
+1. Read sessions/ship/{workItemId}/state.json
+2. If file does not exist -> start from INITIALIZED
+3. If state == SHIPPED -> "Already shipped. Start a new ship?"
+4. If state == ABORTED -> "Previously aborted. Restart from beginning?"
+5. Find the last checkpoint with a completed state
+6. Set next phase = the one after the last completed state
+7. If any checkpoint has an error:
+   - Show error message
+   - Ask: "Retry {phase}, skip to {next_phase}, or abort?"
+8. Begin execution at next phase
+```
+
+---
+
+## Phase-by-Phase Work Item Display
+
+After FETCH, display a summary to the user before proceeding:
 
 ```
 ## Work Item #{workItemId}: {title}
@@ -156,274 +494,8 @@ Display a summary to the user:
 ### Child Tasks
 - #{childId}: {childTitle} ({childState})
 
+### Related Items
+- #{relatedId}: {relatedTitle} ({relatedState})
+
 Proceed with implementation?
 ```
-
-## Phase 2: Branch
-
-### Branch Naming Convention
-
-```
-{type}/{workItemId}-{slug}
-```
-
-Where:
-- `type` = branch prefix based on work item type and priority
-- `workItemId` = the Azure DevOps work item ID
-- `slug` = title in kebab-case, truncated to 50 characters
-
-| Work Item Type | Priority | Branch Prefix |
-|---------------|----------|---------------|
-| Bug | 1 (Critical) | `hotfix/` |
-| Bug | 2-4 | `bugfix/` |
-| User Story | Any | `feature/` |
-| Task | Any | `feature/` |
-| Feature | Any | `feature/` |
-
-### Branch Creation
-
-```bash
-# Generate slug from title
-SLUG=$(echo "{title}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g' | head -c 50)
-
-# Check if branch already exists
-git branch --list "{type}/{workItemId}-*"
-
-# If exists, check it out
-git checkout {existing_branch}
-
-# If not, create new branch from main
-git checkout main
-git pull origin main
-git checkout -b {type}/{workItemId}-{slug}
-```
-
-## Phase 3: Explore
-
-Analyze the codebase to understand the implementation context.
-
-Steps:
-1. Parse work item title + description for domain keywords
-2. Search codebase for related files using keywords
-3. Identify the project structure (language, framework, test setup)
-4. Find existing patterns that the implementation should follow
-5. Map which files will likely need changes
-
-```bash
-# Identify project type
-ls -la  # Check for package.json, *.csproj, go.mod, requirements.txt, etc.
-
-# Search for related code
-grep -rl "{keyword}" --include="*.{ext}" .
-
-# Check test structure
-find . -name "*test*" -o -name "*spec*" | head -20
-
-# Check CI/CD pipeline definitions
-find . -name "azure-pipelines.yml" -o -name ".azure-pipelines" -o -name "pipeline*.yml"
-```
-
-Save output to `sessions/ship/{workItemId}/context.md`.
-
-## Phase 4: Plan
-
-Create an implementation plan covering:
-
-1. **Files to modify** — existing files that need changes
-2. **Files to create** — new files for the feature
-3. **Interfaces** — key data structures and API contracts
-4. **Test strategy** — what tests to add and which existing tests to update
-5. **Risks** — breaking changes, shared code, migration needs
-6. **Estimated effort** — based on file count and complexity
-
-**Checkpoint**: Present plan to user. Ask: "Does this plan look right? Should I proceed with implementation?"
-
-Save to `sessions/ship/{workItemId}/plan.md`.
-
-## Phase 5: Code
-
-Implement according to the plan:
-
-- Follow existing code patterns found in Explore
-- Write tests alongside implementation
-- Keep changes minimal and focused on the work item
-- Match existing code style (indentation, naming, error handling)
-- Add inline comments for non-obvious logic only
-
-After implementation, show the diff:
-
-```bash
-git diff --stat
-git diff
-```
-
-**Checkpoint**: Ask: "Here's the diff. Ready to run tests?"
-
-## Phase 6: Test
-
-Detect and run the test suite:
-
-| Framework | Detection | Run Command |
-|-----------|-----------|-------------|
-| Jest | `package.json` has jest | `npx jest --ci` |
-| Mocha | `package.json` has mocha | `npx mocha` |
-| pytest | `pytest.ini` or `conftest.py` | `python -m pytest` |
-| .NET xUnit/NUnit | `*.csproj` with test references | `dotnet test` |
-| Go | `*_test.go` files | `go test ./...` |
-| Maven | `pom.xml` | `mvn test` |
-| Gradle | `build.gradle` | `./gradlew test` |
-
-Execution:
-1. Run relevant tests (tests in changed directories first)
-2. If all pass → proceed
-3. If tests fail → attempt one fix cycle
-4. If still failing after fix → surface failures to user with details
-
-```
-Test Results: {passed}/{total} passed, {failed} failed, {skipped} skipped
-```
-
-## Phase 7: Commit + PR
-
-### Commit Message Format
-
-```
-{type}(#{workItemId}): {title}
-
-{description of what changed and why}
-
-Work Item: #{workItemId}
-AB#{workItemId}
-```
-
-Where `type` is:
-- `feat` — new feature (User Story)
-- `fix` — bug fix (Bug)
-- `refactor` — refactoring (Task / Tech Debt)
-- `docs` — documentation only
-- `test` — test only changes
-- `chore` — build/CI changes
-
-The `AB#{workItemId}` tag auto-links the commit to Azure DevOps.
-
-### PR Creation
-
-For Azure DevOps repos:
-```bash
-az repos pr create \
-  --title "{type}(#{workItemId}): {title}" \
-  --description "## Summary\n{description}\n\n## Work Item\nAB#{workItemId}\n\n## Changes\n{file list}\n\n## Test Results\n{test summary}" \
-  --source-branch "{branchName}" \
-  --target-branch "main" \
-  --work-items {workItemId} \
-  --reviewers "{assignedTo}" \
-  --org {org} --project {project} \
-  --output json
-```
-
-For GitHub repos (with ADO integration):
-```bash
-git push -u origin {branchName}
-gh pr create \
-  --title "{type}(#{workItemId}): {title}" \
-  --body "## Summary\n{description}\n\n## Work Item\nAB#{workItemId}\n\n## Changes\n{file list}\n\n## Test Results\n{test summary}"
-```
-
-### PR Body Template
-
-```markdown
-## Summary
-{Brief description of what this PR does}
-
-## Work Item
-AB#{workItemId}: {title}
-
-## Changes
-{List of files changed with brief descriptions}
-
-## Test Results
-- Total: {total}
-- Passed: {passed}
-- Failed: {failed}
-- Skipped: {skipped}
-
-## Acceptance Criteria Validation
-{Map each acceptance criterion to how it's addressed}
-
-## Screenshots / Evidence
-{If applicable}
-```
-
-## Phase 8: Update Azure DevOps
-
-### Work Item State Transitions
-
-```
-New → Active → Resolved → Closed
-```
-
-After PR creation, transition to Resolved:
-
-```bash
-# Update state
-az boards work-item update \
-  --id {workItemId} \
-  --state "Resolved" \
-  --org {org} --project {project}
-
-# Add PR link as artifact relation
-az boards work-item relation add \
-  --id {workItemId} \
-  --relation-type "ArtifactLink" \
-  --target-url "vstfs:///Git/PullRequestId/{projectId}/{repoId}/{prId}" \
-  --org {org} --project {project}
-```
-
-Add a comment to the work item:
-
-```bash
-az boards work-item update \
-  --id {workItemId} \
-  --discussion "Implemented by Claude Code. PR: {prUrl}\nBranch: {branchName}" \
-  --org {org} --project {project}
-```
-
-## Resume
-
-```bash
-# Resume from last checkpoint
-/azure-devops-orchestrator:ship {workItemId} --resume
-
-# Check current state
-/azure-devops-orchestrator:ship {workItemId} --status
-
-# Resume from specific state
-/azure-devops-orchestrator:ship {workItemId} --from=CODE_COMPLETE
-```
-
-Read `sessions/ship/{workItemId}/state.json` to determine where to resume.
-
-## Dry Run
-
-When `--dry-run` is passed:
-- Run all pre-flight checks
-- Fetch and display work item details
-- Propose branch name
-- Run explore phase and show affected files
-- Estimate effort
-- Show proposed PR title
-- Show what DevOps updates would be applied
-- Do NOT create branches, write files, create PRs, or update work items
-
-## Error Handling
-
-| Error | Recovery |
-|-------|----------|
-| Pre-flight fails | List issues + remediation, abort |
-| Work item not found | Verify ID, check project access |
-| Work item already Resolved/Closed | Warn user, ask to proceed or abort |
-| Branch conflict | Check out existing branch, ask user |
-| Tests fail after 1 retry | Surface failures, ask: fix manually or skip |
-| PR creation fails | Show error, provide manual command |
-| Work item update fails | Show error, provide manual az command |
-| Rate limit (429) | Wait for Retry-After, retry once |

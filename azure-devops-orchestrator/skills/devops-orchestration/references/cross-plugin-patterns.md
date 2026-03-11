@@ -1,24 +1,132 @@
 # Cross-Plugin Integration Patterns
 
-## Detection
+Integration recipes for the azure-devops-orchestrator with optional plugins:
+microsoft-teams-mcp, microsoft-outlook-mcp, powerbi-fabric, and azure-monitor.
 
-Before calling any external plugin, check availability:
+---
+
+## Plugin Availability Detection
+
+### Detection Pattern
+
+Before calling any external plugin, verify it is installed:
 
 ```
-1. Attempt a lightweight tool call (e.g., list Teams channels or get inbox count)
-2. If it succeeds, the plugin is available — proceed
+1. Attempt a lightweight probe call:
+   - Teams: list channels for a known team
+   - Outlook: get inbox count
+   - Power BI: list datasets
+   - Azure Monitor: list alert rules
+2. If the call succeeds, the plugin is available -- proceed
 3. If it fails with "tool not found" or permission error, skip gracefully
-4. Always note skipped actions in the output:
-   "Teams notification skipped — install microsoft-teams-mcp to enable"
+4. Always note skipped actions in the output
 ```
 
-Never throw an error when an optional plugin is missing. Degrade gracefully.
+### Graceful Degradation Rules
+
+1. Never throw an error when an optional plugin is missing
+2. Never block the main workflow for a failed cross-plugin action
+3. Always report what was attempted, what succeeded, and what was skipped
+4. Provide the install command for any skipped plugin
+5. If a cross-plugin action fails after the plugin was detected as available,
+   log the error but continue the main workflow
+
+### Detection Code Pattern
+
+```
+For each cross-plugin action in any workflow:
+
+  CHECK:
+    result = attempt_lightweight_call(plugin)
+    if result.success:
+      plugin_available = true
+    else:
+      plugin_available = false
+
+  ATTEMPT (if available):
+    try:
+      execute_cross_plugin_action(plugin, payload)
+      report: "[Plugin] {action} -- done"
+    catch error:
+      report: "[Plugin] {action} -- failed: {error.message}"
+
+  SKIP (if not available):
+    report: "[Plugin] {action} -- skipped (install {plugin-name} to enable)"
+```
+
+---
 
 ## microsoft-teams-mcp
 
 ### Ship Notification Card
 
-After `/azure-devops-orchestrator:ship` completes, post an adaptive card:
+Posted after `/azure-devops-orchestrator:ship` completes (PR created and work item updated).
+
+```json
+{
+  "type": "AdaptiveCard",
+  "version": "1.4",
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "body": [
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Work Item Shipped",
+              "weight": "Bolder",
+              "color": "Good",
+              "size": "Medium"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "#{workItemId}: {title}",
+              "weight": "Bolder",
+              "wrap": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "FactSet",
+      "facts": [
+        { "title": "Type", "value": "{workItemType}" },
+        { "title": "Branch", "value": "{branchName}" },
+        { "title": "Files Changed", "value": "{fileCount}" },
+        { "title": "Tests", "value": "{passedTests}/{totalTests} passed" },
+        { "title": "Implemented by", "value": "Claude Code" }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.OpenUrl",
+      "title": "Review PR",
+      "url": "{prUrl}"
+    },
+    {
+      "type": "Action.OpenUrl",
+      "title": "View Work Item",
+      "url": "https://dev.azure.com/{org}/{project}/_workitems/edit/{workItemId}"
+    }
+  ]
+}
+```
+
+### Triage Summary Card
+
+Posted after backlog triage is complete.
 
 ```json
 {
@@ -27,49 +135,44 @@ After `/azure-devops-orchestrator:ship` completes, post an adaptive card:
   "body": [
     {
       "type": "TextBlock",
-      "text": "Work Item Shipped: #{workItemId}",
+      "text": "Backlog Triage Complete -- {project}",
       "weight": "Bolder",
       "size": "Medium"
     },
     {
       "type": "FactSet",
       "facts": [
-        { "title": "Title", "value": "{title}" },
-        { "title": "Type", "value": "{workItemType}" },
-        { "title": "Branch", "value": "{branchName}" },
-        { "title": "PR", "value": "{prUrl}" },
-        { "title": "Implemented by", "value": "Claude Code" }
+        { "title": "Items Scanned", "value": "{totalScanned}" },
+        { "title": "Prioritized", "value": "{prioritizedCount}" },
+        { "title": "Assigned", "value": "{assignedCount}" },
+        { "title": "Blocked", "value": "{blockedCount}" },
+        { "title": "P1 (Critical)", "value": "{p1Count}" }
       ]
     },
     {
       "type": "TextBlock",
-      "text": "**Changes**: {filesChanged} files changed",
-      "wrap": true
+      "text": "**Top Priority Items:**",
+      "weight": "Bolder"
     },
     {
       "type": "TextBlock",
-      "text": "**Tests**: {passed}/{total} passed",
+      "text": "{topItemsList}",
       "wrap": true
     }
   ],
   "actions": [
     {
       "type": "Action.OpenUrl",
-      "title": "View PR",
-      "url": "{prUrl}"
-    },
-    {
-      "type": "Action.OpenUrl",
-      "title": "View Work Item",
-      "url": "{org}/{project}/_workitems/edit/{workItemId}"
+      "title": "Open Backlog",
+      "url": "https://dev.azure.com/{org}/{project}/_backlogs"
     }
   ]
 }
 ```
 
-### Sprint Summary Card
+### Sprint Plan Card
 
-After `/azure-devops-orchestrator:sprint` completes:
+Posted after sprint planning is complete.
 
 ```json
 {
@@ -78,7 +181,7 @@ After `/azure-devops-orchestrator:sprint` completes:
   "body": [
     {
       "type": "TextBlock",
-      "text": "Sprint Plan — {iteration}",
+      "text": "Sprint Plan -- {sprintName}",
       "weight": "Bolder",
       "size": "Medium"
     },
@@ -86,14 +189,15 @@ After `/azure-devops-orchestrator:sprint` completes:
       "type": "FactSet",
       "facts": [
         { "title": "Team", "value": "{teamName}" },
-        { "title": "Capacity", "value": "{capacityPts} story points" },
-        { "title": "Committed", "value": "{committedPts} story points ({pct}%)" },
-        { "title": "Items", "value": "{itemCount} work items" }
+        { "title": "Duration", "value": "{startDate} to {endDate}" },
+        { "title": "Capacity", "value": "{totalCapacity}h" },
+        { "title": "Committed", "value": "{committedPoints} pts ({capacityPct}%)" },
+        { "title": "Items", "value": "{itemCount}" }
       ]
     },
     {
       "type": "TextBlock",
-      "text": "**Top Items**:",
+      "text": "**Top Items:**",
       "weight": "Bolder"
     },
     {
@@ -106,15 +210,60 @@ After `/azure-devops-orchestrator:sprint` completes:
     {
       "type": "Action.OpenUrl",
       "title": "Open Sprint Board",
-      "url": "{org}/{project}/_sprints/taskboard/{team}/{iteration}"
+      "url": "https://dev.azure.com/{org}/{project}/_sprints/taskboard/{team}/{sprintName}"
     }
   ]
 }
 ```
 
-### Pipeline Failure Alert
+### Deadline Alert Card
 
-After `/azure-devops-orchestrator:pipeline` detects failures:
+Posted when overdue or at-risk items are detected.
+
+```json
+{
+  "type": "AdaptiveCard",
+  "version": "1.4",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Deadline Alert -- {project}",
+      "weight": "Bolder",
+      "size": "Medium",
+      "color": "Attention"
+    },
+    {
+      "type": "FactSet",
+      "facts": [
+        { "title": "Overdue", "value": "{overdueCount} items" },
+        { "title": "Due This Week", "value": "{dueThisWeekCount} items" },
+        { "title": "Stalled", "value": "{stalledCount} items" }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "**Overdue Items:**\n{overdueItemsList}",
+      "wrap": true
+    },
+    {
+      "type": "TextBlock",
+      "text": "<at>{assigneeName}</at> -- please review your overdue items.",
+      "wrap": true
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.OpenUrl",
+      "title": "View Board",
+      "url": "https://dev.azure.com/{org}/{project}/_boards"
+    }
+  ]
+}
+```
+
+### Pipeline Failure Alert Card
+
+Posted when pipeline failures are detected.
 
 ```json
 {
@@ -154,7 +303,7 @@ After `/azure-devops-orchestrator:pipeline` detects failures:
     {
       "type": "Action.OpenUrl",
       "title": "View Build",
-      "url": "{org}/{project}/_build/results?buildId={buildId}"
+      "url": "https://dev.azure.com/{org}/{project}/_build/results?buildId={buildId}"
     }
   ]
 }
@@ -162,7 +311,7 @@ After `/azure-devops-orchestrator:pipeline` detects failures:
 
 ### Release Notification Card
 
-After `/azure-devops-orchestrator:release` gate validation:
+Posted after a release is promoted or validated.
 
 ```json
 {
@@ -171,36 +320,38 @@ After `/azure-devops-orchestrator:release` gate validation:
   "body": [
     {
       "type": "TextBlock",
-      "text": "Release v{version} — {status}",
+      "text": "Release v{version} -- {status}",
       "weight": "Bolder",
       "size": "Medium",
-      "color": "{green if ready, yellow if pending, red if blocked}"
+      "color": "Good"
     },
     {
       "type": "FactSet",
       "facts": [
         { "title": "Target", "value": "{targetStage}" },
-        { "title": "Work Items", "value": "{itemCount} items" },
-        { "title": "Test Pass Rate", "value": "{passRate}%" },
-        { "title": "Gates", "value": "{passed}/{total} passed" }
+        { "title": "Features", "value": "{featureCount}" },
+        { "title": "Bug Fixes", "value": "{bugFixCount}" },
+        { "title": "Pipeline", "value": "{pipelineName} #{runId}" },
+        { "title": "Approved By", "value": "{approverNames}" },
+        { "title": "Deployed At", "value": "{timestamp}" }
       ]
     },
     {
       "type": "TextBlock",
-      "text": "**Change Summary**:\n{releaseHighlights}",
+      "text": "**Release Highlights:**\n{highlights}",
       "wrap": true
     }
   ],
   "actions": [
     {
       "type": "Action.OpenUrl",
-      "title": "View Release Notes",
+      "title": "Release Notes",
       "url": "{releaseNotesUrl}"
     },
     {
       "type": "Action.OpenUrl",
-      "title": "Approve Release",
-      "url": "{approvalUrl}"
+      "title": "Pipeline Run",
+      "url": "https://dev.azure.com/{org}/{project}/_build/results?buildId={buildId}"
     }
   ]
 }
@@ -208,7 +359,7 @@ After `/azure-devops-orchestrator:release` gate validation:
 
 ### Health Dashboard Card
 
-After `/azure-devops-orchestrator:status` runs:
+Posted after health monitoring completes.
 
 ```json
 {
@@ -217,14 +368,14 @@ After `/azure-devops-orchestrator:status` runs:
   "body": [
     {
       "type": "TextBlock",
-      "text": "DevOps Health Dashboard — {date}",
+      "text": "DevOps Health Dashboard -- {date}",
       "weight": "Bolder",
       "size": "Medium"
     },
     {
       "type": "FactSet",
       "facts": [
-        { "title": "Projects", "value": "{projectCount}" },
+        { "title": "Overall Score", "value": "{score}/100 ({rating})" },
         { "title": "Overdue Items", "value": "{overdueCount}" },
         { "title": "Blocked Items", "value": "{blockedCount}" },
         { "title": "Pipeline Success", "value": "{pipelineSuccessRate}%" }
@@ -232,7 +383,7 @@ After `/azure-devops-orchestrator:status` runs:
     },
     {
       "type": "TextBlock",
-      "text": "**DORA Metrics**: Deploy Freq: {deployFreq} | Lead Time: {leadTime} | MTTR: {mttr} | CFR: {cfr}",
+      "text": "**DORA**: DF: {deployFreq} | LT: {leadTime} | MTTR: {mttr} | CFR: {cfr}",
       "wrap": true
     },
     {
@@ -246,87 +397,145 @@ After `/azure-devops-orchestrator:status` runs:
     {
       "type": "Action.OpenUrl",
       "title": "Open Azure DevOps",
-      "url": "{org}/{project}"
+      "url": "https://dev.azure.com/{org}/{project}"
     }
   ]
 }
 ```
 
-**@mention pattern**: Include `<at>{displayName}</at>` for assignees with overdue items or failed builds.
+### @Mention Pattern
 
-**Target channel selection**:
+When notifying specific team members (overdue items, assignments), use Teams @mention syntax:
+
+```
+Message text: "<at>{displayName}</at> -- you have {count} overdue work items."
+
+Mention entity in message payload:
+{
+  "mentioned": {
+    "id": "{userAadId}",
+    "displayName": "{displayName}",
+    "userIdentityType": "aadUser"
+  },
+  "text": "<at>{displayName}</at>"
+}
+```
+
+### Target Channel Selection
+
 1. If user specifies channel, use it
 2. Look for a channel matching the project name
-3. Fall back to General channel
-4. Ask user if no channel found
+3. Look for a channel matching the area path (e.g., "Frontend")
+4. Fall back to General channel
+5. Ask user if no channel found
+
+---
 
 ## microsoft-outlook-mcp
 
-### Sprint Digest Email
+### Weekly Health Digest Email
 
-**When to use**: After sprint planning or status check in digest mode.
+Sent after the health monitoring workflow completes in digest mode.
 
 ```
-Subject: Azure DevOps Sprint Digest — {Project} / {Iteration} — {date}
+To: {engineeringManager}, {teamLeads}
+Subject: Engineering Health Digest -- {project} -- Week of {date}
 
-Hi {stakeholder},
+Hi {recipientName},
 
-Here's the sprint health report for {iteration} in {project}.
+Here is your weekly engineering health report for {project}.
 
-## Sprint Status
-- Committed: {committedPts} story points
-- Completed: {completedPts} story points ({completionPct}%)
-- Remaining: {remainingPts} story points
-- Days left: {daysRemaining}
+## Overall Score: {score}/100 ({rating})
 
-## Overdue ({overdueCount})
-{table of overdue items with assignees and due dates}
+## DORA Metrics
+| Metric | Value | Rating | Trend |
+|--------|-------|--------|-------|
+| Deployment Frequency | {value} | {rating} | {trend} |
+| Lead Time for Changes | {value} | {rating} | {trend} |
+| Mean Time to Recovery | {value} | {rating} | {trend} |
+| Change Failure Rate | {value} | {rating} | {trend} |
 
-## At Risk ({atRiskCount})
-{items likely to miss sprint deadline}
+## Sprint Status -- {currentSprint}
+- Velocity: {completed}/{planned} pts ({completionRate}%)
+- Overdue items: {overdueCount}
+- Blocked items: {blockedCount}
 
-## Blocked ({blockedCount})
-{blocked items with blocking reason}
+## Pipeline Health
+- Pass rate: {passRate}%
+- Flaky tests: {flakyTestCount}
+- Avg build time: {avgBuildTime}
 
-## Team Load
-{assignee workload distribution table}
+## Action Items
+1. {action1}
+2. {action2}
 
 ---
 Sent by Azure DevOps Orchestrator
 ```
 
-**Recipients**: Project stakeholders, team lead, scrum master.
+### Overdue Item Alert Email
 
-### Release Notification Email
-
-After release gates are validated:
+Sent to individual team members with overdue work items.
 
 ```
-Subject: Release v{version} — {Ready for Production / Blocked}
+To: {assigneeEmail}
+Subject: [Action Required] {overdueCount} Overdue Work Items -- {project}
 
-Hi {approvers},
+Hi {assigneeName},
 
-Release v{version} for {project} has completed gate validation.
+You have {overdueCount} work items past their target date:
 
-## Gate Results
-| Gate | Status |
-|------|--------|
-| Build | {pass/fail} |
-| Tests ({passRate}%) | {pass/fail} |
-| Code Coverage ({coverage}%) | {pass/fail} |
-| Security Scan | {pass/fail} |
-| Work Items ({resolved}/{total}) | {pass/fail} |
+| # | ID | Title | Due Date | Days Overdue |
+|---|-----|-------|----------|-------------|
+| 1 | #{id} | {title} | {dueDate} | {daysOverdue} |
 
-## Changes in this Release
-### Features
-{feature list}
+Please update these items or reach out if you need help.
 
-### Bug Fixes
-{bugfix list}
+View your board: https://dev.azure.com/{org}/{project}/_boards
 
-## Action Required
-{If pending approval: Please approve at {approvalUrl}}
-{If blocked: See blocking issues above}
+---
+Sent by Azure DevOps Orchestrator
+```
+
+### Release Notes Distribution Email
+
+Sent after release notes are generated.
+
+```
+To: {stakeholderDistributionList}
+Subject: Release v{version} -- {project} -- {date}
+
+Hi team,
+
+Release v{version} has been deployed to {environment}.
+
+{Full release notes content from release-workflow.md template}
+
+---
+Sent by Azure DevOps Orchestrator
+```
+
+### Sprint Planning Summary Email
+
+Sent to team members after sprint planning.
+
+```
+To: {teamMembers}
+Subject: Sprint Plan -- {sprintName} -- {project}
+
+Hi team,
+
+Sprint planning for {sprintName} ({startDate} to {endDate}) is complete.
+
+## Your Assignments
+{personalized list for each recipient}
+
+## Sprint Summary
+- Total capacity: {totalCapacity}h
+- Committed: {committedPoints} pts
+- Items: {itemCount}
+
+View the sprint board: {sprintBoardUrl}
 
 ---
 Sent by Azure DevOps Orchestrator
@@ -334,10 +543,13 @@ Sent by Azure DevOps Orchestrator
 
 ### Ship Completion Email
 
-```
-Subject: Work Item #{workItemId} Shipped — {title}
+Sent after a work item is shipped.
 
-{assignee},
+```
+To: {assigneeEmail}, {reviewerEmail}
+Subject: PR Ready for Review -- #{workItemId}: {title}
+
+Hi {reviewer},
 
 Work item #{workItemId} "{title}" has been implemented and a PR is ready for review.
 
@@ -352,51 +564,119 @@ Changes: {summary}
 Sent by Azure DevOps Orchestrator
 ```
 
+---
+
 ## powerbi-fabric
 
-### DORA Metrics Export Schema
+### DORA Metrics Dataset Structure
 
-When the user requests Power BI dashboards for DORA metrics:
+Export DORA metrics to Power BI for dashboard visualization.
 
 ```json
 {
-  "dataset": "AzureDevOpsDORA",
+  "dataset": "AzureDevOps_DORA",
   "tables": [
     {
       "name": "Deployments",
       "columns": [
-        "DeploymentId", "PipelineName", "Environment",
-        "StartTime", "EndTime", "Status", "Version",
-        "TriggeredBy", "Branch", "CommitCount", "WorkItemCount"
+        { "name": "DeploymentId", "type": "String" },
+        { "name": "PipelineName", "type": "String" },
+        { "name": "Environment", "type": "String" },
+        { "name": "StartTime", "type": "DateTime" },
+        { "name": "EndTime", "type": "DateTime" },
+        { "name": "Status", "type": "String" },
+        { "name": "Version", "type": "String" },
+        { "name": "TriggeredBy", "type": "String" },
+        { "name": "Branch", "type": "String" },
+        { "name": "CommitCount", "type": "Int64" },
+        { "name": "WorkItemCount", "type": "Int64" }
       ]
     },
     {
       "name": "WorkItems",
       "columns": [
-        "WorkItemId", "Title", "Type", "State", "Priority",
-        "StoryPoints", "AssignedTo", "IterationPath", "AreaPath",
-        "CreatedDate", "ActivatedDate", "ResolvedDate", "ClosedDate",
-        "CycleTimeDays", "LeadTimeDays"
+        { "name": "WorkItemId", "type": "Int64" },
+        { "name": "Title", "type": "String" },
+        { "name": "Type", "type": "String" },
+        { "name": "State", "type": "String" },
+        { "name": "Priority", "type": "Int64" },
+        { "name": "StoryPoints", "type": "Double" },
+        { "name": "AssignedTo", "type": "String" },
+        { "name": "IterationPath", "type": "String" },
+        { "name": "AreaPath", "type": "String" },
+        { "name": "CreatedDate", "type": "DateTime" },
+        { "name": "ActivatedDate", "type": "DateTime" },
+        { "name": "ResolvedDate", "type": "DateTime" },
+        { "name": "ClosedDate", "type": "DateTime" },
+        { "name": "CycleTimeDays", "type": "Double" },
+        { "name": "LeadTimeDays", "type": "Double" }
       ]
     },
     {
       "name": "PipelineRuns",
       "columns": [
-        "RunId", "PipelineName", "Result", "StartTime", "FinishTime",
-        "DurationMinutes", "Branch", "RequestedFor",
-        "TestsPassed", "TestsFailed", "CodeCoverage"
+        { "name": "RunId", "type": "Int64" },
+        { "name": "PipelineName", "type": "String" },
+        { "name": "Result", "type": "String" },
+        { "name": "StartTime", "type": "DateTime" },
+        { "name": "FinishTime", "type": "DateTime" },
+        { "name": "DurationMinutes", "type": "Double" },
+        { "name": "Branch", "type": "String" },
+        { "name": "RequestedFor", "type": "String" },
+        { "name": "TestsPassed", "type": "Int64" },
+        { "name": "TestsFailed", "type": "Int64" },
+        { "name": "CodeCoverage", "type": "Double" }
       ]
     },
     {
-      "name": "SprintMetrics",
+      "name": "SprintVelocity",
       "columns": [
-        "IterationPath", "TeamName", "StartDate", "EndDate",
-        "CommittedPoints", "CompletedPoints", "CompletionRate",
-        "ScopeChange", "CarryOver", "EscapedDefects", "Velocity"
+        { "name": "SprintName", "type": "String" },
+        { "name": "Project", "type": "String" },
+        { "name": "Team", "type": "String" },
+        { "name": "StartDate", "type": "DateTime" },
+        { "name": "EndDate", "type": "DateTime" },
+        { "name": "PlannedPoints", "type": "Double" },
+        { "name": "CompletedPoints", "type": "Double" },
+        { "name": "CompletionRate", "type": "Double" },
+        { "name": "ScopeChange", "type": "Int64" },
+        { "name": "EscapedDefects", "type": "Int64" }
+      ]
+    },
+    {
+      "name": "WorkloadDistribution",
+      "columns": [
+        { "name": "Date", "type": "DateTime" },
+        { "name": "Project", "type": "String" },
+        { "name": "Team", "type": "String" },
+        { "name": "Member", "type": "String" },
+        { "name": "AssignedItems", "type": "Int64" },
+        { "name": "AssignedPoints", "type": "Double" },
+        { "name": "CapacityHours", "type": "Double" },
+        { "name": "LoadPercent", "type": "Double" },
+        { "name": "Status", "type": "String" }
       ]
     }
   ]
 }
+```
+
+### Dataset Push Pattern
+
+```
+1. Check if dataset "AzureDevOps_DORA" exists:
+   Use powerbi-fabric plugin to list datasets
+
+2. If not exists, create dataset with the schema above
+
+3. Push rows to each table:
+   Use powerbi-fabric plugin to push rows
+
+4. Suggest default report layout:
+   - Page 1: DORA Metrics dashboard (4 KPI cards + trend line chart)
+   - Page 2: Sprint Velocity (bar chart + completion rate line)
+   - Page 3: Pipeline Health (pass rate gauge + failure category pie)
+   - Page 4: Workload Distribution (stacked bar by member)
 ```
 
 ### DAX Queries for DORA Metrics
@@ -423,6 +703,62 @@ AVERAGEX(
     FILTER(WorkItems, WorkItems[State] = "Closed"),
     WorkItems[LeadTimeDays]
 )
+
+// Sprint Completion Rate
+Sprint Completion =
+AVERAGEX(
+    SprintVelocity,
+    SprintVelocity[CompletionRate]
+)
 ```
 
-Use the `powerbi-fabric` plugin to create datasets and push rows, then suggest default report layouts.
+---
+
+## azure-monitor (Infrastructure Correlation)
+
+### Pipeline Failure Correlation
+
+When a pipeline fails with infrastructure category, check Azure Monitor for correlated issues:
+
+```
+1. Check if azure-monitor plugin is available
+2. Query Azure Monitor for active alerts in the pipeline's resource group
+3. Check for recent Azure Service Health incidents
+4. Correlate:
+   - Agent pool failure -> check VM availability alerts
+   - Timeout -> check network/CPU alerts
+   - Container failure -> check ACI/AKS alerts
+5. Include correlated Azure alerts in the pipeline health report
+```
+
+### Integration Query Pattern
+
+```
+If azure-monitor is available:
+  1. Get active alerts: az monitor alert list --resource-group {rg}
+  2. Get service health: az rest --uri ".../providers/Microsoft.ResourceHealth/events"
+  3. Correlate by timestamp: alert.firedDateTime within 30min of build.startTime
+  4. Include in report: "Correlated Azure alert: {alertName} ({severity})"
+
+If azure-monitor is NOT available:
+  report: "Azure Monitor correlation skipped -- install azure-monitor to enable"
+```
+
+---
+
+## Cross-Plugin Action Summary Template
+
+Every workflow output includes a cross-plugin section at the bottom:
+
+```
+### Cross-Plugin Actions
+- [x] Teams: Posted {card type} to #{channelName}
+- [x] Outlook: Sent {email type} to {recipientCount} recipients
+- [ ] Power BI: Skipped -- install powerbi-fabric to enable DORA dashboard
+- [ ] Azure Monitor: Skipped -- install azure-monitor to enable infra correlation
+```
+
+Status indicators:
+- `[x]` -- action completed successfully
+- `[ ]` -- action skipped (plugin not installed)
+- `[!]` -- action attempted but failed (include error reason)
