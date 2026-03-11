@@ -1,0 +1,8 @@
+{
+  "name": "microsoft-azure-mcp",
+  "version": "1.0.0",
+  "description": "Inspect subscriptions, resource groups, and resources via MCP.",
+  "author": {
+    "name": "Markus Ahling"
+  }
+}

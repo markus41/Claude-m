@@ -1,0 +1,8 @@
+{
+  "name": "microsoft-docs-mcp",
+  "version": "1.0.0",
+  "description": "Search and fetch official Microsoft documentation via the Learn MCP server.",
+  "author": {
+    "name": "Markus Ahling"
+  }
+}

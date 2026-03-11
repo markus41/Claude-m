@@ -1,0 +1,8 @@
+{
+  "name": "microsoft-outlook-mcp",
+  "version": "1.0.0",
+  "description": "Send email and manage inbox/calendar tasks via MCP.",
+  "author": {
+    "name": "Markus Ahling"
+  }
+}

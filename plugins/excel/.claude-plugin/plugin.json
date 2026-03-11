@@ -1,0 +1,8 @@
+{
+  "name": "microsoft-excel-mcp",
+  "version": "1.0.0",
+  "description": "Read and update workbooks, worksheets, ranges, and tables via MCP.",
+  "author": {
+    "name": "Markus Ahling"
+  }
+}

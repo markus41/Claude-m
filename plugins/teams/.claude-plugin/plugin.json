@@ -1,0 +1,8 @@
+{
+  "name": "microsoft-teams-mcp",
+  "version": "1.0.0",
+  "description": "Send messages, create meetings, and manage Teams channels via MCP.",
+  "author": {
+    "name": "Markus Ahling"
+  }
+}
