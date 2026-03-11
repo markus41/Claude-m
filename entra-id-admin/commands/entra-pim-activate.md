@@ -104,6 +104,38 @@ POST /beta/roleManagement/directory/roleAssignmentScheduleRequests
 { "action": "selfDeactivate", "principalId": "<myId>", "roleDefinitionId": "<roleId>", "directoryScopeId": "/" }
 ```
 
+## Azure CLI Alternative
+
+```bash
+# Get your own user ID
+MY_ID=$(az ad signed-in-user show --query id -o tsv)
+
+# Activate an eligible role
+az rest --method POST \
+  --url "https://graph.microsoft.com/beta/roleManagement/directory/roleAssignmentScheduleRequests" \
+  --body "{
+    \"action\": \"selfActivate\",
+    \"principalId\": \"$MY_ID\",
+    \"roleDefinitionId\": \"<role-definition-id>\",
+    \"directoryScopeId\": \"/\",
+    \"justification\": \"Emergency patch deployment\",
+    \"scheduleInfo\": {
+      \"startDateTime\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",
+      \"expiration\": {\"type\": \"afterDuration\", \"duration\": \"PT4H\"}
+    }
+  }"
+
+# Deactivate a role
+az rest --method POST \
+  --url "https://graph.microsoft.com/beta/roleManagement/directory/roleAssignmentScheduleRequests" \
+  --body "{
+    \"action\": \"selfDeactivate\",
+    \"principalId\": \"$MY_ID\",
+    \"roleDefinitionId\": \"<role-definition-id>\",
+    \"directoryScopeId\": \"/\"
+  }"
+```
+
 ## Error Handling
 
 | Code | Fix |

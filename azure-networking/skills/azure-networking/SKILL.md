@@ -31,6 +31,15 @@ triggers:
   - subnet
   - peering
   - service endpoint
+  - route table
+  - user defined route
+  - udr
+  - azure bastion
+  - bastion
+  - expressroute
+  - express route
+  - dnat
+  - waf
 ---
 
 # Azure Networking
@@ -415,6 +424,77 @@ az network application-gateway create \
   --priority 100
 ```
 
+**Backend pool management**:
+
+```bash
+# Create backend pool
+az network application-gateway address-pool create \
+  --gateway-name <agw> --resource-group <rg> \
+  --name <pool-name> --servers <ip1> <ip2>
+
+# Update backend pool
+az network application-gateway address-pool update \
+  --gateway-name <agw> --resource-group <rg> \
+  --name <pool> --servers <ip1> <ip2> <ip3>
+
+# List backend pools
+az network application-gateway address-pool list \
+  --gateway-name <agw> --resource-group <rg>
+```
+
+**Health probes**:
+
+```bash
+az network application-gateway probe create \
+  --gateway-name <agw> --resource-group <rg> \
+  --name <probe-name> --protocol Https \
+  --host-name-from-http-settings true \
+  --path /health --interval 30 --threshold 3 --timeout 30
+```
+
+**HTTP settings with probe**:
+
+```bash
+az network application-gateway http-settings create \
+  --gateway-name <agw> --resource-group <rg> \
+  --name <settings-name> --port 443 --protocol Https \
+  --cookie-based-affinity Enabled --probe <probe-name>
+```
+
+**SSL certificates**:
+
+```bash
+az network application-gateway ssl-cert create \
+  --gateway-name <agw> --resource-group <rg> \
+  --name <cert-name> --cert-file <pfx-path> --cert-password <password>
+```
+
+**URL path maps** (path-based routing):
+
+```bash
+az network application-gateway url-path-map create \
+  --gateway-name <agw> --resource-group <rg> \
+  --name <map-name> --paths "/api/*" \
+  --address-pool <api-pool> --http-settings <api-settings> \
+  --default-address-pool <default-pool> --default-http-settings <default-settings>
+```
+
+**WAF custom rules**:
+
+```bash
+az network application-gateway waf-policy custom-rule create \
+  --policy-name <waf-policy> --resource-group <rg> \
+  --name "BlockBadBots" --priority 100 --rule-type MatchRule --action Block
+```
+
+**Show and check backend health**:
+
+```bash
+az network application-gateway show --name <agw> --resource-group <rg>
+az network application-gateway list --resource-group <rg> --output table
+az network application-gateway show-backend-health --name <agw> --resource-group <rg>
+```
+
 **Bicep template** for Application Gateway with WAF:
 
 ```bicep
@@ -574,6 +654,48 @@ az afd route update \
   --custom-domains contoso-domain
 ```
 
+**WAF policy for Front Door**:
+
+```bash
+# Create WAF policy
+az network front-door waf-policy create \
+  --name <waf-name> --resource-group <rg> \
+  --sku Standard_AzureFrontDoor --mode Prevention
+
+# List available managed rule definitions
+az network front-door waf-policy managed-rule-definition list --output table
+
+# Add managed rules
+az network front-door waf-policy managed-rules add \
+  --policy-name <waf> --resource-group <rg> \
+  --type Microsoft_DefaultRuleSet --version 2.1 --action Block
+```
+
+**Security policy** (attach WAF to endpoint):
+
+```bash
+az afd security-policy create \
+  --profile-name <fd> --resource-group <rg> \
+  --security-policy-name <sp-name> \
+  --waf-policy <waf-resource-id> \
+  --domains <endpoint-resource-id>
+```
+
+**Purge cache**:
+
+```bash
+az afd endpoint purge \
+  --profile-name <fd> --resource-group <rg> \
+  --endpoint-name <ep> --content-paths "/*"
+```
+
+**Show and list**:
+
+```bash
+az afd profile show --profile-name <fd> --resource-group <rg>
+az afd endpoint list --profile-name <fd> --resource-group <rg> --output table
+```
+
 **Caching rules** via rule set:
 
 ```bash
@@ -718,6 +840,30 @@ az network vpn-connection create \
   --connection-type IPsec
 ```
 
+**Show, list, and monitor VPN connections**:
+
+```bash
+# Show gateway
+az network vnet-gateway show --name <gw> --resource-group <rg>
+
+# List gateways
+az network vnet-gateway list --resource-group <rg> --output table
+
+# Show connection
+az network vpn-connection show --name <conn> --resource-group <rg>
+
+# List connections
+az network vpn-connection list --resource-group <rg> --output table
+
+# Connection monitoring — check status and bytes transferred
+az network vpn-connection show \
+  --name <conn> --resource-group <rg> \
+  --query "{Status:connectionStatus, InBytes:ingressBytesTransferred, OutBytes:egressBytesTransferred}"
+
+# Reset gateway (when in degraded state)
+az network vnet-gateway reset --name <gw> --resource-group <rg>
+```
+
 **Point-to-Site (P2S) VPN** connects individual clients to Azure:
 
 ```bash
@@ -755,6 +901,34 @@ az network vnet-gateway create \
   --gateway-type ExpressRoute \
   --sku ErGw1AZ \
   --public-ip-addresses hub-ergw-pip
+```
+
+**ExpressRoute peering and gateway connection**:
+
+```bash
+# Create private peering
+az network express-route peering create \
+  --circuit-name <er> --resource-group <rg> \
+  --peering-type AzurePrivatePeering \
+  --peer-asn <asn> \
+  --primary-peer-subnet 10.0.0.0/30 \
+  --secondary-peer-subnet 10.0.0.4/30 \
+  --vlan-id <vlan>
+
+# Connect gateway to circuit
+az network express-route gateway connection create \
+  --name <conn-name> --resource-group <rg> \
+  --gateway-name <er-gw> \
+  --circuit-name <er> \
+  --peering-name AzurePrivatePeering
+```
+
+**Show, list, and get stats**:
+
+```bash
+az network express-route show --name <er> --resource-group <rg>
+az network express-route list --resource-group <rg> --output table
+az network express-route get-stats --name <er> --resource-group <rg>
 ```
 
 **Connection types**:
@@ -974,7 +1148,61 @@ az network firewall create \
 az network firewall show --name hub-firewall --resource-group networking-rg --query "ipConfigurations[0].privateIpAddress" -o tsv
 ```
 
-**User Defined Routes (UDRs)** force spoke traffic through the firewall:
+**Create firewall with separate public IP and IP configuration**:
+
+```bash
+# Create public IP for firewall
+az network public-ip create \
+  --name <fw-pip> \
+  --resource-group <rg> \
+  --sku Standard \
+  --allocation-method Static
+
+# Create firewall
+az network firewall create \
+  --name <fw-name> \
+  --resource-group <rg> \
+  --location <region> \
+  --vnet-name <vnet>
+
+# Configure firewall IP
+az network firewall ip-config create \
+  --firewall-name <fw> \
+  --name <config-name> \
+  --resource-group <rg> \
+  --public-ip-address <fw-pip> \
+  --vnet-name <vnet>
+```
+
+**DNAT rules** (inbound port forwarding through the firewall):
+
+```bash
+az network firewall policy rule-collection-group collection add-nat-collection \
+  --rule-collection-group-name "DefaultRuleGroup" \
+  --policy-name <policy> \
+  --resource-group <rg> \
+  --name "DNATRules" \
+  --collection-priority 100 \
+  --action DNAT \
+  --rule-name "RDPDNAT" \
+  --source-addresses "*" \
+  --destination-addresses <fw-public-ip> \
+  --destination-ports 3389 \
+  --translated-address 10.0.1.4 \
+  --translated-port 3389 \
+  --ip-protocols TCP
+```
+
+**Show, list, and delete firewall**:
+
+```bash
+az network firewall show --name <fw> --resource-group <rg>
+az network firewall list --resource-group <rg> --output table
+az network firewall delete --name <fw> --resource-group <rg> --yes
+az network firewall policy show --name <policy> --resource-group <rg>
+```
+
+**User Defined Routes (UDRs)** force spoke traffic through the firewall (see also section 11):
 
 ```bash
 # Create route table
@@ -992,7 +1220,174 @@ az network route-table route create \
 az network vnet subnet update --name app --vnet-name spoke1-vnet --resource-group spoke1-rg --route-table spoke-rt
 ```
 
-## 11. Network Troubleshooting
+## 11. Route Tables (User Defined Routes)
+
+Route tables contain user-defined routes (UDRs) that override Azure's default system routes, enabling custom traffic paths such as forcing all egress through a firewall or NVA.
+
+**Next hop types**:
+
+| Type | Description | Requires IP |
+|------|-------------|-------------|
+| `VirtualAppliance` | Route through a firewall or NVA | Yes |
+| `VnetLocal` | Route within the VNet address space | No |
+| `Internet` | Route directly to the internet | No |
+| `VirtualNetworkGateway` | Route through VPN or ExpressRoute gateway | No |
+| `None` | Drop the traffic (black-hole route) | No |
+
+**Create route table and add routes** (Azure CLI):
+
+```bash
+# Create route table
+az network route-table create \
+  --name <rt-name> \
+  --resource-group <rg> \
+  --location <region> \
+  --disable-bgp-route-propagation false
+
+# Route all traffic through Azure Firewall
+az network route-table route create \
+  --route-table-name <rt> \
+  --resource-group <rg> \
+  --name "ToFirewall" \
+  --address-prefix 0.0.0.0/0 \
+  --next-hop-type VirtualAppliance \
+  --next-hop-ip-address <fw-private-ip>
+
+# Route to VNet local
+az network route-table route create \
+  --route-table-name <rt> \
+  --resource-group <rg> \
+  --name "ToVNet" \
+  --address-prefix 10.1.0.0/16 \
+  --next-hop-type VnetLocal
+
+# Associate route table with a subnet
+az network vnet subnet update \
+  --vnet-name <vnet> \
+  --name <subnet> \
+  --resource-group <rg> \
+  --route-table <rt>
+
+# Show route table
+az network route-table show \
+  --name <rt> \
+  --resource-group <rg>
+
+# List routes in a table
+az network route-table route list \
+  --route-table-name <rt> \
+  --resource-group <rg> \
+  --output table
+```
+
+**BGP route propagation**: When `--disable-bgp-route-propagation true`, VPN Gateway and ExpressRoute gateway-learned routes are not injected into the subnet. Use this when you want the UDR to be the sole source of routing decisions (e.g., forcing all traffic through a firewall without exceptions).
+
+**Common route table patterns**:
+
+| Pattern | Default Route | Purpose |
+|---------|---------------|---------|
+| Spoke-to-firewall | `0.0.0.0/0` → Firewall NVA IP | Force all spoke egress through hub firewall |
+| Internet-only blackhole | `0.0.0.0/0` → `None` | Prevent all internet access from a subnet |
+| On-prem via NVA | `10.0.0.0/8` → NVA IP | Route on-premises traffic through NVA |
+| Asymmetric fix | Specific prefix → `VirtualNetworkGateway` | Fix return path for VPN traffic |
+
+## 12. Azure Bastion
+
+Azure Bastion provides secure, browser-based and native client RDP/SSH access to VMs without exposing public IPs on the VMs. It deploys into a dedicated `AzureBastionSubnet` (minimum /26).
+
+**SKU comparison**:
+
+| Feature | Basic | Standard |
+|---------|-------|----------|
+| Browser-based RDP/SSH | Yes | Yes |
+| Native client (az CLI) | No | Yes |
+| Port tunneling | No | Yes |
+| IP-based connection | No | Yes |
+| Shareable link | No | Yes |
+| Kerberos auth | No | Yes |
+| Scaling (host instances) | 2 (fixed) | 2-50 |
+
+**Create Azure Bastion** (Azure CLI):
+
+```bash
+# Ensure AzureBastionSubnet exists (minimum /26)
+az network vnet subnet create \
+  --vnet-name <vnet> \
+  --resource-group <rg> \
+  --name AzureBastionSubnet \
+  --address-prefixes <bastion-subnet-cidr>
+
+# Create public IP for Bastion
+az network public-ip create \
+  --name <bastion-pip> \
+  --resource-group <rg> \
+  --sku Standard \
+  --allocation-method Static \
+  --location <region>
+
+# Create Bastion
+az network bastion create \
+  --name <bastion-name> \
+  --resource-group <rg> \
+  --vnet-name <vnet> \
+  --public-ip-address <bastion-pip> \
+  --location <region> \
+  --sku Standard
+```
+
+**Connect to VMs via Bastion** (Standard SKU — native client):
+
+```bash
+# SSH connection
+az network bastion ssh \
+  --name <bastion> \
+  --resource-group <rg> \
+  --target-resource-id <vm-resource-id> \
+  --auth-type ssh-key \
+  --username <user> \
+  --ssh-key <key-path>
+
+# RDP connection
+az network bastion rdp \
+  --name <bastion> \
+  --resource-group <rg> \
+  --target-resource-id <vm-resource-id>
+
+# Port tunneling (forward remote port to local)
+az network bastion tunnel \
+  --name <bastion> \
+  --resource-group <rg> \
+  --target-resource-id <vm-resource-id> \
+  --resource-port 22 \
+  --port 2222
+```
+
+After tunneling, connect locally: `ssh user@localhost -p 2222`.
+
+**Manage Bastion**:
+
+```bash
+# Show Bastion
+az network bastion show --name <bastion> --resource-group <rg>
+
+# List Bastion hosts
+az network bastion list --resource-group <rg> --output table
+
+# Delete Bastion
+az network bastion delete --name <bastion> --resource-group <rg> --yes
+```
+
+**Required NSG rules for AzureBastionSubnet**:
+
+| Priority | Direction | Source | Dest Port | Protocol | Purpose |
+|----------|-----------|--------|-----------|----------|---------|
+| 100 | Inbound | Internet | 443 | TCP | Bastion control plane |
+| 110 | Inbound | GatewayManager | 443 | TCP | Gateway Manager |
+| 120 | Inbound | AzureLoadBalancer | 443 | TCP | Health probes |
+| 100 | Outbound | VirtualNetwork | 22, 3389 | TCP | SSH/RDP to target VMs |
+| 110 | Outbound | AzureCloud | 443 | TCP | Azure management traffic |
+
+## 13. Network Troubleshooting
 
 Azure Network Watcher provides diagnostic and monitoring tools for Azure networking.
 
@@ -1078,7 +1473,7 @@ az network watcher run-configuration-diagnostic \
 az network watcher show-topology --resource-group networking-rg --location eastus2
 ```
 
-## 12. Common Patterns
+## 14. Common Patterns
 
 ### Pattern 1: Hub-Spoke with Azure Firewall
 

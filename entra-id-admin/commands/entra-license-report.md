@@ -77,6 +77,21 @@ Users with no license: 12
   Use: /entra-id-admin:entra-license-assign --principal <user> --add "M365 E3"
 ```
 
+## Azure CLI Alternative
+
+```bash
+# List all subscribed SKUs with usage
+az rest --method GET \
+  --url "https://graph.microsoft.com/v1.0/subscribedSkus" \
+  --query "value[].{SKU:skuPartNumber, Consumed:consumedUnits, Purchased:prepaidUnits.enabled, Status:capabilityStatus}" \
+  --output table
+
+# List users with a specific license
+az rest --method GET \
+  --url "https://graph.microsoft.com/v1.0/users?\$filter=assignedLicenses/any(l:l/skuId eq 05e9a617-0261-4cee-bb44-138d3ef5d965)&\$select=displayName,userPrincipalName&\$count=true" \
+  --headers "ConsistencyLevel=eventual"
+```
+
 ## Error Handling
 
 | Code | Fix |

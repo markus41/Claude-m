@@ -76,6 +76,28 @@ Share this URL with the guest to let them accept the invitation.
 The URL is valid for 90 days.
 ```
 
+## Azure CLI Alternative
+
+Guest invitation requires Graph API (no direct `az ad` command). Use `az rest`:
+
+```bash
+# Invite guest user
+az rest --method POST \
+  --url "https://graph.microsoft.com/v1.0/invitations" \
+  --body '{
+    "invitedUserEmailAddress": "partner@fabrikam.com",
+    "inviteRedirectUrl": "https://myapps.microsoft.com",
+    "invitedUserDisplayName": "Alice Chen",
+    "sendInvitationMessage": true
+  }'
+```
+
+After invitation, add the guest to a group:
+
+```bash
+az ad group member add --group "Project Phoenix" --member-id <guest-user-object-id>
+```
+
 ## Error Handling
 
 | Code | Fix |

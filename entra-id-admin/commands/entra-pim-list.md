@@ -80,6 +80,28 @@ PENDING APPROVAL (1)
   Recommendation: Apply time-bound eligible assignment instead.
 ```
 
+## Azure CLI Alternative
+
+```bash
+# List eligible assignments
+az rest --method GET \
+  --url "https://graph.microsoft.com/beta/roleManagement/directory/roleEligibilitySchedules?\$expand=principal,roleDefinition" \
+  --query "value[].{Principal:principal.displayName, Role:roleDefinition.displayName, Expires:scheduleInfo.expiration.endDateTime}" \
+  --output table
+
+# List currently active (activated) assignments
+az rest --method GET \
+  --url "https://graph.microsoft.com/beta/roleManagement/directory/roleAssignmentSchedules?\$filter=assignmentType eq 'Activated'&\$expand=principal,roleDefinition" \
+  --query "value[].{Principal:principal.displayName, Role:roleDefinition.displayName, Until:scheduleInfo.expiration.endDateTime}" \
+  --output table
+
+# List pending approval requests
+az rest --method GET \
+  --url "https://graph.microsoft.com/beta/roleManagement/directory/roleAssignmentScheduleRequests?\$filter=status eq 'PendingApproval'&\$expand=principal,roleDefinition" \
+  --query "value[].{Principal:principal.displayName, Role:roleDefinition.displayName}" \
+  --output table
+```
+
 ## Error Handling
 
 | Code | Fix |

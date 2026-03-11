@@ -53,6 +53,56 @@ Return in this order:
 2. `RecommendedActions` table: `ResourceId`, `Action`, `RollbackPlan`, `ChangeWindowSuggestion`.
 3. `TriageSummary` bullets: top savings opportunities and blockers.
 
+## Azure CLI Quick Reference
+
+Use these commands to detect idle resources directly from the CLI.
+
+### Resource Graph queries for idle resources
+
+```bash
+# Unattached managed disks
+az graph query -q "Resources | where type == 'microsoft.compute/disks' | where properties.diskState == 'Unattached' | project name, resourceGroup, sku.name, properties.diskSizeGB, location" --output table
+
+# Deallocated VMs still incurring disk costs
+az graph query -q "Resources | where type == 'microsoft.compute/virtualMachines' | where properties.extended.instanceView.powerState.code == 'PowerState/deallocated' | project name, resourceGroup, location" --output table
+
+# Empty App Service Plans (zero hosted apps)
+az graph query -q "Resources | where type == 'microsoft.web/serverfarms' | where properties.numberOfSites == 0 | project name, resourceGroup, sku.name, location" --output table
+
+# Public IPs with no association
+az graph query -q "Resources | where type == 'microsoft.network/publicipaddresses' | where isnull(properties.ipConfiguration) | project name, resourceGroup, properties.ipAddress, location" --output table
+```
+
+### Azure Advisor cost recommendations
+
+```bash
+# List all cost recommendations
+az advisor recommendation list --category Cost --output table
+
+# Detailed view with savings estimates
+az advisor recommendation list --category Cost \
+  --query "[].{Impact:impact, Problem:shortDescription.problem, Solution:shortDescription.solution, Savings:extendedProperties.annualSavingsAmount}" \
+  --output table
+
+# Refresh recommendations with lower CPU threshold
+az advisor configuration update --low-cpu-threshold 5
+```
+
+### Reservation recommendations
+
+```bash
+# Reservation purchase recommendations (shared scope)
+az consumption reservation recommendation list --scope Shared --look-back-period Last30Days --output table
+
+# Reservation usage details for a specific order
+az consumption reservation detail list --reservation-order-id <order-id> \
+  --start-date 2026-01-01 --end-date 2026-01-31 --output table
+
+# Daily reservation utilization summaries
+az consumption reservation summary list --reservation-order-id <order-id> \
+  --grain daily --start-date 2026-01-01 --end-date 2026-01-31 --output table
+```
+
 ## Validation checklist
 - Command name is `azure-idle-resources` and matches file name.
 - Lookback window is a positive integer.

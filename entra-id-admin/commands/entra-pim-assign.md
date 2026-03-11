@@ -86,6 +86,33 @@ User can activate with:
 ─────────────────────────────────────────────────────────────────
 ```
 
+## Azure CLI Alternative
+
+PIM operations require `az rest` with the Graph beta API:
+
+```bash
+# Create eligible assignment
+az rest --method POST \
+  --url "https://graph.microsoft.com/beta/roleManagement/directory/roleEligibilityScheduleRequests" \
+  --body '{
+    "action": "adminAssign",
+    "principalId": "<user-id>",
+    "roleDefinitionId": "<role-definition-id>",
+    "directoryScopeId": "/",
+    "justification": "Project lead requires admin access",
+    "scheduleInfo": {
+      "startDateTime": "2026-03-10T00:00:00Z",
+      "expiration": {"type": "afterDuration", "duration": "P180D"}
+    }
+  }'
+
+# List eligible assignments
+az rest --method GET \
+  --url "https://graph.microsoft.com/beta/roleManagement/directory/roleEligibilitySchedules" \
+  --query "value[].{Principal:principal.displayName, Role:roleDefinition.displayName}" \
+  --output table
+```
+
 ## Error Handling
 
 | Code | Fix |

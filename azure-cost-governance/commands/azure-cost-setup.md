@@ -43,3 +43,27 @@ Confirm the reporting currency (e.g., USD, EUR) and the cost analysis dimensions
 ## Step 4: Produce Execution Plan
 
 Produce a short execution plan before running optimization actions — specify which commands to run and in what order.
+
+## Azure CLI Setup Commands
+
+Use these commands to verify prerequisites and confirm scope before analysis.
+
+```bash
+# Sign in and set active subscription
+az login
+az account set --subscription "<sub-id>"
+
+# Verify subscription context
+az account show --output table
+
+# Install or upgrade required extensions
+az extension add --name costmanagement --upgrade
+az extension add --name resource-graph --upgrade
+
+# Validate cost management access — list budgets as a quick permission check
+az consumption budget list --output table
+
+# List available cost dimensions for the active subscription
+az costmanagement dimension list \
+  --scope "subscriptions/<sub-id>" --output table
+```

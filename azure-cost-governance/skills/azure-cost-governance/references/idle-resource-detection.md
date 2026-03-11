@@ -82,6 +82,54 @@ az storage account list \
 # Follow up: check blob count and last write time per account
 ```
 
+## Azure Resource Graph Queries for Idle Resources
+
+Resource Graph queries run across all subscriptions in a single call and are faster than per-resource ARM list calls.
+
+```bash
+# Unattached managed disks
+az graph query -q "Resources | where type == 'microsoft.compute/disks' | where properties.diskState == 'Unattached' | project name, resourceGroup, sku.name, properties.diskSizeGB, location" --output table
+
+# Deallocated VMs still incurring disk costs
+az graph query -q "Resources | where type == 'microsoft.compute/virtualMachines' | where properties.extended.instanceView.powerState.code == 'PowerState/deallocated' | project name, resourceGroup, location" --output table
+
+# Empty App Service Plans (no hosted apps)
+az graph query -q "Resources | where type == 'microsoft.web/serverfarms' | where properties.numberOfSites == 0 | project name, resourceGroup, sku.name, location" --output table
+
+# Public IPs with no association
+az graph query -q "Resources | where type == 'microsoft.network/publicipaddresses' | where isnull(properties.ipConfiguration) | project name, resourceGroup, properties.ipAddress, location" --output table
+```
+
+## Azure Advisor Cost Recommendations (CLI)
+
+```bash
+# List all cost recommendations
+az advisor recommendation list --category Cost --output table
+
+# Detailed view with savings estimates
+az advisor recommendation list --category Cost \
+  --query "[].{Impact:impact, Problem:shortDescription.problem, Solution:shortDescription.solution, Savings:extendedProperties.annualSavingsAmount}" \
+  --output table
+
+# Lower the CPU threshold for right-sizing recommendations
+az advisor configuration update --low-cpu-threshold 5
+```
+
+## Reservation Recommendations and Utilization (CLI)
+
+```bash
+# Reservation purchase recommendations (shared scope, 30-day lookback)
+az consumption reservation recommendation list --scope Shared --look-back-period Last30Days --output table
+
+# Reservation usage details for a specific order
+az consumption reservation detail list --reservation-order-id <order-id> \
+  --start-date 2026-01-01 --end-date 2026-01-31 --output table
+
+# Daily reservation utilization summaries
+az consumption reservation summary list --reservation-order-id <order-id> \
+  --grain daily --start-date 2026-01-01 --end-date 2026-01-31 --output table
+```
+
 ## TypeScript SDK — Idle Resource Scanner
 
 ```typescript

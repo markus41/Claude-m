@@ -49,6 +49,23 @@ Status:      Removed ✓
 ─────────────────────────────────────────────────────────────────
 ```
 
+## Azure CLI Alternative
+
+For **Azure RBAC** role removal:
+
+```bash
+az role assignment delete --assignee jane.smith@contoso.com \
+  --role "Reader" --scope /subscriptions/<sub-id>
+```
+
+For **Entra ID directory role** removal, use `az rest`:
+
+```bash
+# Remove user from a directory role
+az rest --method DELETE \
+  --url "https://graph.microsoft.com/v1.0/directoryRoles/<role-id>/members/<user-id>/\$ref"
+```
+
 ## Error Handling
 
 | Code | Fix |

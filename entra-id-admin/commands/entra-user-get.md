@@ -122,6 +122,31 @@ MFA Status  [--mfa]
 ─────────────────────────────────────────────────────────────────
 ```
 
+## Azure CLI Alternative
+
+Quick user lookup with `az ad`:
+
+```bash
+# Show user details
+az ad user show --id jane.smith@contoso.com
+
+# List all users (tabular)
+az ad user list \
+  --query "[].{UPN:userPrincipalName, DisplayName:displayName, ID:id}" \
+  --output table
+
+# Get groups and roles the user belongs to
+az ad user get-member-objects --id jane.smith@contoso.com \
+  --security-enabled-only false
+```
+
+For sign-in activity and MFA details (not available via `az ad`), use `az rest`:
+
+```bash
+az rest --method GET \
+  --url "https://graph.microsoft.com/v1.0/users/jane.smith@contoso.com?\$select=signInActivity"
+```
+
 ## Error Handling
 
 | Code | Fix |

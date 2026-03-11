@@ -75,6 +75,28 @@ Role:        User Administrator (scoped to APAC Region only)
 Bob Ops can now manage users within the APAC Region AU only.
 ```
 
+## Azure CLI Alternative
+
+```bash
+# Add user to admin unit
+az rest --method POST \
+  --url "https://graph.microsoft.com/v1.0/administrativeUnits/<au-id>/members/\$ref" \
+  --body '{"@odata.id":"https://graph.microsoft.com/v1.0/users/<user-id>"}'
+
+# Assign scoped role within admin unit
+az rest --method POST \
+  --url "https://graph.microsoft.com/v1.0/administrativeUnits/<au-id>/scopedRoleMembers" \
+  --body '{
+    "roleId": "<role-definition-id>",
+    "roleMemberInfo": {"id": "<admin-user-id>"}
+  }'
+
+# List admin unit members
+az rest --method GET \
+  --url "https://graph.microsoft.com/v1.0/administrativeUnits/<au-id>/members" \
+  --query "value[].{Name:displayName, ID:id}" --output table
+```
+
 ## Error Handling
 
 | Code | Fix |

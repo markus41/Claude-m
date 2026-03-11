@@ -75,6 +75,22 @@ Next steps:
   Assign scoped role: /entra-id-admin:entra-admin-unit-add --au <au-id> --admin <upn> --role "User Administrator"
 ```
 
+## Azure CLI Alternative
+
+Administrative unit management requires `az rest` with Graph API:
+
+```bash
+# Create a static admin unit
+az rest --method POST \
+  --url "https://graph.microsoft.com/v1.0/administrativeUnits" \
+  --body '{"displayName":"APAC Region","description":"All users and groups in APAC"}'
+
+# List admin units
+az rest --method GET \
+  --url "https://graph.microsoft.com/v1.0/administrativeUnits?\$select=id,displayName" \
+  --query "value[].{Name:displayName, ID:id}" --output table
+```
+
 ## Error Handling
 
 | Code | Fix |

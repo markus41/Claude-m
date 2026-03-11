@@ -80,6 +80,20 @@ Errors:         0
 These users will see the MFA registration prompt on their next sign-in.
 ```
 
+## Azure CLI Alternative
+
+```bash
+# Require MFA registration for a single user
+az rest --method POST \
+  --url "https://graph.microsoft.com/v1.0/users/<user-id>/authentication/requireMfaRegistration"
+
+# Get MFA registration report (users without MFA)
+az rest --method GET \
+  --url "https://graph.microsoft.com/v1.0/reports/credentialUserRegistrationDetails?\$filter=isMfaRegistered eq false" \
+  --query "value[].{User:userDisplayName, UPN:userPrincipalName, MFA:isMfaRegistered}" \
+  --output table
+```
+
 ## Error Handling
 
 | Code | Fix |

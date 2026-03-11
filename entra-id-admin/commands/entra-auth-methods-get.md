@@ -76,6 +76,29 @@ Show the TAP value prominently. Warn it will not be shown again.
 POST https://graph.microsoft.com/v1.0/users/{userId}/authentication/requireMfaRegistration
 ```
 
+## Azure CLI Alternative
+
+Auth methods management requires `az rest` with Graph API:
+
+```bash
+# List all auth methods for a user
+az rest --method GET \
+  --url "https://graph.microsoft.com/v1.0/users/<user-id>/authentication/methods"
+
+# List FIDO2 keys
+az rest --method GET \
+  --url "https://graph.microsoft.com/v1.0/users/<user-id>/authentication/fido2Methods"
+
+# Create Temporary Access Pass
+az rest --method POST \
+  --url "https://graph.microsoft.com/v1.0/users/<user-id>/authentication/temporaryAccessPassMethods" \
+  --body '{"isUsableOnce":false,"lifetimeInMinutes":480}'
+
+# Require MFA re-registration
+az rest --method POST \
+  --url "https://graph.microsoft.com/v1.0/users/<user-id>/authentication/requireMfaRegistration"
+```
+
 ## Error Handling
 
 | Code | Fix |

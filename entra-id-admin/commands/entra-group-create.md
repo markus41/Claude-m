@@ -134,6 +134,34 @@ Dynamic Rule:  (user.department -eq "Engineering")
 Processing:    On (membership will update within minutes)
 ```
 
+## Azure CLI Alternative
+
+```bash
+# Create security group
+az ad group create --display-name "SG-DevTeam-Prod" \
+  --mail-nickname "sg-devteam-prod" \
+  --description "Production dev team security group"
+
+# Create M365 group (Teams-capable)
+az ad group create --display-name "Project Phoenix" \
+  --mail-nickname "project-phoenix" \
+  --group-types Unified --mail-enabled true
+```
+
+After creation, add initial members:
+
+```bash
+az ad group member add --group "SG-DevTeam-Prod" --member-id <user-object-id>
+```
+
+Add owners:
+
+```bash
+az ad group owner add --group "SG-DevTeam-Prod" --owner-object-id <owner-id>
+```
+
+> **Note**: Dynamic group creation with `--membership-rule` is not supported by `az ad group create`. Use Graph API or `az rest` for dynamic groups.
+
 ## Error Handling
 
 | Code | Fix |

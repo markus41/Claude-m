@@ -65,6 +65,25 @@ Added:
 3 members added, 1 error
 ```
 
+## Azure CLI Alternative
+
+```bash
+# Add a member by object ID
+az ad group member add --group "SG-DevTeam-Prod" --member-id <user-object-id>
+
+# Verify membership
+az ad group member check --group "SG-DevTeam-Prod" --member-id <user-object-id>
+
+# Add as owner
+az ad group owner add --group "SG-DevTeam-Prod" --owner-object-id <user-object-id>
+```
+
+To resolve a UPN to an object ID first:
+
+```bash
+az ad user show --id jane.smith@contoso.com --query id --output tsv
+```
+
 ## Error Handling
 
 | Code | Fix |

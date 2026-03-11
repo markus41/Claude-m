@@ -70,6 +70,24 @@ Changed:
 ─────────────────────────────────────────────────────────────────
 ```
 
+## Azure CLI Alternative
+
+```bash
+# Delete a group (no direct update command for most properties)
+az ad group delete --group "SG-DevTeam-Prod"
+
+# Add / remove owners
+az ad group owner add --group "SG-DevTeam-Prod" --owner-object-id <owner-id>
+```
+
+For updating display name, description, or visibility, use `az rest`:
+
+```bash
+az rest --method PATCH \
+  --url "https://graph.microsoft.com/v1.0/groups/<group-id>" \
+  --body '{"displayName":"New Name","description":"Updated description"}'
+```
+
 ## Error Handling
 
 | Code | Fix |

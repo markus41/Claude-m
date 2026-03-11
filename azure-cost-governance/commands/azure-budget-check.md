@@ -56,6 +56,51 @@ Return in this order:
 2. `Interventions` list with `Action`, `EstimatedSavingsRange`, `Owner`, `Urgency`.
 3. `AssumptionsAndGaps` bullets for any missing telemetry or uncertain estimates.
 
+## Azure CLI Quick Reference
+
+Use these commands to gather budget data directly from the CLI before computing the status table.
+
+### List and inspect budgets
+
+```bash
+# List all budgets at subscription level
+az consumption budget list --output table
+
+# List budgets scoped to a resource group
+az consumption budget list --resource-group <rg> --output table
+
+# Show a specific budget with current spend
+az consumption budget show --budget-name "<name>"
+az consumption budget show --budget-name "<name>" --resource-group <rg>
+```
+
+### Create or update budgets
+
+```bash
+# Create a subscription-level monthly budget
+az consumption budget create --budget-name "<name>" \
+  --amount 10000 --time-grain Monthly \
+  --start-date 2026-01-01 --end-date 2026-12-31 --category Cost
+
+# Create a resource-group budget with notification thresholds
+az consumption budget create --budget-name "<name>" --resource-group <rg> \
+  --amount 5000 --time-grain Monthly \
+  --start-date 2026-01-01 --end-date 2026-12-31 --category Cost \
+  --notifications "{\"Actual_GreaterThan_80_Percent\":{\"enabled\":true,\"operator\":\"GreaterThan\",\"threshold\":80,\"contactEmails\":[\"admin@contoso.com\"],\"contactRoles\":[\"Owner\"]}}"
+
+# Delete a budget
+az consumption budget delete --budget-name "<name>"
+```
+
+### Forecast support via cost queries
+
+```bash
+# Month-to-date actual cost (use to compare against budget amount)
+az costmanagement query --type ActualCost --timeframe MonthToDate \
+  --scope "subscriptions/<sub-id>" \
+  --dataset-grouping name=ResourceGroup type=Dimension --output table
+```
+
 ## Validation checklist
 - Command name is `azure-budget-check` and matches file name.
 - Thresholds are numeric percentages and sorted ascending.

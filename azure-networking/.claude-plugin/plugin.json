@@ -1,7 +1,7 @@
 {
   "name": "azure-networking",
   "version": "1.0.0",
-  "description": "Azure Networking — VNets, subnets, NSGs, Load Balancers, Front Door, DNS zones, VPN gateways, and Private Link",
+  "description": "Azure Networking — VNets, subnets, NSGs, Load Balancers, Application Gateway, Front Door, DNS zones, VPN gateways, ExpressRoute, Azure Firewall, Route Tables, Bastion, and Private Link",
   "author": {
     "name": "Markus Ahling"
   },
@@ -14,10 +14,16 @@
     "load-balancer",
     "front-door",
     "dns",
-    "vpn"
+    "vpn",
+    "firewall",
+    "application-gateway",
+    "bastion",
+    "expressroute",
+    "route-table",
+    "waf"
   ],
   "skills": [
-    "./skills/azure-networking/SKILL.md"
+    "./skills/azure-networking/"
   ],
   "agents": [
     "./agents/networking-reviewer.md"
@@ -28,6 +34,13 @@
     "./commands/nsg-configure.md",
     "./commands/lb-create.md",
     "./commands/dns-manage.md",
-    "./commands/private-endpoint-create.md"
+    "./commands/private-endpoint-create.md",
+    "./commands/firewall-manage.md",
+    "./commands/appgw-manage.md",
+    "./commands/frontdoor-manage.md",
+    "./commands/vpn-manage.md",
+    "./commands/route-table-manage.md",
+    "./commands/bastion-manage.md",
+    "./commands/expressroute-manage.md"
   ]
 }

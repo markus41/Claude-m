@@ -56,6 +56,24 @@ Removed:
 2 members removed, 1 error
 ```
 
+## Azure CLI Alternative
+
+```bash
+# Remove a member
+az ad group member remove --group "SG-DevTeam-Prod" --member-id <user-object-id>
+```
+
+To also remove as owner:
+
+```bash
+# List current owners to find the owner object ID
+az ad group owner list --group "SG-DevTeam-Prod" --query "[].id" --output tsv
+
+# Remove via az rest (no direct az ad command for owner removal)
+az rest --method DELETE \
+  --url "https://graph.microsoft.com/v1.0/groups/<group-id>/owners/<owner-id>/\$ref"
+```
+
 ## Error Handling
 
 | Code | Fix |

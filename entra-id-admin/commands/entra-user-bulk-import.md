@@ -130,6 +130,24 @@ Failed rows:
 Results saved: users-import-results-20260301.csv
 ```
 
+## Azure CLI Alternative
+
+For small bulk imports, loop `az ad user create` over CSV rows:
+
+```bash
+# Create users from CSV using a bash loop
+while IFS=, read -r name upn dept title location; do
+  az ad user create \
+    --display-name "$name" \
+    --user-principal-name "$upn" \
+    --password "TempP@ss$(openssl rand -hex 4)!" \
+    --force-change-password-next-sign-in true \
+    2>&1 | tee -a import-results.log
+done < <(tail -n +2 users.csv)
+```
+
+> **Note**: For large imports (>20 users), the Graph `$batch` API is significantly faster and handles throttling better. Use `az ad user create` for small batches or one-off scripting.
+
 ## Error Handling
 
 | Error | Action |

@@ -85,6 +85,29 @@ Current licenses:
 ─────────────────────────────────────────────────────────────────
 ```
 
+## Azure CLI Alternative
+
+License assignment requires Graph API. Use `az rest`:
+
+```bash
+# Set usage location (required before license assignment)
+az ad user update --id jane.smith@contoso.com --usage-location US
+
+# List available SKUs in the tenant
+az rest --method GET \
+  --url "https://graph.microsoft.com/v1.0/subscribedSkus" \
+  --query "value[].{SKU:skuPartNumber, ID:skuId, Consumed:consumedUnits, Total:prepaidUnits.enabled}" \
+  --output table
+
+# Assign a license
+az rest --method POST \
+  --url "https://graph.microsoft.com/v1.0/users/<user-id>/assignLicense" \
+  --body '{
+    "addLicenses": [{"skuId": "05e9a617-0261-4cee-bb44-138d3ef5d965", "disabledPlans": []}],
+    "removeLicenses": []
+  }'
+```
+
 ## Error Handling
 
 | Code | Fix |

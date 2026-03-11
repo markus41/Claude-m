@@ -191,6 +191,31 @@ POST /$batch
 
 Limits: 20 requests per batch. Each sub-request can independently succeed or fail. Check each response's `status` field (201 = created, 4xx = error).
 
+## Azure CLI Quick Reference — Users
+
+```bash
+# Create user
+az ad user create --display-name "Jane Smith" \
+  --user-principal-name jane.smith@contoso.com \
+  --password "<pass>" --force-change-password-next-sign-in true
+
+# List users
+az ad user list --query "[].{UPN:userPrincipalName, Name:displayName, ID:id}" -o table
+
+# Show user
+az ad user show --id jane.smith@contoso.com
+
+# Update user
+az ad user update --id jane.smith@contoso.com \
+  --display-name "Jane M. Smith" --job-title "Senior Engineer"
+
+# Delete user (soft delete)
+az ad user delete --id jane.smith@contoso.com
+
+# Get user's group/role memberships
+az ad user get-member-objects --id jane.smith@contoso.com --security-enabled-only false
+```
+
 ## Error Codes — User Operations
 
 | Code | innerError | Fix |

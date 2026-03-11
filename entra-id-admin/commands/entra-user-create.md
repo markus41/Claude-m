@@ -128,6 +128,34 @@ MFA:            Registration required on next sign-in ✓
 
 Warn: "IMPORTANT: Copy and securely deliver the temporary password. It will not be shown again."
 
+## Azure CLI Alternative
+
+Create the same user with `az ad user create`:
+
+```bash
+az ad user create \
+  --display-name "Jane Smith" \
+  --user-principal-name jane.smith@contoso.com \
+  --password "Pw-Xk8mN2qR-7391!" \
+  --force-change-password-next-sign-in true
+```
+
+To set additional properties after creation:
+
+```bash
+az ad user update --id jane.smith@contoso.com \
+  --department "Engineering" \
+  --job-title "Software Engineer"
+```
+
+Assign a manager (no direct `az ad` command — use `az rest`):
+
+```bash
+az rest --method PUT \
+  --url "https://graph.microsoft.com/v1.0/users/<new-user-id>/manager/\$ref" \
+  --body '{"@odata.id":"https://graph.microsoft.com/v1.0/users/<manager-id>"}'
+```
+
 ## Error Handling
 
 | Code | innerError | Fix |

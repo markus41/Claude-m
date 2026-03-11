@@ -146,6 +146,34 @@ POST /directory/deletedItems/{groupId}/restore
 DELETE /directory/deletedItems/{groupId}           → permanent
 ```
 
+## Azure CLI Quick Reference — Groups
+
+```bash
+# Create security group
+az ad group create --display-name "SG-DevTeam" --mail-nickname "sg-devteam" \
+  --description "Dev team security group"
+
+# Create M365 group
+az ad group create --display-name "Project Phoenix" --mail-nickname "project-phoenix" \
+  --group-types Unified --mail-enabled true
+
+# List / show / delete
+az ad group list --query "[].{Name:displayName, ID:id, Type:groupTypes}" -o table
+az ad group show --group "SG-DevTeam"
+az ad group delete --group "SG-DevTeam"
+
+# Member management
+az ad group member add --group "SG-DevTeam" --member-id <user-object-id>
+az ad group member remove --group "SG-DevTeam" --member-id <user-object-id>
+az ad group member list --group "SG-DevTeam" \
+  --query "[].{Name:displayName, UPN:userPrincipalName}" -o table
+az ad group member check --group "SG-DevTeam" --member-id <user-object-id>
+
+# Owner management
+az ad group owner add --group "SG-DevTeam" --owner-object-id <owner-id>
+az ad group owner list --group "SG-DevTeam"
+```
+
 ## Useful Group Filters
 
 ```

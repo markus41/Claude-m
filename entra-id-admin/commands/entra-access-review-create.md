@@ -117,6 +117,40 @@ Reviewers will receive email notifications.
 Members with no reviewer (no manager) will need fallback reviewer assignment.
 ```
 
+## Azure CLI Alternative
+
+Access review management requires `az rest` with Graph API:
+
+```bash
+# List existing access reviews
+az rest --method GET \
+  --url "https://graph.microsoft.com/v1.0/identityGovernance/accessReviews/definitions" \
+  --query "value[].{Name:displayName, ID:id, Status:status}" --output table
+
+# Create a group membership access review
+az rest --method POST \
+  --url "https://graph.microsoft.com/v1.0/identityGovernance/accessReviews/definitions" \
+  --body '{
+    "displayName": "Quarterly Review - SG-DevTeam",
+    "scope": {
+      "@odata.type": "#microsoft.graph.accessReviewQueryScope",
+      "query": "/groups/<group-id>/members",
+      "queryType": "MicrosoftGraph"
+    },
+    "reviewers": [{"@odata.type": "#microsoft.graph.requestorManager", "managerLevel": 1}],
+    "settings": {
+      "mailNotificationsEnabled": true,
+      "defaultDecision": "Deny",
+      "autoApplyDecisionsEnabled": true,
+      "instanceDurationInDays": 14,
+      "recurrence": {
+        "pattern": {"type": "absoluteMonthly", "interval": 3, "dayOfMonth": 1},
+        "range": {"type": "noEnd", "startDate": "2026-04-01"}
+      }
+    }
+  }'
+```
+
 ## Error Handling
 
 | Code | Fix |

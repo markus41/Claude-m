@@ -36,6 +36,38 @@ Run the aks pod failure scan workflow for azure-kubernetes.
 | Primary workflow query | GET | `/aks-pod-failure-scan` |
 | Follow-up verification | GET | `/azure-kubernetes/verification` |
 
+## Azure CLI Commands
+
+```bash
+# Quick cluster health check
+az aks show --name <cluster> --resource-group <rg> \
+  --query "{PowerState:powerState.code, ProvisioningState:provisioningState, KubernetesVersion:kubernetesVersion, NodeCount:agentPoolProfiles[].count}"
+
+# Run kubectl diagnostics without local kubeconfig
+az aks command invoke --name <cluster> --resource-group <rg> --command "kubectl get pods -A"
+az aks command invoke --name <cluster> --resource-group <rg> --command "kubectl get events --sort-by=.lastTimestamp -A"
+
+# Pod failure logs via Container Insights
+az monitor log-analytics query --workspace <workspace-id> --analytics-query \
+  "ContainerLog | where LogEntry contains 'error' or LogEntry contains 'fatal' | where TimeGenerated > ago(1h) | project TimeGenerated, ContainerID, LogEntry | order by TimeGenerated desc | take 50" --output table
+
+# Pod inventory by status
+az monitor log-analytics query --workspace <workspace-id> --analytics-query \
+  "KubePodInventory | where ClusterName == '<cluster>' | where Namespace != 'kube-system' | summarize count() by Name, PodStatus | order by count_ desc" --output table
+
+# Node diagnostics
+az monitor log-analytics query --workspace <workspace-id> --analytics-query \
+  "KubeNodeInventory | where ClusterName == '<cluster>' | project Computer, Status, KubeletVersion, LastTransitionTimeReady | order by Status" --output table
+
+# Create metric alert for pod restart spikes
+az monitor metrics alert create --resource-group <rg> --name "aks-pod-failures" \
+  --scopes <cluster-resource-id> --condition "total restartingContainerCount > 5" \
+  --window-size PT15M --evaluation-frequency PT5M --severity 2 --action <action-group-id>
+
+# Collect cluster diagnostics to storage
+az aks kollect --name <cluster> --resource-group <rg> --storage-account <sa-name>
+```
+
 ## Output
 
 - Markdown summary with findings, actions, and unresolved risks.

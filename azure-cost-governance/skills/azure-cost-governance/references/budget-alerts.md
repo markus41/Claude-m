@@ -139,6 +139,31 @@ az consumption budget delete \
   --resource-group rg-production
 ```
 
+### Additional budget CLI commands
+
+```bash
+# Subscription-level budget (no --resource-group)
+az consumption budget create --budget-name "<name>" \
+  --amount 10000 --time-grain Monthly \
+  --start-date 2026-01-01 --end-date 2026-12-31 --category Cost
+
+# Budget with inline JSON notifications
+az consumption budget create --budget-name "<name>" --resource-group <rg> \
+  --amount 5000 --time-grain Monthly \
+  --start-date 2026-01-01 --end-date 2026-12-31 --category Cost \
+  --notifications "{\"Actual_GreaterThan_80_Percent\":{\"enabled\":true,\"operator\":\"GreaterThan\",\"threshold\":80,\"contactEmails\":[\"admin@contoso.com\"],\"contactRoles\":[\"Owner\"]}}"
+
+# List budgets at subscription level
+az consumption budget list --output table
+
+# Show specific budget
+az consumption budget show --budget-name "<name>"
+az consumption budget show --budget-name "<name>" --resource-group <rg>
+
+# Delete budget
+az consumption budget delete --budget-name "<name>"
+```
+
 ## Action Group Configuration
 
 ```bash

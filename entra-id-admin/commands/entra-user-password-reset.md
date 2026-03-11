@@ -78,6 +78,22 @@ IMPORTANT: This password will not be shown again.
 Deliver it to the user via a secure channel (phone, secure message).
 ```
 
+## Azure CLI Alternative
+
+```bash
+# Reset password (auto-generated, force change on next sign-in)
+az ad user update --id jane.smith@contoso.com \
+  --password "NewStr0ng!Pass#2026" \
+  --force-change-password-next-sign-in true
+```
+
+Session revocation requires `az rest`:
+
+```bash
+az rest --method POST \
+  --url "https://graph.microsoft.com/v1.0/users/<user-id>/revokeSignInSessions"
+```
+
 ## Error Handling
 
 | Code | Fix |

@@ -99,6 +99,27 @@ Missing permissions (if any):
 ─────────────────────────────────────────────────────────────────
 ```
 
+## Azure CLI Quick Verification
+
+```bash
+# Check current login context
+az account show --query "{tenantId:tenantId, user:user.name, cloud:environmentName}" -o json
+
+# Get a Graph token to verify access
+az account get-access-token --resource https://graph.microsoft.com --query accessToken -o tsv
+
+# Quick test: list tenant organization details
+az rest --method GET \
+  --url "https://graph.microsoft.com/v1.0/organization?\$select=id,displayName,verifiedDomains" \
+  --query "value[0].{Name:displayName, Domains:verifiedDomains[].name}"
+
+# List all app registrations (verifies Entra read access)
+az ad app list --query "[].{Name:displayName, AppId:appId}" --output table --all
+
+# List all service principals
+az ad sp list --query "[].{Name:displayName, AppId:appId}" --output table --all
+```
+
 ## Error Handling
 
 | Error | Resolution |

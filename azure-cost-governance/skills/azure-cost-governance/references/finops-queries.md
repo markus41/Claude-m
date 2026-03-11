@@ -346,6 +346,54 @@ echo "=== Services with Significant Month-over-Month Growth ==="
 # (Requires two query calls and comparison — implement in TypeScript above)
 ```
 
+### Additional CLI — Consumption Usage Details
+
+```bash
+# Current billing period usage (top 50 rows)
+az consumption usage list --top 50 --output table
+
+# Usage for a specific date range
+az consumption usage list --start-date 2026-01-01 --end-date 2026-01-31 --output table
+
+# Usage by resource group with JMESPath projection
+az consumption usage list --resource-group <rg> --top 100 \
+  --query "[].{Resource:instanceName, Cost:pretaxCost, Currency:currency}" --output table
+```
+
+### Additional CLI — Cost Exports for FinOps Reporting
+
+```bash
+# Create a daily scheduled export
+az costmanagement export create --name "<export-name>" \
+  --scope "subscriptions/<sub-id>" \
+  --storage-account-id "/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Storage/storageAccounts/<sa>" \
+  --storage-container exports --timeframe MonthToDate --type ActualCost \
+  --schedule-recurrence Daily --schedule-status Active \
+  --storage-directory "cost-reports"
+
+# List / show / run / delete exports
+az costmanagement export list --scope "subscriptions/<sub-id>" --output table
+az costmanagement export show --name "<export-name>" --scope "subscriptions/<sub-id>"
+az costmanagement export execute --name "<export-name>" --scope "subscriptions/<sub-id>"
+az costmanagement export delete --name "<export-name>" --scope "subscriptions/<sub-id>" --yes
+```
+
+### Additional CLI — Advisor and Reservation Analysis
+
+```bash
+# Cost recommendations with savings
+az advisor recommendation list --category Cost \
+  --query "[].{Impact:impact, Problem:shortDescription.problem, Solution:shortDescription.solution, Savings:extendedProperties.annualSavingsAmount}" \
+  --output table
+
+# Reservation recommendations (shared scope)
+az consumption reservation recommendation list --scope Shared --look-back-period Last30Days --output table
+
+# Reservation utilization summaries
+az consumption reservation summary list --reservation-order-id <order-id> \
+  --grain daily --start-date 2026-01-01 --end-date 2026-01-31 --output table
+```
+
 ## Cost Allocation and Showback Patterns
 
 ```bash

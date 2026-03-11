@@ -85,6 +85,24 @@ Partner overrides: 3 configured
 ─────────────────────────────────────────────────────────────────
 ```
 
+## Azure CLI Alternative
+
+```bash
+# View current authorization policy (invitation settings)
+az rest --method GET \
+  --url "https://graph.microsoft.com/v1.0/policies/authorizationPolicy" \
+  --query "{AllowInvitesFrom:allowInvitesFrom, GuestRoleId:guestUserRoleId}"
+
+# Update who can invite guests
+az rest --method PATCH \
+  --url "https://graph.microsoft.com/v1.0/policies/authorizationPolicy" \
+  --body '{"allowInvitesFrom":"adminsAndGuestInviters"}'
+
+# View cross-tenant access defaults
+az rest --method GET \
+  --url "https://graph.microsoft.com/v1.0/policies/crossTenantAccessPolicy/default"
+```
+
 ## Error Handling
 
 | Code | Fix |

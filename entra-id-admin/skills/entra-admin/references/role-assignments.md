@@ -118,6 +118,88 @@ GET /roleManagement/directory/resourceNamespaces
 GET /roleManagement/directory/resourceNamespaces/{id}/resourceActions
 ```
 
+## Azure CLI Quick Reference — Roles
+
+### Azure RBAC Roles (`az role`)
+
+```bash
+# Assign role at subscription scope
+az role assignment create --assignee jane.smith@contoso.com \
+  --role "Reader" --scope /subscriptions/<sub-id>
+
+# Assign at resource group scope
+az role assignment create --assignee jane.smith@contoso.com \
+  --role "Contributor" --resource-group <rg-name>
+
+# List assignments
+az role assignment list --assignee jane.smith@contoso.com --output table
+az role assignment list --scope /subscriptions/<sub-id> --output table
+
+# Remove assignment
+az role assignment delete --assignee jane.smith@contoso.com \
+  --role "Reader" --scope /subscriptions/<sub-id>
+
+# Search role definitions
+az role definition list --query "[?contains(roleName,'Contributor')]" --output table
+az role definition list --custom-role-only true --output table
+```
+
+### Entra ID Directory Roles (`az rest`)
+
+```bash
+# List activated directory roles
+az rest --method GET \
+  --url "https://graph.microsoft.com/v1.0/directoryRoles" \
+  --query "value[].{Role:displayName, ID:id}" --output table
+
+# Activate a role template
+az rest --method POST \
+  --url "https://graph.microsoft.com/v1.0/directoryRoles" \
+  --body '{"roleTemplateId":"<template-id>"}'
+
+# Assign user to directory role
+az rest --method POST \
+  --url "https://graph.microsoft.com/v1.0/directoryRoles/<role-id>/members/\$ref" \
+  --body '{"@odata.id":"https://graph.microsoft.com/v1.0/users/<user-id>"}'
+
+# Remove user from directory role
+az rest --method DELETE \
+  --url "https://graph.microsoft.com/v1.0/directoryRoles/<role-id>/members/<user-id>/\$ref"
+```
+
+### App Registrations and Service Principals (`az ad`)
+
+```bash
+# Create app registration
+az ad app create --display-name "My API" --sign-in-audience AzureADMyOrg
+
+# Manage app credentials
+az ad app credential reset --id <app-id> --append --display-name "CLI cred" --years 1
+az ad app credential list --id <app-id> --output table
+az ad app credential delete --id <app-id> --key-id <key-id>
+
+# Federated credentials (OIDC)
+az ad app federated-credential create --id <app-id> --parameters @credential.json
+az ad app federated-credential list --id <app-id>
+
+# API permissions
+az ad app permission add --id <app-id> \
+  --api 00000003-0000-0000-c000-000000000000 \
+  --api-permissions e1fe6dd8-ba31-4d61-89e7-88639da4683d=Scope
+az ad app permission admin-consent --id <app-id>
+
+# Create service principal from app
+az ad sp create --id <app-id>
+
+# Create SP with RBAC in one step
+az ad sp create-for-rbac --name "deploy-sp" \
+  --role Contributor --scopes /subscriptions/<sub-id>
+
+# SP credential management
+az ad sp credential reset --id <sp-id> --append --display-name "Rotation" --years 1
+az ad sp credential list --id <sp-id>
+```
+
 ## Group-Assignable Roles
 
 Mark a security group as role-assignable (set at creation — cannot be changed after):

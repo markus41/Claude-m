@@ -75,6 +75,31 @@ For orphaned groups (`--no-owners`):
   Action: Assign an owner or delete unused groups.
 ```
 
+## Azure CLI Alternative
+
+```bash
+# List all groups
+az ad group list \
+  --query "[].{Name:displayName, ID:id, Type:groupTypes}" \
+  --output table
+
+# Filter by display name
+az ad group list --display-name "SG-Dev" --output table
+
+# Show a specific group
+az ad group show --group "SG-DevTeam-Prod"
+
+# List members of a group
+az ad group member list --group "SG-DevTeam-Prod" \
+  --query "[].{Name:displayName, UPN:userPrincipalName}" --output table
+
+# Check if a user is a member
+az ad group member check --group "SG-DevTeam-Prod" --member-id <user-object-id>
+
+# List group owners
+az ad group owner list --group "SG-DevTeam-Prod"
+```
+
 ## Error Handling
 
 | Code | Fix |

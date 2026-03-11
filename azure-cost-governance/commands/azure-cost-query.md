@@ -72,6 +72,62 @@ Return in this order:
    ```
 3. `ValidationNotes` (permissions, missing inputs, and confidence).
 
+## Azure CLI Quick Reference
+
+Use these commands as an alternative to building REST query JSON manually.
+
+### Cost Management queries
+
+```bash
+# Costs grouped by resource group — current month
+az costmanagement query --type ActualCost --timeframe MonthToDate \
+  --scope "subscriptions/<sub-id>" \
+  --dataset-grouping name=ResourceGroup type=Dimension --output table
+
+# Costs grouped by service — custom date range
+az costmanagement query --type ActualCost --timeframe Custom \
+  --time-period from=2026-02-01 to=2026-03-01 \
+  --scope "subscriptions/<sub-id>" \
+  --dataset-grouping name=ServiceName type=Dimension --output table
+
+# Amortized cost by resource (reservation spread)
+az costmanagement query --type AmortizedCost --timeframe MonthToDate \
+  --scope "subscriptions/<sub-id>" \
+  --dataset-grouping name=ResourceId type=Dimension --output table
+```
+
+### Usage details (consumption)
+
+```bash
+# Current billing period usage
+az consumption usage list --top 50 --output table
+
+# Usage for a specific date range
+az consumption usage list --start-date 2026-01-01 --end-date 2026-01-31 --output table
+
+# Usage by resource group with projection
+az consumption usage list --resource-group <rg> --top 100 \
+  --query "[].{Resource:instanceName, Cost:pretaxCost, Currency:currency}" --output table
+```
+
+### Cost exports
+
+```bash
+# Create a daily scheduled export
+az costmanagement export create --name "<export-name>" \
+  --scope "subscriptions/<sub-id>" \
+  --storage-account-id "/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Storage/storageAccounts/<sa>" \
+  --storage-container exports --timeframe MonthToDate --type ActualCost \
+  --schedule-recurrence Daily --schedule-status Active \
+  --storage-directory "cost-reports"
+
+# List / show / run / delete exports
+az costmanagement export list --scope "subscriptions/<sub-id>" --output table
+az costmanagement export show --name "<export-name>" --scope "subscriptions/<sub-id>"
+az costmanagement export execute --name "<export-name>" --scope "subscriptions/<sub-id>"
+az costmanagement export delete --name "<export-name>" --scope "subscriptions/<sub-id>" --yes
+```
+
 ## Validation checklist
 - Command name is `azure-cost-query` and matches file name.
 - Scope is explicit and valid.

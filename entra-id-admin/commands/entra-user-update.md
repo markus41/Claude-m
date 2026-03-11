@@ -82,6 +82,23 @@ If the user is on-premises synced, add:
   Make these changes in on-premises Active Directory instead.
 ```
 
+## Azure CLI Alternative
+
+```bash
+# Update user properties
+az ad user update --id jane.smith@contoso.com \
+  --display-name "Jane M. Smith" \
+  --job-title "Senior Engineer"
+
+# Disable a user
+az ad user update --id jane.smith@contoso.com --account-enabled false
+
+# Re-enable a user
+az ad user update --id jane.smith@contoso.com --account-enabled true
+```
+
+> **Note**: `az ad user update` supports `--display-name`, `--job-title`, `--mail-nickname`, `--account-enabled`, `--force-change-password-next-sign-in`, and `--password`. For properties not directly supported by `az ad user update`, use `az rest --method PATCH`.
+
 ## Error Handling
 
 | Code | Message | Fix |

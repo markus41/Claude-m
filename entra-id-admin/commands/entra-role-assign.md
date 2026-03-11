@@ -72,6 +72,41 @@ Assignment:  <assignment-id>
   /entra-id-admin:entra-pim-assign --role "User Administrator" --principal jane.smith@contoso.com
 ```
 
+## Azure CLI Alternative
+
+For **Azure RBAC** role assignments (subscription/resource scope):
+
+```bash
+# Assign role at subscription scope
+az role assignment create --assignee jane.smith@contoso.com \
+  --role "Reader" --scope /subscriptions/<sub-id>
+
+# Assign role at resource group scope
+az role assignment create --assignee jane.smith@contoso.com \
+  --role "Contributor" --resource-group <rg-name>
+```
+
+For **Entra ID directory roles** (tenant scope), use `az rest`:
+
+```bash
+# List directory roles
+az rest --method GET \
+  --url "https://graph.microsoft.com/v1.0/directoryRoles" \
+  --query "value[].{Role:displayName, ID:id}" --output table
+
+# Activate a role template (required before first assignment)
+az rest --method POST \
+  --url "https://graph.microsoft.com/v1.0/directoryRoles" \
+  --body '{"roleTemplateId":"<template-id>"}'
+
+# Assign user to a directory role
+az rest --method POST \
+  --url "https://graph.microsoft.com/v1.0/directoryRoles/<role-id>/members/\$ref" \
+  --body '{"@odata.id":"https://graph.microsoft.com/v1.0/users/<user-id>"}'
+```
+
+> **Note**: `az role assignment` manages Azure RBAC (subscriptions, resource groups, resources). Entra ID directory role assignments (Global Admin, User Admin, etc.) require `az rest` with the Graph API.
+
 ## Error Handling
 
 | Code | Fix |

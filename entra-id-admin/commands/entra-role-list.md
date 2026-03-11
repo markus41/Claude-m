@@ -86,6 +86,39 @@ Tenant:  contoso.onmicrosoft.com  |  Total active assignments: 24
 ⚠ 2 permanent Global Administrators — consider moving to PIM eligible assignments
 ```
 
+## Azure CLI Alternative
+
+For **Azure RBAC** assignments:
+
+```bash
+# List all role assignments for a user
+az role assignment list --assignee jane.smith@contoso.com --output table
+
+# List assignments at a scope
+az role assignment list --scope /subscriptions/<sub-id> --output table
+
+# List all role definitions (built-in + custom)
+az role definition list \
+  --query "[?contains(roleName,'Contributor')]" --output table
+
+# List custom roles only
+az role definition list --custom-role-only true --output table
+```
+
+For **Entra ID directory roles**:
+
+```bash
+# List activated directory roles and their members
+az rest --method GET \
+  --url "https://graph.microsoft.com/v1.0/directoryRoles" \
+  --query "value[].{Role:displayName, ID:id}" --output table
+
+# List members of a specific directory role
+az rest --method GET \
+  --url "https://graph.microsoft.com/v1.0/directoryRoles/<role-id>/members" \
+  --query "value[].{Name:displayName, UPN:userPrincipalName}" --output table
+```
+
 ## Error Handling
 
 | Code | Fix |

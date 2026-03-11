@@ -95,6 +95,27 @@ Account Status:  ENABLED — sign-in allowed
 ─────────────────────────────────────────────────────────────────
 ```
 
+## Azure CLI Alternative
+
+```bash
+# Disable user
+az ad user update --id jane.smith@contoso.com --account-enabled false
+
+# Re-enable user
+az ad user update --id jane.smith@contoso.com --account-enabled true
+
+# Delete user (soft delete)
+az ad user delete --id jane.smith@contoso.com
+```
+
+Revoking sessions and removing licenses requires Graph API (`az rest`):
+
+```bash
+# Revoke all sessions
+az rest --method POST \
+  --url "https://graph.microsoft.com/v1.0/users/<user-id>/revokeSignInSessions"
+```
+
 ## Error Handling
 
 | Code | Fix |

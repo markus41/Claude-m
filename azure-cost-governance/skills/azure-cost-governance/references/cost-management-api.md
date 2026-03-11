@@ -317,6 +317,66 @@ az costmanagement export run \
   --scope "/subscriptions/$SUBSCRIPTION_ID"
 ```
 
+## Comprehensive Azure CLI Patterns
+
+### Cost queries (az costmanagement query)
+
+```bash
+# Costs by resource group — current month
+az costmanagement query --type ActualCost --timeframe MonthToDate \
+  --scope "subscriptions/<sub-id>" \
+  --dataset-grouping name=ResourceGroup type=Dimension --output table
+
+# Costs by service — custom date range
+az costmanagement query --type ActualCost --timeframe Custom \
+  --time-period from=2026-02-01 to=2026-03-01 \
+  --scope "subscriptions/<sub-id>" \
+  --dataset-grouping name=ServiceName type=Dimension --output table
+
+# Amortized cost by resource — month to date
+az costmanagement query --type AmortizedCost --timeframe MonthToDate \
+  --scope "subscriptions/<sub-id>" \
+  --dataset-grouping name=ResourceId type=Dimension --output table
+```
+
+### Usage details (az consumption usage)
+
+```bash
+# Current billing period (top 50 rows)
+az consumption usage list --top 50 --output table
+
+# Specific date range
+az consumption usage list --start-date 2026-01-01 --end-date 2026-01-31 --output table
+
+# Usage by resource group with JMESPath projection
+az consumption usage list --resource-group <rg> --top 100 \
+  --query "[].{Resource:instanceName, Cost:pretaxCost, Currency:currency}" --output table
+```
+
+### Cost exports — full lifecycle (az costmanagement export)
+
+```bash
+# Create a daily scheduled export to Storage
+az costmanagement export create --name "<export-name>" \
+  --scope "subscriptions/<sub-id>" \
+  --storage-account-id "/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Storage/storageAccounts/<sa>" \
+  --storage-container exports --timeframe MonthToDate --type ActualCost \
+  --schedule-recurrence Daily --schedule-status Active \
+  --storage-directory "cost-reports"
+
+# List exports
+az costmanagement export list --scope "subscriptions/<sub-id>" --output table
+
+# Show export details
+az costmanagement export show --name "<export-name>" --scope "subscriptions/<sub-id>"
+
+# Run export on demand
+az costmanagement export execute --name "<export-name>" --scope "subscriptions/<sub-id>"
+
+# Delete export
+az costmanagement export delete --name "<export-name>" --scope "subscriptions/<sub-id>" --yes
+```
+
 ## Error Codes
 
 | Code | Meaning | Remediation |

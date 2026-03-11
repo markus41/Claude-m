@@ -53,6 +53,16 @@ triggers:
   - entitlement management
   - access review
   - recertification
+  - az ad user
+  - az ad group
+  - az ad app
+  - az ad sp
+  - az role assignment
+  - az rest graph
+  - app registration
+  - service principal
+  - federated credential
+  - client secret rotation
 ---
 
 # Entra ID Administration
@@ -412,6 +422,178 @@ POST /identityGovernance/entitlementManagement/accessPackages
 ```
 
 See [`references/entitlement-management.md`](./references/entitlement-management.md) for assignment policies, approval flows, access reviews, and auto-assignment policies.
+
+---
+
+## Azure CLI Reference
+
+All operations above can also be performed using Azure CLI (`az ad`, `az role`, `az rest`). CLI commands are useful for scripting, CI/CD pipelines, and environments without Graph SDK access.
+
+**Prerequisites**: `az login` with sufficient Entra ID role. Install extensions if prompted.
+
+### User Management (CLI)
+
+```bash
+# Create user
+az ad user create --display-name "Jane Smith" \
+  --user-principal-name jane.smith@contoso.com \
+  --password "<strong-password>" \
+  --force-change-password-next-sign-in true
+
+# List users (tabular)
+az ad user list \
+  --query "[].{UPN:userPrincipalName, DisplayName:displayName, ID:id}" \
+  --output table
+
+# Show single user
+az ad user show --id jane.smith@contoso.com
+
+# Update user properties
+az ad user update --id jane.smith@contoso.com \
+  --display-name "Jane M. Smith" --job-title "Senior Engineer"
+
+# Delete user (soft delete — 30-day recovery)
+az ad user delete --id jane.smith@contoso.com
+
+# Get groups and roles the user belongs to
+az ad user get-member-objects --id jane.smith@contoso.com \
+  --security-enabled-only false
+```
+
+### Group Management (CLI)
+
+```bash
+# Create security group
+az ad group create --display-name "SG-DevTeam-Prod" \
+  --mail-nickname "sg-devteam-prod" \
+  --description "Production dev team security group"
+
+# Create M365 group (Teams-capable)
+az ad group create --display-name "Project Phoenix" \
+  --mail-nickname "project-phoenix" \
+  --group-types Unified --mail-enabled true
+
+# List groups
+az ad group list \
+  --query "[].{Name:displayName, ID:id, Type:groupTypes}" \
+  --output table
+
+# Show / delete group
+az ad group show --group "SG-DevTeam-Prod"
+az ad group delete --group "SG-DevTeam-Prod"
+
+# Member management
+az ad group member add --group "SG-DevTeam-Prod" --member-id <user-object-id>
+az ad group member remove --group "SG-DevTeam-Prod" --member-id <user-object-id>
+az ad group member list --group "SG-DevTeam-Prod" \
+  --query "[].{Name:displayName, UPN:userPrincipalName}" --output table
+az ad group member check --group "SG-DevTeam-Prod" --member-id <user-object-id>
+
+# Owner management
+az ad group owner add --group "SG-DevTeam-Prod" --owner-object-id <owner-id>
+az ad group owner list --group "SG-DevTeam-Prod"
+```
+
+### App Registrations (CLI)
+
+```bash
+# Create app registration
+az ad app create --display-name "My API App" --sign-in-audience AzureADMyOrg
+
+# List / show / delete
+az ad app list --display-name "My API App" --output table
+az ad app show --id <app-id>
+az ad app delete --id <app-id>
+
+# Update app
+az ad app update --id <app-id> --set displayName="My API App v2"
+
+# Credential management (client secrets)
+az ad app credential reset --id <app-id> --append \
+  --display-name "CLI credential" --years 1
+az ad app credential list --id <app-id> --output table
+az ad app credential delete --id <app-id> --key-id <key-id>
+
+# Federated credentials (OIDC for GitHub Actions, etc.)
+az ad app federated-credential create --id <app-id> --parameters @credential.json
+az ad app federated-credential list --id <app-id>
+
+# API permissions
+az ad app permission add --id <app-id> \
+  --api 00000003-0000-0000-c000-000000000000 \
+  --api-permissions e1fe6dd8-ba31-4d61-89e7-88639da4683d=Scope
+az ad app permission admin-consent --id <app-id>
+az ad app permission list --id <app-id> --output table
+```
+
+### Service Principals (CLI)
+
+```bash
+# Create SP from existing app registration
+az ad sp create --id <app-id>
+
+# Create SP with RBAC role assignment in one step
+az ad sp create-for-rbac --name "deploy-sp" \
+  --role Contributor --scopes /subscriptions/<sub-id>
+
+# List / show / delete
+az ad sp list --display-name "deploy-sp" --output table
+az ad sp show --id <sp-id>
+az ad sp delete --id <sp-id>
+
+# Credential rotation
+az ad sp credential reset --id <sp-id> --append \
+  --display-name "Rotation" --years 1
+az ad sp credential list --id <sp-id>
+```
+
+### Azure RBAC Role Assignments (CLI)
+
+```bash
+# Assign role at subscription scope
+az role assignment create --assignee jane.smith@contoso.com \
+  --role "Reader" --scope /subscriptions/<sub-id>
+
+# Assign role at resource group scope
+az role assignment create --assignee jane.smith@contoso.com \
+  --role "Contributor" --resource-group <rg-name>
+
+# List assignments for a principal
+az role assignment list --assignee jane.smith@contoso.com --output table
+
+# List assignments at a scope
+az role assignment list --scope /subscriptions/<sub-id> --output table
+
+# Remove assignment
+az role assignment delete --assignee jane.smith@contoso.com \
+  --role "Reader" --scope /subscriptions/<sub-id>
+
+# Search role definitions
+az role definition list \
+  --query "[?contains(roleName,'Contributor')]" --output table
+az role definition list --custom-role-only true --output table
+```
+
+### Entra ID Directory Roles (CLI via `az rest`)
+
+```bash
+# List activated directory roles
+az rest --method GET \
+  --url "https://graph.microsoft.com/v1.0/directoryRoles" \
+  --query "value[].{Role:displayName, ID:id}" --output table
+
+# Activate a role template (first-time activation)
+az rest --method POST \
+  --url "https://graph.microsoft.com/v1.0/directoryRoles" \
+  --body '{"roleTemplateId":"<template-id>"}'
+
+# Assign user to a directory role
+az rest --method POST \
+  --url "https://graph.microsoft.com/v1.0/directoryRoles/<role-id>/members/\$ref" \
+  --body '{"@odata.id":"https://graph.microsoft.com/v1.0/users/<user-id>"}'
+```
+
+> **Note**: `az ad` commands cover Entra ID (Azure AD) objects. For Azure resource RBAC, use `az role assignment`. For Entra directory roles not exposed by `az ad`, use `az rest` with the Graph API URL.
 
 ---
 

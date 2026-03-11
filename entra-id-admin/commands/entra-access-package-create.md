@@ -118,6 +118,31 @@ External:    Not visible to guests
 Request URL: https://myaccess.microsoft.com/#/access-packages/<package-id>
 ```
 
+## Azure CLI Alternative
+
+Entitlement management requires `az rest` with Graph API:
+
+```bash
+# List catalogs
+az rest --method GET \
+  --url "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/catalogs" \
+  --query "value[].{Name:displayName, ID:id}" --output table
+
+# Create a catalog
+az rest --method POST \
+  --url "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/catalogs" \
+  --body '{"displayName":"IT Resources","isExternallyVisible":false}'
+
+# Create an access package
+az rest --method POST \
+  --url "https://graph.microsoft.com/v1.0/identityGovernance/entitlementManagement/accessPackages" \
+  --body '{
+    "displayName": "Developer Tools",
+    "description": "GitHub, Dev Box, Azure Portal access",
+    "catalog": {"id": "<catalog-id>"}
+  }'
+```
+
 ## Error Handling
 
 | Code | Fix |

@@ -420,6 +420,149 @@ if (response.status === 429) {
 }
 ```
 
+## Azure CLI Reference
+
+The Azure CLI provides direct command-line access to cost management and consumption APIs. The commands below complement the REST API patterns above.
+
+### Prerequisites
+
+```bash
+# Sign in and set active subscription
+az login
+az account set --subscription "<sub-id>"
+
+# Verify required extensions are installed
+az extension add --name costmanagement --upgrade
+az extension add --name resource-graph --upgrade
+```
+
+### Budget Management (az consumption budget)
+
+```bash
+# Create a resource-group-scoped budget
+az consumption budget create --budget-name "<name>" --resource-group <rg> \
+  --amount 1000 --time-grain Monthly \
+  --start-date 2026-01-01 --end-date 2026-12-31 --category Cost
+
+# Create budget with notification thresholds
+az consumption budget create --budget-name "<name>" --resource-group <rg> \
+  --amount 5000 --time-grain Monthly \
+  --start-date 2026-01-01 --end-date 2026-12-31 --category Cost \
+  --notifications "{\"Actual_GreaterThan_80_Percent\":{\"enabled\":true,\"operator\":\"GreaterThan\",\"threshold\":80,\"contactEmails\":[\"admin@contoso.com\"],\"contactRoles\":[\"Owner\"]}}"
+
+# Subscription-level budget (omit --resource-group)
+az consumption budget create --budget-name "<name>" \
+  --amount 10000 --time-grain Monthly \
+  --start-date 2026-01-01 --end-date 2026-12-31 --category Cost
+
+# List budgets
+az consumption budget list --output table
+az consumption budget list --resource-group <rg> --output table
+
+# Show / delete budget
+az consumption budget show --budget-name "<name>"
+az consumption budget show --budget-name "<name>" --resource-group <rg>
+az consumption budget delete --budget-name "<name>"
+```
+
+### Usage Details (az consumption usage)
+
+```bash
+# Current billing period (top 50 rows)
+az consumption usage list --top 50 --output table
+
+# Specific date range
+az consumption usage list --start-date 2026-01-01 --end-date 2026-01-31 --output table
+
+# Usage by resource group with JMESPath projection
+az consumption usage list --resource-group <rg> --top 100 \
+  --query "[].{Resource:instanceName, Cost:pretaxCost, Currency:currency}" --output table
+```
+
+### Cost Management Queries (az costmanagement query)
+
+```bash
+# Costs by resource group — current month
+az costmanagement query --type ActualCost --timeframe MonthToDate \
+  --scope "subscriptions/<sub-id>" \
+  --dataset-grouping name=ResourceGroup type=Dimension --output table
+
+# Costs by service — custom date range
+az costmanagement query --type ActualCost --timeframe Custom \
+  --time-period from=2026-02-01 to=2026-03-01 \
+  --scope "subscriptions/<sub-id>" \
+  --dataset-grouping name=ServiceName type=Dimension --output table
+
+# Amortized cost by resource — month to date
+az costmanagement query --type AmortizedCost --timeframe MonthToDate \
+  --scope "subscriptions/<sub-id>" \
+  --dataset-grouping name=ResourceId type=Dimension --output table
+```
+
+### Cost Exports (az costmanagement export)
+
+```bash
+# Create a daily scheduled export to Storage
+az costmanagement export create --name "<export-name>" \
+  --scope "subscriptions/<sub-id>" \
+  --storage-account-id "/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Storage/storageAccounts/<sa>" \
+  --storage-container exports --timeframe MonthToDate --type ActualCost \
+  --schedule-recurrence Daily --schedule-status Active \
+  --storage-directory "cost-reports"
+
+# List / show / run / delete exports
+az costmanagement export list --scope "subscriptions/<sub-id>" --output table
+az costmanagement export show --name "<export-name>" --scope "subscriptions/<sub-id>"
+az costmanagement export execute --name "<export-name>" --scope "subscriptions/<sub-id>"
+az costmanagement export delete --name "<export-name>" --scope "subscriptions/<sub-id>" --yes
+```
+
+### Azure Advisor Cost Recommendations
+
+```bash
+# List cost recommendations
+az advisor recommendation list --category Cost --output table
+
+# Detailed view with savings estimates
+az advisor recommendation list --category Cost \
+  --query "[].{Impact:impact, Problem:shortDescription.problem, Solution:shortDescription.solution, Savings:extendedProperties.annualSavingsAmount}" \
+  --output table
+
+# Refresh recommendations with lower CPU threshold
+az advisor configuration update --low-cpu-threshold 5
+```
+
+### Resource Graph — Idle Resource Detection
+
+```bash
+# Unattached managed disks
+az graph query -q "Resources | where type == 'microsoft.compute/disks' | where properties.diskState == 'Unattached' | project name, resourceGroup, sku.name, properties.diskSizeGB, location" --output table
+
+# Deallocated VMs (still incurring disk costs)
+az graph query -q "Resources | where type == 'microsoft.compute/virtualMachines' | where properties.extended.instanceView.powerState.code == 'PowerState/deallocated' | project name, resourceGroup, location" --output table
+
+# Empty App Service Plans (no hosted apps)
+az graph query -q "Resources | where type == 'microsoft.web/serverfarms' | where properties.numberOfSites == 0 | project name, resourceGroup, sku.name, location" --output table
+
+# Public IPs with no association
+az graph query -q "Resources | where type == 'microsoft.network/publicipaddresses' | where isnull(properties.ipConfiguration) | project name, resourceGroup, properties.ipAddress, location" --output table
+```
+
+### Reservation Recommendations and Utilization
+
+```bash
+# Reservation recommendations (shared scope, 30-day lookback)
+az consumption reservation recommendation list --scope Shared --look-back-period Last30Days --output table
+
+# Reservation usage details
+az consumption reservation detail list --reservation-order-id <order-id> \
+  --start-date 2026-01-01 --end-date 2026-01-31 --output table
+
+# Reservation utilization summaries (daily grain)
+az consumption reservation summary list --reservation-order-id <order-id> \
+  --grain daily --start-date 2026-01-01 --end-date 2026-01-31 --output table
+```
+
 ## Decision Tree
 
 1. Need to initialize scope/timeframe/currency/dimensions before analysis? → `setup`

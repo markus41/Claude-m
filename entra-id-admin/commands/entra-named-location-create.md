@@ -87,6 +87,39 @@ Unknown:   Excluded
 ─────────────────────────────────────────────────────────────────
 ```
 
+## Azure CLI Alternative
+
+Named locations require `az rest` with Graph API:
+
+```bash
+# List existing named locations
+az rest --method GET \
+  --url "https://graph.microsoft.com/v1.0/identity/conditionalAccess/namedLocations" \
+  --query "value[].{Name:displayName, ID:id}" --output table
+
+# Create IP-based named location
+az rest --method POST \
+  --url "https://graph.microsoft.com/v1.0/identity/conditionalAccess/namedLocations" \
+  --body '{
+    "@odata.type": "#microsoft.graph.ipNamedLocation",
+    "displayName": "Contoso HQ",
+    "isTrusted": true,
+    "ipRanges": [
+      {"@odata.type": "#microsoft.graph.iPv4CidrRange", "cidrAddress": "203.0.113.0/24"}
+    ]
+  }'
+
+# Create country-based named location
+az rest --method POST \
+  --url "https://graph.microsoft.com/v1.0/identity/conditionalAccess/namedLocations" \
+  --body '{
+    "@odata.type": "#microsoft.graph.countryNamedLocation",
+    "displayName": "Allowed Countries",
+    "countriesAndRegions": ["US","GB","DE"],
+    "includeUnknownCountriesAndRegions": false
+  }'
+```
+
 ## Error Handling
 
 | Code | Fix |
