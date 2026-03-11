@@ -1960,6 +1960,29 @@
         "figma"
       ],
       "strict": true
+    },
+    {
+      "name": "graph-investigator",
+      "source": {
+        "source": "git-subdir",
+        "url": "markus41/Claude-m",
+        "path": "graph-investigator"
+      },
+      "description": "Microsoft Graph Investigator — unified user investigation, mailbox forensics, activity timelines, device correlation, and forensic reporting across all M365 services",
+      "category": "security",
+      "tags": [
+        "microsoft",
+        "graph",
+        "investigation",
+        "forensic",
+        "audit",
+        "email",
+        "timeline",
+        "compliance",
+        "m365",
+        "security"
+      ],
+      "strict": true
     }
   ]
 }

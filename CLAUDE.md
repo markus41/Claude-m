@@ -125,6 +125,7 @@ Then re-run `/plugin marketplace add markus41/Claude-m`.
 | `planner-orchestrator` | productivity | Intelligent orchestration for Microsoft Planner — ship tasks with Claude Code, triage backlogs, plan sprint buckets, monitor deadlines, and balance workloads across plans. Integrates with microsoft-teams-mcp, microsoft-outlook-mcp, and powerbi-fabric when installed. |
 | `fluent-ui-design` | devops | Microsoft Fluent 2 design system mastery — design tokens, color system, typography, layout, components, Teams theming, Griffel styling, accessibility, responsive design, and Figma design kits |
 | `notion` | productivity | Comprehensive Notion mastery — page design, every block type, databases, formulas, AI features, MCP integration, REST API, and professional templates |
+| `graph-investigator` | security | Microsoft Graph Investigator — unified user investigation, mailbox forensics, activity timelines, device correlation, and forensic reporting across all M365 services |
 
 Install any plugin with:
 ```bash

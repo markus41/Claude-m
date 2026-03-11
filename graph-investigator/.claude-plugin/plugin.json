@@ -1,0 +1,47 @@
+{
+  "name": "graph-investigator",
+  "version": "1.0.0",
+  "description": "Microsoft Graph Investigator — unified user investigation, mailbox forensics, activity timelines, device correlation, and forensic reporting across all M365 services",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "keywords": [
+    "microsoft",
+    "graph",
+    "investigation",
+    "forensic",
+    "audit",
+    "email",
+    "signin",
+    "devices",
+    "timeline",
+    "mailbox",
+    "teams",
+    "sharepoint",
+    "compliance",
+    "security",
+    "m365",
+    "exchange",
+    "oauth",
+    "risk"
+  ],
+  "skills": [
+    "./skills/graph-investigation/"
+  ],
+  "agents": [
+    "./agents/investigation-report-generator.md"
+  ],
+  "commands": [
+    "./commands/inv-setup.md",
+    "./commands/inv-user.md",
+    "./commands/inv-email.md",
+    "./commands/inv-signin.md",
+    "./commands/inv-devices.md",
+    "./commands/inv-audit.md",
+    "./commands/inv-timeline.md",
+    "./commands/inv-files.md",
+    "./commands/inv-teams.md",
+    "./commands/inv-risk.md",
+    "./commands/inv-apps.md"
+  ]
+}
