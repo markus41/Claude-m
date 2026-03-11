@@ -1,0 +1,48 @@
+{
+  "name": "azure-devops-orchestrator",
+  "version": "1.0.0",
+  "description": "Intelligent orchestration for Azure DevOps — ship work items with Claude Code, triage backlogs, plan sprints, coordinate releases, monitor pipelines, and balance workloads across projects. Integrates with microsoft-teams-mcp and microsoft-outlook-mcp when installed.",
+  "author": {
+    "name": "Markus Ahling",
+    "email": "markus@lobbi.io"
+  },
+  "keywords": [
+    "microsoft",
+    "azure-devops",
+    "orchestration",
+    "work-items",
+    "sprint",
+    "triage",
+    "ship",
+    "pipelines",
+    "release",
+    "boards"
+  ],
+  "license": "MIT",
+  "repository": "https://github.com/markus41/claude-m",
+  "skills": [
+    "./skills/devops-orchestration/"
+  ],
+  "agents": [
+    "./agents/ship-orchestrator.md",
+    "./agents/sprint-planner.md",
+    "./agents/backlog-triage.md",
+    "./agents/pipeline-orchestrator.md",
+    "./agents/release-coordinator.md",
+    "./agents/health-monitor.md",
+    "./agents/workload-balancer.md",
+    "./agents/pr-reviewer.md",
+    "./agents/teams-notifier.md",
+    "./agents/retrospective-analyzer.md"
+  ],
+  "commands": [
+    "./commands/ship.md",
+    "./commands/triage.md",
+    "./commands/sprint.md",
+    "./commands/status.md",
+    "./commands/release.md",
+    "./commands/pipeline.md",
+    "./commands/orchestrate.md",
+    "./commands/retro.md"
+  ]
+}

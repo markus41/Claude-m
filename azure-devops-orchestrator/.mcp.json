@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "azure-devops": {
+      "command": "npx",
+      "args": ["-y", "@microsoft/azure-devops-mcp@latest"],
+      "env": {
+        "AZURE_DEVOPS_ORG_URL": "",
+        "AZURE_DEVOPS_AUTH_METHOD": "pat"
+      }
+    },
+    "azure": {
+      "command": "npx",
+      "args": ["-y", "@azure/mcp@latest"],
+      "env": {}
+    }
+  }
+}

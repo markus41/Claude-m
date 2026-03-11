@@ -42,6 +42,7 @@ Then re-run `/plugin marketplace add markus41/Claude-m`.
 | `onedrive` | productivity | Upload, download, share, delta sync via Graph |
 | `planner-todo` | productivity | Planner plans, buckets, tasks, and To Do lists |
 | `azure-devops` | devops | Comprehensive Azure DevOps — Git repos with passwordless auth (GCM, WIF, SSH), YAML and Classic pipelines, environments, agents, work items, boards, test plans, security, dashboards, wikis, service hooks, Analytics OData, CLI, and extensions |
+| `azure-devops-orchestrator` | devops | Intelligent orchestration for Azure DevOps — ship work items with Claude Code, triage backlogs, plan sprints, coordinate releases, monitor pipelines, track DORA metrics, balance workloads, and run retrospectives |
 | `entra-id-admin` | security | Users, groups, PIM, MFA, admin units, licenses, B2B, entitlement management |
 | `entra-id-security` | security | App registrations, conditional access, sign-in risk |
 | `powerapps` | productivity | Canvas Power Fx, model-driven apps, custom connectors |
