@@ -1,7 +1,7 @@
 {
   "name": "teams-app-dev",
-  "version": "2.0.0",
-  "description": "Custom Teams app development — manifest v1.25, M365 Agents Toolkit, Adaptive Cards, message extensions, meeting apps, Custom Engine Agents, dialog orchestration, and Agent 365 blueprints",
+  "version": "3.0.0",
+  "description": "Custom Teams app development — manifest v1.25, M365 Agents Toolkit, Adaptive Cards, message extensions, meeting apps, Custom Engine Agents, Agent 365 blueprints, workflow bots, notification hubs, Copilot plugins, Teams SDK migration, and advanced meeting experiences with Live Share",
   "author": {
     "name": "Markus Ahling"
   },
@@ -16,13 +16,20 @@
     "custom-engine-agents",
     "agent-365",
     "manifest-v1.25",
-    "typescript"
+    "typescript",
+    "workflow-bots",
+    "notification-hub",
+    "copilot-plugins",
+    "live-share",
+    "teams-sdk",
+    "proactive-messaging"
   ],
   "skills": [
     "./skills/teams-app-dev/"
   ],
   "agents": [
-    "./agents/teams-app-reviewer.md"
+    "./agents/teams-app-reviewer.md",
+    "./agents/teams-bot-debugger.md"
   ],
   "commands": [
     "./commands/teams-app-setup.md",
@@ -35,6 +42,10 @@
     "./commands/teams-agent.md",
     "./commands/teams-dialog.md",
     "./commands/teams-agent365.md",
-    "./commands/teams-migrate.md"
+    "./commands/teams-migrate.md",
+    "./commands/teams-workflow-bot.md",
+    "./commands/teams-notification-hub.md",
+    "./commands/teams-meeting-app.md",
+    "./commands/teams-copilot-plugin.md"
   ]
 }

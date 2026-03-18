@@ -1,7 +1,7 @@
 {
   "name": "fabric-data-engineering",
-  "version": "1.0.0",
-  "description": "Microsoft Fabric Data Engineering — lakehouses, Spark notebooks, data pipelines, Delta Lake tables, and lakehouse SQL endpoints",
+  "version": "2.0.0",
+  "description": "Microsoft Fabric Data Engineering — lakehouses, Spark notebooks, data pipelines, Delta Lake tables, lakehouse SQL endpoints, multi-notebook orchestration, workspace lifecycle management, pipeline monitoring, and advanced optimization",
   "author": {
     "name": "Markus Ahling"
   },
@@ -13,13 +13,18 @@
     "delta-lake",
     "notebooks",
     "data-engineering",
-    "pyspark"
+    "pyspark",
+    "workspace-management",
+    "pipeline-monitoring",
+    "notebook-orchestration",
+    "optimization"
   ],
   "skills": [
     "./skills/fabric-data-engineering/"
   ],
   "agents": [
-    "./agents/data-engineering-reviewer.md"
+    "./agents/data-engineering-reviewer.md",
+    "./agents/pipeline-debugger.md"
   ],
   "commands": [
     "./commands/fabric-eng-setup.md",
@@ -28,6 +33,10 @@
     "./commands/pipeline-create.md",
     "./commands/delta-table-manage.md",
     "./commands/lakehouse-load-data.md",
-    "./commands/spark-job-definition-manage.md"
+    "./commands/spark-job-definition-manage.md",
+    "./commands/notebook-orchestrate.md",
+    "./commands/lakehouse-optimize.md",
+    "./commands/workspace-manage.md",
+    "./commands/pipeline-monitor.md"
   ]
 }
