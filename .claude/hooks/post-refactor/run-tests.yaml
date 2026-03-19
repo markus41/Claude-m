@@ -1,0 +1,6 @@
+# Post-Refactor: Run Tests
+description: After any refactor, run the full test suite.
+trigger: post-refactor
+commands:
+  - npm test
+  - npm run lint

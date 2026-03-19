@@ -5,3 +5,6 @@ coverage/
 *.d.ts
 *.d.ts.map
 research-output/
+
+# Claude Code local overrides
+.claude/CLAUDE.local.md

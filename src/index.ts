@@ -61,8 +61,6 @@ function buildPluginMap(auth: PluginAuth): Map<string, BasePlugin> {
 export async function createServer(): Promise<McpServer> {
   const auth = buildAuth();
   const plugins = buildPluginMap(auth);
-  const registry = loadRegistry();
-
   const mcp = new McpServer(
     { name: "claude-m", version: "1.0.0" },
     {
@@ -82,11 +80,12 @@ export async function createServer(): Promise<McpServer> {
       inputSchema: z.object({}),
     },
     async () => {
+      const plugins = loadRegistry();
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(registry, null, 2),
+            text: JSON.stringify(plugins, null, 2),
           },
         ],
       };
@@ -102,13 +101,14 @@ export async function createServer(): Promise<McpServer> {
       }),
     },
     async (args) => {
-      const manifest = registry.find((p) => p.id === args.pluginId);
+      const plugins = loadRegistry();
+      const manifest = plugins.find((p) => p.id === args.pluginId);
       if (!manifest) {
         return {
           content: [
             {
               type: "text",
-              text: `Plugin '${args.pluginId}' not found. Available plugins: ${registry.map((p) => p.id).join(", ")}`,
+              text: `Plugin '${args.pluginId}' not found. Available plugins: ${plugins.map((p) => p.id).join(", ")}`,
             },
           ],
           isError: true,
@@ -134,8 +134,9 @@ export async function createServer(): Promise<McpServer> {
       }),
     },
     async (args) => {
+      const plugins = loadRegistry();
       const keyword = args.keyword.toLowerCase();
-      const matches = registry.filter(
+      const matches = plugins.filter(
         (p) =>
           p.name.toLowerCase().includes(keyword) ||
           p.description.toLowerCase().includes(keyword) ||
@@ -190,9 +191,9 @@ export async function createServer(): Promise<McpServer> {
       }),
     },
     async (args) => {
-      let plugins = registry;
+      let plugins = loadRegistry();
       if (args.pluginId) {
-        plugins = registry.filter((p) => p.id === args.pluginId);
+        plugins = plugins.filter((p) => p.id === args.pluginId);
         if (plugins.length === 0) {
           return {
             content: [
