@@ -95,31 +95,42 @@ function loadMarketplacePlugins(): PluginManifest[] {
 }
 
 /**
+ * Check whether a marketplace plugin ID is a known variant of a registry
+ * plugin.  Covers the "microsoft-{id}-mcp" naming convention used by the
+ * five core plugins (e.g. registry id "teams" ↔ marketplace "microsoft-teams-mcp").
+ */
+function isRegistryDuplicate(marketplaceId: string, registryIds: Set<string>): boolean {
+  // Direct match
+  if (registryIds.has(marketplaceId)) return true;
+
+  // Convention: "microsoft-<registryId>-mcp"
+  const match = marketplaceId.match(/^microsoft-(.+)-mcp$/);
+  if (match && registryIds.has(match[1])) return true;
+
+  return false;
+}
+
+/**
  * Load every plugin from both the registry directory and the marketplace
  * definition, deduplicate by id, and return them as an array of
  * {@link PluginManifest} objects.
  *
  * Registry files take precedence over marketplace entries when both define
  * the same plugin (by id/name), since registry files carry richer metadata.
+ * Matching works across naming schemes: registry "teams" / "Microsoft Teams"
+ * will match marketplace "microsoft-teams-mcp".
  */
 export function loadRegistry(): PluginManifest[] {
   const registryPlugins = loadRegistryFiles();
   const marketplacePlugins = loadMarketplacePlugins();
 
   // Index registry plugins by id for fast lookup
-  const seen = new Set<string>(registryPlugins.map((p) => p.id));
-
-  // Also match marketplace names to registry ids (e.g. "microsoft-teams-mcp" → "teams")
-  const registryNameSet = new Set<string>(registryPlugins.map((p) => p.name.toLowerCase()));
-  const registryDescSet = new Set<string>(registryPlugins.map((p) => p.description));
+  const registryIds = new Set<string>(registryPlugins.map((p) => p.id));
 
   // Merge: registry first, then marketplace entries not already present
   const merged = [...registryPlugins];
   for (const mp of marketplacePlugins) {
-    // Skip if already in registry by id
-    if (seen.has(mp.id)) continue;
-    // Skip if the description is an exact duplicate (catches renamed variants)
-    if (registryDescSet.has(mp.description)) continue;
+    if (isRegistryDuplicate(mp.id, registryIds)) continue;
     merged.push(mp);
   }
 

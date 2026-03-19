@@ -54,10 +54,18 @@ export interface PluginManifest {
   author?: string;
 }
 
+/** Shape of a plugin source when defined as an object (git-subdir, npm, etc.). */
+export interface MarketplacePluginSource {
+  source: string;
+  url?: string;
+  path?: string;
+  repo?: string;
+}
+
 /** Shape of a plugin entry inside .claude-plugin/marketplace.json. */
 export interface MarketplacePluginEntry {
   name: string;
-  source: string | { source: string; repo: string };
+  source: string | MarketplacePluginSource;
   description: string;
   category: PluginCategory;
   tags: string[];

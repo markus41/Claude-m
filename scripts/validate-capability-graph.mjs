@@ -23,9 +23,10 @@ const graph = {
 };
 
 for (const pluginEntry of marketplace.plugins ?? []) {
-  if (typeof pluginEntry.source !== 'string' || !pluginEntry.source.startsWith('./')) continue;
+  const resolvedDir = resolvePluginDir(pluginEntry);
+  if (!resolvedDir) continue;
 
-  const pluginDir = path.join(rootDir, pluginEntry.source.slice(2));
+  const pluginDir = path.join(rootDir, resolvedDir);
   const manifestPath = path.join(pluginDir, '.claude-plugin', 'plugin.json');
   const readmePath = path.join(pluginDir, 'README.md');
   const skillsDir = path.join(pluginDir, 'skills');
@@ -104,10 +105,10 @@ function validateDrift({ pluginEntry, manifest, catalogEntry, pluginDir, manifes
 
 function validateIntegrationMetadata({ pluginEntry, readme, readmePath, skillFiles, commandFiles, agentFiles, isStrict }) {
   if (skillFiles.length === 0) {
-    fail(`Missing skill docs for "${pluginEntry.name}". Add skills/*/SKILL.md in ${toRepoPath(path.join(rootDir, pluginEntry.source.slice(2)))}.`);
+    fail(`Missing skill docs for "${pluginEntry.name}". Add skills/*/SKILL.md in ${toRepoPath(path.join(rootDir, resolvePluginDir(pluginEntry) || pluginEntry.name))}.`);
   }
   if (commandFiles.length === 0) {
-    fail(`Missing command docs for "${pluginEntry.name}". Add commands/*.md in ${toRepoPath(path.join(rootDir, pluginEntry.source.slice(2)))}.`);
+    fail(`Missing command docs for "${pluginEntry.name}". Add commands/*.md in ${toRepoPath(path.join(rootDir, resolvePluginDir(pluginEntry) || pluginEntry.name))}.`);
   }
   if (!isStrict) return;
 
@@ -136,9 +137,12 @@ function detectChangedPlugins() {
   const files = runGitDiffFiles();
   const changed = new Set();
   for (const file of files) {
-    const root = file.split('/')[0];
-    if (marketplace.plugins.some((p) => typeof p.source === 'string' && p.source === `./${root}`)) {
-      changed.add(root);
+    for (const p of marketplace.plugins) {
+      const dir = resolvePluginDir(p);
+      if (!dir) continue;
+      if (file === dir || file.startsWith(dir + '/')) {
+        changed.add(p.name);
+      }
     }
   }
   return changed;
@@ -257,6 +261,18 @@ function normalize(value) {
 
 function escapeRegExp(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function resolvePluginDir(entry) {
+  const src = entry.source;
+  if (typeof src === 'string') {
+    return src.startsWith('./') ? src.slice(2) : src;
+  }
+  if (typeof src === 'object' && src !== null) {
+    if (src.path) return src.path;
+    if (src.repo) return src.repo;
+  }
+  return entry.name;
 }
 
 function assertFileExists(filePath, pluginName, label) {

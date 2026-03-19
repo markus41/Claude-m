@@ -11,11 +11,10 @@ const claudeCatalog = parseClaudeCatalog(fs.readFileSync(claudeCatalogPath, 'utf
 let hasError = false;
 
 for (const pluginEntry of marketplace.plugins ?? []) {
-  if (typeof pluginEntry.source !== 'string' || !pluginEntry.source.startsWith('./')) {
-    continue;
-  }
+  const resolvedDir = resolvePluginDir(pluginEntry);
+  if (!resolvedDir) continue;
 
-  const pluginDir = path.join(rootDir, pluginEntry.source.slice(2));
+  const pluginDir = path.join(rootDir, resolvedDir);
   const manifestPath = path.join(pluginDir, '.claude-plugin', 'plugin.json');
   const readmePath = path.join(pluginDir, 'README.md');
   const commandsDir = path.join(pluginDir, 'commands');
@@ -189,6 +188,18 @@ function normalize(value) {
 
 function toRepoPath(absolutePath) {
   return path.relative(rootDir, absolutePath) || '.';
+}
+
+function resolvePluginDir(entry) {
+  const src = entry.source;
+  if (typeof src === 'string') {
+    return src.startsWith('./') ? src.slice(2) : src;
+  }
+  if (typeof src === 'object' && src !== null) {
+    if (src.path) return src.path;
+    if (src.repo) return src.repo;
+  }
+  return entry.name;
 }
 
 function fail(message) {
