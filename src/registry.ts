@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync, existsSync } from "fs";
+import { readFileSync, readdirSync, existsSync, statSync } from "fs";
 import { join } from "path";
 import { PluginManifest, MarketplaceDefinition } from "./types.js";
 
@@ -47,6 +47,25 @@ function loadRegistryFiles(): PluginManifest[] {
  * Load plugin entries from .claude-plugin/marketplace.json and convert them
  * to PluginManifest objects so they appear alongside registry plugins.
  */
+/**
+ * Read the version from a plugin's own .claude-plugin/plugin.json manifest.
+ * Falls back to the marketplace.json mtime so callers can still detect changes.
+ */
+function readPluginVersion(pluginDirName: string, marketplaceMtime: string): string {
+  // Try reading version from the plugin's own manifest
+  const manifestPath = join(projectRoot(), pluginDirName, ".claude-plugin", "plugin.json");
+  if (existsSync(manifestPath)) {
+    try {
+      const manifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
+      if (manifest.version) return manifest.version as string;
+    } catch {
+      // Malformed manifest — fall through
+    }
+  }
+  // Fall back to marketplace file mtime so the version changes on any edit
+  return `0.0.0+${marketplaceMtime}`;
+}
+
 function loadMarketplacePlugins(): PluginManifest[] {
   const marketplacePath = join(projectRoot(), ".claude-plugin", "marketplace.json");
   if (!existsSync(marketplacePath)) return [];
@@ -54,14 +73,25 @@ function loadMarketplacePlugins(): PluginManifest[] {
   const raw = readFileSync(marketplacePath, "utf-8");
   const marketplace: MarketplaceDefinition = JSON.parse(raw);
 
-  return marketplace.plugins.map((entry) => ({
-    id: entry.name,
-    name: entry.name,
-    description: entry.description,
-    version: "1.0.0",
-    category: entry.category,
-    tags: entry.tags,
-  }));
+  // Use mtime as a change-detection fallback for plugins without their own version
+  const mtime = statSync(marketplacePath).mtimeMs.toString(36);
+
+  return marketplace.plugins.map((entry) => {
+    // Derive the plugin directory from the source path if available
+    const source = entry.source;
+    const pluginDir = typeof source === "object" && "path" in source
+      ? (source as { path: string }).path
+      : entry.name;
+
+    return {
+      id: entry.name,
+      name: entry.name,
+      description: entry.description,
+      version: readPluginVersion(pluginDir, mtime),
+      category: entry.category,
+      tags: entry.tags,
+    };
+  });
 }
 
 /**

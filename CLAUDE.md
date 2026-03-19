@@ -108,6 +108,7 @@ Then re-run `/plugin marketplace add markus41/Claude-m`.
 | `azure-openai` | cloud | Azure OpenAI Service — model deployments, fine-tuning, content filtering, prompt engineering, batch API, and quota management |
 | `azure-document-intelligence` | cloud | Azure AI Document Intelligence — OCR, prebuilt models (invoices, receipts, IDs), custom models, layout analysis, and document classification |
 | `azure-organization` | cloud | Azure organization and governance — management groups, subscriptions, resource tagging, naming conventions, and landing zones |
+| `domain-business-name-finder` | productivity | Brainstorm business names and check domain availability across popular TLDs using Firecrawl, Perplexity, WHOIS, and Domain Search MCP servers |
 | `dynamics-365-crm` | productivity | Dynamics 365 Sales and Customer Service — leads, opportunities, cases, SLAs, queues, pipeline reporting, and CRM workflow automation |
 | `dynamics-365-field-service` | productivity | Dynamics 365 Field Service — work orders, bookings, resource scheduling, service accounts, assets, and IoT-triggered service events |
 | `dynamics-365-project-ops` | productivity | Dynamics 365 Project Operations — projects, WBS, time and expense tracking, resource assignments, project contracts, and billing |
