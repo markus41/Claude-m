@@ -1234,3 +1234,13 @@ function AnimatedAppShell({ items }) {
   );
 }
 ```
+
+---
+
+## External Resources
+
+- **Fluent 2 motion overview**: https://fluent2.microsoft.design/design-tokens/motion
+- **Motion tokens panel (VS Code extension)**: https://open-vsx.org/extension/nicolo-ribaudo/motion-tokens-panel
+- **Framer Motion docs**: https://www.framer.com/motion/
+- **@fluentui/react-motion package**: https://www.npmjs.com/package/@fluentui/react-motion
+- **@fluentui/react-motion-components-preview**: https://www.npmjs.com/package/@fluentui/react-motion-components-preview

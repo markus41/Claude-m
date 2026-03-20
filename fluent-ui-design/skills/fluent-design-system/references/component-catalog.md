@@ -977,3 +977,15 @@ const ContactForm = () => {
   );
 };
 ```
+
+---
+
+## External Resources
+
+- **Component gallery**: https://fluent2.microsoft.design/components/web/react/
+- **Storybook (interactive docs)**: https://storybooks.fluentui.dev/react/
+- **Developer portal**: https://developer.microsoft.com/en-us/fluentui
+- **GitHub**: https://github.com/microsoft/fluentui
+- **npm**: https://www.npmjs.com/package/@fluentui/react-components
+- **Slots documentation**: https://storybooks.fluentui.dev/react/?path=/docs/concepts-developer-customizing-components-with-slots--docs
+- **Advanced styling**: https://storybooks.fluentui.dev/react/?path=/docs/concepts-developer-advanced-styling-techniques--docs

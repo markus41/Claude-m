@@ -372,3 +372,15 @@ const useStyles = makeStyles({
   },
 });
 ```
+
+---
+
+## External Resources
+
+- **Design tokens overview**: https://fluent2.microsoft.design/design-tokens
+- **Color tokens**: https://fluent2.microsoft.design/design-tokens/color-tokens
+- **Elevation tokens**: https://fluent2.microsoft.design/design-tokens/elevation
+- **Motion tokens**: https://fluent2.microsoft.design/design-tokens/motion
+- **Token pipeline (GitHub)**: https://github.com/microsoft/fluentui-token-pipeline
+- **Fluent 2 Figma variables**: Tokens implemented as Figma Variables for light/dark mode toggling
+- **Storybook tokens docs**: https://react.fluentui.dev/?path=/docs/concepts-developer-design-tokens--docs

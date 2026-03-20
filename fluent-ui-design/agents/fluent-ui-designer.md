@@ -65,6 +65,9 @@ Read the relevant reference files:
 - `${CLAUDE_PLUGIN_ROOT}/skills/fluent-design-system/references/design-tokens-reference.md` — Token values
 - `${CLAUDE_PLUGIN_ROOT}/skills/fluent-design-system/references/teams-integration.md` — Teams-specific patterns
 - `${CLAUDE_PLUGIN_ROOT}/skills/fluent-design-system/examples/layout-patterns.md` — Layout examples
+- `${CLAUDE_PLUGIN_ROOT}/skills/fluent-nextjs/SKILL.md` — Next.js SSR setup (if Next.js project)
+- `${CLAUDE_PLUGIN_ROOT}/skills/fluent-forms/SKILL.md` — Form patterns (if designing forms)
+- `${CLAUDE_PLUGIN_ROOT}/skills/fluent-web-components/SKILL.md` — Web Components (if non-React)
 
 ### Step 3: Select Components
 

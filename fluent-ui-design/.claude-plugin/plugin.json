@@ -1,7 +1,7 @@
 {
   "name": "fluent-ui-design",
-  "version": "1.0.0",
-  "description": "Microsoft Fluent 2 design system mastery — design tokens, color system, typography, layout, components, Teams theming, advanced UI patterns, Griffel styling, accessibility, responsive design, and Figma design kits",
+  "version": "2.0.0",
+  "description": "Microsoft Fluent 2 design system mastery — design tokens, color system, typography, layout, components, Teams theming, Griffel styling, Next.js SSR, Web Components, charting, cross-platform (iOS/Android), form orchestration, Office Add-ins, B2C UI, accessibility auditing, v8→v9 migration, and Figma design kits",
   "author": {
     "name": "Markus Ahling"
   },
@@ -24,15 +24,40 @@
     "color-tokens",
     "layout",
     "adaptive-cards",
-    "copilot"
+    "copilot",
+    "nextjs",
+    "ssr",
+    "web-components",
+    "charting",
+    "ios",
+    "android",
+    "cross-platform",
+    "forms",
+    "formik",
+    "office-addins",
+    "b2c",
+    "migration",
+    "wcag",
+    "slots",
+    "aot"
   ],
   "skills": [
-    "./skills/fluent-design-system/SKILL.md"
+    "./skills/fluent-design-system/SKILL.md",
+    "./skills/fluent-nextjs/SKILL.md",
+    "./skills/fluent-griffel/SKILL.md",
+    "./skills/fluent-extensibility/SKILL.md",
+    "./skills/fluent-web-components/SKILL.md",
+    "./skills/fluent-charting/SKILL.md",
+    "./skills/fluent-cross-platform/SKILL.md",
+    "./skills/fluent-forms/SKILL.md",
+    "./skills/fluent-integration/SKILL.md"
   ],
   "agents": [
     "./agents/fluent-ui-designer.md",
     "./agents/fluent-component-builder.md",
-    "./agents/fluent-theme-engineer.md"
+    "./agents/fluent-theme-engineer.md",
+    "./agents/fluent-accessibility-auditor.md",
+    "./agents/fluent-migration-assistant.md"
   ],
   "commands": [
     "./commands/fluent-setup.md",
@@ -40,6 +65,14 @@
     "./commands/fluent-theme.md",
     "./commands/fluent-tokens.md",
     "./commands/fluent-layout.md",
-    "./commands/fluent-audit.md"
+    "./commands/fluent-audit.md",
+    "./commands/fluent-nextjs-setup.md",
+    "./commands/fluent-griffel-optimize.md",
+    "./commands/fluent-migrate-v8.md",
+    "./commands/fluent-web-component.md",
+    "./commands/fluent-chart.md",
+    "./commands/fluent-form.md",
+    "./commands/fluent-office-addin.md",
+    "./commands/fluent-test.md"
   ]
 }

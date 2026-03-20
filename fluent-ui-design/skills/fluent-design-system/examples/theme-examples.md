@@ -319,3 +319,15 @@ const interTheme: Theme = {
 5. **Test contrast ratios** — Ensure text on brand backgrounds meets WCAG 4.5:1
 6. **Dark theme adjustments** — Override `colorBrandForeground1/2` to use lighter shades (100-120)
 7. **Keep neutral tokens** — Custom themes only need to override brand tokens; neutrals adapt automatically
+
+---
+
+## External Resources
+
+- **Fluent 2 design principles**: https://fluent2.microsoft.design/design-principles
+- **Get started with design**: https://fluent2.microsoft.design/get-started/design
+- **Theming in v9 (video)**: https://learn.microsoft.com/en-us/shows/fluent-ui-insights/fluent-ui-insights-theming-in-v9
+- **Theme wiki**: https://github.com/microsoft/fluentui/wiki/How-to-apply-theme-to-Fluent-UI-React-components
+- **Figma kits (Web)**: https://aka.ms/Fluent2Toolkits/Web/Figma
+- **Figma kits (iOS)**: https://aka.ms/Fluent2Toolkits/iOS/Figma
+- **Figma kits (Android)**: https://aka.ms/Fluent2Toolkits/Android/Figma

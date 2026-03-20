@@ -1339,3 +1339,16 @@ Adaptive Cards are orchestration surfaces, not full app replicas.
 | `@microsoft/live-share` | Real-time collaboration in meeting apps |
 | `@microsoft/live-share-react` | React hooks for Live Share |
 | `@fluentui/react-northstar` | Legacy Teams library (superseded by react-components) |
+
+---
+
+## External Resources
+
+- **Teams SDK docs**: https://learn.microsoft.com/en-us/microsoftteams/platform/
+- **Teams app design guidelines**: https://learn.microsoft.com/en-us/microsoftteams/platform/concepts/design/design-teams-app-overview
+- **Teams Toolkit**: https://learn.microsoft.com/en-us/microsoftteams/platform/toolkit/teams-toolkit-fundamentals
+- **M365 Agents SDK**: https://learn.microsoft.com/en-us/microsoftteams/platform/m365-apps/agents-sdk-overview
+- **Live Share docs**: https://learn.microsoft.com/en-us/microsoftteams/platform/apps-in-teams-meetings/teams-live-share-overview
+- **Teams app manifest**: https://learn.microsoft.com/en-us/microsoftteams/platform/resources/schema/manifest-schema
+- **Figma kit (Teams)**: https://www.figma.com/community/file/916836509871353159
+- **Adaptive Cards designer**: https://adaptivecards.io/designer/

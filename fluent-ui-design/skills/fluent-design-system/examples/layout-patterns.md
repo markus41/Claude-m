@@ -492,3 +492,12 @@ function ContentGrid() {
 | List item padding | `spacingVerticalS` + `spacingHorizontalM` | 8px 12px |
 | Dialog content gap | `spacingVerticalM` | 12px |
 | Toolbar item gap | `spacingHorizontalXS` | 4px |
+
+---
+
+## External Resources
+
+- **Fluent 2 layout system**: https://fluent2.microsoft.design/layout
+- **Fluent 2 accessibility**: https://fluent2.microsoft.design/accessibility
+- **Responsive design in Fluent**: https://fluent2.microsoft.design/layout
+- **Component gallery**: https://fluent2.microsoft.design/components/web/react/

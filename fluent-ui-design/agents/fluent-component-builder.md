@@ -62,6 +62,8 @@ Determine:
 Read the component catalog and advanced patterns:
 - `${CLAUDE_PLUGIN_ROOT}/skills/fluent-design-system/references/component-catalog.md`
 - `${CLAUDE_PLUGIN_ROOT}/skills/fluent-design-system/references/advanced-patterns.md`
+- `${CLAUDE_PLUGIN_ROOT}/skills/fluent-extensibility/SKILL.md` — Slots, custom variants, recomposition
+- `${CLAUDE_PLUGIN_ROOT}/skills/fluent-griffel/SKILL.md` — makeStyles deep patterns, AOT compilation
 
 ### Step 3: Create Component Structure
 

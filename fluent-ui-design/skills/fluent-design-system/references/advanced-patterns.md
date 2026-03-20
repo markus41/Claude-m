@@ -1265,3 +1265,19 @@ When building custom components with Fluent 2:
 - GitHub Discussions: "v9: Custom Components with Slots & Composition API Part 1"
 - fluentui-contrib: Virtualized DataGrid packages
 - Axis Communications: Examples for Fluent UI v9
+
+---
+
+## External Resources
+
+- **Slots deep-dive**: https://dev.to/paulgildea/using-slots-with-fluent-ui-react-v9-jf1
+- **Custom variants**: https://dev.to/paulgildea/creating-custom-variants-with-fluent-ui-react-v9-26a1
+- **What's new in v9**: https://dev.to/paulgildea/whats-new-with-fluent-ui-react-v9-5h2d
+- **CSS tricks (Tiger Oakes)**: https://tigeroakes.com/posts/fluent-ui-css-tricks/
+- **Custom components discussion**: https://github.com/microsoft/fluentui/discussions/26689
+- **Custom component recipes**: https://github.com/microsoft/fluentui/discussions/26890
+- **Headless components issue**: https://github.com/microsoft/fluentui/issues/35562
+- **Griffel deep-dive**: https://learn.microsoft.com/en-us/shows/fluent-ui-insights/fluent-ui-insights-griffel
+- **v9 architecture**: https://hackmd.io/@fluentui/HJoyoD1lD
+- **Theming in v9**: https://learn.microsoft.com/en-us/shows/fluent-ui-insights/fluent-ui-insights-theming-in-v9
+- **Theme wiki**: https://github.com/microsoft/fluentui/wiki/How-to-apply-theme-to-Fluent-UI-React-components

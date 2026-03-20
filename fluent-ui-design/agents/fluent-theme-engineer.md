@@ -64,6 +64,7 @@ Determine:
 Read the theme creation guides:
 - `${CLAUDE_PLUGIN_ROOT}/skills/fluent-design-system/references/design-tokens-reference.md`
 - `${CLAUDE_PLUGIN_ROOT}/skills/fluent-design-system/examples/theme-examples.md`
+- `${CLAUDE_PLUGIN_ROOT}/skills/fluent-cross-platform/SKILL.md` — Cross-platform token parity (iOS, Android)
 
 ### Step 3: Generate Brand Ramp
 
