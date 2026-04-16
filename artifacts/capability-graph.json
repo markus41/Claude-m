@@ -2,7 +2,7 @@
   "strictPluginScope": [],
   "sourceFiles": {
     "claudeCatalog": "CLAUDE.md",
-    "marketplace": ".claude-plugin\\marketplace.json"
+    "marketplace": ".claude-plugin/marketplace.json"
   },
   "plugins": {}
 }

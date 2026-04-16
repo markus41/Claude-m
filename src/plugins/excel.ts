@@ -84,19 +84,4 @@ export class ExcelPlugin extends BasePlugin {
     }
   }
 
-  /** PATCH wrapper used by excel_write_range. */
-  private async graphPatch(url: string, body: unknown): Promise<unknown> {
-    const response = await fetch(url, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${this.accessToken}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
-    }
-    return response.json() as Promise<unknown>;
-  }
 }
