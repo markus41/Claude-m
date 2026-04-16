@@ -1,10 +1,17 @@
 node_modules/
-dist/
+/dist/
 coverage/
 *.js.map
 *.d.ts
 *.d.ts.map
 research-output/
+
+# Bundle compiled MCP server output with each plugin for desktop cowork installs
+!plugins/*/dist/
+!plugins/*/dist/**/*.js.map
+!plugins/*/dist/**/*.d.ts
+!plugins/*/dist/**/*.d.ts.map
+plugins/*/package-lock.json
 
 # Claude Code local overrides
 .claude/CLAUDE.local.md

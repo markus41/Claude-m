@@ -1,24 +1,29 @@
 import { readFileSync, readdirSync, existsSync, statSync } from "fs";
-import { join } from "path";
+import { join, dirname } from "path";
 import { PluginManifest, MarketplaceDefinition } from "./types.js";
 
 /**
  * Resolve the registry directory relative to this file at runtime.
  * Works in both ESM (Node 18+, import.meta.url) and CJS (ts-jest, __dirname).
+ *
+ * Node 22 flags files that mention both __dirname and top-level await (in the
+ * import graph) with ERR_AMBIGUOUS_MODULE_SYNTAX. We keep the __dirname
+ * reference behind an `eval` so the static scanner doesn't see it in ESM.
  */
 function registryDir(): string {
-  // ESM – import.meta is defined
-  // Use Function constructor to prevent ts-jest / tsc from rejecting the
-  // syntax in CJS mode; the branch is only reached at runtime in ESM.
   try {
+    // ESM: import.meta.url accessed via Function() so ts-jest CJS compile
+    // doesn't reject the syntax.
     // eslint-disable-next-line no-new-func
     const url: string = new Function("return import.meta.url")() as string;
-    const { fileURLToPath } = require("url") as { fileURLToPath: (u: string) => string };
-    const { dirname } = require("path") as { dirname: (p: string) => string };
-    return join(dirname(fileURLToPath(url)), "..", "registry");
+    const filePath = decodeURIComponent(url.replace(/^file:\/\//, ""));
+    return join(dirname(filePath), "..", "registry");
   } catch {
-    // CJS / ts-jest – fall back to __dirname (injected by Node's CJS wrapper)
-    return join(__dirname, "..", "registry");
+    // CJS / ts-jest: __dirname via eval() so the static scanner in ESM Node
+    // doesn't flag this file as ambiguous.
+    // eslint-disable-next-line no-eval
+    const dir: string = eval("typeof __dirname !== 'undefined' ? __dirname : ''");
+    return join(dir, "..", "registry");
   }
 }
 

@@ -7,7 +7,8 @@
     "claude-m": "dist/index.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npm run bundle:mcp-plugins",
+    "bundle:mcp-plugins": "node scripts/bundle-mcp-plugins.mjs",
     "start": "node dist/index.js",
     "test": "jest",
     "test:coverage": "jest --coverage",
