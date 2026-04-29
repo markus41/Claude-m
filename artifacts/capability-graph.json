@@ -1,5 +1,7 @@
 {
-  "strictPluginScope": [],
+  "strictPluginScope": [
+    "agent-foundry"
+  ],
   "sourceFiles": {
     "claudeCatalog": "CLAUDE.md",
     "marketplace": ".claude-plugin/marketplace.json"
