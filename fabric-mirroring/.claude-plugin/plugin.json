@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/fabric-mirroring/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "fabric",
@@ -18,13 +24,13 @@
   "skills": [
     "./skills/fabric-mirroring/"
   ],
-  "agents": [
-    "./agents/mirroring-reviewer.md"
-  ],
   "commands": [
     "./commands/mirroring-setup.md",
     "./commands/source-onboarding.md",
     "./commands/latency-health-check.md",
     "./commands/cdc-reconciliation.md"
+  ],
+  "agents": [
+    "./agents/mirroring-reviewer.md"
   ]
 }

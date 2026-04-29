@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/fabric-graph-geo/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "fabric",
@@ -19,14 +25,14 @@
   "skills": [
     "./skills/fabric-graph-geo/"
   ],
-  "agents": [
-    "./agents/fabric-graph-geo-reviewer.md"
-  ],
   "commands": [
     "./commands/graph-geo-setup.md",
     "./commands/graph-model-manage.md",
     "./commands/graph-queryset-manage.md",
     "./commands/map-manage.md",
     "./commands/exploration-manage.md"
+  ],
+  "agents": [
+    "./agents/fabric-graph-geo-reviewer.md"
   ]
 }

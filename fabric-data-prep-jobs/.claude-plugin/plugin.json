@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/fabric-data-prep-jobs/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "fabric",
@@ -18,14 +24,14 @@
   "skills": [
     "./skills/fabric-data-prep-jobs/"
   ],
-  "agents": [
-    "./agents/fabric-data-prep-jobs-reviewer.md"
-  ],
   "commands": [
     "./commands/prep-setup.md",
     "./commands/airflow-job-manage.md",
     "./commands/adf-mount-manage.md",
     "./commands/dataflow-gen1-manage.md",
     "./commands/dbt-job-manage.md"
+  ],
+  "agents": [
+    "./agents/fabric-data-prep-jobs-reviewer.md"
   ]
 }

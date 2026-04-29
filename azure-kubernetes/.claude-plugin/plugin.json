@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/azure-kubernetes/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "azure",
     "kubernetes"
@@ -12,14 +18,14 @@
   "skills": [
     "./skills/azure-kubernetes/"
   ],
-  "agents": [
-    "./agents/azure-kubernetes-reviewer.md"
-  ],
   "commands": [
     "./commands/aks-setup.md",
     "./commands/aks-cluster-inventory.md",
     "./commands/aks-pod-failure-scan.md",
     "./commands/aks-nodepool-scale.md",
     "./commands/aks-policy-status.md"
+  ],
+  "agents": [
+    "./agents/azure-kubernetes-reviewer.md"
   ]
 }

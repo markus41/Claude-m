@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/azure-sql-database/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "azure",
@@ -18,9 +24,6 @@
   "skills": [
     "./skills/azure-sql-database/"
   ],
-  "agents": [
-    "./agents/database-reviewer.md"
-  ],
   "commands": [
     "./commands/db-setup.md",
     "./commands/sql-create.md",
@@ -28,5 +31,8 @@
     "./commands/cosmos-create.md",
     "./commands/cosmos-query.md",
     "./commands/db-security-audit.md"
+  ],
+  "agents": [
+    "./agents/database-reviewer.md"
   ]
 }

@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/lighthouse-operations/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "azure",
@@ -21,9 +27,6 @@
   "skills": [
     "./skills/lighthouse-operations/"
   ],
-  "agents": [
-    "./agents/lighthouse-architect.md"
-  ],
   "commands": [
     "./commands/lighthouse-setup.md",
     "./commands/gdap-manage.md",
@@ -31,5 +34,8 @@
     "./commands/lighthouse-report.md",
     "./commands/lighthouse-alerts.md",
     "./commands/azure-lighthouse-delegate.md"
+  ],
+  "agents": [
+    "./agents/lighthouse-architect.md"
   ]
 }

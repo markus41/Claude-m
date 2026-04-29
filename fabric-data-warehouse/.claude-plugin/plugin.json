@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/fabric-data-warehouse/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "fabric",
@@ -18,9 +24,6 @@
   "skills": [
     "./skills/fabric-data-warehouse/"
   ],
-  "agents": [
-    "./agents/warehouse-reviewer.md"
-  ],
   "commands": [
     "./commands/warehouse-setup.md",
     "./commands/warehouse-create.md",
@@ -29,5 +32,8 @@
     "./commands/warehouse-load.md",
     "./commands/warehouse-monitor.md",
     "./commands/sample-warehouse-bootstrap.md"
+  ],
+  "agents": [
+    "./agents/warehouse-reviewer.md"
   ]
 }

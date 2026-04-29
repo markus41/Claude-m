@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/process-task-mining/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "process-mining",
@@ -18,9 +24,6 @@
   "skills": [
     "./skills/process-task-mining/"
   ],
-  "agents": [
-    "./agents/process-mining-reviewer.md"
-  ],
   "commands": [
     "./commands/mining-setup.md",
     "./commands/log-extract.md",
@@ -28,5 +31,8 @@
     "./commands/performance-analyze.md",
     "./commands/conformance-check.md",
     "./commands/resource-analyze.md"
+  ],
+  "agents": [
+    "./agents/process-mining-reviewer.md"
   ]
 }

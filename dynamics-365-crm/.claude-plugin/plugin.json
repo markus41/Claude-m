@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/dynamics-365-crm/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "dynamics-365",
     "dynamics-crm",
@@ -20,13 +26,13 @@
   "skills": [
     "./skills/dynamics-365-crm/"
   ],
-  "agents": [
-    "./agents/dynamics-365-crm-reviewer.md"
-  ],
   "commands": [
     "./commands/dynamics-365-crm-setup.md",
     "./commands/d365-lead-qualify.md",
     "./commands/d365-case-manage.md",
     "./commands/d365-pipeline-report.md"
+  ],
+  "agents": [
+    "./agents/dynamics-365-crm-reviewer.md"
   ]
 }

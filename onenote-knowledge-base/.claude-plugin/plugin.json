@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/onenote-knowledge-base/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "onenote",
@@ -20,9 +26,6 @@
   "skills": [
     "./skills/onenote-knowledge-base/"
   ],
-  "agents": [
-    "./agents/onenote-reviewer.md"
-  ],
   "commands": [
     "./commands/onenote-setup.md",
     "./commands/onenote-search.md",
@@ -37,5 +40,8 @@
     "./commands/onenote-template-library.md",
     "./commands/onenote-bulk-style-rollout.md",
     "./commands/onenote-navigation-index.md"
+  ],
+  "agents": [
+    "./agents/onenote-reviewer.md"
   ]
 }

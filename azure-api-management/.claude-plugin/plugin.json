@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/azure-api-management/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "azure",
     "api",
@@ -13,14 +19,14 @@
   "skills": [
     "./skills/azure-api-management/"
   ],
-  "agents": [
-    "./agents/azure-api-management-reviewer.md"
-  ],
   "commands": [
     "./commands/apim-setup.md",
     "./commands/apim-api-inventory.md",
     "./commands/apim-policy-drift.md",
     "./commands/apim-secret-rotation.md",
     "./commands/apim-contract-diff.md"
+  ],
+  "agents": [
+    "./agents/azure-api-management-reviewer.md"
   ]
 }

@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/dynamics-365-field-service/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "dynamics-365",
     "field-service",
@@ -20,14 +26,14 @@
   "skills": [
     "./skills/dynamics-365-field-service/"
   ],
-  "agents": [
-    "./agents/dynamics-365-field-service-reviewer.md"
-  ],
   "commands": [
     "./commands/fs-setup.md",
     "./commands/fs-work-order.md",
     "./commands/fs-schedule.md",
     "./commands/fs-service-account.md",
     "./commands/fs-reporting.md"
+  ],
+  "agents": [
+    "./agents/dynamics-365-field-service-reviewer.md"
   ]
 }

@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/sharepoint-file-intelligence/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "sharepoint",
@@ -18,14 +24,14 @@
   "skills": [
     "./skills/sharepoint-file-intelligence/"
   ],
-  "agents": [
-    "./agents/file-analyst.md"
-  ],
   "commands": [
     "./commands/sfi-setup.md",
     "./commands/scan-inventory.md",
     "./commands/find-duplicates.md",
     "./commands/apply-categories.md",
     "./commands/consolidate-files.md"
+  ],
+  "agents": [
+    "./agents/file-analyst.md"
   ]
 }

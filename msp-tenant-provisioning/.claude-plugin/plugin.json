@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/msp-tenant-provisioning/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "azure",
@@ -20,14 +26,14 @@
   "skills": [
     "./skills/msp-tenant-provisioning/"
   ],
-  "agents": [
-    "./agents/provisioning-auditor.md"
-  ],
   "commands": [
     "./commands/tenant-provision.md",
     "./commands/tenant-configure.md",
     "./commands/tenant-domain-setup.md",
     "./commands/tenant-azure-setup.md",
     "./commands/tenant-lighthouse-onboard.md"
+  ],
+  "agents": [
+    "./agents/provisioning-auditor.md"
   ]
 }

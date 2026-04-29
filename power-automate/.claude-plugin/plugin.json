@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/power-automate/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "power-automate",
@@ -16,13 +22,13 @@
   "skills": [
     "./skills/power-automate/"
   ],
-  "agents": [
-    "./agents/power-automate-reviewer.md"
-  ],
   "commands": [
     "./commands/flow-setup.md",
     "./commands/flow-design.md",
     "./commands/flow-debug.md",
     "./commands/flow-deploy-check.md"
+  ],
+  "agents": [
+    "./agents/power-automate-reviewer.md"
   ]
 }

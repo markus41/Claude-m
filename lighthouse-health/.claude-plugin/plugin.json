@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/lighthouse-health/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "lighthouse",
@@ -17,12 +23,12 @@
   "skills": [
     "./skills/lighthouse-health/"
   ],
-  "agents": [
-    "./agents/lighthouse-health-reviewer.md"
-  ],
   "commands": [
     "./commands/lighthouse-setup.md",
     "./commands/lighthouse-health-scan.md",
     "./commands/lighthouse-remediation.md"
+  ],
+  "agents": [
+    "./agents/lighthouse-health-reviewer.md"
   ]
 }

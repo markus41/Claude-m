@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/purview-compliance/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "purview",
@@ -18,14 +24,14 @@
   "skills": [
     "./skills/purview-compliance/"
   ],
-  "agents": [
-    "./agents/compliance-reviewer.md"
-  ],
   "commands": [
     "./commands/purview-setup.md",
     "./commands/dlp-review.md",
     "./commands/retention-review.md",
     "./commands/ediscovery-plan.md",
     "./commands/compliance-playbook.md"
+  ],
+  "agents": [
+    "./agents/compliance-reviewer.md"
   ]
 }

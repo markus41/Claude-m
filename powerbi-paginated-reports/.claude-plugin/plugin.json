@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/powerbi-paginated-reports/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "power-bi",
     "paginated-reports",
@@ -21,10 +27,6 @@
   "skills": [
     "./skills/paginated-reports/"
   ],
-  "agents": [
-    "./agents/rdl-reviewer.md",
-    "./agents/paginated-performance-advisor.md"
-  ],
   "commands": [
     "./commands/pr-setup.md",
     "./commands/pr-scaffold.md",
@@ -34,5 +36,9 @@
     "./commands/pr-datasource.md",
     "./commands/pr-subscription.md",
     "./commands/pr-expression.md"
+  ],
+  "agents": [
+    "./agents/rdl-reviewer.md",
+    "./agents/paginated-performance-advisor.md"
   ]
 }

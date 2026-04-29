@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/exchange-mailflow/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "exchange",
@@ -18,12 +24,12 @@
   "skills": [
     "./skills/exchange-mailflow/"
   ],
-  "agents": [
-    "./agents/mailflow-reviewer.md"
-  ],
   "commands": [
     "./commands/mailflow-setup.md",
     "./commands/mailflow-diagnose.md",
     "./commands/mailflow-explain.md"
+  ],
+  "agents": [
+    "./agents/mailflow-reviewer.md"
   ]
 }

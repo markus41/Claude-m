@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/azure-ai-services/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "azure-openai",
     "ai-search",
@@ -20,14 +26,14 @@
   "skills": [
     "./skills/azure-ai-services/"
   ],
-  "agents": [
-    "./agents/azure-ai-services-reviewer.md"
-  ],
   "commands": [
     "./commands/azure-ai-services-setup.md",
     "./commands/azure-openai-deploy.md",
     "./commands/azure-openai-audit.md",
     "./commands/azure-search-index.md",
     "./commands/azure-ai-studio-setup.md"
+  ],
+  "agents": [
+    "./agents/azure-ai-services-reviewer.md"
   ]
 }

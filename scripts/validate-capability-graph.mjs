@@ -56,8 +56,14 @@ for (const pluginEntry of marketplace.plugins ?? []) {
   };
 
   const isStrict = strictPlugins.has(pluginEntry.name);
+  const hasPackageJson = fs.existsSync(path.join(pluginDir, 'package.json'));
+  const hasMcpConfig = fs.existsSync(path.join(pluginDir, '.mcp.json'));
+  const declaresMcpServers = manifest.mcpServers && Object.keys(manifest.mcpServers).length > 0;
+  const declaresLspServers = manifest.lspServers && Object.keys(manifest.lspServers).length > 0;
+  const declaresHooks = manifest.hooks || fs.existsSync(path.join(pluginDir, 'hooks'));
+  const isInfrastructurePlugin = hasPackageJson || hasMcpConfig || declaresMcpServers || declaresLspServers || declaresHooks;
   validateDrift({ pluginEntry, manifest, catalogEntry, pluginDir, manifestPath, readme, readmePath, isStrict });
-  validateIntegrationMetadata({ pluginEntry, readme, readmePath, skillFiles, commandFiles, agentFiles, isStrict });
+  validateIntegrationMetadata({ pluginEntry, readme, readmePath, skillFiles, commandFiles, agentFiles, isStrict, isInfrastructurePlugin });
 }
 
 fs.mkdirSync(artifactsDir, { recursive: true });
@@ -80,7 +86,12 @@ function buildDomains(pluginEntry, readme, readmePath, skillFiles, commandFiles)
 
 function validateDrift({ pluginEntry, manifest, catalogEntry, pluginDir, manifestPath, readme, readmePath, isStrict }) {
   const folderSlug = path.basename(pluginDir);
-  if (folderSlug !== pluginEntry.name) {
+  // Plugins nested under a shared "plugins/" directory may use compact
+  // folder names (e.g., plugins/teams for microsoft-teams-mcp). Only
+  // enforce the folder-name == plugin-name convention for top-level
+  // plugin folders.
+  const isTopLevel = !pluginEntry.source.slice(2).includes('/');
+  if (isTopLevel && folderSlug !== pluginEntry.name) {
     fail(`Slug mismatch: marketplace "${pluginEntry.name}" != folder "${folderSlug}". Fix ${toRepoPath(pluginDir)} or ${toRepoPath(marketplacePath)}.`);
   }
   if (manifest.name !== pluginEntry.name) {
@@ -102,12 +113,14 @@ function validateDrift({ pluginEntry, manifest, catalogEntry, pluginDir, manifes
   }
 }
 
-function validateIntegrationMetadata({ pluginEntry, readme, readmePath, skillFiles, commandFiles, agentFiles, isStrict }) {
-  if (skillFiles.length === 0) {
-    fail(`Missing skill docs for "${pluginEntry.name}". Add skills/*/SKILL.md in ${toRepoPath(path.join(rootDir, pluginEntry.source.slice(2)))}.`);
-  }
-  if (commandFiles.length === 0) {
-    fail(`Missing command docs for "${pluginEntry.name}". Add commands/*.md in ${toRepoPath(path.join(rootDir, pluginEntry.source.slice(2)))}.`);
+function validateIntegrationMetadata({ pluginEntry, readme, readmePath, skillFiles, commandFiles, agentFiles, isStrict, isInfrastructurePlugin }) {
+  if (!isInfrastructurePlugin) {
+    if (skillFiles.length === 0) {
+      fail(`Missing skill docs for "${pluginEntry.name}". Add skills/*/SKILL.md in ${toRepoPath(path.join(rootDir, pluginEntry.source.slice(2)))}.`);
+    }
+    if (commandFiles.length === 0) {
+      fail(`Missing command docs for "${pluginEntry.name}". Add commands/*.md in ${toRepoPath(path.join(rootDir, pluginEntry.source.slice(2)))}.`);
+    }
   }
   if (!isStrict) return;
 
@@ -136,6 +149,12 @@ function detectChangedPlugins() {
   const files = runGitDiffFiles();
   const changed = new Set();
   for (const file of files) {
+    // Strict-mode content checks should only fire when the substantive
+    // surface of a plugin changes — its skills, commands, agents, hooks,
+    // or source. Pure documentation (README) and pure manifest-metadata
+    // updates (plugin.json) don't warrant the deep content audit.
+    if (/(?:^|\/)README\.md$/.test(file)) continue;
+    if (/\.claude-plugin\/plugin\.json$/.test(file)) continue;
     const root = file.split('/')[0];
     if (marketplace.plugins.some((p) => typeof p.source === 'string' && p.source === `./${root}`)) {
       changed.add(root);

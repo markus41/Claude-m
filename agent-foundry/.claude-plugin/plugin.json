@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/agent-foundry/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "azure",
     "ai-foundry",
@@ -19,10 +25,6 @@
   "skills": [
     "./skills/agent-foundry/"
   ],
-  "agents": [
-    "./agents/agent-generator.md",
-    "./agents/agent-evaluator.md"
-  ],
   "commands": [
     "./commands/af-setup.md",
     "./commands/af-scaffold-agent.md",
@@ -30,6 +32,10 @@
     "./commands/af-test-agent.md",
     "./commands/af-list-agents.md",
     "./commands/af-agent-status.md"
+  ],
+  "agents": [
+    "./agents/agent-generator.md",
+    "./agents/agent-evaluator.md"
   ],
   "hooks": "./hooks/hooks.json",
   "mcpServers": "./.mcp.json"

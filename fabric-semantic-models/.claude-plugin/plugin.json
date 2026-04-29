@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/fabric-semantic-models/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "fabric",
@@ -18,13 +24,13 @@
   "skills": [
     "./skills/fabric-semantic-models/"
   ],
-  "agents": [
-    "./agents/semantic-model-reviewer.md"
-  ],
   "commands": [
     "./commands/semantic-setup.md",
     "./commands/directlake-model-design.md",
     "./commands/dax-governance.md",
     "./commands/xmla-deploy.md"
+  ],
+  "agents": [
+    "./agents/semantic-model-reviewer.md"
   ]
 }

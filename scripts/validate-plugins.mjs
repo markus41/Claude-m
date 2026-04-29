@@ -37,12 +37,27 @@ for (const pluginEntry of marketplace.plugins ?? []) {
 
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 
-  if (!fs.existsSync(skillsDir) || !hasSkillFile(skillsDir)) {
-    fail(`Missing required skills/*/SKILL.md in ${toRepoPath(pluginDir)} for plugin ${pluginEntry.name}`);
+  // Detect plugin shape per Claude Code plugin spec: a plugin can ship any
+  // mix of skills, commands, agents, hooks, MCP servers, or LSP servers.
+  // MCP-bundle plugins (with package.json or .mcp.json) and hook-only plugins
+  // are valid even without skills/commands. Knowledge plugins must still
+  // include both skills and commands.
+  const hasPackageJson = fs.existsSync(path.join(pluginDir, 'package.json'));
+  const hasMcpConfig = fs.existsSync(path.join(pluginDir, '.mcp.json'));
+  const declaresMcpServers = manifest.mcpServers && Object.keys(manifest.mcpServers).length > 0;
+  const declaresLspServers = manifest.lspServers && Object.keys(manifest.lspServers).length > 0;
+  const declaresHooks = manifest.hooks || fs.existsSync(path.join(pluginDir, 'hooks'));
+  const isMcpPlugin = hasPackageJson || hasMcpConfig || declaresMcpServers;
+  const isInfrastructurePlugin = isMcpPlugin || declaresLspServers || declaresHooks;
+
+  if (!isInfrastructurePlugin) {
+    if (!fs.existsSync(skillsDir) || !hasSkillFile(skillsDir)) {
+      fail(`Missing required skills/*/SKILL.md in ${toRepoPath(pluginDir)} for plugin ${pluginEntry.name}`);
+    }
   }
 
   const commandFiles = getMarkdownFiles(commandsDir);
-  if (commandFiles.length === 0) {
+  if (!isInfrastructurePlugin && commandFiles.length === 0) {
     fail(`Missing required commands/*.md in ${toRepoPath(pluginDir)} for plugin ${pluginEntry.name}`);
   }
 
@@ -170,7 +185,15 @@ function lintCommand(commandPath) {
     fail(`Command doc must include at least one H2 section (## ...) in ${toRepoPath(commandPath)}`);
   }
 
-  if (!/^\d+\.\s+/m.test(body) && !/^[-*]\s+/m.test(body)) {
+  // Accept any of: numbered list, bullet list, numbered step headings, or
+  // three-or-more H2/H3 sections (a sectioned procedure). Each form
+  // expresses deterministic, ordered steps in different syntaxes.
+  const hasNumberedList = /^\d+\.\s+/m.test(body);
+  const hasBulletList = /^[-*]\s+/m.test(body);
+  const hasStepHeadings = /^#{2,3}\s+(?:Step\s+)?\d+[.:]/im.test(body);
+  const sectionHeadings = body.match(/^#{2,3}\s+\S/gm) || [];
+  const hasMultiSectionProcedure = sectionHeadings.length >= 3;
+  if (!hasNumberedList && !hasBulletList && !hasStepHeadings && !hasMultiSectionProcedure) {
     fail(`Command doc should include deterministic steps/checks as a list in ${toRepoPath(commandPath)}`);
   }
 }

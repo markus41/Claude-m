@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/onedrive/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "onedrive",
@@ -16,9 +22,6 @@
   "skills": [
     "./skills/onedrive-files/"
   ],
-  "agents": [
-    "./agents/onedrive-reviewer.md"
-  ],
   "commands": [
     "./commands/onedrive-upload.md",
     "./commands/onedrive-download.md",
@@ -26,5 +29,8 @@
     "./commands/onedrive-search.md",
     "./commands/onedrive-sync-status.md",
     "./commands/onedrive-setup.md"
+  ],
+  "agents": [
+    "./agents/onedrive-reviewer.md"
   ]
 }

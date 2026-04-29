@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/azure-devops/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "azure-devops",
@@ -27,12 +33,6 @@
     "./skills/azure-devops-boards/",
     "./skills/azure-devops-testing/",
     "./skills/azure-devops-admin/"
-  ],
-  "agents": [
-    "./agents/devops-reviewer.md",
-    "./agents/devops-pipeline-debugger.md",
-    "./agents/devops-security-auditor.md",
-    "./agents/devops-migration-planner.md"
   ],
   "commands": [
     "./commands/ado-setup.md",
@@ -60,5 +60,11 @@
     "./commands/ado-process.md",
     "./commands/ado-extensions.md",
     "./commands/ado-analytics.md"
+  ],
+  "agents": [
+    "./agents/devops-reviewer.md",
+    "./agents/devops-pipeline-debugger.md",
+    "./agents/devops-security-auditor.md",
+    "./agents/devops-migration-planner.md"
   ]
 }
