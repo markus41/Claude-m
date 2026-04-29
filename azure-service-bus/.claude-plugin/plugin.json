@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/azure-service-bus/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "azure",
     "service",
@@ -13,14 +19,14 @@
   "skills": [
     "./skills/azure-service-bus/"
   ],
-  "agents": [
-    "./agents/azure-service-bus-reviewer.md"
-  ],
   "commands": [
     "./commands/service-bus-setup.md",
     "./commands/service-bus-lag-scan.md",
     "./commands/service-bus-deadletter-replay-plan.md",
     "./commands/service-bus-stale-subscription-cleanup.md",
     "./commands/service-bus-namespace-quota-check.md"
+  ],
+  "agents": [
+    "./agents/azure-service-bus-reviewer.md"
   ]
 }

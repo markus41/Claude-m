@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/fabric-security-governance/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "fabric",
@@ -18,13 +24,13 @@
   "skills": [
     "./skills/fabric-security-governance/"
   ],
-  "agents": [
-    "./agents/security-governance-reviewer.md"
-  ],
   "commands": [
     "./commands/security-setup.md",
     "./commands/workspace-rbac-design.md",
     "./commands/rls-ols-policy.md",
     "./commands/lineage-audit.md"
+  ],
+  "agents": [
+    "./agents/security-governance-reviewer.md"
   ]
 }

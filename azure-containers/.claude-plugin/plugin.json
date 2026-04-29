@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/azure-containers/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "azure",
@@ -18,9 +24,6 @@
   "skills": [
     "./skills/azure-containers/"
   ],
-  "agents": [
-    "./agents/container-reviewer.md"
-  ],
   "commands": [
     "./commands/container-setup.md",
     "./commands/acr-build-push.md",
@@ -28,5 +31,8 @@
     "./commands/container-app-deploy.md",
     "./commands/container-app-scale.md",
     "./commands/aci-run.md"
+  ],
+  "agents": [
+    "./agents/container-reviewer.md"
   ]
 }

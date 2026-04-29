@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/fabric-mirroring-external/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "fabric",
@@ -18,9 +24,6 @@
   "skills": [
     "./skills/fabric-mirroring-external/"
   ],
-  "agents": [
-    "./agents/fabric-mirroring-external-reviewer.md"
-  ],
   "commands": [
     "./commands/mirror-external-setup.md",
     "./commands/mirror-external-generic-database.md",
@@ -29,5 +32,8 @@
     "./commands/mirror-external-sap.md",
     "./commands/mirror-external-snowflake.md",
     "./commands/mirror-external-sql-server.md"
+  ],
+  "agents": [
+    "./agents/fabric-mirroring-external-reviewer.md"
   ]
 }

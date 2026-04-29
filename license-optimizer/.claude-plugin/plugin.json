@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/license-optimizer/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "licensing",
@@ -17,12 +23,12 @@
   "skills": [
     "./skills/license-optimizer/"
   ],
-  "agents": [
-    "./agents/license-optimizer-reviewer.md"
-  ],
   "commands": [
     "./commands/license-setup.md",
     "./commands/license-scan.md",
     "./commands/license-report.md"
+  ],
+  "agents": [
+    "./agents/license-optimizer-reviewer.md"
   ]
 }

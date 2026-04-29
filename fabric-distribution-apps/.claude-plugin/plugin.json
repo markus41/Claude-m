@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/fabric-distribution-apps/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "fabric",
@@ -17,14 +23,14 @@
   "skills": [
     "./skills/fabric-distribution-apps/"
   ],
-  "agents": [
-    "./agents/fabric-distribution-apps-reviewer.md"
-  ],
   "commands": [
     "./commands/org-app-setup.md",
     "./commands/org-app-package.md",
     "./commands/org-app-permission-model.md",
     "./commands/org-app-release.md",
     "./commands/org-app-adoption-report.md"
+  ],
+  "agents": [
+    "./agents/fabric-distribution-apps-reviewer.md"
   ]
 }

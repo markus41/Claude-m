@@ -4,5 +4,16 @@
   "description": "Send messages, create meetings, and manage Teams channels via MCP.",
   "author": {
     "name": "Markus Ahling"
-  }
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/plugins/teams/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
+  "keywords": [
+    "microsoft",
+    "teams",
+    "collaboration"
+  ]
 }

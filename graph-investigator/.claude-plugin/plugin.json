@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/graph-investigator/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "graph",
@@ -28,9 +34,6 @@
   "skills": [
     "./skills/graph-investigation/"
   ],
-  "agents": [
-    "./agents/investigation-report-generator.md"
-  ],
   "commands": [
     "./commands/inv-setup.md",
     "./commands/inv-user.md",
@@ -43,5 +46,8 @@
     "./commands/inv-teams.md",
     "./commands/inv-risk.md",
     "./commands/inv-apps.md"
+  ],
+  "agents": [
+    "./agents/investigation-report-generator.md"
   ]
 }

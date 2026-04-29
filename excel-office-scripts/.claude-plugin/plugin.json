@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/excel-office-scripts/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "excel",
     "office-scripts",
@@ -17,13 +23,13 @@
     "./skills/office-scripts/",
     "./skills/power-automate-flows/"
   ],
-  "agents": [
-    "./agents/office-script-reviewer.md",
-    "./agents/flow-definition-reviewer.md"
-  ],
   "commands": [
     "./commands/create-script.md",
     "./commands/validate-script.md",
     "./commands/create-flow.md"
+  ],
+  "agents": [
+    "./agents/office-script-reviewer.md",
+    "./agents/flow-definition-reviewer.md"
   ]
 }

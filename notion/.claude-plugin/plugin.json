@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/notion/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "notion",
     "notion-api",
@@ -23,10 +29,6 @@
   "skills": [
     "./skills/notion-mastery/"
   ],
-  "agents": [
-    "./agents/notion-page-designer.md",
-    "./agents/notion-database-architect.md"
-  ],
   "commands": [
     "./commands/notion-page.md",
     "./commands/notion-db.md",
@@ -34,5 +36,9 @@
     "./commands/notion-search.md",
     "./commands/notion-template.md",
     "./commands/notion-formula.md"
+  ],
+  "agents": [
+    "./agents/notion-page-designer.md",
+    "./agents/notion-database-architect.md"
   ]
 }

@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/servicedesk-runbooks/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "service-desk",
@@ -17,14 +23,14 @@
   "skills": [
     "./skills/servicedesk-runbooks/"
   ],
-  "agents": [
-    "./agents/servicedesk-runbooks-reviewer.md"
-  ],
   "commands": [
     "./commands/servicedesk-setup.md",
     "./commands/runbook-shared-mailbox.md",
     "./commands/runbook-reset-mfa.md",
     "./commands/runbook-recover-file.md",
     "./commands/runbook-password-reset.md"
+  ],
+  "agents": [
+    "./agents/servicedesk-runbooks-reviewer.md"
   ]
 }

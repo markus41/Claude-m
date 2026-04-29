@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/defender-endpoint/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "defender",
     "endpoint"
@@ -12,14 +18,14 @@
   "skills": [
     "./skills/defender-endpoint/"
   ],
-  "agents": [
-    "./agents/defender-endpoint-reviewer.md"
-  ],
   "commands": [
     "./commands/defender-endpoint-setup.md",
     "./commands/defender-endpoint-triage.md",
     "./commands/defender-endpoint-isolate-machine.md",
     "./commands/defender-endpoint-live-response-metadata.md",
     "./commands/defender-endpoint-evidence-summary.md"
+  ],
+  "agents": [
+    "./agents/defender-endpoint-reviewer.md"
   ]
 }

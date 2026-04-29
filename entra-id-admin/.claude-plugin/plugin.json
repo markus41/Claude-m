@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/entra-id-admin/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "entra-id",
@@ -22,11 +28,6 @@
   ],
   "skills": [
     "./skills/entra-admin/"
-  ],
-  "agents": [
-    "./agents/user-lifecycle-agent.md",
-    "./agents/pim-guardian.md",
-    "./agents/entra-compliance-auditor.md"
   ],
   "commands": [
     "./commands/entra-admin-setup.md",
@@ -58,5 +59,10 @@
     "./commands/entra-named-location-create.md",
     "./commands/entra-access-package-create.md",
     "./commands/entra-access-review-create.md"
+  ],
+  "agents": [
+    "./agents/user-lifecycle-agent.md",
+    "./agents/pim-guardian.md",
+    "./agents/entra-compliance-auditor.md"
   ]
 }

@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/dynamics-365-project-ops/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "dynamics-365",
     "project-operations",
@@ -20,14 +26,14 @@
   "skills": [
     "./skills/dynamics-365-project-ops/"
   ],
-  "agents": [
-    "./agents/dynamics-365-project-ops-reviewer.md"
-  ],
   "commands": [
     "./commands/proj-setup.md",
     "./commands/proj-manage.md",
     "./commands/proj-time-expense.md",
     "./commands/proj-resources.md",
     "./commands/proj-billing.md"
+  ],
+  "agents": [
+    "./agents/dynamics-365-project-ops-reviewer.md"
   ]
 }

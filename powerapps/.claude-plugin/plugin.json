@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/powerapps/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "power-apps",
@@ -21,9 +27,6 @@
   "skills": [
     "./skills/powerapps-dev/"
   ],
-  "agents": [
-    "./agents/powerapps-reviewer.md"
-  ],
   "commands": [
     "./commands/pa-canvas-screen.md",
     "./commands/pa-formula.md",
@@ -36,5 +39,8 @@
     "./commands/pa-mda-create.md",
     "./commands/pa-app-from-data.md",
     "./commands/pa-deploy.md"
+  ],
+  "agents": [
+    "./agents/powerapps-reviewer.md"
   ]
 }

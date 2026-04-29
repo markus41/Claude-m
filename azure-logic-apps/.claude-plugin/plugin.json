@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/azure-logic-apps/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "azure",
@@ -20,9 +26,6 @@
   "skills": [
     "./skills/azure-logic-apps/"
   ],
-  "agents": [
-    "./agents/logic-apps-reviewer.md"
-  ],
   "commands": [
     "./commands/la-setup.md",
     "./commands/la-create.md",
@@ -32,5 +35,8 @@
     "./commands/la-integration-account.md",
     "./commands/la-migrate-ise.md",
     "./commands/la-expression-helper.md"
+  ],
+  "agents": [
+    "./agents/logic-apps-reviewer.md"
   ]
 }

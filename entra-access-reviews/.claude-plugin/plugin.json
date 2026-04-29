@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/entra-access-reviews/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "entra",
     "access",
@@ -13,14 +19,14 @@
   "skills": [
     "./skills/entra-access-reviews/"
   ],
-  "agents": [
-    "./agents/entra-access-reviews-reviewer.md"
-  ],
   "commands": [
     "./commands/access-reviews-setup.md",
     "./commands/access-reviews-stale-privileged.md",
     "./commands/access-reviews-cycle-draft.md",
     "./commands/access-reviews-remediation-tickets.md",
     "./commands/access-reviews-status-report.md"
+  ],
+  "agents": [
+    "./agents/entra-access-reviews-reviewer.md"
   ]
 }

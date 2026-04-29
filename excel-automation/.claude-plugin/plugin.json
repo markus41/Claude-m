@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/excel-automation/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "excel",
     "pandas",
@@ -19,10 +25,6 @@
     "./skills/office-scripts/",
     "./skills/power-automate-flows/"
   ],
-  "agents": [
-    "./agents/excel-reviewer.md",
-    "./agents/flow-definition-reviewer.md"
-  ],
   "commands": [
     "./commands/excel-clean.md",
     "./commands/excel-script.md",
@@ -32,5 +34,9 @@
     "./commands/validate-script.md",
     "./commands/create-flow.md",
     "./commands/excel-setup.md"
+  ],
+  "agents": [
+    "./agents/excel-reviewer.md",
+    "./agents/flow-definition-reviewer.md"
   ]
 }

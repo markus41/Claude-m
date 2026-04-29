@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/m365-admin/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft-365",
     "graph-api",
@@ -19,9 +25,6 @@
   ],
   "skills": [
     "./skills/m365-admin/"
-  ],
-  "agents": [
-    "./agents/m365-admin-reviewer.md"
   ],
   "commands": [
     "./commands/m365-user-create.md",
@@ -42,5 +45,8 @@
     "./commands/m365-admin-units.md",
     "./commands/m365-search-admin.md",
     "./commands/m365-domain-management.md"
+  ],
+  "agents": [
+    "./agents/m365-admin-reviewer.md"
   ]
 }

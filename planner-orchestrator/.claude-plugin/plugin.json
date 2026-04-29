@@ -6,6 +6,9 @@
     "name": "Markus Ahling",
     "email": "markus@lobbi.io"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/planner-orchestrator/README.md",
+  "repository": "https://github.com/markus41/claude-m",
   "keywords": [
     "microsoft",
     "planner",
@@ -18,10 +21,15 @@
     "teams",
     "m365"
   ],
-  "license": "MIT",
-  "repository": "https://github.com/markus41/claude-m",
   "skills": [
     "./skills/planner-orchestration/"
+  ],
+  "commands": [
+    "./commands/ship.md",
+    "./commands/triage.md",
+    "./commands/sprint.md",
+    "./commands/status.md",
+    "./commands/orchestrate.md"
   ],
   "agents": [
     "./agents/ship-orchestrator.md",
@@ -31,12 +39,5 @@
     "./agents/portfolio-manager.md",
     "./agents/workload-balancer.md",
     "./agents/teams-notifier.md"
-  ],
-  "commands": [
-    "./commands/ship.md",
-    "./commands/triage.md",
-    "./commands/sprint.md",
-    "./commands/status.md",
-    "./commands/orchestrate.md"
   ]
 }

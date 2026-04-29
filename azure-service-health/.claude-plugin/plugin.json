@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/azure-service-health/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "azure",
     "service",
@@ -13,14 +19,14 @@
   "skills": [
     "./skills/azure-service-health/"
   ],
-  "agents": [
-    "./agents/azure-service-health-reviewer.md"
-  ],
   "commands": [
     "./commands/service-health-setup.md",
     "./commands/service-health-watchlist.md",
     "./commands/service-health-runbook-map.md",
     "./commands/service-health-impact-score.md",
     "./commands/service-health-comms-summary.md"
+  ],
+  "agents": [
+    "./agents/azure-service-health-reviewer.md"
   ]
 }

@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/powerplatform-alm/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "power-platform",
     "alm",
@@ -17,9 +23,6 @@
   "skills": [
     "./skills/alm-lifecycle/"
   ],
-  "agents": [
-    "./agents/alm-reviewer.md"
-  ],
   "commands": [
     "./commands/alm-env-create.md",
     "./commands/alm-env-list.md",
@@ -31,5 +34,8 @@
     "./commands/alm-pcf-build.md",
     "./commands/alm-envvar-set.md",
     "./commands/alm-setup.md"
+  ],
+  "agents": [
+    "./agents/alm-reviewer.md"
   ]
 }

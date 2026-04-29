@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/powerbi-fabric/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "power-bi",
     "dax",
@@ -19,10 +25,6 @@
   ],
   "skills": [
     "./skills/powerbi-analytics/"
-  ],
-  "agents": [
-    "./agents/dax-reviewer.md",
-    "./agents/pbi-performance-advisor.md"
   ],
   "commands": [
     "./commands/pbi-measure.md",
@@ -42,5 +44,9 @@
     "./commands/pbi-dashboard-create.md",
     "./commands/pbi-report-create.md",
     "./commands/pbi-scorecard-manage.md"
+  ],
+  "agents": [
+    "./agents/dax-reviewer.md",
+    "./agents/pbi-performance-advisor.md"
   ]
 }

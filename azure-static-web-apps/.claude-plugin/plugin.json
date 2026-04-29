@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/azure-static-web-apps/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "azure",
@@ -16,14 +22,14 @@
   "skills": [
     "./skills/azure-static-web-apps/"
   ],
-  "agents": [
-    "./agents/swa-reviewer.md"
-  ],
   "commands": [
     "./commands/swa-create.md",
     "./commands/swa-config.md",
     "./commands/swa-api-deploy.md",
     "./commands/swa-auth-configure.md",
     "./commands/swa-setup.md"
+  ],
+  "agents": [
+    "./agents/swa-reviewer.md"
   ]
 }

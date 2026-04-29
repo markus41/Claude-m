@@ -6,19 +6,32 @@
     "name": "Markus Ahling",
     "email": "markus@lobbi.io"
   },
-  "keywords": [
-    "microsoft", "azure", "document-intelligence", "form-recognizer", "ocr",
-    "invoices", "receipts", "custom-models", "layout-analysis", "classification"
-  ],
   "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/azure-document-intelligence/README.md",
   "repository": "https://github.com/markus41/claude-m",
-  "skills": ["./skills/azure-document-intelligence/"],
-  "agents": ["./agents/docai-reviewer.md"],
+  "keywords": [
+    "microsoft",
+    "azure",
+    "document-intelligence",
+    "form-recognizer",
+    "ocr",
+    "invoices",
+    "receipts",
+    "custom-models",
+    "layout-analysis",
+    "classification"
+  ],
+  "skills": [
+    "./skills/azure-document-intelligence/"
+  ],
   "commands": [
     "./commands/docai-setup.md",
     "./commands/docai-analyze.md",
     "./commands/docai-custom-model.md",
     "./commands/docai-classify.md",
     "./commands/docai-batch.md"
+  ],
+  "agents": [
+    "./agents/docai-reviewer.md"
   ]
 }

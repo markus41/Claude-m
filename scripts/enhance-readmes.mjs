@@ -57,6 +57,18 @@ const CATEGORY_META = {
   },
 };
 
+function pluginFolderPath(plugin) {
+  // Support both canonical relative-path string sources ("./<path>") and
+  // the legacy git-subdir object form for backwards compatibility.
+  if (typeof plugin.source === "string") {
+    return plugin.source.replace(/^\.\//, "");
+  }
+  if (plugin.source && typeof plugin.source === "object" && plugin.source.path) {
+    return plugin.source.path;
+  }
+  return plugin.name;
+}
+
 function readPluginJson(folder) {
   const p = path.join(ROOT, folder, ".claude-plugin", "plugin.json");
   if (fs.existsSync(p)) {
@@ -192,11 +204,11 @@ function relatedPlugins(plugin) {
     })
     .slice(0, 6);
   if (siblings.length === 0) return "";
-  const fromFolder = (plugin.source && plugin.source.path) ? plugin.source.path : plugin.name;
+  const fromFolder = pluginFolderPath(plugin);
   let out = "<table>\n";
   out += "<tr><th>Plugin</th><th>What it does</th></tr>\n";
   for (const s of siblings) {
-    const toFolder = (s.source && s.source.path) ? s.source.path : s.name;
+    const toFolder = pluginFolderPath(s);
     let rel = path.relative(fromFolder, toFolder);
     if (rel === "") rel = ".";
     const link = rel + "/README.md";
@@ -346,7 +358,7 @@ function stripLeadingTitle(content, name) {
 }
 
 function enhanceOne(plugin) {
-  const folder = (plugin.source && plugin.source.path) ? plugin.source.path : plugin.name;
+  const folder = pluginFolderPath(plugin);
   const readmePath = path.join(ROOT, folder, "README.md");
   let original = "";
   if (fs.existsSync(readmePath)) {

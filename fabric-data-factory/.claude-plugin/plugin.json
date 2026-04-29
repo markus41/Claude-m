@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/fabric-data-factory/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "fabric",
@@ -18,9 +24,6 @@
   "skills": [
     "./skills/fabric-data-factory/"
   ],
-  "agents": [
-    "./agents/data-factory-reviewer.md"
-  ],
   "commands": [
     "./commands/fabric-adf-setup.md",
     "./commands/pipeline-create.md",
@@ -30,5 +33,8 @@
     "./commands/pipeline-monitor.md",
     "./commands/copy-job-manage.md",
     "./commands/dataflow-gen2-manage.md"
+  ],
+  "agents": [
+    "./agents/data-factory-reviewer.md"
   ]
 }

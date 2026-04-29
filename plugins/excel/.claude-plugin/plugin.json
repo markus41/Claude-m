@@ -4,5 +4,16 @@
   "description": "Read and update workbooks, worksheets, ranges, and tables via MCP.",
   "author": {
     "name": "Markus Ahling"
-  }
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/plugins/excel/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
+  "keywords": [
+    "microsoft",
+    "excel",
+    "data"
+  ]
 }

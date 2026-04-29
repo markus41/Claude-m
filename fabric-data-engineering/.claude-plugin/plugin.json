@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/fabric-data-engineering/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "fabric",
@@ -22,10 +28,6 @@
   "skills": [
     "./skills/fabric-data-engineering/"
   ],
-  "agents": [
-    "./agents/data-engineering-reviewer.md",
-    "./agents/pipeline-debugger.md"
-  ],
   "commands": [
     "./commands/fabric-eng-setup.md",
     "./commands/lakehouse-create.md",
@@ -38,5 +40,9 @@
     "./commands/lakehouse-optimize.md",
     "./commands/workspace-manage.md",
     "./commands/pipeline-monitor.md"
+  ],
+  "agents": [
+    "./agents/data-engineering-reviewer.md",
+    "./agents/pipeline-debugger.md"
   ]
 }

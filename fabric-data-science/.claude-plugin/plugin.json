@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/fabric-data-science/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "fabric",
@@ -18,9 +24,6 @@
   "skills": [
     "./skills/fabric-data-science/"
   ],
-  "agents": [
-    "./agents/data-science-reviewer.md"
-  ],
   "commands": [
     "./commands/fabric-ds-setup.md",
     "./commands/experiment-create.md",
@@ -28,5 +31,8 @@
     "./commands/model-register.md",
     "./commands/model-predict.md",
     "./commands/semantic-link-query.md"
+  ],
+  "agents": [
+    "./agents/data-science-reviewer.md"
   ]
 }

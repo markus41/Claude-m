@@ -5,6 +5,12 @@
   "author": {
     "name": "Markus Ahling"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/Claude-m/blob/main/teams-app-dev/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/Claude-m"
+  },
   "keywords": [
     "microsoft",
     "teams",
@@ -27,10 +33,6 @@
   "skills": [
     "./skills/teams-app-dev/"
   ],
-  "agents": [
-    "./agents/teams-app-reviewer.md",
-    "./agents/teams-bot-debugger.md"
-  ],
   "commands": [
     "./commands/teams-app-setup.md",
     "./commands/teams-scaffold.md",
@@ -47,5 +49,9 @@
     "./commands/teams-notification-hub.md",
     "./commands/teams-meeting-app.md",
     "./commands/teams-copilot-plugin.md"
+  ],
+  "agents": [
+    "./agents/teams-app-reviewer.md",
+    "./agents/teams-bot-debugger.md"
   ]
 }
