@@ -50,6 +50,48 @@ for (const pluginEntry of marketplace.plugins ?? []) {
   const isMcpPlugin = hasPackageJson || hasMcpConfig || declaresMcpServers;
   const isInfrastructurePlugin = isMcpPlugin || declaresLspServers || declaresHooks;
 
+  // .mcp.json must wrap servers under "mcpServers" per the Claude Code plugin spec.
+  if (hasMcpConfig) {
+    try {
+      const mcp = JSON.parse(fs.readFileSync(path.join(pluginDir, '.mcp.json'), 'utf8'));
+      if (!mcp || typeof mcp.mcpServers !== 'object' || mcp.mcpServers === null) {
+        fail(`.mcp.json in ${toRepoPath(pluginDir)} must wrap servers under top-level "mcpServers" key`);
+      }
+    } catch (err) {
+      fail(`Could not parse .mcp.json in ${toRepoPath(pluginDir)}: ${err.message}`);
+    }
+  }
+
+  // hooks/hooks.json (or any hooks file referenced by manifest.hooks as a string)
+  // must wrap event handlers under a top-level "hooks" key.
+  const hookFilePaths = [];
+  const defaultHooksFile = path.join(pluginDir, 'hooks', 'hooks.json');
+  if (fs.existsSync(defaultHooksFile) && fs.statSync(defaultHooksFile).isFile()) {
+    hookFilePaths.push(defaultHooksFile);
+  }
+  if (typeof manifest.hooks === 'string') {
+    const hp = path.join(pluginDir, manifest.hooks);
+    if (fs.existsSync(hp) && fs.statSync(hp).isFile() && !hookFilePaths.includes(hp)) {
+      hookFilePaths.push(hp);
+    }
+  }
+  for (const hp of hookFilePaths) {
+    try {
+      const h = JSON.parse(fs.readFileSync(hp, 'utf8'));
+      if (!h || typeof h.hooks !== 'object' || h.hooks === null) {
+        fail(`Hook file ${toRepoPath(hp)} must wrap event handlers under top-level "hooks" key`);
+      }
+    } catch (err) {
+      fail(`Could not parse hook file ${toRepoPath(hp)}: ${err.message}`);
+    }
+  }
+
+  // Bundled MCP plugins (package.json + dist/) need a runnable mcpServers
+  // declaration in the manifest, otherwise Claude Code never starts the server.
+  if (hasPackageJson && !declaresMcpServers && !hasMcpConfig) {
+    fail(`Plugin ${pluginEntry.name} ships an MCP bundle (package.json) but does not declare mcpServers in plugin.json or a .mcp.json file`);
+  }
+
   if (!isInfrastructurePlugin) {
     if (!fs.existsSync(skillsDir) || !hasSkillFile(skillsDir)) {
       fail(`Missing required skills/*/SKILL.md in ${toRepoPath(pluginDir)} for plugin ${pluginEntry.name}`);

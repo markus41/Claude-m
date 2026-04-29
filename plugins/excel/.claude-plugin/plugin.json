@@ -15,5 +15,29 @@
     "microsoft",
     "excel",
     "data"
-  ]
+  ],
+  "mcpServers": {
+    "microsoft-excel-mcp": {
+      "command": "node",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/dist/index.js"],
+      "env": {
+        "MICROSOFT_CLIENT_ID": "${MICROSOFT_CLIENT_ID}",
+        "MICROSOFT_CLIENT_SECRET": "${MICROSOFT_CLIENT_SECRET}",
+        "MICROSOFT_TENANT_ID": "${MICROSOFT_TENANT_ID}",
+        "MICROSOFT_ACCESS_TOKEN": "${MICROSOFT_ACCESS_TOKEN}"
+      }
+    }
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/session-start.sh"
+          }
+        ]
+      }
+    ]
+  }
 }

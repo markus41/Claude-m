@@ -1,24 +1,26 @@
 {
-  "firecrawl": {
-    "command": "npx",
-    "args": ["-y", "firecrawl-mcp"],
-    "env": {
-      "FIRECRAWL_API_KEY": "${FIRECRAWL_API_KEY}"
+  "mcpServers": {
+    "firecrawl": {
+      "command": "npx",
+      "args": ["-y", "firecrawl-mcp"],
+      "env": {
+        "FIRECRAWL_API_KEY": "${FIRECRAWL_API_KEY}"
+      }
+    },
+    "perplexity": {
+      "command": "npx",
+      "args": ["-yq", "@perplexity-ai/mcp-server"],
+      "env": {
+        "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}"
+      }
+    },
+    "whois": {
+      "command": "npx",
+      "args": ["-y", "@bharathvaj/whois-mcp@latest"]
+    },
+    "domain-search": {
+      "command": "npx",
+      "args": ["-y", "domain-search-mcp"]
     }
-  },
-  "perplexity": {
-    "command": "npx",
-    "args": ["-yq", "@perplexity-ai/mcp-server"],
-    "env": {
-      "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}"
-    }
-  },
-  "whois": {
-    "command": "npx",
-    "args": ["-y", "@bharathvaj/whois-mcp@latest"]
-  },
-  "domain-search": {
-    "command": "npx",
-    "args": ["-y", "domain-search-mcp"]
   }
 }
