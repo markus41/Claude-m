@@ -3,9 +3,9 @@
 
 <a id="top"></a>
 
-# microsoft-outlook-mcp
+# domain-business-name-finder
 
-### Send email and manage inbox/calendar tasks via MCP.
+### Brainstorm business names and check domain availability across popular TLDs using Firecrawl, Perplexity, WHOIS, and Domain Search MCP servers
 
 <sub>Automate everyday Microsoft 365 collaboration workflows.</sub>
 
@@ -15,12 +15,12 @@
 <tr>
 <td align="center"><b>Category</b><br /><code>Productivity</code></td>
 <td align="center"><b>Surfaces</b><br /><sub>Microsoft Graph · M365 · Teams · Outlook · SharePoint · Loop</sub></td>
-<td align="center"><b>Version</b><br /><code>1.0.0</code></td>
+<td align="center"><b>Version</b><br /><code>0.2.0</code></td>
 <td align="center"><b>Marketplace</b><br /><code>claude-m-microsoft-marketplace</code></td>
 </tr>
 </table>
 
-<sub><code>microsoft</code> &nbsp;·&nbsp; <code>outlook</code> &nbsp;·&nbsp; <code>email</code></sub>
+<sub><code>domain</code> &nbsp;·&nbsp; <code>business</code> &nbsp;·&nbsp; <code>naming</code> &nbsp;·&nbsp; <code>branding</code> &nbsp;·&nbsp; <code>startup</code></sub>
 
 <a href="#install"><b>Install</b></a> &nbsp;·&nbsp;
 <a href="#overview"><b>Overview</b></a> &nbsp;·&nbsp;
@@ -33,21 +33,31 @@
 ---
 
 > [!TIP]
-> **One-line install** — `/plugin install microsoft-outlook-mcp@claude-m-microsoft-marketplace`
+> **One-line install** — `/plugin install domain-business-name-finder@claude-m-microsoft-marketplace`
 
 
 
 ## Overview
 
-> Send email and manage inbox/calendar tasks via MCP.
+> Brainstorm business names and check domain availability across popular TLDs using Firecrawl, Perplexity, WHOIS, and Domain Search MCP servers
 
+<details>
+<summary><b>What ships in this plugin</b> (commands, agents, skills)</summary>
+
+| Component | Items |
+|---|---|
+| **Commands** | `/check-domain` · `/find-names` |
+| **Agents** | `name-finder` |
+| **Skills** | `naming-strategies` |
+
+</details>
 
 
 <details>
 <summary><b>Quick example</b></summary>
 
 ```text
-Use microsoft-outlook-mcp to automate Microsoft 365 collaboration workflows.
+Use domain-business-name-finder to automate Microsoft 365 collaboration workflows.
 ```
 
 </details>
@@ -66,7 +76,7 @@ flowchart LR
 
     U["You"]:::user
     CC["Claude Code"]:::cc
-    PG["microsoft-outlook-mcp<br/>(plugin)"]:::plugin
+    PG["domain-business-name-finder<br/>(plugin)"]:::plugin
 
     subgraph MS[" Microsoft surfaces "]
         direction TB
@@ -88,7 +98,7 @@ flowchart LR
 
 ```bash
 /plugin marketplace add markus41/Claude-m
-/plugin install microsoft-outlook-mcp@claude-m-microsoft-marketplace
+/plugin install domain-business-name-finder@claude-m-microsoft-marketplace
 ```
 
 > [!IMPORTANT]
@@ -100,101 +110,9 @@ flowchart LR
 
 <!-- claude-m:premium-header:end -->
 
-Connect Claude to Microsoft Outlook via the Model Context Protocol (MCP).
+## About this plugin
 
-## Features
-
-- **Send Emails**: Compose and send emails from your Outlook mailbox
-- **List Emails**: View recent messages from your inbox
-- **Create Events**: Schedule calendar events
-- **List Events**: View upcoming calendar events
-
-## Installation
-
-### From Claude Code Marketplace
-
-```bash
-/plugin marketplace add markus41/Claude-m
-/plugin install "Microsoft Outlook MCP"
-```
-
-### Manual Configuration
-
-Add to your `.claude/settings.json`:
-
-```json
-{
-  "mcpServers": {
-    "microsoft-outlook": {
-      "command": "node",
-      "args": ["/path/to/Claude-m/dist/index.js"],
-      "env": {
-        "MICROSOFT_CLIENT_ID": "your-client-id",
-        "MICROSOFT_CLIENT_SECRET": "your-client-secret",
-        "MICROSOFT_TENANT_ID": "your-tenant-id",
-        "MICROSOFT_ACCESS_TOKEN": "your-access-token"
-      }
-    }
-  }
-}
-```
-
-## Required Microsoft Graph Permissions
-
-- `Mail.ReadWrite` - Read and write mail
-- `Mail.Send` - Send mail
-- `Calendars.ReadWrite` - Manage calendar events
-- `Contacts.ReadWrite` - Access contacts
-
-## Available Tools
-
-### `outlook_send_email`
-Sends an email via the signed-in user's Outlook mailbox.
-
-**Arguments:**
-- `to` (array): Recipient email addresses
-- `subject` (string): Email subject
-- `body` (string): Email body (HTML or plain text)
-- `cc` (array, optional): CC email addresses
-- `isHtml` (boolean, optional): Whether the body is HTML
-
-### `outlook_list_emails`
-Lists recent emails from the signed-in user's inbox.
-
-**Arguments:**
-- `top` (number, optional): Max number of emails (default 10)
-- `filter` (string, optional): OData $filter expression
-
-### `outlook_create_event`
-Creates a new calendar event in the signed-in user's Outlook calendar.
-
-**Arguments:**
-- `subject` (string): Event subject
-- `startDateTime` (string): ISO-8601 start date-time
-- `endDateTime` (string): ISO-8601 end date-time
-- `attendees` (array, optional): Attendee email addresses
-- `location` (string, optional): Event location
-- `body` (string, optional): Event description (HTML)
-
-### `outlook_list_events`
-Lists upcoming calendar events from the signed-in user's Outlook calendar.
-
-**Arguments:**
-- `top` (number, optional): Max number of events (default 10)
-
-## Example Usage
-
-```
-Send an email:
-> Use outlook_send_email to send a message to team@example.com
-
-Check calendar:
-> Use outlook_list_events to see my upcoming meetings
-```
-
-## License
-
-ISC
+Brainstorm business names and check domain availability across popular TLDs using Firecrawl, Perplexity, WHOIS, and Domain Search MCP servers
 <!-- claude-m:premium-footer:start -->
 
 ---
@@ -215,7 +133,7 @@ ISC
 
 
 <details>
-<summary><b>Composable stacks that include <code>microsoft-outlook-mcp</code></b></summary>
+<summary><b>Composable stacks that include <code>domain-business-name-finder</code></b></summary>
 
 Combine with sibling plugins to build cross-surface runbooks. Browse the full [marketplace catalog](../../README.md#plugin-catalog) for a tailored selection.
 

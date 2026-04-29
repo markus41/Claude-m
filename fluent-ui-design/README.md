@@ -1,4 +1,114 @@
+<!-- claude-m:premium-header:start -->
+<div align="center">
+
+<a id="top"></a>
+
 # fluent-ui-design
+
+### Microsoft Fluent 2 design system mastery — design tokens, color system, typography, layout, components, Teams theming, advanced UI patterns, Griffel styling, accessibility, responsive design, and Figma design kits
+
+<sub>Ship reliably with first-class CI/CD and ALM.</sub>
+
+<br />
+
+<table align="center">
+<tr>
+<td align="center"><b>Category</b><br /><code>DevOps</code></td>
+<td align="center"><b>Surfaces</b><br /><sub>Azure DevOps · GitHub · Pipelines · ALM · IaC</sub></td>
+<td align="center"><b>Version</b><br /><code>2.0.0</code></td>
+<td align="center"><b>Marketplace</b><br /><code>claude-m-microsoft-marketplace</code></td>
+</tr>
+</table>
+
+<sub><code>microsoft</code> &nbsp;·&nbsp; <code>fluent</code> &nbsp;·&nbsp; <code>fluent-ui</code> &nbsp;·&nbsp; <code>design-system</code> &nbsp;·&nbsp; <code>react</code> &nbsp;·&nbsp; <code>teams</code></sub>
+
+<a href="#install"><b>Install</b></a> &nbsp;·&nbsp;
+<a href="#overview"><b>Overview</b></a> &nbsp;·&nbsp;
+<a href="#architecture"><b>Architecture</b></a> &nbsp;·&nbsp;
+<a href="#related-plugins"><b>Related plugins</b></a> &nbsp;·&nbsp;
+<a href="../README.md"><b>Marketplace</b></a>
+
+</div>
+
+---
+
+> [!TIP]
+> **One-line install** — `/plugin install fluent-ui-design@claude-m-microsoft-marketplace`
+
+
+
+## Overview
+
+> Microsoft Fluent 2 design system mastery — design tokens, color system, typography, layout, components, Teams theming, advanced UI patterns, Griffel styling, accessibility, responsive design, and Figma design kits
+
+<details>
+<summary><b>What ships in this plugin</b> (commands, agents, skills)</summary>
+
+| Component | Items |
+|---|---|
+| **Commands** | `/fluent-audit` · `/fluent-chart` · `/fluent-component` · `/fluent-form` · `/fluent-griffel-optimize` · `/fluent-layout` · `/fluent-migrate-v8` · `/fluent-nextjs-setup` · `/fluent-office-addin` · `/fluent-setup` · `/fluent-test` · `/fluent-theme` · `/fluent-tokens` · `/fluent-web-component` |
+| **Agents** | `fluent-accessibility-auditor` · `fluent-component-builder` · `fluent-migration-assistant` · `fluent-theme-engineer` · `fluent-ui-designer` |
+| **Skills** | `fluent-charting` · `fluent-cross-platform` · `fluent-design-system` · `fluent-extensibility` · `fluent-forms` · `fluent-griffel` · `fluent-integration` · `fluent-nextjs` · `fluent-web-components` |
+
+</details>
+
+
+<details>
+<summary><b>Quick example</b></summary>
+
+```text
+Use fluent-ui-design to ship work through pipelines with full ALM.
+```
+
+</details>
+
+<a id="architecture"></a>
+
+## Architecture
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#0078D4','primaryTextColor':'#FFFFFF','lineColor':'#5B9BD5','fontFamily':'Segoe UI, Arial, sans-serif'}}}%%
+flowchart LR
+    classDef user fill:#1E1E1E,stroke:#FFFFFF,color:#FFFFFF,stroke-width:2px
+    classDef cc fill:#D97757,stroke:#7A3E2A,color:#FFFFFF
+    classDef plugin fill:#0078D4,stroke:#003E6B,color:#FFFFFF,stroke-width:2px
+    classDef msft fill:#FFB900,stroke:#B07F00,color:#000000
+
+    U["You"]:::user
+    CC["Claude Code"]:::cc
+    PG["fluent-ui-design<br/>(plugin)"]:::plugin
+
+    subgraph MS[" Microsoft surfaces "]
+        direction TB
+        S0["Azure DevOps REST"]:::msft
+        S1["GitHub API"]:::msft
+        S2["Pipelines"]:::msft
+    end
+
+    U -->|prompts| CC
+    CC -->|loads| PG
+    PG ==> S0
+    PG ==> S1
+    PG ==> S2
+```
+
+<a id="install"></a>
+
+## Install
+
+```bash
+/plugin marketplace add markus41/Claude-m
+/plugin install fluent-ui-design@claude-m-microsoft-marketplace
+```
+
+> [!IMPORTANT]
+> This plugin operates against **Azure DevOps · GitHub · Pipelines · ALM · IaC**. Configure credentials via environment variables — never commit secrets.
+
+[Back to top](#top)
+
+---
+
+<!-- claude-m:premium-header:end -->
 
 Microsoft Fluent 2 design system mastery for Claude Code — design tokens, component library, Teams theming, Griffel styling, Next.js SSR, Web Components, charting, cross-platform, forms, Office Add-ins, accessibility auditing, v8→v9 migration, and Figma design kits.
 
@@ -95,3 +205,41 @@ Microsoft Fluent 2 design system mastery for Claude Code — design tokens, comp
 5. **Office Add-in development**
    Triggers: `fluent-integration`, core skill
    Prompt: "Create an Excel add-in task pane with Fluent UI, including theme switching and responsive layout"
+<!-- claude-m:premium-footer:start -->
+
+---
+
+<a id="related-plugins"></a>
+
+## Related plugins
+
+<table>
+<tr><th>Plugin</th><th>What it does</th></tr>
+<tr><td><a href="../teams-app-dev/README.md"><code>teams-app-dev</code></a></td><td>Custom Teams app development — manifest v1.25, M365 Agents Toolkit, Adaptive Cards, message extensions, meeting apps, Custom Engine Agents, Agent 365 blueprints, workflow bots, notification hubs, Copilot plugins, Teams SDK migration, and advanced meeting experiences with Live Share</td></tr>
+<tr><td><a href="../azure-devops/README.md"><code>azure-devops</code></a></td><td>Comprehensive Azure DevOps expertise — Git repos with passwordless auth (GCM, WIF, SSH), YAML and Classic pipelines, deployment environments, agent pools, work items, boards, sprints, test plans, security namespaces, dashboards, wikis, service hooks, Analytics OData, CLI, and extensions</td></tr>
+<tr><td><a href="../azure-devops-orchestrator/README.md"><code>azure-devops-orchestrator</code></a></td><td>Intelligent orchestration for Azure DevOps — ship work items with Claude Code, triage backlogs, plan sprints, coordinate releases, monitor pipelines, and balance workloads across projects. Integrates with microsoft-teams-mcp and microsoft-outlook-mcp when installed.</td></tr>
+<tr><td><a href="../azure-dotnet-webapp/README.md"><code>azure-dotnet-webapp</code></a></td><td>Scaffold and build ASP.NET Core Web API and Blazor apps on Azure — Minimal API, controllers, Microsoft.Identity.Web, EF Core, SignalR, OpenAPI, App Service deployment, and Graph API integration patterns.</td></tr>
+<tr><td><a href="../azure-graph-dotnet/README.md"><code>azure-graph-dotnet</code></a></td><td>Scaffold and build Microsoft Graph C# / .NET solutions on Azure — Functions, Container Jobs, Azure Identity, Polly resilience, and SharePoint file intelligence implementations.</td></tr>
+<tr><td><a href="../fabric-developer-runtime/README.md"><code>fabric-developer-runtime</code></a></td><td>Microsoft Fabric developer runtime operations - GraphQL API, environments, user data functions, and variable library governance.</td></tr>
+</table>
+
+
+<details>
+<summary><b>Composable stacks that include <code>fluent-ui-design</code></b></summary>
+
+Combine with sibling plugins to build cross-surface runbooks. Browse the full [marketplace catalog](../README.md#plugin-catalog) for a tailored selection.
+
+</details>
+
+---
+
+<div align="center">
+
+<sub>Part of <a href="../README.md"><b>Claude-m</b></a> — the Microsoft plugin marketplace for Claude Code.</sub>
+
+<sub>Licensed under <a href="../LICENSE">MIT</a>. Built for engineers, MSPs, SOC teams, and analytics leaders.</sub>
+
+</div>
+
+<!-- claude-m:premium-footer:end -->
+

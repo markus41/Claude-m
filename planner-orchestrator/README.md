@@ -1,4 +1,114 @@
+<!-- claude-m:premium-header:start -->
+<div align="center">
+
+<a id="top"></a>
+
 # planner-orchestrator
+
+### Intelligent orchestration for Microsoft Planner — ship tasks with Claude Code, triage backlogs, plan sprint buckets, monitor deadlines, and balance workloads across plans. Integrates with microsoft-teams-mcp, microsoft-outlook-mcp, and powerbi-fabric when installed.
+
+<sub>Automate everyday Microsoft 365 collaboration workflows.</sub>
+
+<br />
+
+<table align="center">
+<tr>
+<td align="center"><b>Category</b><br /><code>Productivity</code></td>
+<td align="center"><b>Surfaces</b><br /><sub>Microsoft Graph · M365 · Teams · Outlook · SharePoint · Loop</sub></td>
+<td align="center"><b>Version</b><br /><code>1.0.0</code></td>
+<td align="center"><b>Marketplace</b><br /><code>claude-m-microsoft-marketplace</code></td>
+</tr>
+</table>
+
+<sub><code>microsoft</code> &nbsp;·&nbsp; <code>planner</code> &nbsp;·&nbsp; <code>orchestration</code> &nbsp;·&nbsp; <code>workflow</code> &nbsp;·&nbsp; <code>tasks</code> &nbsp;·&nbsp; <code>sprint</code></sub>
+
+<a href="#install"><b>Install</b></a> &nbsp;·&nbsp;
+<a href="#overview"><b>Overview</b></a> &nbsp;·&nbsp;
+<a href="#architecture"><b>Architecture</b></a> &nbsp;·&nbsp;
+<a href="#related-plugins"><b>Related plugins</b></a> &nbsp;·&nbsp;
+<a href="../README.md"><b>Marketplace</b></a>
+
+</div>
+
+---
+
+> [!TIP]
+> **One-line install** — `/plugin install planner-orchestrator@claude-m-microsoft-marketplace`
+
+
+
+## Overview
+
+> Intelligent orchestration for Microsoft Planner — ship tasks with Claude Code, triage backlogs, plan sprint buckets, monitor deadlines, and balance workloads across plans. Integrates with microsoft-teams-mcp, microsoft-outlook-mcp, and powerbi-fabric when installed.
+
+<details>
+<summary><b>What ships in this plugin</b> (commands, agents, skills)</summary>
+
+| Component | Items |
+|---|---|
+| **Commands** | `/orchestrate` · `/ship` · `/sprint` · `/status` · `/triage` |
+| **Agents** | `bucket-planner` · `deadline-monitor` · `portfolio-manager` · `ship-orchestrator` · `task-triage` · `teams-notifier` · `workload-balancer` |
+| **Skills** | `planner-orchestration` |
+
+</details>
+
+
+<details>
+<summary><b>Quick example</b></summary>
+
+```text
+Use planner-orchestrator to automate Microsoft 365 collaboration workflows.
+```
+
+</details>
+
+<a id="architecture"></a>
+
+## Architecture
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#0078D4','primaryTextColor':'#FFFFFF','lineColor':'#5B9BD5','fontFamily':'Segoe UI, Arial, sans-serif'}}}%%
+flowchart LR
+    classDef user fill:#1E1E1E,stroke:#FFFFFF,color:#FFFFFF,stroke-width:2px
+    classDef cc fill:#D97757,stroke:#7A3E2A,color:#FFFFFF
+    classDef plugin fill:#0078D4,stroke:#003E6B,color:#FFFFFF,stroke-width:2px
+    classDef msft fill:#FFB900,stroke:#B07F00,color:#000000
+
+    U["You"]:::user
+    CC["Claude Code"]:::cc
+    PG["planner-orchestrator<br/>(plugin)"]:::plugin
+
+    subgraph MS[" Microsoft surfaces "]
+        direction TB
+        S0["Microsoft Graph"]:::msft
+        S1["M365 Services"]:::msft
+        S2["Webhooks"]:::msft
+    end
+
+    U -->|prompts| CC
+    CC -->|loads| PG
+    PG ==> S0
+    PG ==> S1
+    PG ==> S2
+```
+
+<a id="install"></a>
+
+## Install
+
+```bash
+/plugin marketplace add markus41/Claude-m
+/plugin install planner-orchestrator@claude-m-microsoft-marketplace
+```
+
+> [!IMPORTANT]
+> This plugin operates against **Microsoft Graph · M365 · Teams · Outlook · SharePoint · Loop**. Configure credentials via environment variables — never commit secrets.
+
+[Back to top](#top)
+
+---
+
+<!-- claude-m:premium-header:end -->
 
 Intelligent orchestration layer for Microsoft Planner — ship tasks with Claude Code, triage backlogs, plan sprint buckets, monitor deadlines, balance workloads, and optionally push updates to Teams and Outlook.
 
@@ -96,3 +206,41 @@ Supports `--dry-run`, `--resume`, `--status`, and `--from=<STATE>`.
 "Who's overloaded in the dev team's Planner?"
 "Post our Planner status to Teams"
 ```
+<!-- claude-m:premium-footer:start -->
+
+---
+
+<a id="related-plugins"></a>
+
+## Related plugins
+
+<table>
+<tr><th>Plugin</th><th>What it does</th></tr>
+<tr><td><a href="../planner-todo/README.md"><code>planner-todo</code></a></td><td>Microsoft Planner and To Do task management via Graph API — classic plans, Premium Dataverse projects, buckets, tasks, assignments, checklists, nested plans, roster plans, sprints, goals, and Business Scenarios</td></tr>
+<tr><td><a href="../microsoft-loop/README.md"><code>microsoft-loop</code></a></td><td>Microsoft Loop workspaces, pages, and components — create collaborative spaces, embed portable Loop components across M365 apps, manage via Graph API, and govern Loop at the tenant level.</td></tr>
+<tr><td><a href="../microsoft-bookings/README.md"><code>microsoft-bookings</code></a></td><td>Microsoft Bookings — manage appointment calendars, services, staff availability, and customer bookings via Graph API</td></tr>
+<tr><td><a href="../microsoft-forms-surveys/README.md"><code>microsoft-forms-surveys</code></a></td><td>Microsoft Forms — create surveys, add questions, collect responses, and summarize results via Graph API</td></tr>
+<tr><td><a href="../microsoft-lists-tracker/README.md"><code>microsoft-lists-tracker</code></a></td><td>Microsoft Lists — create and manage lists for process tracking, issue logs, and project trackers via Graph API</td></tr>
+<tr><td><a href="../plugins/teams/README.md"><code>microsoft-teams-mcp</code></a></td><td>Send messages, create meetings, and manage Teams channels via MCP.</td></tr>
+</table>
+
+
+<details>
+<summary><b>Composable stacks that include <code>planner-orchestrator</code></b></summary>
+
+Combine with sibling plugins to build cross-surface runbooks. Browse the full [marketplace catalog](../README.md#plugin-catalog) for a tailored selection.
+
+</details>
+
+---
+
+<div align="center">
+
+<sub>Part of <a href="../README.md"><b>Claude-m</b></a> — the Microsoft plugin marketplace for Claude Code.</sub>
+
+<sub>Licensed under <a href="../LICENSE">MIT</a>. Built for engineers, MSPs, SOC teams, and analytics leaders.</sub>
+
+</div>
+
+<!-- claude-m:premium-footer:end -->
+
